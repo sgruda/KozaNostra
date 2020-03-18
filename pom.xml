@@ -8,7 +8,10 @@
     <name>ssbd05</name>
 
     <developers>
-
+        <developer>
+            <name>Dev Three</name>
+            <id>itdev3</id>
+        </developer>
     </developers>
 
     <properties>
