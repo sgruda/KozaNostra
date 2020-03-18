@@ -12,6 +12,10 @@
             <name>Dev Two</name>
             <id>itdev2</id>
         </developer>
+        <developer>
+            <name>Dev Three</name>
+            <id>itdev3</id>
+        </developer>
     </developers>
 
     <properties>
