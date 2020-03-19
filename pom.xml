@@ -9,6 +9,10 @@
 
     <developers>
         <developer>
+            <name>Dev One</name>
+            <id>itdev1</id>
+        </developer>
+        <developer>
             <name>Dev Two</name>
             <id>itdev2</id>
         </developer>
