@@ -9,6 +9,18 @@
 
     <developers>
         <developer>
+            <name>Dev Two</name>
+            <id>itdev2</id>
+        </developer>
+        <developer>
+            <name>Dev Three</name>
+            <id>itdev3</id>
+        </developer>
+        <developer>
+            <name>Dev Four</name>
+            <id>itdev4</id>
+        </developer>
+        <developer>
             <name>Dev Five</name>
             <id>itdev5</id>
         </developer>
