@@ -28,6 +28,10 @@
             <name>Dev Five</name>
             <id>itdev5</id>
         </developer>
+        <developer>
+            <name>Dev Six</name>
+            <id>itdev6</id>
+        </developer>
     </developers>
 
     <properties>
