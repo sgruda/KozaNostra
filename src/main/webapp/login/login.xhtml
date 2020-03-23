@@ -2,8 +2,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Login</title>
+        <h:body>
+            <p:panel header="Primefaces login page">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <form action="j_security_check">
+                            Login :<input id="username"  type="text" name="j_username" />
+                           Password :<input id="password"  type="password" name="j_password"/>
+                            <input type="submit" value="Login"/>
+                    </form>
+                </h:panelGrid>
+
+            </p:panel>
+        </h:body>
     </h:head>
 </html>
