@@ -2,8 +2,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Error</title>
     </h:head>
+        <div>
+            <p:panel header="Login error page" style="font-size: 32px">
+                <div>
+                    <p:outputLabel >Unfortunately credentials provided were wrong.</p:outputLabel>
+                </div>
+                <div>
+                    <p:outputLabel >Please go back to login page and try again.</p:outputLabel>
+                </div>
+                <div>
+                        <p:button outcome="/login/login.xhtml?faces-redirect=true" value="Go back" />
+                </div>
+            </p:panel>
+        </div>
+
+
+
+
+
+
 </html>
