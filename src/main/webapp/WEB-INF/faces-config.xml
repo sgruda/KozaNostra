@@ -4,40 +4,6 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
-    <navigation-rule>
-        <from-view-id>/index.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>login</from-outcome>
-            <to-view-id>/mok/login/login.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
 
-    <navigation-rule>
-        <from-view-id>/mok/login/login.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>ADMIN</from-outcome>
-            <to-view-id>/mok/admin/adminPage.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
-        <from-view-id>/mok/login/login.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>MANAGER</from-outcome>
-            <to-view-id>/mok/manager/managerPage.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
-        <from-view-id>/mok/login/login.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>CLIENT</from-outcome>
-            <to-view-id>/mok/client/clientPage.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
 
 </faces-config>
