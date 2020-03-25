@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>pl.lodz.p.it.ssbd2020</groupId>
     <artifactId>ssbd05</artifactId>
-    <version>0.0.6-SNAPSHOT</version>
+    <version>0.0.5-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>ssbd05</name>
 
@@ -51,14 +51,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>8.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>8.0</version>
         </dependency>
     </dependencies>
     
