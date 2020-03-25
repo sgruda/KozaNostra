@@ -7,17 +7,17 @@
     <h:body>
         <p:panel header="Login page" style="font-size: 32px">
             <h:panelGrid columns="2" cellpadding="10">
-                    <h:form id="login"  onsubmit="document.getElementById('login').action='j_security_check';" prependId="false">
+                    <h:form id="login" onsubmit="document.getElementById('login').action='j_security_check';" prependId="false">
                         <div style="padding-bottom: 5px">
                             <p:outputLabel for="j_username" value="Username:" />
-                            <p:inputText id="j_username" required="true" name="j_username" value="#{loginController.username}"/>
+                            <p:inputText id="j_username" required="true" name="j_username" />
                         </div>
                         <div style="padding-bottom: 10px;padding-top: 5px">
                             <p:outputLabel for="j_password" value="Password:" />
-                            <p:password id="j_password"  required="true" type="password" name="j_password" value="#{loginController.password}"/>
+                            <p:password id="j_password"  required="true" type="password" name="j_password"/>
                         </div>
                         <div>
-                            <p:commandButton id="submit" ajax="false" value="Sign in" action="#{loginController.login()}"/>
+                            <p:commandButton id="submit" ajax="false" value="Sign in"/>
                         </div>
                     </h:form>
             </h:panelGrid>
