@@ -4,11 +4,13 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <h:body>
-        <p:panel header="Client page" style="font-size: 32px">
-            <h:panelGrid columns="2" cellpadding="10">
-            </h:panelGrid>
-        </p:panel>
-    </h:body>
+    <title>ClientPage</title>
 </h:head>
+<h:body>
+    <p:panel header="Client Home Page">
+        <div>
+            <p:button outcome="/index.xhtml?faces-redirect=true" value="Go back" />
+        </div>
+    </p:panel>
+</h:body>
 </html>

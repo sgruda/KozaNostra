@@ -7,14 +7,14 @@
     <title>ssbd05</title>
 </h:head>
 <h:body>
-    <p:panel header="Primefaces test page">
+    <p:panel header="System Rezerwacji Sal na Imprezy Okolicznosciowe">
         <f:facet name="actions">
             <p:button outcome="/mok/login/login.xhtml" value="Sign in" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"/>
         </f:facet>
     </p:panel>
-    <h:link value="Admin page" outcome="/mok/admin/adminPage.xhtml" rendered="#{roleController.userHasRole('ADMIN')}"/>
-    <h:link value="Manager page" outcome="/mok/manager/managerPage.xhtml" rendered="#{roleController.userHasRole('MANAGER')}"/>
-    <h:link value="Client page" outcome="/mok/client/clientPage.xhtml" rendered="#{roleController.userHasRole('CLIENT')}"/>
+    <p:button outcome="/mok/admin/adminPage.xhtml" value="Admin page"  style="font-size:15px"  rendered="#{roleController.userHasRole('ADMIN')}"/>
+    <p:button outcome="/mok/manager/managerPage.xhtml" value="Manager page" style="font-size:15px" rendered="#{roleController.userHasRole('MANAGER')}"/>
+    <p:button outcome="/mok/client/clientPage.xhtml" value="Client page"  style="font-size:15px" rendered="#{roleController.userHasRole('CLIENT')}"/>
     <h:outputText value="#{roleController.userRole}"/>
 </h:body>
 </html>
