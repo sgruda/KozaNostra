@@ -9,12 +9,12 @@
 <h:body>
     <p:panel header="System Rezerwacji Sal na Imprezy Okolicznosciowe">
         <f:facet name="actions">
-            <p:button outcome="/mok/login/login.xhtml" value="Sign in" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"/>
+            <p:button outcome="/login/login.xhtml" value="Sign in" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"/>
         </f:facet>
     </p:panel>
-    <p:button outcome="/mok/admin/adminPage.xhtml" value="Admin page"  style="font-size:15px"  rendered="#{roleController.userHasRole('ADMIN')}"/>
-    <p:button outcome="/mok/manager/managerPage.xhtml" value="Manager page" style="font-size:15px" rendered="#{roleController.userHasRole('MANAGER')}"/>
-    <p:button outcome="/mok/client/clientPage.xhtml" value="Client page"  style="font-size:15px" rendered="#{roleController.userHasRole('CLIENT')}"/>
+    <p:button outcome="/admin/adminPage.xhtml" value="Admin page"  style="font-size:15px"  rendered="#{roleController.userHasRole('ADMIN')}"/>
+    <p:button outcome="/manager/managerPage.xhtml" value="Manager page" style="font-size:15px" rendered="#{roleController.userHasRole('MANAGER')}"/>
+    <p:button outcome="/client/clientPage.xhtml" value="Client page"  style="font-size:15px" rendered="#{roleController.userHasRole('CLIENT')}"/>
     <h:outputText value="#{roleController.userRole}"/>
 </h:body>
 </html>
