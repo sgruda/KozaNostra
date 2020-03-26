@@ -92,8 +92,8 @@
         <auth-method>FORM</auth-method>
         <realm-name>ssbd05realm</realm-name>
         <form-login-config>
-            <form-login-page>/mok/login/login.xhtml</form-login-page>
-            <form-error-page>/mok/login/error.xhtml</form-error-page>
+            <form-login-page>/login/login.xhtml</form-login-page>
+            <form-error-page>/login/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
 </web-app>
