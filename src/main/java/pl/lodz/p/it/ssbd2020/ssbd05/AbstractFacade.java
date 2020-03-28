@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package pl.lodz.p.it.ssbd2020.ssbd05.mok.facades;
+package pl.lodz.p.it.ssbd2020.ssbd05;
 
 import java.util.List;
 import javax.persistence.EntityManager;
