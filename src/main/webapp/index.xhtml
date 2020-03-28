@@ -9,9 +9,9 @@
     </h:head>
     <h:body>
         <p:panel header="System Rezerwacji Sal na Imprezy Okolicznosciowe">
-<!--            <div>-->
-<!--                <h:outputText value="Selected role: #{roleController.selectedRole}"/>-->
-<!--            </div>-->
+            <div>
+                <h:outputText value="Selected role: #{roleController.selectedRole}"/>
+            </div>
             <p:button outcome="/changeRole.xhtml" value="Change role" rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"/>
             <f:facet name="actions">
                 <p:button outcome="/login/login.xhtml" value="Sign in" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"/>
