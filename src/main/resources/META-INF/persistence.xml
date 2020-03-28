@@ -11,7 +11,7 @@
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://studdev.zsk.p.lodz.pl:5432/ssbd05"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://studdev.it.p.lodz.pl:5432/ssbd05"/>
       <property name="javax.persistence.jdbc.user" value="ssbd05mok"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.password" value="mok123"/>
