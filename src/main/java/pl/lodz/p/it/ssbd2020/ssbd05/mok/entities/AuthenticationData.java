@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.lodz.p.it.ssbd2020.ssbd05.entities;
+package pl.lodz.p.it.ssbd2020.ssbd05.mok.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -172,7 +172,7 @@ public class AuthenticationData implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.AuthenticationData[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AuthenticationData[ id=" + id + " ]";
     }
     
 }
