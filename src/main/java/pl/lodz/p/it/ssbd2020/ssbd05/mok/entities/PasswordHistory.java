@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.lodz.p.it.ssbd2020.ssbd05.entities;
+package pl.lodz.p.it.ssbd2020.ssbd05.mok.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -15,20 +15,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
 @Entity
-@Table(name = "access_level_mapping", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"account_id", "access_level"})})
+@Table(name = "password_history")
 @NamedQueries({
-    @NamedQuery(name = "AccessLevelMapping.findAll", query = "SELECT a FROM AccessLevelMapping a"),
-    @NamedQuery(name = "AccessLevelMapping.findById", query = "SELECT a FROM AccessLevelMapping a WHERE a.id = :id"),
-    @NamedQuery(name = "AccessLevelMapping.findByAccessLevel", query = "SELECT a FROM AccessLevelMapping a WHERE a.accessLevel = :accessLevel"),
-    @NamedQuery(name = "AccessLevelMapping.findByVersion", query = "SELECT a FROM AccessLevelMapping a WHERE a.version = :version")})
-public class AccessLevelMapping implements Serializable {
+    @NamedQuery(name = "PasswordHistory.findAll", query = "SELECT p FROM PasswordHistory p"),
+    @NamedQuery(name = "PasswordHistory.findById", query = "SELECT p FROM PasswordHistory p WHERE p.id = :id"),
+    @NamedQuery(name = "PasswordHistory.findByPassword", query = "SELECT p FROM PasswordHistory p WHERE p.password = :password"),
+    @NamedQuery(name = "PasswordHistory.findByVersion", query = "SELECT p FROM PasswordHistory p WHERE p.version = :version")})
+public class PasswordHistory implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,8 +37,8 @@ public class AccessLevelMapping implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "access_level", nullable = false, length = 2147483647)
-    private String accessLevel;
+    @Column(name = "password", nullable = false, length = 2147483647)
+    private String password;
     @Basic(optional = false)
     @NotNull
     @Column(name = "version", nullable = false)
@@ -49,16 +47,16 @@ public class AccessLevelMapping implements Serializable {
     @ManyToOne(optional = false)
     private AccountLoginData accountId;
 
-    public AccessLevelMapping() {
+    public PasswordHistory() {
     }
 
-    public AccessLevelMapping(Long id) {
+    public PasswordHistory(Long id) {
         this.id = id;
     }
 
-    public AccessLevelMapping(Long id, String accessLevel, long version) {
+    public PasswordHistory(Long id, String password, long version) {
         this.id = id;
-        this.accessLevel = accessLevel;
+        this.password = password;
         this.version = version;
     }
 
@@ -70,12 +68,12 @@ public class AccessLevelMapping implements Serializable {
         this.id = id;
     }
 
-    public String getAccessLevel() {
-        return accessLevel;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAccessLevel(String accessLevel) {
-        this.accessLevel = accessLevel;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public long getVersion() {
@@ -104,10 +102,10 @@ public class AccessLevelMapping implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof AccessLevelMapping)) {
+        if (!(object instanceof PasswordHistory)) {
             return false;
         }
-        AccessLevelMapping other = (AccessLevelMapping) object;
+        PasswordHistory other = (PasswordHistory) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -116,7 +114,7 @@ public class AccessLevelMapping implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.AccessLevelMapping[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PasswordHistory[ id=" + id + " ]";
     }
     
 }
