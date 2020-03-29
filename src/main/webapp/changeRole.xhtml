@@ -18,7 +18,7 @@
                     </c:forEach>
                 </p:selectOneMenu>
             </h:panelGrid>
-            <p:commandButton value="Submit" action="#{roleController.redirectByRole()}"/>
+            <p:commandButton value="Submit" action="#{facesContext.externalContext.redirect('index.xhtml')}"/>
         </h:form>
     </h:body>
 </html>
