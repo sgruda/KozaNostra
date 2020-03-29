@@ -11,21 +11,21 @@
                 <p:autoUpdate />
             </p:messages>
             <h:panelGrid columns="2" cellpadding="10">
-                    <h:form id="login" onsubmit="document.getElementById('login').action='j_security_check';" prependId="false">
-                        <div style="padding-bottom: 5px">
-                            <p:outputLabel for="j_username" value="Username:" />
-                            <p:inputText id="j_username" required="true" name="j_username" />
-                            <p:message for="j_username" />
-                        </div>
-                        <div style="padding-bottom: 10px;padding-top: 5px">
-                            <p:outputLabel for="j_password" value="Password:" />
-                            <p:password id="j_password"  required="true" type="password" name="j_password"/>
-                            <p:message for="j_password"/>
-                        </div>
-                        <div>
-                            <p:commandButton id="submit" ajax="false" value="Sign in" validateClient="true"/>
-                        </div>
-                    </h:form>
+                <h:form id="login">
+                    <div style="padding-bottom: 5px">
+                        <p:outputLabel for="username" value="Username:" />
+                        <p:inputText id="username" required="true" name="username" value="#{loginController.username}"/>
+                        <p:message for="username" />
+                    </div>
+                    <div style="padding-bottom: 10px;padding-top: 5px">
+                        <p:outputLabel for="password" value="Password:" />
+                        <p:password id="password"  required="true" type="password" name="password" value="#{loginController.password}"/>
+                        <p:message for="password"/>
+                    </div>
+                    <div>
+                        <p:commandButton id="submit" ajax="false" value="Sign in" validateClient="true" action="#{loginController.login()}"/>
+                    </div>
+                </h:form>
             </h:panelGrid>
         </p:panel>
     </h:body>

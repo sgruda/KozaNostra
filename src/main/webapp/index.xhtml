@@ -4,18 +4,18 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>ssbd05</title>
-    </h:head>
-    <h:body>
-        <p:panel header="System Rezerwacji Sal na Imprezy Okolicznosciowe">
-            <div>
-                <h:outputText value="Selected role: #{roleController.selectedRole}"/>
-            </div>
-            <p:button outcome="/changeRole.xhtml" value="Change role" rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"/>
-            <f:facet name="actions">
-                <p:button outcome="/login/login.xhtml" value="Sign in" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"/>
-            </f:facet>
-        </p:panel>
-    </h:body>
+<h:head>
+    <title>ssbd05</title>
+</h:head>
+<h:body>
+    <p:panel header="System Rezerwacji Sal na Imprezy Okolicznosciowe">
+        <h:panelGroup rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}">
+            <h:outputText value="Selected role: #{roleController.selectedRole}"/>
+            <p:button outcome="/changeRole.xhtml" value="Change role"/>
+        </h:panelGroup>
+        <f:facet name="actions">
+            <p:button outcome="/login/login.xhtml" value="Sign in" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"/>
+        </f:facet>
+    </p:panel>
+</h:body>
 </html>
