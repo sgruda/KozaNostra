@@ -37,15 +37,12 @@ public class RoleController implements Serializable {
         refreshContext();
         List<String> roles = new ArrayList<>();
         if (context.isUserInRole("CLIENT")) {
-            System.out.println("c");
             roles.add("Client");
         }
         if (context.isUserInRole("MANAGER")) {
-            System.out.println("m");
             roles.add("Manager");
         }
         if (context.isUserInRole("ADMIN")) {
-            System.out.println("a");
             roles.add("Admin");
         }
         return roles.toArray(new String[0]);
