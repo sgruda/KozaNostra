@@ -3,11 +3,9 @@
   <persistence-unit name="ssbd05mokPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/ssbd05mokDS</jta-data-source>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AccountLoginData</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Account</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AccessLevelMapping</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PasswordHistory</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AccountPersonalData</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AuthenticationData</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
