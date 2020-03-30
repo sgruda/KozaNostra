@@ -16,7 +16,7 @@ import java.util.List;
 public class RoleController implements Serializable {
 
     @Getter @Setter
-    private String selectedRole;
+    private String selectedRole = "";
     private ExternalContext context;
 
     private void refreshContext() {
@@ -46,5 +46,15 @@ public class RoleController implements Serializable {
             roles.add("Admin");
         }
         return roles.toArray(new String[0]);
+    }
+
+    public String getThemeForRole() {
+        if(this.selectedRole.equalsIgnoreCase("admin"))
+            return "luna-green";
+        else if(this.selectedRole.equalsIgnoreCase("manager"))
+            return "luna-blue";
+        else if(this.selectedRole.equalsIgnoreCase("client"))
+            return "luna-pink";
+        else return "nova-dark";
     }
 }
