@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -15,9 +16,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Named
-@ViewScoped
+@SessionScoped
 public class LoginController implements Serializable {
 
     @Inject
@@ -27,6 +30,7 @@ public class LoginController implements Serializable {
     @Getter @Setter
     private String password;
     private String originalUrl;
+    private boolean printLastLoginInfo;
 
     @PostConstruct
     public void init() {
@@ -42,6 +46,7 @@ public class LoginController implements Serializable {
                 originalUrl += "?" + originalQuery;
             }
         }
+        printLastLoginInfo = false;
     }
 
     public void login() throws IOException {
@@ -53,8 +58,18 @@ public class LoginController implements Serializable {
             request.login(username, password);
             roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
             externalContext.redirect(originalUrl);
+            printLastLoginInfo = true;
+
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Incorrect credentials"));
+        }
+    }
+    public void informAboutLastAuthentication() {
+        if (printLastLoginInfo) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Successful",  "Last correct authentication..." ) );
+            context.addMessage(null, new FacesMessage("Successful",  "Last incorrect authentication..." ) );
+            printLastLoginInfo = false;
         }
     }
 }
