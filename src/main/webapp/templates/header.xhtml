@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link rel="stylesheet" href="../css/header.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <p:sidebar widgetVar="sb" baseZIndex="10000">
+            <h1 style="font-weight:normal">Super sidebar</h1>
+            <p:commandButton value="Hide" oncomplete="PF('sb').hide()"/>
+        </p:sidebar>
+        <div class = "header-bar">
+            <a class="logo">LogoPlaceholder</a>
+            <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()">
+                <i class="pi pi-bars" style="font-size: 3em;color: white" ></i> 
+            </p:commandLink>
+            <h:form>
+            <ul class ="right-links">
+                <li>
+                    <a class="link">Link1</a>
+                </li>
+                <li>
+                    <a class="link">Link2</a>
+                </li>
+                <li>
+                    <a class="link">Link3</a>
+                </li>
+                <li>
+                    <a class="link">Wyloguj się</a>
+                </li>
+            </ul>
+            </h:form>
+        </div>
+    </h:body>
+</html>
