@@ -14,11 +14,18 @@
             <p:button outcome="/changeRole.xhtml" value="Change role"/>
         </h:panelGroup>
         <f:facet name="actions">
-            <p:button outcome="/login/login.xhtml" value="Sign in" styleClass="ui-icon pi pi-sign-in" style="font-size:35px" rendered="#{!roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"/>
+            <p:button outcome="/login/login.xhtml" value="Sign in" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"
+                      rendered="#{!roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"/>
             <h:form>
-                <p:commandButton value="Logout" action="#{logoutController.logout()}" styleClass="ui-icon pi pi-sign-out" style="font-size:35px" rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}" ajax="false"/>
+                <p:commandButton value="Logout" action="#{logoutController.logout()}" styleClass="ui-icon pi pi-sign-out"
+                                 style="font-size:35px" rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"
+                                 ajax="false"/>
             </h:form>
         </f:facet>
+        <h:form>
+            <p:growl id="informationBox" showDetail="true"  life="2000"/>
+            <f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
+        </h:form>
     </p:panel>
 </h:body>
 </html>
