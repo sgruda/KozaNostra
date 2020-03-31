@@ -30,4 +30,22 @@
       <property name="eclipselink.logging.level" value="FINE" />
     </properties>
   </persistence-unit>
+
+  <persistence-unit name="ssbd05morPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>java:app/jdbc/ssbd05morDS</jta-data-source>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Reservation</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Review</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.ExtraService</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.ExtraServiceMapping</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://studdev.it.p.lodz.pl:5432/ssbd05"/>
+      <property name="javax.persistence.jdbc.user" value="ssbd05mor"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="mor123"/>
+      <property name="eclipselink.logging.level" value="FINE" />
+    </properties>
+  </persistence-unit>
 </persistence>
