@@ -16,4 +16,18 @@
       <property name="eclipselink.logging.level" value="FINE" />
     </properties>
   </persistence-unit>
+  
+  <persistence-unit name="ssbd05mosPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>java:app/jdbc/ssbd05mosDS</jta-data-source>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://studdev.it.p.lodz.pl:5432/ssbd05"/>
+      <property name="javax.persistence.jdbc.user" value="ssbd05mos"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="mos123"/>
+      <property name="eclipselink.logging.level" value="FINE" />
+    </properties>
+  </persistence-unit>
 </persistence>
