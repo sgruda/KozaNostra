@@ -11,7 +11,9 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Table(name = "password_history")
+@Table(name = "password_history", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"password"})
+})
 @NamedQueries({
         @NamedQuery(name = "PasswordHistory.findAll", query = "SELECT p FROM PasswordHistory p"),
         @NamedQuery(name = "PasswordHistory.findById", query = "SELECT p FROM PasswordHistory p WHERE p.id = :id"),
