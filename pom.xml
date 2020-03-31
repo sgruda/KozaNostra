@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>pl.lodz.p.it.ssbd2020</groupId>
     <artifactId>ssbd05</artifactId>
-    <version>0.0.16-SNAPSHOT</version>
+    <version>0.0.17-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>ssbd05</name>
 
@@ -57,14 +57,19 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>8.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
             <version>2.7.6</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>8.0</version>
         </dependency>
     </dependencies>
 
