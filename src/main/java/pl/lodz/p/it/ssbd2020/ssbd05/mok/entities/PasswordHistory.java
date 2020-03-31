@@ -37,7 +37,7 @@ public class PasswordHistory implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "version", nullable = false)
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)

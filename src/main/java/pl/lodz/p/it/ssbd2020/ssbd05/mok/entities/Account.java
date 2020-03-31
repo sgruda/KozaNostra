@@ -73,7 +73,7 @@ public class Account implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "version", nullable = false)
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")

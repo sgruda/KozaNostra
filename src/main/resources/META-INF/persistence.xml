@@ -20,6 +20,8 @@
   <persistence-unit name="ssbd05mosPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/ssbd05mosDS</jta-data-source>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.Hall</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.EventTypes</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
