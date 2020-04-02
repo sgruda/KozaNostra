@@ -5,19 +5,12 @@
  */
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -56,7 +49,7 @@ public class ExtraService implements Serializable {
     @Column(name = "version")
     private long version;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "extraServiceId")
-    private Collection<ExtraServiceMapping> extraServiceMappingCollection;
+    private List<ExtraServiceMapping> extraServiceMappingCollection = new ArrayList<>();
 
     public ExtraService() {
     }
@@ -113,11 +106,11 @@ public class ExtraService implements Serializable {
         this.version = version;
     }
 
-    public Collection<ExtraServiceMapping> getExtraServiceMappingCollection() {
+    public List<ExtraServiceMapping> getExtraServiceMappingCollection() {
         return extraServiceMappingCollection;
     }
 
-    public void setExtraServiceMappingCollection(Collection<ExtraServiceMapping> extraServiceMappingCollection) {
+    public void setExtraServiceMappingCollection(List<ExtraServiceMapping> extraServiceMappingCollection) {
         this.extraServiceMappingCollection = extraServiceMappingCollection;
     }
 
