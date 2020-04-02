@@ -3,19 +3,12 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mos.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -85,7 +78,7 @@ public class Hall implements Serializable {
     private long version;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "typeId")
-    private Collection<EventTypes> eventTypesCollection;
+    private List<EventTypes> eventTypesCollection = new ArrayList<>();
 
     public Hall() {
     }
@@ -106,11 +99,11 @@ public class Hall implements Serializable {
         this.version = version;
     }
 
-    public Collection<EventTypes> getEventTypesCollection() {
+    public List<EventTypes> getEventTypesCollection() {
         return eventTypesCollection;
     }
 
-    public void setEventTypesCollection(Collection<EventTypes> eventTypesCollection) {
+    public void setEventTypesCollection(List<EventTypes> eventTypesCollection) {
         this.eventTypesCollection = eventTypesCollection;
     }
 

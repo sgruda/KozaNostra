@@ -8,8 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -77,10 +78,10 @@ public class Account implements Serializable {
     private long version;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
-    private Collection<AccessLevelMapping> accessLevelMappingCollection;
+    private List<AccessLevelMapping> accessLevelMappingCollection = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
-    private Collection<PasswordHistory> passwordHistoryCollection;
+    private List<PasswordHistory> passwordHistoryCollection = new ArrayList<>();
 
     @Basic(optional = false)
     @NotNull
