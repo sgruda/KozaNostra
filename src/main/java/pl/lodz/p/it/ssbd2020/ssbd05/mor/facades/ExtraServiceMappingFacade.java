@@ -15,7 +15,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.ExtraServiceMapping;
 @Stateless
 public class ExtraServiceMappingFacade extends AbstractFacade<ExtraServiceMapping> {
 
-    @PersistenceContext(unitName = "ssbd05morPU")
+    @PersistenceContext(unitName = "ssbd05mokPU")
     private EntityManager em;
 
     @Override

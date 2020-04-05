@@ -9,13 +9,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.ExtraService;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Status;
 
 
 @Stateless
-public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
+public class StatusFacade extends AbstractFacade<Status> {
 
-    @PersistenceContext(unitName = "ssbd05morPU")
+    @PersistenceContext(unitName = "ssbd05mokPU")
     private EntityManager em;
 
     @Override
@@ -23,8 +23,8 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         return em;
     }
 
-    public ExtraServiceFacade() {
-        super(ExtraService.class);
+    public StatusFacade() {
+        super(Status.class);
     }
     
 }
