@@ -6,29 +6,28 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
 @Entity
-@Table(name = "review")
+@Table(name = "status")
 @NamedQueries({
-    @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r"),
-    @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id"),
-    @NamedQuery(name = "Review.findByContent", query = "SELECT r FROM Review r WHERE r.content = :content"),
-    @NamedQuery(name = "Review.findByDate", query = "SELECT r FROM Review r WHERE r.date = :date"),
-    @NamedQuery(name = "Review.findByVersion", query = "SELECT r FROM Review r WHERE r.version = :version")})
-public class Review implements Serializable {
+    @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s"),
+    @NamedQuery(name = "Status.findById", query = "SELECT s FROM Status s WHERE s.id = :id"),
+    @NamedQuery(name = "Status.findByStatusName", query = "SELECT s FROM Status s WHERE s.statusName = :statusName"),
+    @NamedQuery(name = "Status.findByVersion", query = "SELECT s FROM Status s WHERE s.version = :version")})
+public class Status implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,30 +37,26 @@ public class Review implements Serializable {
     private Long id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 512)
-    @Column(name = "content")
-    private String content;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    @Size(min = 1, max = 32)
+    @Column(name = "status_name")
+    private String statusName;
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
     private long version;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusId")
+    private Collection<Reservation> reservationCollection;
 
-    public Review() {
+    public Status() {
     }
 
-    public Review(Long id) {
+    public Status(Long id) {
         this.id = id;
     }
 
-    public Review(Long id, String content, Date date, long version) {
+    public Status(Long id, String statusName, long version) {
         this.id = id;
-        this.content = content;
-        this.date = date;
+        this.statusName = statusName;
         this.version = version;
     }
 
@@ -73,20 +68,12 @@ public class Review implements Serializable {
         this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
     public long getVersion() {
@@ -95,6 +82,14 @@ public class Review implements Serializable {
 
     public void setVersion(long version) {
         this.version = version;
+    }
+
+    public Collection<Reservation> getReservationCollection() {
+        return reservationCollection;
+    }
+
+    public void setReservationCollection(Collection<Reservation> reservationCollection) {
+        this.reservationCollection = reservationCollection;
     }
 
     @Override
@@ -107,10 +102,10 @@ public class Review implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Review)) {
+        if (!(object instanceof Status)) {
             return false;
         }
-        Review other = (Review) object;
+        Status other = (Status) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -119,7 +114,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Review[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Status[ id=" + id + " ]";
     }
     
 }

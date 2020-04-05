@@ -5,12 +5,20 @@
  */
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -48,8 +56,9 @@ public class Reservation implements Serializable {
     @NotNull
     @Column(name = "version")
     private long version;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reservationId")
-    private List<ExtraServiceMapping> extraServiceMappingCollection = new ArrayList<>();
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Status statusId;
 
     public Reservation() {
     }
@@ -106,12 +115,12 @@ public class Reservation implements Serializable {
         this.version = version;
     }
 
-    public List<ExtraServiceMapping> getExtraServiceMappingCollection() {
-        return extraServiceMappingCollection;
+    public Status getStatusId() {
+        return statusId;
     }
 
-    public void setExtraServiceMappingCollection(List<ExtraServiceMapping> extraServiceMappingCollection) {
-        this.extraServiceMappingCollection = extraServiceMappingCollection;
+    public void setStatusId(Status statusId) {
+        this.statusId = statusId;
     }
 
     @Override
@@ -136,7 +145,7 @@ public class Reservation implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.Reservation[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Reservation[ id=" + id + " ]";
     }
     
 }

@@ -5,12 +5,16 @@
  */
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
 
-import javax.persistence.*;
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -32,7 +36,7 @@ public class ExtraService implements Serializable {
     private Long id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(min = 1, max = 512)
     @Column(name = "description")
     private String description;
     @Basic(optional = false)
@@ -48,8 +52,6 @@ public class ExtraService implements Serializable {
     @NotNull
     @Column(name = "version")
     private long version;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "extraServiceId")
-    private List<ExtraServiceMapping> extraServiceMappingCollection = new ArrayList<>();
 
     public ExtraService() {
     }
@@ -106,14 +108,6 @@ public class ExtraService implements Serializable {
         this.version = version;
     }
 
-    public List<ExtraServiceMapping> getExtraServiceMappingCollection() {
-        return extraServiceMappingCollection;
-    }
-
-    public void setExtraServiceMappingCollection(List<ExtraServiceMapping> extraServiceMappingCollection) {
-        this.extraServiceMappingCollection = extraServiceMappingCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -136,7 +130,7 @@ public class ExtraService implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.ExtraService[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.ExtraService[ id=" + id + " ]";
     }
     
 }
