@@ -45,7 +45,7 @@ public class PasswordHistory implements Serializable {
     private long version;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private AccountLoginData accountId;
+    private Account accountId;
 
     public PasswordHistory() {
     }
@@ -84,11 +84,11 @@ public class PasswordHistory implements Serializable {
         this.version = version;
     }
 
-    public AccountLoginData getAccountId() {
+    public Account getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(AccountLoginData accountId) {
+    public void setAccountId(Account accountId) {
         this.accountId = accountId;
     }
 

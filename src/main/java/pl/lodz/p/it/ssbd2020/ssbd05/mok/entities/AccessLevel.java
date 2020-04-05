@@ -48,7 +48,7 @@ public class AccessLevel implements Serializable {
     private Boolean active;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private AccountLoginData accountId;
+    private Account accountId;
 
     public AccessLevel() {
     }
@@ -95,11 +95,11 @@ public class AccessLevel implements Serializable {
         this.active = active;
     }
 
-    public AccountLoginData getAccountId() {
+    public Account getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(AccountLoginData accountId) {
+    public void setAccountId(Account accountId) {
         this.accountId = accountId;
     }
 
