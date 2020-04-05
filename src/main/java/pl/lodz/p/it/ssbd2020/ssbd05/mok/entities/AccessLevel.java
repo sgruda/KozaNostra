@@ -20,13 +20,14 @@ import javax.validation.constraints.Size;
 
 
 @Entity
-@Table(name = "password_history", schema = "ssbd05schema")
+@Table(name = "access_level",  schema = "ssbd05schema")
 @NamedQueries({
-    @NamedQuery(name = "PasswordHistory.findAll", query = "SELECT p FROM PasswordHistory p"),
-    @NamedQuery(name = "PasswordHistory.findById", query = "SELECT p FROM PasswordHistory p WHERE p.id = :id"),
-    @NamedQuery(name = "PasswordHistory.findByPassword", query = "SELECT p FROM PasswordHistory p WHERE p.password = :password"),
-    @NamedQuery(name = "PasswordHistory.findByVersion", query = "SELECT p FROM PasswordHistory p WHERE p.version = :version")})
-public class PasswordHistory implements Serializable {
+    @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
+    @NamedQuery(name = "AccessLevel.findById", query = "SELECT a FROM AccessLevel a WHERE a.id = :id"),
+    @NamedQuery(name = "AccessLevel.findByAccessLevel", query = "SELECT a FROM AccessLevel a WHERE a.accessLevel = :accessLevel"),
+    @NamedQuery(name = "AccessLevel.findByVersion", query = "SELECT a FROM AccessLevel a WHERE a.version = :version"),
+    @NamedQuery(name = "AccessLevel.findByActive", query = "SELECT a FROM AccessLevel a WHERE a.active = :active")})
+public class AccessLevel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -36,27 +37,29 @@ public class PasswordHistory implements Serializable {
     private Long id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 64)
-    @Column(name = "password")
-    private String password;
+    @Size(min = 1, max = 32)
+    @Column(name = "access_level")
+    private String accessLevel;
     @Basic(optional = false)
     @NotNull
     @Column(name = "version")
     private long version;
+    @Column(name = "active")
+    private Boolean active;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private AccountLoginData accountId;
 
-    public PasswordHistory() {
+    public AccessLevel() {
     }
 
-    public PasswordHistory(Long id) {
+    public AccessLevel(Long id) {
         this.id = id;
     }
 
-    public PasswordHistory(Long id, String password, long version) {
+    public AccessLevel(Long id, String accessLevel, long version) {
         this.id = id;
-        this.password = password;
+        this.accessLevel = accessLevel;
         this.version = version;
     }
 
@@ -68,12 +71,12 @@ public class PasswordHistory implements Serializable {
         this.id = id;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAccessLevel() {
+        return accessLevel;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAccessLevel(String accessLevel) {
+        this.accessLevel = accessLevel;
     }
 
     public long getVersion() {
@@ -82,6 +85,14 @@ public class PasswordHistory implements Serializable {
 
     public void setVersion(long version) {
         this.version = version;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public AccountLoginData getAccountId() {
@@ -102,10 +113,10 @@ public class PasswordHistory implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PasswordHistory)) {
+        if (!(object instanceof AccessLevel)) {
             return false;
         }
-        PasswordHistory other = (PasswordHistory) object;
+        AccessLevel other = (AccessLevel) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -114,7 +125,7 @@ public class PasswordHistory implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PasswordHistory[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AccessLevel[ id=" + id + " ]";
     }
     
 }

@@ -9,11 +9,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PasswordHistory;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AuthenticationData;
 
 
 @Stateless
-public class PasswordHistoryFacade extends AbstractFacade<PasswordHistory> {
+public class AuthenticationDataFacade extends AbstractFacade<AuthenticationData> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")
     private EntityManager em;
@@ -23,8 +23,8 @@ public class PasswordHistoryFacade extends AbstractFacade<PasswordHistory> {
         return em;
     }
 
-    public PasswordHistoryFacade() {
-        super(PasswordHistory.class);
+    public AuthenticationDataFacade() {
+        super(AuthenticationData.class);
     }
     
 }
