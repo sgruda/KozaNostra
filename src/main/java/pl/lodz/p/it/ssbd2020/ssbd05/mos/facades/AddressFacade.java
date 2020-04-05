@@ -9,13 +9,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.EventTypes;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.Address;
 
 
 @Stateless
-public class EventTypesFacade extends AbstractFacade<EventTypes> {
+public class AddressFacade extends AbstractFacade<Address> {
 
-    @PersistenceContext(unitName = "ssbd05mosPU")
+    @PersistenceContext(unitName = "ssbd05mokPU")
     private EntityManager em;
 
     @Override
@@ -23,8 +23,8 @@ public class EventTypesFacade extends AbstractFacade<EventTypes> {
         return em;
     }
 
-    public EventTypesFacade() {
-        super(EventTypes.class);
+    public AddressFacade() {
+        super(Address.class);
     }
     
 }
