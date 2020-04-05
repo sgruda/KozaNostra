@@ -1,9 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,7 +17,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "review", schema = "ssbd05schema")
 @NamedQueries({
@@ -31,24 +30,30 @@ import javax.validation.constraints.Size;
 public class Review implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 512)
-    @Column(name = "content")
+    @Column(name = "content", nullable = false, length = 512)
     private String content;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
+    @Getter(lombok.AccessLevel.NONE)
+    @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @NotNull
-    @Column(name = "version")
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
     public Review() {
@@ -62,38 +67,6 @@ public class Review implements Serializable {
         this.id = id;
         this.content = content;
         this.date = date;
-        this.version = version;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
         this.version = version;
     }
 

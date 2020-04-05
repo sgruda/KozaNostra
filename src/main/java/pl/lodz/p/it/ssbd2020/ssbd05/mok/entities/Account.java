@@ -47,34 +47,36 @@ public class Account implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "login")
+    @Column(name = "login", nullable = false, length = 32, unique = true)
     private String login;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 64)
     private String password;
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "active")
+    @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
     private boolean active;
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "confirmed")
+    @Column(name = "confirmed", nullable = false, columnDefinition = "boolean default false")
     private boolean confirmed;
 
+    @Getter(lombok.AccessLevel.NONE)
+    @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @NotNull
-    @Column(name = "version")
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
@@ -86,20 +88,20 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(table = "account_personal_data", name = "firstname")
+    @Column(table = "account_personal_data", name = "firstname", nullable = false, length = 32)
     private String firstname;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(table = "account_personal_data", name = "lastname")
+    @Column(table = "account_personal_data", name = "lastname", nullable = false, length = 32)
     private String lastname;
 
     @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(table = "account_personal_data", name = "email")
+    @Column(table = "account_personal_data", name = "email", nullable = false, length = 32, unique = true)
     private String email;
 
     @Column(table = "authentication_data", name = "last_successful_auth")
@@ -111,17 +113,17 @@ public class Account implements Serializable {
     private Date lastFailedAuth;
 
     @Size(max = 255)
-    @Column(table = "authentication_data", name = "last_auth_ip")
+    @Column(table = "authentication_data", name = "last_auth_ip", length = 255)
     private String lastAuthIp;
 
     @Basic(optional = false)
     @NotNull
-    @Column(table = "authentication_data", name = "failed_auth_counter")
+    @Column(table = "authentication_data", name = "failed_auth_counter", nullable = false, columnDefinition = "integer default 0")
     private int failedAuthCounter;
 
     @Basic(optional = false)
     @NotNull
-    @Column(table = "authentication_data", name = "force_password_change")
+    @Column(table = "authentication_data", name = "force_password_change", nullable = false, columnDefinition = "boolean default true")
     private boolean forcePasswordChange;
 
     public Account() {
@@ -143,14 +145,6 @@ public class Account implements Serializable {
         this.email = email;
         this.failedAuthCounter = failedAuthCounter;
         this.forcePasswordChange = forcePasswordChange;
-    }
-
-    private long getVersion() {
-        return version;
-    }
-
-    private void setVersion(long version) {
-        this.version = version;
     }
 
     @Override
