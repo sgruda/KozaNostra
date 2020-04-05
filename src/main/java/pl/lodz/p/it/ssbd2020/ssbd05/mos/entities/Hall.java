@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 
 
 @Entity
-@Table(name = "hall")
+@Table(name = "hall", schema = "ssbd05schema")
 @NamedQueries({
     @NamedQuery(name = "Hall.findAll", query = "SELECT h FROM Hall h"),
     @NamedQuery(name = "Hall.findById", query = "SELECT h FROM Hall h WHERE h.id = :id"),

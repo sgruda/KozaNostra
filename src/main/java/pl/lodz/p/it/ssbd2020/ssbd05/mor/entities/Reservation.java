@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(name = "reservation")
+@Table(name = "reservation", schema = "ssbd05schema")
 @NamedQueries({
     @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r"),
     @NamedQuery(name = "Reservation.findById", query = "SELECT r FROM Reservation r WHERE r.id = :id"),
