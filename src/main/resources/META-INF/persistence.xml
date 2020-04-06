@@ -25,6 +25,7 @@
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.Address</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Reservation</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Status</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.ExtraService</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>

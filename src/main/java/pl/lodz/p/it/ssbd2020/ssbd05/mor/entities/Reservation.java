@@ -62,7 +62,7 @@ public class Reservation implements Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "extra_service_mapping", schema = "ssbd05schema",
-            uniqueConstraints = @UniqueConstraint(columnNames = {"RESERVATION_ID", "EXTRA_SERVICE_ID"})
+            uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id", "extra_service_id"})
     )
     private Collection<ExtraService> extraServiceCollection = new ArrayList<>();
 
