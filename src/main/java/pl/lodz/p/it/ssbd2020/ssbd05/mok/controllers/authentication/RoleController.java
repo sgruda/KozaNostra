@@ -23,6 +23,10 @@ public class RoleController implements Serializable {
         context = FacesContext.getCurrentInstance().getExternalContext();
     }
 
+    public boolean isSelectedRole(String role) {
+        return selectedRole.equalsIgnoreCase(role);
+    }
+
     public boolean isUserInOneOfRoles(String... roles) {
         refreshContext();
         for (String role : roles) {
