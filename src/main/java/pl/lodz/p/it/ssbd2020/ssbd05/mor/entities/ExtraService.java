@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -54,6 +56,9 @@ public class ExtraService implements Serializable {
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "extraServiceCollection")
+    private Collection<Reservation> reservationCollection = new ArrayList<>();
 
     public ExtraService() {
     }
