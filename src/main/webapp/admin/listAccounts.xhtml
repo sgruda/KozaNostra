@@ -28,6 +28,10 @@
                 <p:column headerText="Email address">
                     <h:outputText value="#{account.email}"/>
                 </p:column>
+
+                <p:column headerText="Details">
+                    <p:commandButton value="Details" action="#{accountDetailsController.selectAccount(account)}"/>
+                </p:column>
             </p:dataTable>
         </h:form>
     </h:body>

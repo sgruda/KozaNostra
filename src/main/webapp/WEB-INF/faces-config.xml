@@ -4,4 +4,13 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
+    <navigation-rule>
+        <from-view-id>/admin/listAccounts.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>accountDetails</from-outcome>
+            <to-view-id>/admin/accountDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
 </faces-config>
