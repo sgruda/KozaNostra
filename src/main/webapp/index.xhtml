@@ -13,6 +13,7 @@
             <h:outputText value="Selected role: #{roleController.selectedRole}"/>
             <p:button outcome="/changeRole.xhtml" value="Change role"/>
         </h:panelGroup>
+        <p:button outcome="/admin/listAccounts.xhtml" value="List accounts" rendered="#{roleController.isUserInOneOfRoles('ADMIN')}"/>
         <f:facet name="actions">
             <p:button outcome="/login/login.xhtml" value="" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"
                       rendered="#{!roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"/>
