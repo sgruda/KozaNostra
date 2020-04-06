@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
 
-import com.sun.xml.bind.v2.TODO;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.Hall;
