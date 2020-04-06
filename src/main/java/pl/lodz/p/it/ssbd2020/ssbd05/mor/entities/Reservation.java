@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.Hall;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -64,6 +65,15 @@ public class Reservation implements Serializable {
             uniqueConstraints = @UniqueConstraint(columnNames = {"RESERVATION_ID", "EXTRA_SERVICE_ID"})
     )
     private Collection<ExtraService> extraServiceCollection = new ArrayList<>();
+
+    @JoinColumn(name = "hall_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Hall hallId;
+
+    //TODO: odkomentować po zrobieniu dziedziczenia z AccessLevel
+//    @JoinColumn(name = "client_id", referencedColumnName = "id")
+//    @ManyToOne(optional = false)
+//    private Client clientId;
 
     public Reservation() {
     }
