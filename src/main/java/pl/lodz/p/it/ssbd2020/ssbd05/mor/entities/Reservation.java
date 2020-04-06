@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
 
+import com.sun.xml.bind.v2.TODO;
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.Hall;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -66,6 +68,15 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Status statusId;
+
+    @JoinColumn(name = "hall_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Hall hallId;
+
+    //TODO: odkomentować po zrobieniu dziedziczenia z AccessLevel
+//    @JoinColumn(name = "client_id", referencedColumnName = "id")
+//    @ManyToOne(optional = false)
+//    private Client clientId;
 
     public Reservation() {
     }

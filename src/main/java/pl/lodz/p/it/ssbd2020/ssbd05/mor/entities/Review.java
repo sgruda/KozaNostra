@@ -5,15 +5,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -55,6 +47,11 @@ public class Review implements Serializable {
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
+
+    //TODO odkomentować po zrobieniu dziedziczenia z AccessLevel
+//    @JoinColumn(name = "client_id", referencedColumnName = "id")
+//    @ManyToOne(optional = false)
+//    private Client clientId;
 
     public Review() {
     }

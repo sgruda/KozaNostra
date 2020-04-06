@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mos.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Reservation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -81,6 +82,9 @@ public class Hall implements Serializable {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Address addressId;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallId")
+    private Collection<Reservation> reservationCollection = new ArrayList<>();
 
     public Hall() {
     }
