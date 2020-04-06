@@ -1,9 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.entities;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -18,7 +16,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "access_level",  schema = "ssbd05schema")
 @NamedQueries({
@@ -30,22 +29,31 @@ import javax.validation.constraints.Size;
 public class AccessLevel implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "access_level")
+    @Column(name = "access_level", nullable = false, length = 32)
     private String accessLevel;
+
+    @Getter(lombok.AccessLevel.NONE)
+    @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @NotNull
-    @Column(name = "version")
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
-    @Column(name = "active")
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "active", nullable = false, columnDefinition = "boolean default false")
     private Boolean active;
+
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Account accountId;
@@ -61,46 +69,6 @@ public class AccessLevel implements Serializable {
         this.id = id;
         this.accessLevel = accessLevel;
         this.version = version;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAccessLevel() {
-        return accessLevel;
-    }
-
-    public void setAccessLevel(String accessLevel) {
-        this.accessLevel = accessLevel;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Account getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Account accountId) {
-        this.accountId = accountId;
     }
 
     @Override

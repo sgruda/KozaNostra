@@ -1,11 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,7 +18,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "address", schema = "ssbd05schema")
 @NamedQueries({
@@ -33,36 +33,45 @@ import javax.validation.constraints.Size;
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "street")
+    @Column(name = "street", nullable = false, length = 32)
     private String street;
+
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 7)
-    @Column(name = "postal_code")
+    @Size(min = 6, max = 6)
+    @Column(name = "postal_code", nullable = false, length = 6)
     private String postalCode;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "street_no")
+    @Column(name = "street_no", nullable = false)
     private int streetNo;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "city")
+    @Column(name = "city", nullable = false, length = 32)
     private String city;
+
+    @Getter(lombok.AccessLevel.NONE)
+    @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @NotNull
-    @Column(name = "version")
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId")
-    private Collection<Hall> hallCollection;
+    private Collection<Hall> hallCollection = new ArrayList<>();
 
     public Address() {
     }
@@ -78,62 +87,6 @@ public class Address implements Serializable {
         this.streetNo = streetNo;
         this.city = city;
         this.version = version;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public int getStreetNo() {
-        return streetNo;
-    }
-
-    public void setStreetNo(int streetNo) {
-        this.streetNo = streetNo;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
-    }
-
-    public Collection<Hall> getHallCollection() {
-        return hallCollection;
-    }
-
-    public void setHallCollection(Collection<Hall> hallCollection) {
-        this.hallCollection = hallCollection;
     }
 
     @Override

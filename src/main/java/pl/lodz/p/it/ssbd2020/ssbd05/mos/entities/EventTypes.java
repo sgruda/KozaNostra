@@ -1,26 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
+@Getter
+@Setter
 @Entity
-@Table(name = "event_types", schema = "ssbd05schema")
+@Table(name = "event_types", schema = "ssbd05schema", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"type_name"})
+})
 @NamedQueries({
     @NamedQuery(name = "EventTypes.findAll", query = "SELECT e FROM EventTypes e"),
     @NamedQuery(name = "EventTypes.findById", query = "SELECT e FROM EventTypes e WHERE e.id = :id"),
@@ -29,20 +22,26 @@ import javax.validation.constraints.Size;
 public class EventTypes implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "type_name")
+    @Column(name = "type_name", nullable = false, length = 32, unique = true)
     private String typeName;
+
+    @Getter(lombok.AccessLevel.NONE)
+    @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @NotNull
-    @Column(name = "version")
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
+
     @JoinColumn(name = "hall_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Hall hallId;
@@ -58,38 +57,6 @@ public class EventTypes implements Serializable {
         this.id = id;
         this.typeName = typeName;
         this.version = version;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
-    }
-
-    public Hall getHallId() {
-        return hallId;
-    }
-
-    public void setHallId(Hall hallId) {
-        this.hallId = hallId;
     }
 
     @Override

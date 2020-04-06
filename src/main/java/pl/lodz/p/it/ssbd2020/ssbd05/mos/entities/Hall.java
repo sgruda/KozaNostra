@@ -1,29 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
+@Getter
+@Setter
 @Entity
-@Table(name = "hall", schema = "ssbd05schema")
+@Table(name = "hall", schema = "ssbd05schema", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name"})
+})
 @NamedQueries({
     @NamedQuery(name = "Hall.findAll", query = "SELECT h FROM Hall h"),
     @NamedQuery(name = "Hall.findById", query = "SELECT h FROM Hall h WHERE h.id = :id"),
@@ -37,43 +29,55 @@ import javax.validation.constraints.Size;
 public class Hall implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 32, unique = true)
     private String name;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "capacity")
+    @Column(name = "capacity", nullable = false)
     private int capacity;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "active")
+    @Column(name = "active", nullable = false)
     private boolean active;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "area")
+    @Column(name = "area", nullable = false)
     private double area;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 512)
-    @Column(name = "description")
+    @Column(name = "description", nullable = false, length = 512)
     private String description;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private double price;
+
+    @Getter(lombok.AccessLevel.NONE)
+    @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @NotNull
-    @Column(name = "version")
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallId")
-    private Collection<EventTypes> eventTypesCollection;
+    private Collection<EventTypes> eventTypesCollection = new ArrayList<>();
+
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Address addressId;
@@ -94,86 +98,6 @@ public class Hall implements Serializable {
         this.description = description;
         this.price = price;
         this.version = version;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public boolean getActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public double getArea() {
-        return area;
-    }
-
-    public void setArea(double area) {
-        this.area = area;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
-    }
-
-    public Collection<EventTypes> getEventTypesCollection() {
-        return eventTypesCollection;
-    }
-
-    public void setEventTypesCollection(Collection<EventTypes> eventTypesCollection) {
-        this.eventTypesCollection = eventTypesCollection;
-    }
-
-    public Address getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(Address addressId) {
-        this.addressId = addressId;
     }
 
     @Override
