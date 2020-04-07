@@ -13,4 +13,13 @@
         </navigation-case>
     </navigation-rule>
 
+    <navigation-rule>
+        <from-view-id>/admin/accountDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>goBack</from-outcome>
+            <to-view-id>/admin/listAccounts.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
 </faces-config>

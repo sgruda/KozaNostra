@@ -61,6 +61,10 @@
 
             <h3>Force password change</h3>
             <h:outputText value="#{accountDetailsController.account.forcePasswordChange}"/>
+
+            <div>
+                <p:commandButton value="Back" action="#{accountDetailsController.goBack()}"/>
+            </div>
         </h:form>
     </h:body>
 </html>

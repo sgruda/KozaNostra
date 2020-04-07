@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.controllers;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Account;
 
-import javax.annotation.PreDestroy;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
@@ -27,8 +26,8 @@ public class AccountDetailsController implements Serializable {
         return "accountDetails";
     }
 
-    @PreDestroy
-    public void end() {
+    public String goBack() {
         conversation.end();
+        return "goBack";
     }
 }
