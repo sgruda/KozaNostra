@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Client;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -48,10 +49,9 @@ public class Review implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    //TODO odkomentować po zrobieniu dziedziczenia z AccessLevel
-//    @JoinColumn(name = "client_id", referencedColumnName = "id")
-//    @ManyToOne(optional = false)
-//    private Client clientId;
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Client clientId;
 
     public Review() {
     }
