@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -15,9 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-
 @Named
-@SessionScoped
+@RequestScoped
 public class LoginController implements Serializable {
 
     @Inject
@@ -27,6 +26,7 @@ public class LoginController implements Serializable {
     @Getter @Setter
     private String password;
     private String originalUrl;
+    @Getter
     private boolean printLastLoginInfo;
 
     @PostConstruct
@@ -59,14 +59,6 @@ public class LoginController implements Serializable {
 
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Incorrect credentials"));
-        }
-    }
-    public void informAboutLastAuthentication() {
-        if (printLastLoginInfo) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage("Successful",  "Last correct authentication..." ) );
-            context.addMessage(null, new FacesMessage("Successful",  "Last incorrect authentication..." ) );
-            printLastLoginInfo = false;
         }
     }
 }
