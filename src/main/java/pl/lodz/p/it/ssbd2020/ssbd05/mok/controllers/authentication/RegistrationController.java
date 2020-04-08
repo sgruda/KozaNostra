@@ -55,7 +55,7 @@ public class RegistrationController implements Serializable {
     public boolean checkIfLoginAlreadyExists(String username) {
         Collection<Account> accounts = this.accountFacade.getAllAccounts();
         for (Account account : accounts) {
-            if (account.getLogin() == username) return true;
+            if (account.getLogin().equals(username)) return true;
         }
         return false;
     }
@@ -63,7 +63,7 @@ public class RegistrationController implements Serializable {
     public boolean checkIfEmailAlreadyExists(String emailAddress) {
         Collection<Account> accounts = this.accountFacade.getAllAccounts();
         for (Account account : accounts) {
-            if (account.getEmail() == emailAddress) return true;
+            if (account.getEmail().equals(emailAddress)) return true;
         }
         return false;
     }
