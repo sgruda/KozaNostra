@@ -16,6 +16,7 @@ import javax.validation.constraints.Size;
 @Table(name = "extra_service", schema = "ssbd05schema", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"service_name"})
 })
+@TableGenerator(name = "ExtraServiceIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "extra_service", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "ExtraService.findAll", query = "SELECT e FROM ExtraService e"),
     @NamedQuery(name = "ExtraService.findById", query = "SELECT e FROM ExtraService e WHERE e.id = :id"),
@@ -29,6 +30,7 @@ public class ExtraService implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ExtraServiceIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;

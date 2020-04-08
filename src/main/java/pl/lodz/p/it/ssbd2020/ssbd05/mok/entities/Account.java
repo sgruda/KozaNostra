@@ -24,6 +24,7 @@ import java.util.Date;
                 @UniqueConstraint(columnNames = {"email"})
         })
 })
+@TableGenerator(name = "AccountIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "account_login_data", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
     @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
@@ -46,6 +47,7 @@ public class Account implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccountIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;

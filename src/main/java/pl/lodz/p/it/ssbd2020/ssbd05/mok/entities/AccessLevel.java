@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "access_level",  schema = "ssbd05schema")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
+@TableGenerator(name = "AccessLevelIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "access_level", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
     @NamedQuery(name = "AccessLevel.findById", query = "SELECT a FROM AccessLevel a WHERE a.id = :id"),
@@ -25,6 +26,7 @@ public class AccessLevel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccessLevelIdGen")
     @Basic(optional = false)
     @NotNull
     @Column(name = "id", nullable = false)

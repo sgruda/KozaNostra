@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @Table(name = "review", schema = "ssbd05schema")
+@TableGenerator(name = "ReviewIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "review", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r"),
     @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id"),
@@ -26,6 +27,7 @@ public class Review implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ReviewIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
