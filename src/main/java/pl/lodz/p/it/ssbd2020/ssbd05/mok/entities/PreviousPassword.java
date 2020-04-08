@@ -16,11 +16,11 @@ import javax.validation.constraints.Size;
 })
 @TableGenerator(name = "PasswordHistoryIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "password_history")
 @NamedQueries({
-    @NamedQuery(name = "PasswordHistory.findAll", query = "SELECT p FROM PasswordHistory p"),
-    @NamedQuery(name = "PasswordHistory.findById", query = "SELECT p FROM PasswordHistory p WHERE p.id = :id"),
-    @NamedQuery(name = "PasswordHistory.findByPassword", query = "SELECT p FROM PasswordHistory p WHERE p.password = :password"),
-    @NamedQuery(name = "PasswordHistory.findByVersion", query = "SELECT p FROM PasswordHistory p WHERE p.version = :version")})
-public class PasswordHistory implements Serializable {
+    @NamedQuery(name = "PreviousPassword.findAll", query = "SELECT p FROM PreviousPassword p"),
+    @NamedQuery(name = "PreviousPassword.findById", query = "SELECT p FROM PreviousPassword p WHERE p.id = :id"),
+    @NamedQuery(name = "PreviousPassword.findByPassword", query = "SELECT p FROM PreviousPassword p WHERE p.password = :password"),
+    @NamedQuery(name = "PreviousPassword.findByVersion", query = "SELECT p FROM PreviousPassword p WHERE p.version = :version")})
+public class PreviousPassword implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,14 +49,14 @@ public class PasswordHistory implements Serializable {
     @ManyToOne(optional = false)
     private Account accountId;
 
-    public PasswordHistory() {
+    public PreviousPassword() {
     }
 
-    public PasswordHistory(Long id) {
+    public PreviousPassword(Long id) {
         this.id = id;
     }
 
-    public PasswordHistory(Long id, String password, long version) {
+    public PreviousPassword(Long id, String password, long version) {
         this.id = id;
         this.password = password;
         this.version = version;
@@ -72,10 +72,10 @@ public class PasswordHistory implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PasswordHistory)) {
+        if (!(object instanceof PreviousPassword)) {
             return false;
         }
-        PasswordHistory other = (PasswordHistory) object;
+        PreviousPassword other = (PreviousPassword) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -84,7 +84,7 @@ public class PasswordHistory implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PasswordHistory[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PreviousPassword[ id=" + id + " ]";
     }
     
 }

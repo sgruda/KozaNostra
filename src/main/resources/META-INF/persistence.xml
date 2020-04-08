@@ -5,7 +5,7 @@
     <jta-data-source>java:app/jdbc/ssbd05mokDS</jta-data-source>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AccessLevel</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Account</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PasswordHistory</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PreviousPassword</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Admin</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Manager</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Client</class>
@@ -35,7 +35,7 @@
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mos.entities.Address</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AccessLevel</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Account</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PasswordHistory</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PreviousPassword</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Admin</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Manager</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Client</class>
@@ -64,7 +64,7 @@
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mor.entities.Status</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AccessLevel</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Account</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PasswordHistory</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.PreviousPassword</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Admin</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Manager</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Client</class>
