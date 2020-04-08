@@ -44,7 +44,6 @@ public class RegistrationController implements Serializable {
                 if (!checkIfLoginAlreadyExists(this.login)) {
                     if (password.equals(confirmPassword)) {
                         Account account = new Account();
-                        account.setId(5L);
                         account.setLogin(this.getLogin());
                         account.setPassword(sha256(password));
                         account.setFirstname(this.getFirstname());
@@ -78,21 +77,18 @@ public class RegistrationController implements Serializable {
     Collection<AccessLevel> generateAccessLevels(Account account) {
         Collection<AccessLevel> accessLevels = new ArrayDeque<>();
         Client client = new Client();
-        client.setId(6L);
         client.setAccountId(account);
         client.setAccessLevel("CLIENT");
         client.setActive(true);
         accessLevelFacade.create(client);
 
         Manager manager = new Manager();
-        manager.setId(7L);
         manager.setAccountId(account);
         manager.setAccessLevel("MANAGER");
         manager.setActive(false);
         accessLevelFacade.create(manager);
 
         Admin admin = new Admin();
-        admin.setId(8L);
         admin.setAccountId(account);
         admin.setAccessLevel("ADMIN");
         admin.setActive(false);

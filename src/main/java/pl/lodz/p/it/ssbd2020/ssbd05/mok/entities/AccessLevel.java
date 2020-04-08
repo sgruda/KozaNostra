@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "access_level",  schema = "ssbd05schema")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
-@TableGenerator(name = "AccessLevelIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "access_level", valueColumnName = "id_range")
+@TableGenerator(name = "AccessLevelIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "access_level")
 @NamedQueries({
     @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
     @NamedQuery(name = "AccessLevel.findById", query = "SELECT a FROM AccessLevel a WHERE a.id = :id"),

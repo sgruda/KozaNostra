@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "password_history", schema = "ssbd05schema", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"password"})
 })
-@TableGenerator(name = "PasswordHistoryIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "password_history", valueColumnName = "id_range")
+@TableGenerator(name = "PasswordHistoryIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "password_history")
 @NamedQueries({
     @NamedQuery(name = "PasswordHistory.findAll", query = "SELECT p FROM PasswordHistory p"),
     @NamedQuery(name = "PasswordHistory.findById", query = "SELECT p FROM PasswordHistory p WHERE p.id = :id"),
