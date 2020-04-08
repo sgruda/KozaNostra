@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @Table(name = "status", schema = "ssbd05schema")
-@TableGenerator(name = "StatusIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "status", valueColumnName = "id_range")
+@TableGenerator(name = "StatusIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "status", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s"),
     @NamedQuery(name = "Status.findById", query = "SELECT s FROM Status s WHERE s.id = :id"),

@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "event_types", schema = "ssbd05schema", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"type_name"})
 })
-@TableGenerator(name = "EventTypesIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "event_types", valueColumnName = "id_range")
+@TableGenerator(name = "EventTypesIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "event_types", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "EventTypes.findAll", query = "SELECT e FROM EventTypes e"),
     @NamedQuery(name = "EventTypes.findById", query = "SELECT e FROM EventTypes e WHERE e.id = :id"),

@@ -24,7 +24,7 @@ import java.util.Date;
                 @UniqueConstraint(columnNames = {"email"})
         })
 })
-@TableGenerator(name = "AccountIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "account_login_data", valueColumnName = "id_range")
+@TableGenerator(name = "AccountIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "account_login_data")
 @NamedQueries({
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
     @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
