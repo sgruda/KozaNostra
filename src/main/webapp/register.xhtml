@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <script src="https://www.google.com/recaptcha/api.js" type=""></script>
+    <title>Register account</title>
+</h:head>
+<h:body style="background-image: url('pictures/backgroundLogin.jpg');background-size: cover;">
+    <h:form id="register">
+        <p:panel id="registrationPanel" header="Register Account"
+                 style="width: 500px; margin: 0;position: absolute;top: 50%;left: 50%;-ms-transform: translate(-50%, -50%);transform: translate(-50%, -50%);
+                 font-size: 24px;">
+            <p:messages>
+                <p:autoUpdate/>
+            </p:messages>
+            <h:panelGrid id="registrationPnl" columns="2" cellpadding="5" style="margin: 0 auto;">
+                <div style="padding-bottom: 5px">
+                    <p:outputLabel for="login" value="Login :">
+                        <p:inputText id="login" required="true" name="login" value="#{registrationController.login}"/>
+                    </p:outputLabel>
+                 </div>
+                <div><p:message for="login"/></div>
+
+                <div style="padding-bottom: 5px;padding-top: 5px">
+                    <p:outputLabel for="password" value="Password :">
+                        <p:password id="password" required="true" type="password" name="password"
+                                    value="#{registrationController.password}"/>
+                    </p:outputLabel>
+                </div>
+                <div><p:message for="password"/></div>
+
+                <div style="padding-bottom: 5px;padding-top: 5px">
+                    <p:outputLabel for="confrimPassowrd" value="Confirm password :">
+                        <p:password id="confrimPassowrd" required="true" type="password" name="confrimPassowrd"
+                                    value="#{registrationController.confirmPassword}"/>
+                    </p:outputLabel>
+                </div>
+                <div><p:message for="confrimPassowrd"/></div>
+                <div style="padding-bottom: 5px;padding-top: 5px">
+                    <p:outputLabel for="firstName" value="Firstname :">
+                        <p:inputText id="firstName" required="true"  name="firstName"
+                                    value="#{registrationController.firstname}"/>
+                    </p:outputLabel>
+                </div>
+                <div><p:message for="firstName"/></div>
+                <div style="padding-bottom: 5px;padding-top: 5px">
+                    <p:outputLabel for="lastName" value="Lastname :">
+                        <p:inputText id="lastName" required="true"  name="lastName"
+                                     value="#{registrationController.lastname}"/>
+                    </p:outputLabel>
+                </div>
+                <div><p:message for="lastName"/></div>
+
+                <div style="padding-bottom: 5px;padding-top: 5px">
+                <p:outputLabel for="emailAddress" value="Email :">
+                    <p:inputText id="emailAddress" required="true"  name="emailAddress"
+                                 value="#{registrationController.emailAddress}"/>
+                </p:outputLabel>
+                </div>
+            <div><p:message for="emailAddress"/></div>
+            </h:panelGrid>
+            <div class="g-recaptcha"
+                 data-sitekey="6Lde2ucUAAAAADpAUC6GFluUj5ngVG9tzjCPJlCp"></div>
+            <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
+                <p:commandButton value="Reset" style="margin-right:20px;" icon="pi pi-undo">
+                    <p:ajax update="register" resetValues="true" />
+                </p:commandButton>
+                <p:commandButton id="submit" ajax="false" value="Register" icon="pi pi-check" style="float: center;" action="#{registrationController.register()}"/>
+            </h:panelGrid>
+        </p:panel>
+    </h:form>
+</h:body>
+</html>
