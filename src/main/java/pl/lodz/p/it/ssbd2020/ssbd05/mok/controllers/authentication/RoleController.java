@@ -18,7 +18,7 @@ public class RoleController implements Serializable {
     @Getter @Setter
     private String selectedRole = "";
     private ExternalContext context;
-
+    
     private void refreshContext() {
         context = FacesContext.getCurrentInstance().getExternalContext();
     }
