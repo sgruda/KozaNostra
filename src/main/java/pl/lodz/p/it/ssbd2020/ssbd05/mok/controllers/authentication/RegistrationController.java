@@ -6,8 +6,11 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -32,24 +35,28 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
-    public void register() {
-        if (!checkIfEmailAlreadyExists(this.emailAddress)) {
-            if (!checkIfLoginAlreadyExists(this.login)) {
-                if (password.equals(confirmPassword)) {
-                    Account account = new Account();
-                    account.setId(5L);
-                    account.setLogin(this.getLogin());
-                    account.setPassword(sha256(password));
-                    account.setFirstname(this.getFirstname());
-                    account.setLastname(this.getLastname());
-                    account.setEmail(this.getEmailAddress());
-                    account.setConfirmed(true);
-                    this.getAccountFacade().create(account);
-                    account.getAccessLevelCollection().addAll(generateAccessLevels(account));
-                    clear();
+    public void register() throws IOException {
+        String gRecaptchaResponse = FacesContext.getCurrentInstance().
+                getExternalContext().getRequestParameterMap().get("g-recaptcha-response");
+        boolean verify = VerifyRecaptcha.verify(gRecaptchaResponse);
+        if (verify)
+            if (!checkIfEmailAlreadyExists(this.emailAddress)) {
+                if (!checkIfLoginAlreadyExists(this.login)) {
+                    if (password.equals(confirmPassword)) {
+                        Account account = new Account();
+                        account.setId(5L);
+                        account.setLogin(this.getLogin());
+                        account.setPassword(sha256(password));
+                        account.setFirstname(this.getFirstname());
+                        account.setLastname(this.getLastname());
+                        account.setEmail(this.getEmailAddress());
+                        account.setConfirmed(true);
+                        this.getAccountFacade().create(account);
+                        account.getAccessLevelCollection().addAll(generateAccessLevels(account));
+                        clear();
+                    }
                 }
             }
-        }
     }
 
     public boolean checkIfLoginAlreadyExists(String username) {
@@ -68,7 +75,7 @@ public class RegistrationController implements Serializable {
         return false;
     }
 
-    Collection<AccessLevel> generateAccessLevels(Account account){
+    Collection<AccessLevel> generateAccessLevels(Account account) {
         Collection<AccessLevel> accessLevels = new ArrayDeque<>();
         Client client = new Client();
         client.setId(6L);
