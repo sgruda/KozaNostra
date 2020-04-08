@@ -6,6 +6,7 @@
       xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
+    <script src="https://www.google.com/recaptcha/api.js" type=""></script>
     <title>Register account</title>
 </h:head>
 <h:body style="background-image: url('pictures/backgroundLogin.jpg');background-size: cover;">
@@ -61,8 +62,9 @@
                 </p:outputLabel>
                 </div>
             <div><p:message for="emailAddress"/></div>
-
             </h:panelGrid>
+            <div class="g-recaptcha"
+                 data-sitekey="6Lde2ucUAAAAADpAUC6GFluUj5ngVG9tzjCPJlCp"></div>
             <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                 <p:commandButton value="Reset" style="margin-right:20px;" icon="pi pi-undo">
                     <p:ajax update="register" resetValues="true" />
