@@ -50,7 +50,7 @@ public class RegistrationController implements Serializable {
                         account.setFirstname(this.getFirstname());
                         account.setLastname(this.getLastname());
                         account.setEmail(this.getEmailAddress());
-                        account.setConfirmed(true);
+                        account.setActive(true);
                         this.getAccountFacade().create(account);
                         account.getAccessLevelCollection().addAll(generateAccessLevels(account));
                         clear();
