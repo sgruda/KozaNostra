@@ -17,6 +17,7 @@
         <f:facet name="actions">
             <p:button outcome="/login/login.xhtml" value="" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"
                       rendered="#{!roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"/>
+            <p:button outcome="/register.xhtml" value="" styleClass="ui-icon pi pi-user" style="font-size:35px"/>
             <h:form>
                 <p:commandButton value="" action="#{logoutController.logout()}" styleClass="ui-icon pi pi-sign-out"
                                  style="font-size:35px" rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"
