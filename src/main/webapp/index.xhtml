@@ -25,7 +25,7 @@
         </f:facet>
         <h:form>
             <p:growl id="informationBox" showDetail="true"  life="2000"/>
-            <f:event type="preRenderView" listener="#{authenticationController.informAboutLastAuthentication}" />
+            <f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
         </h:form>
     </p:panel>
 

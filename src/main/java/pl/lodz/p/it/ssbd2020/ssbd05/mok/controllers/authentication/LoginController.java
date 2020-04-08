@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.RequestDispatcher;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 @Named
-@RequestScoped
+@ViewScoped
 public class LoginController implements Serializable {
 
     @Inject
@@ -26,8 +26,6 @@ public class LoginController implements Serializable {
     @Getter @Setter
     private String password;
     private String originalUrl;
-    @Getter
-    private boolean printLastLoginInfo;
 
     @PostConstruct
     public void init() {
@@ -43,7 +41,6 @@ public class LoginController implements Serializable {
                 originalUrl += "?" + originalQuery;
             }
         }
-        printLastLoginInfo = false;
     }
 
     public void login() throws IOException {
@@ -55,10 +52,20 @@ public class LoginController implements Serializable {
             request.login(username, password);
             roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
             externalContext.redirect(originalUrl);
-            printLastLoginInfo = true;
+            externalContext.getSessionMap().put("printLastLoginInfo", true);
 
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Incorrect credentials"));
+        }
+    }
+    public void informAboutLastAuthentication() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        boolean printLastLoginInfo = (boolean) externalContext.getSessionMap().getOrDefault("printLastLoginInfo", false);
+        if (printLastLoginInfo) {
+            context.addMessage(null, new FacesMessage("Successful",  "Last correct authentication..." ) );
+            context.addMessage(null, new FacesMessage("Successful",  "Last incorrect authentication..." ) );
+            externalContext.getSessionMap().remove("printLastLoginInfo");
         }
     }
 }
