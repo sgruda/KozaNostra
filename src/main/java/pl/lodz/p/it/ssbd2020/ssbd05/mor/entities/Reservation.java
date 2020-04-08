@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "reservation", schema = "ssbd05schema")
+@TableGenerator(name = "ReservationIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "reservation", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r"),
     @NamedQuery(name = "Reservation.findById", query = "SELECT r FROM Reservation r WHERE r.id = :id"),
@@ -29,6 +30,7 @@ public class Reservation implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ReservationIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;

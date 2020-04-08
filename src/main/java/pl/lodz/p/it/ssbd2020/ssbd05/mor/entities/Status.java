@@ -6,15 +6,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,6 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @Table(name = "status", schema = "ssbd05schema")
+@TableGenerator(name = "StatusIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "status", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s"),
     @NamedQuery(name = "Status.findById", query = "SELECT s FROM Status s WHERE s.id = :id"),
@@ -33,6 +26,7 @@ public class Status implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "StatusIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;

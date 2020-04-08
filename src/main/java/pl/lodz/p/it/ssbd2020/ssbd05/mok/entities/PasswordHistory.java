@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "password_history", schema = "ssbd05schema", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"password"})
 })
+@TableGenerator(name = "PasswordHistoryIdGen", table = "id_generator", pkColumnName = "class_name", pkColumnValue = "password_history", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "PasswordHistory.findAll", query = "SELECT p FROM PasswordHistory p"),
     @NamedQuery(name = "PasswordHistory.findById", query = "SELECT p FROM PasswordHistory p WHERE p.id = :id"),
@@ -25,6 +26,7 @@ public class PasswordHistory implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PasswordHistoryIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
