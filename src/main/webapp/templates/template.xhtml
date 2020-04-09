@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </h:head>
     <div class = "wrapper">		
-        <div class = "header">
+        <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
                 <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole('Admin')}">
                     <h1 style="font-weight:normal">Admin console</h1>

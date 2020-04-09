@@ -18,7 +18,6 @@
     z-index: 998;
     width: 100%;
     min-height: 70px;
-    background-color: #8fc1e3;
 }
 
 .header-left{
@@ -73,6 +72,6 @@ body{
     width: 100vw;
 }
 
-#j_idt8_modal{    /* Overlay primefaces zasłaniał całą strone*/
-    width: 0 !important ; 
+body .ui-widget-overlay{
+   width: 0 !important ; /* Overlay primefaces zasłaniał całą strone*/
 }
