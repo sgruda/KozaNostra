@@ -2,11 +2,9 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.controllers.authentication;
 
 import lombok.Data;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.*;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,8 +23,6 @@ public class RegistrationController implements Serializable {
 
     @Inject
     private AccountFacade accountFacade;
-    @Inject
-    private AccessLevelFacade accessLevelFacade;
     private String login;
     private String password;
     private String confirmPassword;
@@ -50,8 +46,8 @@ public class RegistrationController implements Serializable {
                         account.setLastname(this.getLastname());
                         account.setEmail(this.getEmailAddress());
                         account.setActive(true);
-                        this.getAccountFacade().create(account);
                         account.getAccessLevelCollection().addAll(generateAccessLevels(account));
+                        this.getAccountFacade().create(account);
                         clear();
                     }
                 }
@@ -77,22 +73,19 @@ public class RegistrationController implements Serializable {
     Collection<AccessLevel> generateAccessLevels(Account account) {
         Collection<AccessLevel> accessLevels = new ArrayDeque<>();
         Client client = new Client();
-        client.setAccountId(account);
+        client.setAccount(account);
         client.setAccessLevel("CLIENT");
         client.setActive(true);
-        accessLevelFacade.create(client);
 
         Manager manager = new Manager();
-        manager.setAccountId(account);
+        manager.setAccount(account);
         manager.setAccessLevel("MANAGER");
         manager.setActive(false);
-        accessLevelFacade.create(manager);
 
         Admin admin = new Admin();
-        admin.setAccountId(account);
+        admin.setAccount(account);
         admin.setAccessLevel("ADMIN");
         admin.setActive(false);
-        accessLevelFacade.create(admin);
 
         accessLevels.add(client);
         accessLevels.add(manager);

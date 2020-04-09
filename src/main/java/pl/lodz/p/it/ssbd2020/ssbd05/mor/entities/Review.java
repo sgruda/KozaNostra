@@ -55,7 +55,7 @@ public class Review implements Serializable {
     @NotNull
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Client clientId;
+    private Client client;
 
     public Review() {
     }

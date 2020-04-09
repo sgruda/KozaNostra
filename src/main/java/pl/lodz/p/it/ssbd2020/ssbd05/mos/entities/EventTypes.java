@@ -47,7 +47,7 @@ public class EventTypes implements Serializable {
 
     @JoinColumn(name = "hall_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Hall hallId;
+    private Hall hall;
 
     public EventTypes() {
     }
