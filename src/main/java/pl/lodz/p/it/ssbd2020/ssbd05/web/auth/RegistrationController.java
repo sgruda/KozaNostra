@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,11 +32,7 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
-    public void register() throws IOException {
-        String gRecaptchaResponse = FacesContext.getCurrentInstance().
-                getExternalContext().getRequestParameterMap().get("g-recaptcha-response");
-        boolean verify = VerifyRecaptcha.verify(gRecaptchaResponse);
-        if (verify)
+    public void register() {
             if (!checkIfEmailAlreadyExists(this.emailAddress)) {
                 if (!checkIfLoginAlreadyExists(this.login)) {
                     if (password.equals(confirmPassword)) {
@@ -48,6 +45,8 @@ public class RegistrationController implements Serializable {
                         account.setActive(true);
                         account.getAccessLevelCollection().addAll(generateAccessLevels(account));
                         this.getAccountFacade().create(account);
+                        FacesContext fc=FacesContext.getCurrentInstance();
+                        fc.addMessage(null, new FacesMessage("Account created !"));
                         clear();
                     }
                 }
