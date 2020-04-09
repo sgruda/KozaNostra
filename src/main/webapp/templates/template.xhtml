@@ -11,25 +11,46 @@
     <h:outputStylesheet name="/css/content.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </h:head>
-    <h:body>
-        <div id="page">		
-	    <div id="header">
-		<ui:insert name="header" >
-		  <ui:include src="../templates/header.xhtml" />
-		</ui:insert>
-	    </div>
-	    
-	    <div id="content" class="content">
-	  	<ui:insert name="content" >
-	 	  
-	   	</ui:insert>
-	    </div>
-		    
-	    <div id="footer" class="footer">
-	    	<ui:insert name="footer" >
-	    	  <ui:include src="../templates/footer.xhtml" />
-	    	</ui:insert>
-    	    </div>
+    <div class = "wrapper">		
+        <div class = "header">
+            <p:sidebar  widgetVar="sb" baseZIndex="100000">
+                <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole('Admin')}">
+                    <h1 style="font-weight:normal">Admin console</h1>
+                    <p:button value="List accounts" outcome="/admin/listAccounts.xhtml"/>
+                </ui:fragment>
+                <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole('Manager')}">
+                    <h1 style="font-weight:normal">Manager console</h1>
+                </ui:fragment>
+                <p:commandButton value="Hide" oncomplete="PF('sb').hide()"/>
+            </p:sidebar>
+             <div class = "header-left">
+                 <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole('Admin') or roleController.isSelectedRole('Manager')}">
+                    <i class="pi pi-bars" style="font-size: 3em;color: white" ></i> 
+                 </p:commandLink>
+                 <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
+             </div>
+             <div class = "header-right">        
+                <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
+                   <h:link class="link" outcome="/login/login.xhtml">Log in</h:link>
+                   <h:link class="link" outcome="/register.xhtml">Sign up</h:link>
+                </ui:fragment>
+                <ui:fragment id="authenticated-right-links" rendered="#{not empty request.remoteUser}">
+                   <h:form>
+                       <h:commandLink class="link" value="Log out" action="#{logoutController.logout()}"/>
+                   </h:form> 
+                   <h:link class="link" value="Swap roles" outcome="/changeRole.xhtml"/>
+                </ui:fragment>
+             </div>
         </div>
-    </h:body>
+
+        <div class = "main">       
+            <ui:insert name="content" >
+
+            </ui:insert>
+        </div>
+
+        <div class = "footer">
+            <div class ="footer-text">2020 @SSBD05</div>
+        </div>
+    </div>
 </html>
