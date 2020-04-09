@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "reservation", schema = "ssbd05schema")
+@TableGenerator(name = "ReservationIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "reservation", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r"),
     @NamedQuery(name = "Reservation.findById", query = "SELECT r FROM Reservation r WHERE r.id = :id"),
@@ -29,6 +30,7 @@ public class Reservation implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ReservationIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
@@ -53,25 +55,29 @@ public class Reservation implements Serializable {
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
+    @Version
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @JoinColumn(name = "status_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Status statusId;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "extra_service_mapping", schema = "ssbd05schema",
-            uniqueConstraints = @UniqueConstraint(columnNames = {"RESERVATION_ID", "EXTRA_SERVICE_ID"})
+            uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id", "extra_service_id"})
     )
     private Collection<ExtraService> extraServiceCollection = new ArrayList<>();
 
-    @JoinColumn(name = "hall_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "hall_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Hall hallId;
 
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Client clientId;
 

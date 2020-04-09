@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "access_level",  schema = "ssbd05schema")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
+@TableGenerator(name = "AccessLevelIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "access_level")
 @NamedQueries({
     @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
     @NamedQuery(name = "AccessLevel.findById", query = "SELECT a FROM AccessLevel a WHERE a.id = :id"),
@@ -25,6 +26,7 @@ public class AccessLevel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccessLevelIdGen")
     @Basic(optional = false)
     @NotNull
     @Column(name = "id", nullable = false)
@@ -39,6 +41,7 @@ public class AccessLevel implements Serializable {
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
+    @Version
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
@@ -48,7 +51,8 @@ public class AccessLevel implements Serializable {
     @Column(name = "active", nullable = false, columnDefinition = "boolean default false")
     private Boolean active;
 
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Account accountId;
 

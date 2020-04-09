@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @Table(name = "review", schema = "ssbd05schema")
+@TableGenerator(name = "ReviewIdGen", table = "id_generator", schema = "ssbd05schema",  pkColumnName = "class_name", pkColumnValue = "review", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r"),
     @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id"),
@@ -26,6 +27,7 @@ public class Review implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ReviewIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
@@ -45,11 +47,13 @@ public class Review implements Serializable {
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
+    @Version
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Client clientId;
 

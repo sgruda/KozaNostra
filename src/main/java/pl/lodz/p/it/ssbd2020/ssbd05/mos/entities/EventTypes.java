@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "event_types", schema = "ssbd05schema", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"type_name"})
 })
+@TableGenerator(name = "EventTypesIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "event_types", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "EventTypes.findAll", query = "SELECT e FROM EventTypes e"),
     @NamedQuery(name = "EventTypes.findById", query = "SELECT e FROM EventTypes e WHERE e.id = :id"),
@@ -25,6 +26,7 @@ public class EventTypes implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "EventTypesIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
@@ -38,6 +40,7 @@ public class EventTypes implements Serializable {
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
+    @Version
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;

@@ -3,37 +3,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <title>ssbd05</title>
 </h:head>
-<h:body style="background-color: lightgray;">
-    <p:panel header="System Rezerwacji Sal na Imprezy Okolicznosciowe">
-        <h:panelGroup rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}">
-            <h:outputText value="Selected role: #{roleController.selectedRole}"/>
-            <p:button outcome="/changeRole.xhtml" value="Change role"/>
-        </h:panelGroup>
-        <p:button outcome="/admin/listAccounts.xhtml" value="List accounts" rendered="#{roleController.isSelectedRole('ADMIN')}"/>
-        <f:facet name="actions">
-            <p:button outcome="/login/login.xhtml" value="" styleClass="ui-icon pi pi-sign-in" style="font-size:35px"
-                      rendered="#{!roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"/>
-            <h:form>
-                <p:commandButton value="" action="#{logoutController.logout()}" styleClass="ui-icon pi pi-sign-out"
-                                 style="font-size:35px" rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}"
-                                 ajax="false"/>
-            </h:form>
-        </f:facet>
-        <h:form>
-            <p:growl id="informationBox" showDetail="true"  life="2000"/>
-            <f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
-        </h:form>
-    </p:panel>
+<ui:composition template = "./templates/template.xhtml">
+    <ui:define name = "content">
+        <h:body>
+            
+            <p:imageSwitch effect="zoom" speed="700">
+                <ui:repeat value="#{imagesController.images}" var="image">
+                    <p:graphicImage value="/pictures/#{image}" style="width: 1000px; height: 600px; margin-left: 50px; margin-top: 20px"/>
+                </ui:repeat>
+            </p:imageSwitch>
 
-    <p:imageSwitch effect="zoom" speed="700">
-        <ui:repeat value="#{imagesController.images}" var="image">
-            <p:graphicImage value="/pictures/#{image}" style="width: 1000px; height: 600px; margin-left: 50px; margin-top: 20px"/>
-        </ui:repeat>
-    </p:imageSwitch>
-
-</h:body>
+        </h:body>
+    </ui:define>
+</ui:composition>
 </html>

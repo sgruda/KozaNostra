@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 @Table(name = "hall", schema = "ssbd05schema", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"name"})
 })
+@TableGenerator(name = "HallIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "hall", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Hall.findAll", query = "SELECT h FROM Hall h"),
     @NamedQuery(name = "Hall.findById", query = "SELECT h FROM Hall h WHERE h.id = :id"),
@@ -33,6 +34,7 @@ public class Hall implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "HallIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
@@ -72,6 +74,7 @@ public class Hall implements Serializable {
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
+    @Version
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
@@ -79,7 +82,8 @@ public class Hall implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallId")
     private Collection<EventTypes> eventTypesCollection = new ArrayList<>();
 
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Address addressId;
 

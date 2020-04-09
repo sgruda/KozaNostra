@@ -24,6 +24,7 @@ import java.util.Date;
                 @UniqueConstraint(columnNames = {"email"})
         })
 })
+@TableGenerator(name = "AccountIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "account_login_data")
 @NamedQueries({
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
     @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
@@ -46,6 +47,7 @@ public class Account implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccountIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
@@ -75,6 +77,7 @@ public class Account implements Serializable {
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
+    @Version
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
@@ -83,7 +86,7 @@ public class Account implements Serializable {
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
-    private Collection<PasswordHistory> passwordHistoryCollection = new ArrayList<>();
+    private Collection<PreviousPassword> previousPasswordCollection = new ArrayList<>();
 
     @Basic(optional = false)
     @NotNull

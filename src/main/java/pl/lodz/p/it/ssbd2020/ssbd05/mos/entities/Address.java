@@ -6,15 +6,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,6 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @Table(name = "address", schema = "ssbd05schema")
+@TableGenerator(name = "AddressIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "address", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a"),
     @NamedQuery(name = "Address.findById", query = "SELECT a FROM Address a WHERE a.id = :id"),
@@ -36,6 +29,7 @@ public class Address implements Serializable {
 
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "AddressIdGen")
     @NotNull
     @Column(name = "id", nullable = false)
     private Long id;
@@ -66,6 +60,7 @@ public class Address implements Serializable {
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
+    @Version
     @NotNull
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;

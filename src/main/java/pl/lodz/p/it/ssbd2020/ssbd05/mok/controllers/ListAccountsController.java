@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.controllers;
 
-import lombok.Data;
+import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
@@ -12,14 +12,14 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-@Data
 @Named
 @ViewScoped
 @RolesAllowed(value = "ADMIN")
 public class ListAccountsController implements Serializable {
 
     @EJB
-    private AccountFacade accountFacade;
+    private AccountFacade accountFacade; //docelowo AccountService
+    @Getter
     private List<Account> accounts;
 
     @PostConstruct
