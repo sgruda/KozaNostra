@@ -43,10 +43,10 @@
                     </ui:repeat>
 
                     <h:outputText value="Last successful authentication" />
-                    <h:outputText value="#{accountDetailsController.account.lastSuccessfulAuth}"/>
+                    <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.account.lastSuccessfulAuth)}"/>
 
                     <h:outputText value="Last failed authentication" />
-                    <h:outputText value="#{accountDetailsController.account.lastFailedAuth}"/>
+                    <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.account.lastFailedAuth)}"/>
 
                     <h:outputText value="Last authentication IP address" />
                     <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
