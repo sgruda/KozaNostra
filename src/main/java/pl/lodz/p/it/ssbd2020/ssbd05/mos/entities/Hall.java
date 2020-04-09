@@ -79,15 +79,15 @@ public class Hall implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallId")
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hall")
     private Collection<EventTypes> eventTypesCollection = new ArrayList<>();
 
     @NotNull
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Address addressId;
+    private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallId")
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hall")
     private Collection<Reservation> reservationCollection = new ArrayList<>();
 
     public Hall() {

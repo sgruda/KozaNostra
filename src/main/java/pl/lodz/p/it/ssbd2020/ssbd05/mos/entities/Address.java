@@ -65,7 +65,7 @@ public class Address implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId")
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "address")
     private Collection<Hall> hallCollection = new ArrayList<>();
 
     public Address() {
