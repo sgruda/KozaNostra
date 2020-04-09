@@ -3,68 +3,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:head>
-        <title>Account details</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <h3>ID</h3>
-            <h:outputText value="#{accountDetailsController.account.id}"/>
-            <p:separator/>
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-            <h3>Login</h3>
-            <h:outputText value="#{accountDetailsController.account.login}"/>
-            <p:separator/>
+<h:head>
+    <title>Account details</title>
+</h:head>
+<ui:composition template = "../templates/template.xhtml">
+    <ui:define name = "content">
+        <h:body>
+            <div align="center" style="margin-top: 100px">
+                <p:panelGrid columns="2">
+                    <f:facet name="header">
+                        <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
+                    </f:facet>
+                    <h:outputText value="ID" />
+                    <h:outputText value="#{accountDetailsController.account.id}"/>
 
-            <h3>First name</h3>
-            <h:outputText value="#{accountDetailsController.account.firstname}"/>
-            <p:separator/>
+                    <h:outputText value="Login" />
+                    <h:outputText value="#{accountDetailsController.account.login}"/>
 
-            <h3>Last name</h3>
-            <h:outputText value="#{accountDetailsController.account.lastname}"/>
-            <p:separator/>
+                    <h:outputText value="First name" />
+                    <h:outputText value="#{accountDetailsController.account.firstname}"/>
 
-            <h3>Active</h3>
-            <h:outputText value="#{accountDetailsController.account.active ? 'Yes' : 'No'}"/>
-            <p:separator/>
+                    <h:outputText value="Last name" />
+                    <h:outputText value="#{accountDetailsController.account.lastname}"/>
 
-            <h3>Confirmed</h3>
-            <h:outputText value="#{accountDetailsController.account.confirmed ? 'Yes' : 'No'}"/>
-            <p:separator/>
+                    <h:outputText value="E-mail" />
+                    <h:outputText value="#{accountDetailsController.account.email}"/>
 
-            <h3>Access levels</h3>
-            <ul>
-                <ui:repeat value="#{accountDetailsController.account.accessLevelCollection}" var="lvl">
-                    <li>
-                        <h:outputText value="#{lvl.accessLevel}"/>
-                    </li>
-                </ui:repeat>
-            </ul>
-            <p:separator/>
+                    <h:outputText value="Active" />
+                    <h:outputText value="#{accountDetailsController.account.active ? 'Yes' : 'No'}"/>
 
-            <h3>Last successful authentication</h3>
-            <h:outputText value="#{accountDetailsController.account.lastSuccessfulAuth}"/>
-            <p:separator/>
+                    <h:outputText value="Confirmed" />
+                    <h:outputText value="#{accountDetailsController.account.confirmed ? 'Yes' : 'No'}"/>
 
-            <h3>Last failed authentication</h3>
-            <h:outputText value="#{accountDetailsController.account.lastFailedAuth}"/>
-            <p:separator/>
+                    <h:outputText value="Access levels" />
+                    <ui:repeat value="#{accountDetailsController.account.accessLevelCollection}" var="lvl">
+                        <h:outputText value="#{lvl.accessLevel}  "/>
+                    </ui:repeat>
 
-            <h3>Last authentication IP address</h3>
-            <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
-            <p:separator/>
+                    <h:outputText value="Last successful authentication" />
+                    <h:outputText value="#{accountDetailsController.account.lastSuccessfulAuth}"/>
 
-            <h3>Failed authentication counter</h3>
-            <h:outputText value="#{accountDetailsController.account.failedAuthCounter}"/>
-            <p:separator/>
+                    <h:outputText value="Last failed authentication" />
+                    <h:outputText value="#{accountDetailsController.account.lastFailedAuth}"/>
 
-            <h3>Force password change</h3>
-            <h:outputText value="#{accountDetailsController.account.forcePasswordChange}"/>
-
-            <div>
-                <p:commandButton value="Back" action="#{accountDetailsController.goBack()}"/>
+                    <h:outputText value="Last authentication IP address" />
+                    <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
+                </p:panelGrid>
+                <div align="center" style="margin-top: 10px">
+                    <p:commandButton value="Back" action="#{accountDetailsController.goBack()}"/>
+                    <p:commandButton value="Edit" />
+                </div>
             </div>
-        </h:form>
-    </h:body>
+        </h:body>
+    </ui:define>
+</ui:composition>
 </html>
