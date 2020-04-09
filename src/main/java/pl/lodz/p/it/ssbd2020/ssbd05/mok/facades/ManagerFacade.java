@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.facades;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.Manager;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Manager;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

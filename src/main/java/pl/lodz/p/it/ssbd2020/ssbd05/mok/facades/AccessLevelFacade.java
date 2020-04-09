@@ -4,7 +4,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.entities.AccessLevel;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 
 
 @Stateless
