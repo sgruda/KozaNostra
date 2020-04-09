@@ -51,7 +51,8 @@ public class AccessLevel implements Serializable {
     @Column(name = "active", nullable = false, columnDefinition = "boolean default false")
     private Boolean active;
 
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Account accountId;
 

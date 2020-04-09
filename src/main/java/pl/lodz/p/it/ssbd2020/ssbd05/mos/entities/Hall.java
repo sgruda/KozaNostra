@@ -82,7 +82,8 @@ public class Hall implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hallId")
     private Collection<EventTypes> eventTypesCollection = new ArrayList<>();
 
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Address addressId;
 

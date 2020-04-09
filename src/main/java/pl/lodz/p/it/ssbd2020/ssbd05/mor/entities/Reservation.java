@@ -60,7 +60,8 @@ public class Reservation implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @JoinColumn(name = "status_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Status statusId;
 
@@ -70,11 +71,13 @@ public class Reservation implements Serializable {
     )
     private Collection<ExtraService> extraServiceCollection = new ArrayList<>();
 
-    @JoinColumn(name = "hall_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "hall_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Hall hallId;
 
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @NotNull
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Client clientId;
 
