@@ -25,7 +25,7 @@ public @Data class AccountDTO {
     private Date lastFailedAuth;
     private String lastAuthIp;
     private int failedAuthCounter;
-    private boolean forcePasswordChange = true;
+    private boolean forcePasswordChange;
 
     public AccountDTO(Long id, String login, String password, boolean active, boolean confirmed, String firstname, String lastname, String email, int failedAuthCounter, boolean forcePasswordChange) {
         this.id = id;
