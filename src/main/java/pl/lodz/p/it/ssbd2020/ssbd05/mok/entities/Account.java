@@ -67,7 +67,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
-    private boolean active;
+    private boolean active = true;
 
     @Basic(optional = false)
     @NotNull
@@ -127,7 +127,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(table = "authentication_data", name = "force_password_change", nullable = false, columnDefinition = "boolean default true")
-    private boolean forcePasswordChange;
+    private boolean forcePasswordChange = true;
 
     public Account() {
     }
