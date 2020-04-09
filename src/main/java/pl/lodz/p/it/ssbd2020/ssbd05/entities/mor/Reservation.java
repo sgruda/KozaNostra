@@ -63,9 +63,9 @@ public class Reservation implements Serializable {
     @NotNull
     @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Status statusId;
+    private Status status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "extra_service_mapping", schema = "ssbd05schema",
             uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id", "extra_service_id"})
     )
@@ -74,12 +74,12 @@ public class Reservation implements Serializable {
     @NotNull
     @JoinColumn(name = "hall_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
-    private Hall hallId;
+    private Hall hall;
 
     @NotNull
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Client clientId;
+    private Client client;
 
     public Reservation() {
     }

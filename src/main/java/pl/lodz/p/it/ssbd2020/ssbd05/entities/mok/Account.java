@@ -60,14 +60,14 @@ public class Account implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 64)
+    @Size(min = 8, max = 64)
     @Column(name = "password", nullable = false, length = 64)
     private String password;
 
     @Basic(optional = false)
     @NotNull
     @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
-    private boolean active;
+    private boolean active = true;
 
     @Basic(optional = false)
     @NotNull
@@ -82,10 +82,10 @@ public class Account implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "account")
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "account")
     private Collection<PreviousPassword> previousPasswordCollection = new ArrayList<>();
 
     @Basic(optional = false)
@@ -127,7 +127,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(table = "authentication_data", name = "force_password_change", nullable = false, columnDefinition = "boolean default true")
-    private boolean forcePasswordChange;
+    private boolean forcePasswordChange = true;
 
     public Account() {
     }
