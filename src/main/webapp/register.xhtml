@@ -19,53 +19,68 @@
                         <p:autoUpdate/>
                     </p:messages>
                     <h:panelGrid id="registrationPnl" columns="2"  style="margin: 0 auto;">
+                        <p:messages id="messages" closable="true" globalOnly="true">
+                            <p:autoUpdate />
+                        </p:messages>
                         <div style="padding-bottom: 5px">
                             <p:outputLabel for="login" value="Login :">
-                                <p:inputText id="login" required="true" name="login" value="#{registrationController.login}"/>
+                                <p:inputText id="login" required="true" value="#{registrationController.login}" requiredMessage="Please enter login">
+                                </p:inputText>
                             </p:outputLabel>
                          </div>
                         <div><p:message for="login"/></div>
-
                         <div style="padding-bottom: 5px;padding-top: 5px">
                             <p:outputLabel for="password" value="Password :">
-                                <p:password id="password" required="true" type="password" name="password"
-                                            value="#{registrationController.password}"/>
+                                <p:password id="password" required="true" feedback="true" inline="true" match="confirmPassword" requiredMessage="Please enter password"
+                                            value="#{registrationController.password}" validatorMessage="Password has to consist of at least 8 characters,number from 0 to 9, one special sign !@#$% ,one capital letter and one lower case">
+                                    <f:validateRegex
+                                            pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
+                                </p:password>
                             </p:outputLabel>
                         </div>
                         <div><p:message for="password"/></div>
 
                         <div style="padding-bottom: 5px;padding-top: 5px">
-                            <p:outputLabel for="confrimPassowrd" value="Confirm password :">
-                                <p:password id="confrimPassowrd" required="true" type="password" name="confrimPassowrd"
-                                            value="#{registrationController.confirmPassword}"/>
+                            <p:outputLabel for="confirmPassword" value="Confirm password :">
+                                <p:password id="confirmPassword" required="true" feedback="true" inline="true" requiredMessage="Please enter matching password"
+                                            value="#{registrationController.confirmPassword}" />
                             </p:outputLabel>
                         </div>
-                        <div><p:message for="confrimPassowrd"/></div>
+                        <div><p:message for="confirmPassword"/></div>
+
                         <div style="padding-bottom: 5px;padding-top: 5px">
                             <p:outputLabel for="firstName" value="Firstname :">
-                                <p:inputText id="firstName" required="true"  name="firstName"
-                                            value="#{registrationController.firstname}"/>
+                                <p:inputText id="firstName" required="true"
+                                            value="#{registrationController.firstname}" requiredMessage="Please enter firstname"/>
                             </p:outputLabel>
                         </div>
                         <div><p:message for="firstName"/></div>
+
                         <div style="padding-bottom: 5px;padding-top: 5px">
                             <p:outputLabel for="lastName" value="Lastname :">
-                                <p:inputText id="lastName" required="true"  name="lastName"
+                                <p:inputText id="lastName" required="true" requiredMessage="Please enter lastname"
                                              value="#{registrationController.lastname}"/>
                             </p:outputLabel>
                         </div>
                         <div><p:message for="lastName"/></div>
 
                         <div style="padding-bottom: 5px;padding-top: 5px">
-                        <p:outputLabel for="emailAddress" value="Email :">
-                            <p:inputText id="emailAddress" required="true"  name="emailAddress"
-                                         value="#{registrationController.emailAddress}"/>
-                        </p:outputLabel>
+                            <p:outputLabel for="emailAddress" value="Email :">
+                                <p:inputText id="emailAddress" required="true"
+                                             value="#{registrationController.emailAddress}" validatorMessage="Invalid email format" requiredMessage="Please enter email address">
+                                    <f:validateRegex
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                </p:inputText>
+                            </p:outputLabel>
                         </div>
-                    <div><p:message for="emailAddress"/></div>
+                        <div><p:message for="emailAddress"/></div>
+
+                        <div style="padding-bottom: 5px;padding-top: 5px">
+                            <p:captcha id="Captcha" requiredMessage="Please cofirm the you are not a robot" required="true"/>
+                        </div>
+                        <div><p:message for="Captcha"/></div>
+
                     </h:panelGrid>
-                    <div class="g-recaptcha"
-                         data-sitekey="6Lde2ucUAAAAADpAUC6GFluUj5ngVG9tzjCPJlCp"></div>
                     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:commandButton value="Reset" style="margin-right:20px;" icon="pi pi-undo">
                             <p:ajax update="register" resetValues="true" />
