@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
@@ -17,24 +16,18 @@ import javax.inject.Named;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
+
 
 @Named
 @ViewScoped
-@Slf4j
 public class LoginController implements Serializable {
 
     @Inject
     private RoleController roleController;
+    @Inject
+    private LastLoginController lastLoginController;
     @Getter @Setter
     private String username;
     @Getter @Setter
@@ -71,18 +64,19 @@ public class LoginController implements Serializable {
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", account.getLastSuccessfulAuth());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", account.getLastFailedAuth());
+        lastLoginController.startConversation(account);
         try {
             request.login(username, password);
             roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
             externalContext.redirect(originalUrl);
             externalContext.getSessionMap().put("printLastLoginInfo", true);
-            this.updateLastSuccesfullAuthDate();
+            lastLoginController.updateLastSuccesfullAuthDate();
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Incorrect credentials"));
-            this.updateLastFailedAuthDate();
+            lastLoginController.updateLastFailedAuthDate();
         }
-        this.updateLastAuthIP();
-        this.accountFacade.edit(this.account);
+        lastLoginController.updateLastAuthIP();
+        this.accountFacade.edit(lastLoginController.endConversation());
     }
     public void informAboutLastAuthentication() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -95,31 +89,5 @@ public class LoginController implements Serializable {
             externalContext.getSessionMap().remove("lastSuccesfullAuthDate");
             externalContext.getSessionMap().remove("lastFailedAuthDate");
         }
-    }
-    private void updateLastAuthIP() {
-        account.setLastAuthIp(getIP());
-    }
-    private void updateLastSuccesfullAuthDate() {
-        account.setLastSuccessfulAuth(Date.from(Instant.now()));
-        account.setFailedAuthCounter(0);
-    }
-    private void updateLastFailedAuthDate() {
-        account.setLastFailedAuth(Date.from(Instant.now()));
-        account.setFailedAuthCounter(account.getFailedAuthCounter() + 1);
-    }
-    private String getIP() {
-        URL urlToCheckIpAmazonaws;
-        String ipAddress = "";
-        try {
-            urlToCheckIpAmazonaws = new URL("http://checkip.amazonaws.com");
-            try(BufferedReader in = new BufferedReader(new InputStreamReader(urlToCheckIpAmazonaws.openStream()))) {
-                ipAddress = in.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return ipAddress;
     }
 }
