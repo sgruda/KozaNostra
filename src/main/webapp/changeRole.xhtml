@@ -11,7 +11,6 @@
     </h:head>
     <ui:composition template = "/templates/template.xhtml">
         <ui:define name = "content">
-            <h:body>
                 <h:form>
                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
                         <p:outputLabel for="@next" value="Access level:" />
@@ -23,7 +22,6 @@
                     </h:panelGrid>
                     <p:commandButton value="Submit" action="#{facesContext.externalContext.redirect('index.xhtml')}"/>
                 </h:form>
-            </h:body>
         </ui:define>
     </ui:composition>
 </html>

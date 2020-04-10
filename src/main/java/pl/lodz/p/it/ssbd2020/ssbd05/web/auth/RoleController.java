@@ -61,4 +61,14 @@ public class RoleController implements Serializable {
             return "luna-pink";
         else return "nova-dark";
     }
+    
+        public String getHeaderColorForRole() {
+        if(this.selectedRole.equalsIgnoreCase("admin"))
+            return "#102b3d;";
+        else if(this.selectedRole.equalsIgnoreCase("manager"))
+            return "#1f567a;";
+        else if(this.selectedRole.equalsIgnoreCase("client"))
+            return "#338fcc;";
+        else return "#8fc1e3;";
+    }
 }
