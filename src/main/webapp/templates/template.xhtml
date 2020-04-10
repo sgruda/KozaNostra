@@ -42,8 +42,13 @@
                 </ui:fragment>
              </div>
         </div>
-
-        <div class = "main">       
+        <div class ="breadcrumb">
+            <p:breadCrumb>
+                <p:menuitem value="Home" outcome="/index.xhtml" />
+                <ui:insert name="breadcrumb-menuitems"/>
+            </p:breadCrumb>
+        </div>
+        <div class = "main"> 
             <ui:insert name="content" >
 
             </ui:insert>

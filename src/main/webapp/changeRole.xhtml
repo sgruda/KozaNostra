@@ -23,5 +23,9 @@
                     <p:commandButton value="Submit" action="#{facesContext.externalContext.redirect('index.xhtml')}"/>
                 </h:form>
         </ui:define>
+        <ui:define name="breadcrumb-menuitems">
+            <p:menuitem value="Change role" outcome="/changeRole.xhtml" />
+        </ui:define>
     </ui:composition>
+
 </html>

@@ -10,53 +10,52 @@
 </h:head>
 <ui:composition template = "../templates/template.xhtml">
     <ui:define name = "content">
-        <h:body>
-            <div align="center" style="margin-top: 100px">
-                <p:panelGrid columns="2">
-                    <f:facet name="header">
-                        <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
-                    </f:facet>
-                    <h:outputText value="ID" />
-                    <h:outputText value="#{accountDetailsController.accountDTO.id}"/>
+        <p:panelGrid columns="2">
+            <f:facet name="header">
+                <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
+            </f:facet>
+            <h:outputText value="ID" />
+            <h:outputText value="#{accountDetailsController.accountDTO.id}"/>
 
-                    <h:outputText value="Login" />
-                    <h:outputText value="#{accountDetailsController.accountDTO.login}"/>
+            <h:outputText value="Login" />
+            <h:outputText value="#{accountDetailsController.accountDTO.login}"/>
 
-                    <h:outputText value="First name" />
-                    <h:outputText value="#{accountDetailsController.accountDTO.firstname}"/>
+            <h:outputText value="First name" />
+            <h:outputText value="#{accountDetailsController.accountDTO.firstname}"/>
 
-                    <h:outputText value="Last name" />
-                    <h:outputText value="#{accountDetailsController.accountDTO.lastname}"/>
+            <h:outputText value="Last name" />
+            <h:outputText value="#{accountDetailsController.accountDTO.lastname}"/>
 
-                    <h:outputText value="E-mail" />
-                    <h:outputText value="#{accountDetailsController.accountDTO.email}"/>
+            <h:outputText value="E-mail" />
+            <h:outputText value="#{accountDetailsController.accountDTO.email}"/>
 
-                    <h:outputText value="Active" />
-                    <h:outputText value="#{accountDetailsController.accountDTO.active ? 'Yes' : 'No'}"/>
+            <h:outputText value="Active" />
+            <h:outputText value="#{accountDetailsController.accountDTO.active ? 'Yes' : 'No'}"/>
 
-                    <h:outputText value="Confirmed" />
-                    <h:outputText value="#{accountDetailsController.accountDTO.confirmed ? 'Yes' : 'No'}"/>
+            <h:outputText value="Confirmed" />
+            <h:outputText value="#{accountDetailsController.accountDTO.confirmed ? 'Yes' : 'No'}"/>
 
-                    <h:outputText value="Access levels" />
-                    <ui:repeat value="#{accountDetailsController.accountDTO.accessLevelCollection}" var="lvl">
-                        <h:outputText value="#{lvl}&#10;"/>
-                    </ui:repeat>
+            <h:outputText value="Access levels" />
+            <ui:repeat value="#{accountDetailsController.accountDTO.accessLevelCollection}" var="lvl">
+                <h:outputText value="#{lvl}&#10;"/>
+            </ui:repeat>
 
-                    <h:outputText value="Last successful authentication" />
-                    <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.accountDTO.lastSuccessfulAuth)}"/>
+            <h:outputText value="Last successful authentication" />
+            <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.accountDTO.lastSuccessfulAuth)}"/>
 
-                    <h:outputText value="Last failed authentication" />
-                    <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.accountDTO.lastFailedAuth)}"/>
+            <h:outputText value="Last failed authentication" />
+            <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.accountDTO.lastFailedAuth)}"/>
 
-                    <h:outputText value="Last authentication IP address" />
-                    <h:outputText value="#{accountDetailsController.accountDTO.lastAuthIp}"/>
-                </p:panelGrid>
-                <div align="center" style="margin-top: 10px">
-                    <p:commandButton value="Back" action="#{accountDetailsController.goBack()}"/>
-                    <p:commandButton value="Edit" />
-                </div>
-            </div>
-        </h:body>
+            <h:outputText value="Last authentication IP address" />
+            <h:outputText value="#{accountDetailsController.accountDTO.lastAuthIp}"/>
+        </p:panelGrid>
+        <div align="center" style="margin-top: 10px">
+            <p:commandButton value="Back" action="#{accountDetailsController.goBack()}"/>
+            <p:commandButton value="Edit" />
+        </div>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="Account list" outcome="/admin/listAccounts.xhtml" />
     </ui:define>
 </ui:composition>
 </html>
