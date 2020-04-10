@@ -62,8 +62,10 @@ public class LoginController implements Serializable {
 
         this.account = accountFacade.findByLogin(username);
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", account.getLastSuccessfulAuth());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", account.getLastFailedAuth());
+        if(null != account.getLastSuccessfulAuth())
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", account.getLastSuccessfulAuth());
+        if(null != account.getLastFailedAuth())
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", account.getLastFailedAuth());
         lastLoginController.startConversation(account);
         try {
             request.login(username, password);
@@ -83,8 +85,10 @@ public class LoginController implements Serializable {
         ExternalContext externalContext = context.getExternalContext();
         boolean printLastLoginInfo = (boolean) externalContext.getSessionMap().getOrDefault("printLastLoginInfo", false);
         if (printLastLoginInfo) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Last correct authentication",  externalContext.getSessionMap().getOrDefault("lastSuccesfullAuthDate", "Default").toString() ) );
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Last incorrect authentication",  externalContext.getSessionMap().getOrDefault("lastFailedAuthDate", "Default").toString() ) );
+            if(null != externalContext.getSessionMap().get("lastSuccesfullAuthDate"))
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Last correct authentication",  externalContext.getSessionMap().get("lastSuccesfullAuthDate").toString() ) );
+            if(null != externalContext.getSessionMap().get("lastFailedAuthDate"))
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Last incorrect authentication",  externalContext.getSessionMap().get("lastFailedAuthDate").toString() ) );
             externalContext.getSessionMap().remove("printLastLoginInfo");
             externalContext.getSessionMap().remove("lastSuccesfullAuthDate");
             externalContext.getSessionMap().remove("lastFailedAuthDate");
