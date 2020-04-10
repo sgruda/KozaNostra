@@ -28,6 +28,25 @@ public class AccountConverter {
         accountDTO.setLastSuccessfulAuth(account.getLastSuccessfulAuth());
         accountDTO.setLastFailedAuth(account.getLastFailedAuth());
         accountDTO.setLastAuthIp(account.getLastAuthIp());
+        accountDTO.setVeryficationToken(account.getVeryficationToken());
         return accountDTO;
+    }
+
+    public static Account DTOtoAccount(AccountDTO accountDTO) {
+        Account account = new Account();
+        account.setId(accountDTO.getId());
+        account.setLogin(accountDTO.getLogin());
+        account.setPassword(accountDTO.getPassword());
+        account.setActive(accountDTO.isActive());
+        account.setConfirmed(accountDTO.isConfirmed());
+//        account.setAccessLevelCollection();
+        account.setFirstname(accountDTO.getFirstname());
+        account.setLastname(accountDTO.getLastname());
+        account.setEmail(accountDTO.getEmail());
+        account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
+        account.setLastFailedAuth(accountDTO.getLastFailedAuth());
+        account.setLastAuthIp(accountDTO.getLastAuthIp());
+        account.setVeryficationToken(account.getVeryficationToken());
+        return account;
     }
 }

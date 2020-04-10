@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 import lombok.Data;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.web.mok.EmailController;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -42,9 +43,9 @@ public class RegistrationController implements Serializable {
                         account.setFirstname(this.getFirstname());
                         account.setLastname(this.getLastname());
                         account.setEmail(this.getEmailAddress());
-                        account.setActive(true);
                         account.getAccessLevelCollection().addAll(generateAccessLevels(account));
                         this.getAccountFacade().create(account);
+                        EmailController.sendMail(this.getEmailAddress(), account.getVeryficationToken());
                         FacesContext fc=FacesContext.getCurrentInstance();
                         fc.addMessage(null, new FacesMessage("Account created !"));
                         clear();
