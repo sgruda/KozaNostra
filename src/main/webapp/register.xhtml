@@ -32,7 +32,9 @@
                         <div style="padding-bottom: 5px;padding-top: 5px">
                             <p:outputLabel for="password" value="Password :">
                                 <p:password id="password" required="true" feedback="true" inline="true" match="confirmPassword" requiredMessage="Please enter password"
-                                            value="#{registrationController.password}" validatorMessage="Password has to consist of at least 8 characters, one special sign !@#$% ,one capital letter and one lower case">
+                                            value="#{registrationController.password}" validatorMessage="Password has to consist of at least 8 characters,number from 0 to 9, one special sign !@#$% ,one capital letter and one lower case">
+                                    <f:validateRegex
+                                            pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
                                 </p:password>
                             </p:outputLabel>
                         </div>
