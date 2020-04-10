@@ -53,4 +53,8 @@
             <div class ="footer-text">2020 @SSBD05</div>
         </div>
     </div>
+    <h:form>
+        <p:growl id="informationBox" showDetail="true" life="2000"/>
+        <f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
+    </h:form>
 </html>
