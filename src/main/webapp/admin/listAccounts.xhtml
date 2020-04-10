@@ -9,9 +9,8 @@
     </h:head>
     <ui:composition template = "/templates/template.xhtml">
         <ui:define name = "content">
-            <h:body>
                 <h:form>
-                    <p:dataTable var="account" value="#{listAccountsController.accounts}">
+                    <p:dataTable var="account" value="#{listAccountsController.accountDTOs}">
                         <p:column headerText="ID">
                             <h:outputText value="#{account.id}"/>
                         </p:column>
@@ -37,7 +36,6 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
-            </h:body>
         </ui:define>
     </ui:composition>
 </html>

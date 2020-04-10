@@ -1,3 +1,77 @@
-.content {
-    margin-top: 70px;
+.wrapper {
+    display:flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.main{
+    display:flex;
+    flex:1;
+    align-items:center;
+    justify-content:center;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 998;
+    width: 100%;
+    min-height: 70px;
+}
+
+.header-left{
+    display:flex;
+    align-items: center;
+    margin-left: 30px;
+    flex-grow: 1;
+}
+
+.header-right{
+    display:flex;
+    flex-grow: 2;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    margin-right: 30px;
+}
+
+.logo {
+    margin-left:20px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #687864;
+}
+
+.link {
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+.footer{
+    display: flex;
+    z-index: 997;
+    width: 100%;
+    height: 25px;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Open Sans';
+    font-size: 17px;
+    background-color: #31708e;
+    color: white;
+}
+
+body{
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+body .ui-widget-overlay{
+   width: 0 !important ; /* Overlay primefaces zasłaniał całą strone*/
 }
