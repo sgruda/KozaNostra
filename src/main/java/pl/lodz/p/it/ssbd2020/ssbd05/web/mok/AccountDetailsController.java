@@ -9,6 +9,8 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Named
 @ConversationScoped
@@ -24,6 +26,13 @@ public class AccountDetailsController implements Serializable {
         conversation.begin();
         this.account = account;
         return "accountDetails";
+    }
+
+    public String formatDate(Date date) {
+        if(date == null)
+            return "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+        return simpleDateFormat.format(date);
     }
 
     public String goBack() {
