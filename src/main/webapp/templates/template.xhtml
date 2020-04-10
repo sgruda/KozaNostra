@@ -20,6 +20,10 @@
 	    </div>
 	    
 	    <div id="content" class="content">
+			<h:form>
+				<p:growl id="informationBox" showDetail="true" life="3000"/>
+				<f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
+			</h:form>
 	  	<ui:insert name="content" >
 	 	  
 	   	</ui:insert>
