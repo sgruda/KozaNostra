@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.converters;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -33,8 +34,8 @@ public class AccountConverter {
         return accountDTO;
     }
 
-    public static Account DTOtoAccount(AccountDTO accountDTO) {
-        Account account = new Account();
+    public static Account DTOtoAccount(AccountDTO accountDTO, AccountFacade accountFacade) {
+        Account account = accountFacade.find(accountDTO.getId());
         account.setId(accountDTO.getId());
         account.setLogin(accountDTO.getLogin());
         account.setPassword(accountDTO.getPassword());
