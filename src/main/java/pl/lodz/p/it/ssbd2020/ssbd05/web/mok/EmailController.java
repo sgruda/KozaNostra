@@ -5,7 +5,9 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.Date;
 import java.util.Properties;
 
@@ -16,12 +18,12 @@ public class EmailController {
     private static final String PASSWORD = "tzwsgrp22";
 
     private static final String EMAIL_SUBJECT = "Confirm your account";
-    private static final String EMAIL_TEXT = "Click the link below to confirm your account.";
 
     private static final String LINK = "https://localhost:8181/ssbd05/confirmAccount.xhtml?token=";
 //    private static final String LINK = "https://studapp.it.p.lodz.pl:8405/ssbd05/confirmAccount.xhtml?token=";
 
     public static void sendMail(String mail, String token) {
+        String body = "<a href=\"" + LINK + token + "\">Click here to confirm your account</a>";
 
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", SMTP_SERVER);
@@ -34,11 +36,16 @@ public class EmailController {
         Message msg = new MimeMessage(session);
 
         try {
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setText(body, "UTF-8", "html");
+            MimeMultipart mimeMultipart = new MimeMultipart();
+            mimeMultipart.addBodyPart(mimeBodyPart);
+
             msg.setFrom(new InternetAddress(USERNAME));
+            msg.setContent(mimeMultipart);
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(mail, false));
             msg.setSubject(EMAIL_SUBJECT);
-            msg.setText("<html><body><a href=" + LINK + token + ">Click here to confirm your account</a></body></html>");
             msg.setSentDate(new Date());
 
             SMTPTransport t = (SMTPTransport) session.getTransport("smtp");
