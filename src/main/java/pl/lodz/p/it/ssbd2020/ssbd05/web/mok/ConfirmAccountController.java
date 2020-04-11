@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ConfirmAccountDTOEndpoint;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -18,7 +19,7 @@ public class ConfirmAccountController implements Serializable {
     private ConfirmAccountDTOEndpoint confirmAccountDTOEndpoint;
 
     @Getter
-    private AccountDTO accountDTO;
+    private Account accountDTO;
     @Getter
     @Setter
     private String login;
@@ -32,7 +33,7 @@ public class ConfirmAccountController implements Serializable {
         if(!accountDTO.isConfirmed()) {
             if(accountDTO.getVeryficationToken().equals(token)) {
                 accountDTO.setConfirmed(true);
-//                confirmAccountDTOEndpoint.confirmAccount(accountDTO);
+                confirmAccountDTOEndpoint.confirmAccount(accountDTO);
             }
         }
     }

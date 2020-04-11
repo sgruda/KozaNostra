@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class AccountConverter {
@@ -39,14 +40,14 @@ public class AccountConverter {
         account.setPassword(accountDTO.getPassword());
         account.setActive(accountDTO.isActive());
         account.setConfirmed(accountDTO.isConfirmed());
-//        account.setAccessLevelCollection();
+        account.setAccessLevelCollection(new ArrayList<>());
         account.setFirstname(accountDTO.getFirstname());
         account.setLastname(accountDTO.getLastname());
         account.setEmail(accountDTO.getEmail());
         account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
         account.setLastFailedAuth(accountDTO.getLastFailedAuth());
         account.setLastAuthIp(accountDTO.getLastAuthIp());
-        account.setVeryficationToken(account.getVeryficationToken());
+        account.setVeryficationToken(accountDTO.getVeryficationToken());
         return account;
     }
 }
