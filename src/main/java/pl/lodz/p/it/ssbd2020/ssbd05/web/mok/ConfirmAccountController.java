@@ -6,6 +6,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ConfirmAccountDTOEndpoint;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -27,10 +29,13 @@ public class ConfirmAccountController implements Serializable {
     private String url = "";
 
     public void confirmAccount() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
         accountDTO = confirmAccountDTOEndpoint.getAccountByLogin(login);
         String token = url.substring(url.indexOf("token=") + 6);
             if(accountDTO.getVeryficationToken().equals(token)) {
                 confirmAccountDTOEndpoint.confirmAccount(accountDTO);
+                facesContext.addMessage(null, new FacesMessage("Account was successfully confirmed!"));
             }
+            else facesContext.addMessage(null, new FacesMessage("Account with that username could not be confirmed!"));
     }
 }
