@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
@@ -20,26 +20,26 @@ import java.util.Date;
 public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;
-    private Account account; //docelowo AccountDTO
+    private AccountDTO accountDTO;
 
-    public void startConversation(Account account) {
+    public void startConversation(AccountDTO accountDTO) {
         conversation.begin();
-        this.account = account;
+        this.accountDTO = accountDTO;
     }
-    public Account endConversation() {
+    public AccountDTO endConversation() {
         conversation.end();
-        return this.account;
+        return this.accountDTO;
     }
     public void updateLastAuthIP() {
-        account.setLastAuthIp(this.getIP());
+        accountDTO.setLastAuthIp(this.getIP());
     }
     public void updateLastSuccesfullAuthDate() {
-        account.setLastSuccessfulAuth(Date.from(Instant.now()));
-        account.setFailedAuthCounter(0);
+        accountDTO.setLastSuccessfulAuth(Date.from(Instant.now()));
+        accountDTO.setFailedAuthCounter(0);
     }
     public void updateLastFailedAuthDate() {
-        account.setLastFailedAuth(Date.from(Instant.now()));
-        account.setFailedAuthCounter(account.getFailedAuthCounter() + 1);
+        accountDTO.setLastFailedAuth(Date.from(Instant.now()));
+        accountDTO.setFailedAuthCounter(accountDTO.getFailedAuthCounter() + 1);
     }
     private String getIP() {
         URL urlToCheckIpAmazonaws;
