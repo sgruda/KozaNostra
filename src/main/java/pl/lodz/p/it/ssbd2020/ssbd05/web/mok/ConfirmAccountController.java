@@ -34,7 +34,8 @@ public class ConfirmAccountController implements Serializable {
         if (accountDTO.getVeryficationToken().equals(token)) {
             confirmAccountDTOEndpoint.confirmAccount(accountDTO);
             facesContext.addMessage(null, new FacesMessage("Account was successfully confirmed!"));
-        } else facesContext.addMessage(null, new FacesMessage("Account with that username could not be confirmed!"));
+            facesContext.getExternalContext().getFlash().setKeepMessages(true);
+        } else facesContext.addMessage(null, new FacesMessage("Account could not be confirmed!"));
         return "home";
     }
 }
