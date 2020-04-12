@@ -20,14 +20,17 @@ public class EmailController {
     private static final String USERNAME = "ssbd202005@gmail.com";
     private static final String PASSWORD = "tzwsgrp22";
 
-    private static final String EMAIL_SUBJECT = "Confirm your account";
-
-    public static void sendMail(String mail, String token) {
+    public void sendRegistrationEmail(String mail, String token, String login) {
+        String subject = "Confirm your account";
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String link = request.getRequestURL()
                 .substring(0, (request.getRequestURL().length() - request.getServletPath().length())).concat("/confirmAccount.xhtml?token=");
-        String body = "<a href=\"" + link + token + "\">Click here to confirm your account</a>";
+        String body = "<a href=\"" + link + token + "&login=" + login + "\">Click here to confirm your account</a>";
 
+        this.sendEmail(mail, subject, body);
+    }
+
+    private void sendEmail(String mail, String subject, String body) {
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", SMTP_SERVER);
         prop.put("mail.smtp.auth", "true");
@@ -48,7 +51,7 @@ public class EmailController {
             msg.setContent(mimeMultipart);
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(mail, false));
-            msg.setSubject(EMAIL_SUBJECT);
+            msg.setSubject(subject);
             msg.setSentDate(new Date());
 
             SMTPTransport t = (SMTPTransport) session.getTransport("smtp");

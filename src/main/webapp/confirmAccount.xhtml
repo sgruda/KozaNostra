@@ -17,11 +17,6 @@
             </script>
             <h:form id="urlForm">
                 <h:inputHidden id="url" value="#{confirmAccountController.url}" />
-                <h:panelGrid id="loginPanel" columns="2" cellpadding="5" style="margin: 0 auto;">
-                    <div><p:outputLabel value="Enter your username" style="font-size: 18px"/></div>
-                    <div><p:inputText id="username" required="true" value="#{confirmAccountController.login}" /></div>
-                </h:panelGrid>
-
                 <h:panelGrid columns="1" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                     <p:commandButton ajax="false" value="Confirm" icon="pi pi-sign-in" style="float: center;" onclick="setUrl()"
                                      action="#{confirmAccountController.confirmAccount()}"/>
