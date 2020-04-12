@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import com.sun.mail.smtp.SMTPTransport;
+
+import javax.faces.context.FacesContext;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -8,6 +10,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Properties;
 
@@ -19,11 +22,11 @@ public class EmailController {
 
     private static final String EMAIL_SUBJECT = "Confirm your account";
 
-    private static final String LINK = "https://localhost:8181/ssbd05/confirmAccount.xhtml?token=";
-//    private static final String LINK = "https://studapp.it.p.lodz.pl:8405/ssbd05/confirmAccount.xhtml?token=";
-
     public static void sendMail(String mail, String token) {
-        String body = "<a href=\"" + LINK + token + "\">Click here to confirm your account</a>";
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String link = request.getRequestURL()
+                .substring(0, (request.getRequestURL().length() - request.getServletPath().length())).concat("/confirmAccount.xhtml?token=");
+        String body = "<a href=\"" + link + token + "\">Click here to confirm your account</a>";
 
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", SMTP_SERVER);
