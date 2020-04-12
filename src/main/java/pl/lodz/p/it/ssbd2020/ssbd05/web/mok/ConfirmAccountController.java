@@ -25,16 +25,16 @@ public class ConfirmAccountController implements Serializable {
     @Setter
     private String url = "";
 
-    public void confirmAccount() {
+    public String confirmAccount() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         String parameters = url.substring(url.indexOf("token=") + 6);
         String token = parameters.substring(0, parameters.indexOf("&login="));
         String login = parameters.substring(parameters.indexOf("&login=") + 7);
         accountDTO = confirmAccountDTOEndpoint.getAccountByLogin(login);
-        if(accountDTO.getVeryficationToken().equals(token)) {
-                confirmAccountDTOEndpoint.confirmAccount(accountDTO);
-                facesContext.addMessage(null, new FacesMessage("Account was successfully confirmed!"));
-        }
-        else facesContext.addMessage(null, new FacesMessage("Account with that username could not be confirmed!"));
+        if (accountDTO.getVeryficationToken().equals(token)) {
+            confirmAccountDTOEndpoint.confirmAccount(accountDTO);
+            facesContext.addMessage(null, new FacesMessage("Account was successfully confirmed!"));
+        } else facesContext.addMessage(null, new FacesMessage("Account with that username could not be confirmed!"));
+        return "home";
     }
 }

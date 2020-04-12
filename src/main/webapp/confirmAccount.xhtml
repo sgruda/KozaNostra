@@ -2,7 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <h:head>
@@ -10,18 +9,19 @@
     </h:head>
     <ui:composition template = "/templates/template.xhtml">
         <ui:define name = "content">
-            <script type="text/javascript">
-                function setUrl() {
-                    document.getElementById("urlForm:url").value=window.location.href;
-                }
-            </script>
-            <h:form id="urlForm">
-                <h:inputHidden id="url" value="#{confirmAccountController.url}" />
-                <h:panelGrid columns="1" cellpadding="5" style="margin: 0 auto;background-color: transparent">
-                    <p:commandButton ajax="false" value="Confirm" icon="pi pi-sign-in" style="float: center;" onclick="setUrl()"
-                                     action="#{confirmAccountController.confirmAccount()}"/>
-                </h:panelGrid>
-            </h:form>
+            <body onload="setUrl()">
+                <script type="text/javascript">
+                    function setUrl() {
+                        document.getElementById("urlForm:url").value=window.location.href;
+                        let button = document.getElementsByClassName("confirm");
+                        button[0].click();
+                    }
+                </script>
+                <h:form id="urlForm">
+                    <h:inputHidden id="url" value="#{confirmAccountController.url}" />
+                    <h:commandButton styleClass="confirm" action="#{confirmAccountController.confirmAccount()}" style="display: none" />
+                </h:form>
+            </body>
         </ui:define>
     </ui:composition>
 </html>
