@@ -10,6 +10,7 @@
 </h:head>
 <ui:composition template = "../templates/template.xhtml">
     <ui:define name = "content">
+        
         <p:panelGrid columns="2">
             <f:facet name="header">
                 <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
@@ -19,7 +20,7 @@
 
             <h:outputText value="Login" />
             <h:outputText value="#{accountDetailsController.accountDTO.login}"/>
-
+            
             <h:outputText value="First name" />
             <h:outputText value="#{accountDetailsController.accountDTO.firstname}"/>
 
@@ -54,8 +55,11 @@
             <p:commandButton value="Edit" />
         </div>
     </ui:define>
+    
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="Account list" outcome="/admin/listAccounts.xhtml" />
+        
+        <p:menuitem value="Account details" outcome="/admin/accountDetails.xhtml?cid=#{accountDetailsController.accountDetailsConversationID}" />
     </ui:define>
 </ui:composition>
 </html>
