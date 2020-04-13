@@ -24,12 +24,18 @@ public class ConfirmAccountController implements Serializable {
     @Getter
     @Setter
     private String url = "";
+    private String parameters = "";
+    private String token = "";
+    private String login = "";
 
     public String confirmAccount() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        String parameters = url.substring(url.indexOf("token=") + 6);
-        String token = parameters.substring(0, parameters.indexOf("&login="));
-        String login = parameters.substring(parameters.indexOf("&login=") + 7);
+        if(url.contains("token="))
+            parameters = url.substring(url.indexOf("token=") + 6);
+        if(url.contains("&login=")) {
+            token = parameters.substring(0, parameters.indexOf("&login="));
+            login = parameters.substring(parameters.indexOf("&login=") + 7);
+        }
         accountDTO = confirmAccountDTOEndpoint.getAccountByLogin(login);
         if (accountDTO.getVeryficationToken().equals(token)) {
             confirmAccountDTOEndpoint.confirmAccount(accountDTO);
