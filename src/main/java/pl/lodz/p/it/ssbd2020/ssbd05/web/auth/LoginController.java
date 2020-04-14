@@ -2,11 +2,10 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginDTOEndpoint;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -34,10 +33,10 @@ public class LoginController implements Serializable {
     private String password;
     private String originalUrl;
 
-    @EJB
-    private AccountFacade accountFacade; //docelowo AccountService
+    @Inject
+    private LastLoginDTOEndpoint lastLoginDTOEndpoint;
     @Getter
-    private Account account;
+    private AccountDTO accountDTO;
 
     @PostConstruct
     public void init() {
@@ -60,13 +59,13 @@ public class LoginController implements Serializable {
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
 
-        this.account = accountFacade.findByLogin(username);
+        this.accountDTO = lastLoginDTOEndpoint.findByLogin(username);
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
-        if(null != account.getLastSuccessfulAuth())
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", account.getLastSuccessfulAuth());
-        if(null != account.getLastFailedAuth())
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", account.getLastFailedAuth());
-        lastLoginController.startConversation(account);
+        if(null != accountDTO.getLastSuccessfulAuth())
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", accountDTO.getLastSuccessfulAuth());
+        if(null != accountDTO.getLastFailedAuth())
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", accountDTO.getLastFailedAuth());
+        lastLoginController.startConversation(accountDTO);
         try {
             request.login(username, password);
             roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
@@ -78,7 +77,7 @@ public class LoginController implements Serializable {
             lastLoginController.updateLastFailedAuthDate();
         }
         lastLoginController.updateLastAuthIP();
-        this.accountFacade.edit(lastLoginController.endConversation());
+        this.lastLoginDTOEndpoint.edit(lastLoginController.endConversation());
     }
     public void informAboutLastAuthentication() {
         FacesContext context = FacesContext.getCurrentInstance();
