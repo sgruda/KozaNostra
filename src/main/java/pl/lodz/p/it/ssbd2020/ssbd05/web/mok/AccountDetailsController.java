@@ -42,4 +42,8 @@ public class AccountDetailsController implements Serializable {
         conversation.end();
         return "goBack";
     }
+    
+    public String getAccountDetailsConversationID(){
+        return conversation.getId();
+    }
 }
