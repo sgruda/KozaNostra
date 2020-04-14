@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -67,7 +68,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
-    private boolean active = true;
+    private boolean active;
 
     @Basic(optional = false)
     @NotNull
@@ -127,9 +128,16 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(table = "authentication_data", name = "force_password_change", nullable = false, columnDefinition = "boolean default true")
-    private boolean forcePasswordChange = true;
+    private boolean forcePasswordChange;
+
+    @Basic(optional = false)
+    @Column(table = "authentication_data", name = "veryfication_token")
+    private String veryficationToken;
 
     public Account() {
+        this.active = true;
+        this.forcePasswordChange = true;
+        this.veryficationToken = UUID.randomUUID().toString().replace("-", "");
     }
 
     public Account(Long id) {

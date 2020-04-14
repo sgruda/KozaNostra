@@ -24,9 +24,10 @@ public @Data class AccountDTO {
     private Date lastSuccessfulAuth;
     private Date lastFailedAuth;
     private String lastAuthIp;
+    private String veryficationToken;
     private int failedAuthCounter;
 
-    public AccountDTO(Long id, String login, String password, boolean active, boolean confirmed, String firstname, String lastname, String email, int failedAuthCounter) {
+    public AccountDTO(Long id, String login, String password, boolean active, boolean confirmed, String firstname, String lastname, String email, String veryficationToken, int failedAuthCounter) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -35,6 +36,7 @@ public @Data class AccountDTO {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.veryficationToken = veryficationToken;
         this.failedAuthCounter = failedAuthCounter;
     }
 }

@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -30,9 +31,10 @@ public class AccountConverter {
         accountDTO.setLastSuccessfulAuth(account.getLastSuccessfulAuth());
         accountDTO.setLastFailedAuth(account.getLastFailedAuth());
         accountDTO.setLastAuthIp(account.getLastAuthIp());
-        accountDTO.setFailedAuthCounter(account.getFailedAuthCounter());
+        accountDTO.setVeryficationToken(account.getVeryficationToken());
         return accountDTO;
     }
+
     public static Account DTOtoAccount(AccountDTO accountDTO, AccountFacade accountFacade) {
         Account account = accountFacade.findByLogin(accountDTO.getLogin());
         account.setId(accountDTO.getId());
@@ -40,6 +42,7 @@ public class AccountConverter {
         account.setPassword(accountDTO.getPassword());
         account.setActive(accountDTO.isActive());
         account.setConfirmed(accountDTO.isConfirmed());
+        account.setAccessLevelCollection(new ArrayList<>());
         Collection<AccessLevel> accessLevels = accountFacade.findByLogin(accountDTO.getLogin()).getAccessLevelCollection();
         for(String levelDTO : accountDTO.getAccessLevelCollection()) {
                 accessLevels.forEach(levelFacade -> {
@@ -54,6 +57,7 @@ public class AccountConverter {
         account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
         account.setLastFailedAuth(accountDTO.getLastFailedAuth());
         account.setLastAuthIp(accountDTO.getLastAuthIp());
+        account.setVeryficationToken(accountDTO.getVeryficationToken());
         account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
         return account;
 
