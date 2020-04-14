@@ -20,7 +20,7 @@
                             </c:forEach>
                         </p:selectOneMenu>
                     </h:panelGrid>
-                    <p:commandButton value="Submit" action="#{facesContext.externalContext.redirect('index.xhtml')}"/>
+                    <p:commandButton value="#{msg['page.changerole.submit']}" action="#{facesContext.externalContext.redirect('index.xhtml')}"/>
                 </h:form>
         </ui:define>
         <ui:define name="breadcrumb-menuitems">

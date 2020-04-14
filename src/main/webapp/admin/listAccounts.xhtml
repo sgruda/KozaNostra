@@ -5,43 +5,40 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>List accounts</title>
+        <title>#{msg['page.listaccounts.title']}</title>
     </h:head>
     <ui:composition template = "/templates/template.xhtml">
         <ui:define name = "content">
                 <h:form>
                     <p:dataTable var="account" value="#{listAccountsController.accountDTOs}">
-                        <p:column headerText="ID">
+                        <p:column headerText="#{msg['page.listaccounts.account.id']}">
                             <h:outputText value="#{account.id}"/>
                         </p:column>
 
-                        <p:column headerText="Login">
+                        <p:column headerText="#{msg['page.listaccounts.account.login']}">
                             <h:outputText value="#{account.login}"/>
                         </p:column>
 
-                        <p:column headerText="First name">
+                        <p:column headerText="#{msg['page.listaccounts.account.firstname']}">
                             <h:outputText value="#{account.firstname}"/>
                         </p:column>
 
-                        <p:column headerText="Last name">
+                        <p:column headerText="#{msg['page.listaccounts.account.lastname']}">
                             <h:outputText value="#{account.lastname}"/>
                         </p:column>
 
-                        <p:column headerText="Email address">
+                        <p:column headerText="#{msg['page.listaccounts.account.email']}">
                             <h:outputText value="#{account.email}"/>
                         </p:column>
 
-                        <p:column headerText="Details">
-                            <p:commandButton value="Details" action="#{accountDetailsController.selectAccount(account)}"/>
+                        <p:column headerText="#{msg['page.listaccounts.account.details']}">
+                            <p:commandButton value="#{msg['page.listaccounts.account.details']}" action="#{accountDetailsController.selectAccount(account)}"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>
         </ui:define>
         <ui:define name="breadcrumb-menuitems">
-            <p:menuitem value="Account list" outcome="/admin/listAccounts.xhtml" />
+            <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
         </ui:define>
     </ui:composition>
-    <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="List accounts" outcome="/admin/listAccounts.xhtml" />
-    </ui:define>
 </html>
