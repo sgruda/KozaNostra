@@ -16,11 +16,11 @@ import javax.validation.constraints.Size;
 })
 @TableGenerator(name = "EventTypesIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "event_types", valueColumnName = "id_range")
 @NamedQueries({
-    @NamedQuery(name = "EventTypes.findAll", query = "SELECT e FROM EventTypes e"),
-    @NamedQuery(name = "EventTypes.findById", query = "SELECT e FROM EventTypes e WHERE e.id = :id"),
-    @NamedQuery(name = "EventTypes.findByTypeName", query = "SELECT e FROM EventTypes e WHERE e.typeName = :typeName"),
-    @NamedQuery(name = "EventTypes.findByVersion", query = "SELECT e FROM EventTypes e WHERE e.version = :version")})
-public class EventTypes implements Serializable {
+    @NamedQuery(name = "EventTypes.findAll", query = "SELECT e FROM EventType e"),
+    @NamedQuery(name = "EventTypes.findById", query = "SELECT e FROM EventType e WHERE e.id = :id"),
+    @NamedQuery(name = "EventTypes.findByTypeName", query = "SELECT e FROM EventType e WHERE e.typeName = :typeName"),
+    @NamedQuery(name = "EventTypes.findByVersion", query = "SELECT e FROM EventType e WHERE e.version = :version")})
+public class EventType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,14 +49,14 @@ public class EventTypes implements Serializable {
     @ManyToOne(optional = false)
     private Hall hall;
 
-    public EventTypes() {
+    public EventType() {
     }
 
-    public EventTypes(Long id) {
+    public EventType(Long id) {
         this.id = id;
     }
 
-    public EventTypes(Long id, String typeName, long version) {
+    public EventType(Long id, String typeName, long version) {
         this.id = id;
         this.typeName = typeName;
         this.version = version;
@@ -72,10 +72,10 @@ public class EventTypes implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EventTypes)) {
+        if (!(object instanceof EventType)) {
             return false;
         }
-        EventTypes other = (EventTypes) object;
+        EventType other = (EventType) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

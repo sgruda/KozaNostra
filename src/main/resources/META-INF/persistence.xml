@@ -10,7 +10,7 @@
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Manager</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventTypes</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation</class>
@@ -31,7 +31,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>java:app/jdbc/ssbd05mosDS</jta-data-source>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventTypes</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account</class>
@@ -69,7 +69,7 @@
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Manager</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventTypes</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>

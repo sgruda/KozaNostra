@@ -12,7 +12,7 @@ import java.io.IOException;
 public class LogoutController {
 
     @Inject
-    RoleController roleController;
+    private RoleController roleController;
 
     public void logout() throws IOException {
         roleController.setSelectedRole(null);

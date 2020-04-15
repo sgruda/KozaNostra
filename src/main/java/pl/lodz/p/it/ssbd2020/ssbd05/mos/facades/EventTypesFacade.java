@@ -4,11 +4,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventTypes;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 
 
 @Stateless
-public class EventTypesFacade extends AbstractFacade<EventTypes> {
+public class EventTypesFacade extends AbstractFacade<EventType> {
 
     @PersistenceContext(unitName = "ssbd05mosPU")
     private EntityManager em;
@@ -19,7 +19,7 @@ public class EventTypesFacade extends AbstractFacade<EventTypes> {
     }
 
     public EventTypesFacade() {
-        super(EventTypes.class);
+        super(EventType.class);
     }
     
 }
