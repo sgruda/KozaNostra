@@ -7,24 +7,24 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Change role</title>
+        <title>#{msg['page.changerole.title']}</title>
     </h:head>
     <ui:composition template = "/templates/template.xhtml">
         <ui:define name = "content">
                 <h:form>
                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                        <p:outputLabel for="@next" value="Access level:" />
+                        <p:outputLabel for="@next" value="#{msg['page.changerole.title']}" />
                         <p:selectOneMenu value="#{roleController.selectedRole}" rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}">
                             <c:forEach items="#{roleController.allUserRoles}" var="role">
                                 <f:selectItem itemLabel="#{role}" itemValue="#{role}"/>
                             </c:forEach>
                         </p:selectOneMenu>
                     </h:panelGrid>
-                    <p:commandButton value="Submit" action="#{facesContext.externalContext.redirect('index.xhtml')}"/>
+                    <p:commandButton value="#{msg['page.changerole.submit']}" action="#{facesContext.externalContext.redirect('index.xhtml')}"/>
                 </h:form>
         </ui:define>
         <ui:define name="breadcrumb-menuitems">
-            <p:menuitem value="Change role" outcome="/changeRole.xhtml" />
+            <p:menuitem value="#{msg['page.changerole.breadcrumbs']}" outcome="/changeRole.xhtml" />
         </ui:define>
     </ui:composition>
 

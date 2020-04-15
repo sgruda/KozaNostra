@@ -2,10 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <h:head>
-        <title>Confirm account</title>
+        <title>#{msg['page.confirmaccount.title']}</title>
     </h:head>
     <ui:composition template = "/templates/template.xhtml">
         <ui:define name = "content">
@@ -22,6 +23,9 @@
                     <h:commandButton styleClass="confirm" action="#{confirmAccountController.confirmAccount()}" style="display: none" />
                 </h:form>
             </body>
+        </ui:define>
+        <ui:define name="breadcrumb-menuitems">
+            <p:menuitem value="#{msg['page.confirmaccount.breadcrumbs']}" outcome="/confirmAccount.xhtml" />
         </ui:define>
     </ui:composition>
 </html>

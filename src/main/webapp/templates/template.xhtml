@@ -15,13 +15,13 @@
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
                 <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole('Admin')}">
-                    <h1 style="font-weight:normal">Admin console</h1>
-                    <p:button value="List accounts" outcome="/admin/listAccounts.xhtml"/>
+                    <h1 style="font-weight:normal">#{msg['page.template.admin.console']}</h1>
+                    <p:button value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
                 </ui:fragment>
                 <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole('Manager')}">
-                    <h1 style="font-weight:normal">Manager console</h1>
+                    <h1 style="font-weight:normal">#{msg['page.template.manager.console']}</h1>
                 </ui:fragment>
-                <p:commandButton value="Hide" oncomplete="PF('sb').hide()"/>
+                <p:commandButton value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
             </p:sidebar>
              <div class = "header-left">
                  <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole('Admin') or roleController.isSelectedRole('Manager')}">
@@ -29,16 +29,16 @@
                  </p:commandLink>
                  <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
              </div>
-             <div class = "header-right">        
+             <div class = "header-right">
                 <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
-                   <h:link class="link" outcome="/login/login.xhtml">Log in</h:link>
-                   <h:link class="link" outcome="/register.xhtml">Sign up</h:link>
+                   <h:link class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
+                   <h:link class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
                 </ui:fragment>
                 <ui:fragment id="authenticated-right-links" rendered="#{not empty request.remoteUser}">
                    <h:form>
-                       <h:commandLink class="link" value="Log out" action="#{logoutController.logout()}"/>
+                       <h:commandLink class="link" value="#{msg['page.template.logout']}" action="#{logoutController.logout()}"/>
                    </h:form> 
-                   <h:link class="link" value="Swap roles" outcome="/changeRole.xhtml"/>
+                   <h:link class="link" value="#{msg['page.template.changerole']}" outcome="/changeRole.xhtml"/>
                 </ui:fragment>
              </div>
         </div>

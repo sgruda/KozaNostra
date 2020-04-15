@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
-    <title>Account details</title>
+    <title>#{msg['page.accountdetails.title']}</title>
 </h:head>
 <ui:composition template = "../templates/template.xhtml">
     <ui:define name = "content">
@@ -15,51 +15,51 @@
             <f:facet name="header">
                 <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
             </f:facet>
-            <h:outputText value="ID" />
+            <h:outputText value="#{msg['page.accountdetails.account.id']}" />
             <h:outputText value="#{accountDetailsController.accountDTO.id}"/>
 
-            <h:outputText value="Login" />
+            <h:outputText value="#{msg['page.accountdetails.account.login']}" />
             <h:outputText value="#{accountDetailsController.accountDTO.login}"/>
             
-            <h:outputText value="First name" />
+            <h:outputText value="#{msg['page.accountdetails.account.firstname']}" />
             <h:outputText value="#{accountDetailsController.accountDTO.firstname}"/>
 
-            <h:outputText value="Last name" />
+            <h:outputText value="#{msg['page.accountdetails.account.lastname']}" />
             <h:outputText value="#{accountDetailsController.accountDTO.lastname}"/>
 
-            <h:outputText value="E-mail" />
+            <h:outputText value="#{msg['page.accountdetails.account.email']}" />
             <h:outputText value="#{accountDetailsController.accountDTO.email}"/>
 
-            <h:outputText value="Active" />
+            <h:outputText value="#{msg['page.accountdetails.account.active']}" />
             <h:outputText value="#{accountDetailsController.accountDTO.active ? 'Yes' : 'No'}"/>
 
-            <h:outputText value="Confirmed" />
+            <h:outputText value="#{msg['page.accountdetails.account.confirmed']}" />
             <h:outputText value="#{accountDetailsController.accountDTO.confirmed ? 'Yes' : 'No'}"/>
 
-            <h:outputText value="Access levels" />
+            <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}" />
             <ui:repeat value="#{accountDetailsController.accountDTO.accessLevelCollection}" var="lvl">
                 <h:outputText value="#{lvl}&#10;"/>
             </ui:repeat>
 
-            <h:outputText value="Last successful authentication" />
+            <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}" />
             <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.accountDTO.lastSuccessfulAuth)}"/>
 
-            <h:outputText value="Last failed authentication" />
+            <h:outputText value="#{msg['page.accountdetails.account.lastsfailauth']}" />
             <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.accountDTO.lastFailedAuth)}"/>
 
-            <h:outputText value="Last authentication IP address" />
+            <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
             <h:outputText value="#{accountDetailsController.accountDTO.lastAuthIp}"/>
         </p:panelGrid>
         <div style="margin: 5px">
-            <p:commandButton value="Back" action="#{accountDetailsController.goBack()}"/>
-            <p:commandButton value="Edit" />
+            <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
+            <p:commandButton value="#{msg['page.accountdetails.edit']}" />
         </div>
     </ui:define>
     
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="Account list" outcome="/admin/listAccounts.xhtml" />
+        <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
         
-        <p:menuitem value="Account details" outcome="/admin/accountDetails.xhtml?cid=#{accountDetailsController.accountDetailsConversationID}" />
+        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/admin/accountDetails.xhtml?cid=#{accountDetailsController.accountDetailsConversationID}" />
     </ui:define>
 </ui:composition>
 </html>
