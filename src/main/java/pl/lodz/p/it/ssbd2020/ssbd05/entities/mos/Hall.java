@@ -80,7 +80,7 @@ public class Hall implements Serializable {
     private long version;
 
     @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hall")
-    private Collection<EventTypes> eventTypesCollection = new ArrayList<>();
+    private Collection<EventType> eventTypeCollection = new ArrayList<>();
 
     @NotNull
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
