@@ -52,6 +52,10 @@ public class RoleController implements Serializable {
         return roles.toArray(new String[0]);
     }
 
+    public int getAllUserRolesLength() {
+        return getAllUserRoles().length;
+    }
+
     public String getThemeForRole() {
         if(this.selectedRole.equalsIgnoreCase("admin"))
             return "luna-green";
