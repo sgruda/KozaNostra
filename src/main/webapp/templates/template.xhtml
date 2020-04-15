@@ -38,7 +38,7 @@
                    <h:form>
                        <h:commandLink class="link" value="#{msg['page.template.logout']}" action="#{logoutController.logout()}"/>
                    </h:form> 
-                   <h:link class="link" value="#{msg['page.template.changerole']}" outcome="/changeRole.xhtml"/>
+                   <h:link class="link" value="#{msg['page.template.changerole']}" outcome="/changeRole.xhtml" rendered="#{roleController.allUserRolesLength > 1}"/>
                 </ui:fragment>
              </div>
         </div>
