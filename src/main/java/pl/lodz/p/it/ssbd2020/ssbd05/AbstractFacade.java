@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05;
 
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 
 public abstract class AbstractFacade<T> {
@@ -25,8 +26,8 @@ public abstract class AbstractFacade<T> {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
-    public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+    public Optional<T> find(Object id) {
+        return Optional.ofNullable(getEntityManager().find(entityClass, id));
     }
 
     public List<T> findAll() {

@@ -22,6 +22,7 @@ import java.util.Collection;
 @RequestScoped
 public class RegistrationController implements Serializable {
 
+    //TODO: proces rejestracji powinien korzystać z DTO, endpointów, managerów itd.
     @Inject
     private AccountFacade accountFacade;
     private String login;
@@ -55,7 +56,7 @@ public class RegistrationController implements Serializable {
     }
 
     public boolean checkIfLoginAlreadyExists(String username) {
-        Collection<Account> accounts = this.accountFacade.getAllAccounts();
+        Collection<Account> accounts = this.accountFacade.getAllAccounts().get();
         for (Account account : accounts) {
             if (account.getLogin().equals(username)) return true;
         }
@@ -63,7 +64,7 @@ public class RegistrationController implements Serializable {
     }
 
     public boolean checkIfEmailAlreadyExists(String emailAddress) {
-        Collection<Account> accounts = this.accountFacade.getAllAccounts();
+        Collection<Account> accounts = this.accountFacade.getAllAccounts().get();
         for (Account account : accounts) {
             if (account.getEmail().equals(emailAddress)) return true;
         }

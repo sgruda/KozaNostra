@@ -36,14 +36,14 @@ public class AccountConverter {
     }
 
     public static Account DTOtoAccount(AccountDTO accountDTO, AccountFacade accountFacade) {
-        Account account = accountFacade.findByLogin(accountDTO.getLogin());
+        Account account = accountFacade.findByLogin(accountDTO.getLogin()).get();
         account.setId(accountDTO.getId());
         account.setLogin(accountDTO.getLogin());
         account.setPassword(accountDTO.getPassword());
         account.setActive(accountDTO.isActive());
         account.setConfirmed(accountDTO.isConfirmed());
         account.setAccessLevelCollection(new ArrayList<>());
-        Collection<AccessLevel> accessLevels = accountFacade.findByLogin(accountDTO.getLogin()).getAccessLevelCollection();
+        Collection<AccessLevel> accessLevels = accountFacade.findByLogin(accountDTO.getLogin()).get().getAccessLevelCollection();
         for(String levelDTO : accountDTO.getAccessLevelCollection()) {
                 accessLevels.forEach(levelFacade -> {
                     if(levelFacade.toString().equals(levelDTO))
