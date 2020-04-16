@@ -37,7 +37,6 @@ public class AccountConverter {
 
     public static Account DTOtoAccount(AccountDTO accountDTO, AccountFacade accountFacade) {
         Account account = accountFacade.findByLogin(accountDTO.getLogin()).get();
-        account.setId(accountDTO.getId());
         account.setLogin(accountDTO.getLogin());
         account.setPassword(accountDTO.getPassword());
         account.setActive(accountDTO.isActive());
