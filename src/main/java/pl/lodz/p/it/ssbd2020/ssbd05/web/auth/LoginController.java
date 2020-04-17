@@ -58,27 +58,40 @@ public class LoginController implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-
         this.accountDTO = lastLoginDTOEndpoint.findByLogin(username);
+        if(this.accountDTO.isActive() && this.accountDTO.isConfirmed()){
+
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
-        if(null != accountDTO.getLastSuccessfulAuth())
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", accountDTO.getLastSuccessfulAuth());
-        if(null != accountDTO.getLastFailedAuth())
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", accountDTO.getLastFailedAuth());
-        lastLoginController.startConversation(accountDTO);
-        try {
-            request.login(username, password);
-            roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
-            externalContext.redirect(originalUrl);
-            externalContext.getSessionMap().put("printLastLoginInfo", true);
-            lastLoginController.updateLastSuccesfullAuthDate();
-        } catch (ServletException e) {
-            context.addMessage(null, new FacesMessage("Incorrect credentials"));
-            lastLoginController.updateLastFailedAuthDate();
+            if(null != accountDTO.getLastSuccessfulAuth())
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", accountDTO.getLastSuccessfulAuth());
+            if(null != accountDTO.getLastFailedAuth())
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", accountDTO.getLastFailedAuth());
+            lastLoginController.startConversation(accountDTO);
+            try {
+                request.login(username, password);
+                roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
+                externalContext.redirect(originalUrl);
+                externalContext.getSessionMap().put("printLastLoginInfo", true);
+                lastLoginController.updateLastSuccesfullAuthDate();
+            } catch (ServletException e) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect credentials", null));
+                lastLoginController.updateLastFailedAuthDate();
+            }
+            lastLoginController.updateLastAuthIP();
+            this.lastLoginDTOEndpoint.edit(lastLoginController.endConversation());
+        }else if(!this.accountDTO.isActive()  && !this.accountDTO.isConfirmed()) {
+            updateAuthFailureInfo();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not confirmed", null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not active", null));
+        }else if(!this.accountDTO.isActive()  && this.accountDTO.isConfirmed()) {
+            updateAuthFailureInfo();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not active", null));
+        }else if(this.accountDTO.isActive()  && !this.accountDTO.isConfirmed()){
+            updateAuthFailureInfo();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not confirmed", null));
         }
-        lastLoginController.updateLastAuthIP();
-        this.lastLoginDTOEndpoint.edit(lastLoginController.endConversation());
     }
+
     public void informAboutLastAuthentication() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
@@ -92,5 +105,12 @@ public class LoginController implements Serializable {
             externalContext.getSessionMap().remove("lastSuccesfullAuthDate");
             externalContext.getSessionMap().remove("lastFailedAuthDate");
         }
+    }
+
+    public void updateAuthFailureInfo(){
+        lastLoginController.startConversation(accountDTO);
+        lastLoginController.updateLastFailedAuthDate();
+        lastLoginController.updateLastAuthIP();
+        this.lastLoginDTOEndpoint.edit(lastLoginController.endConversation());
     }
 }
