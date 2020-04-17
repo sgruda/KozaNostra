@@ -16,39 +16,39 @@
                 <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
             </f:facet>
             <h:outputText value="#{msg['page.accountdetails.account.id']}" />
-            <h:outputText value="#{accountDetailsController.accountDTO.id}"/>
+            <h:outputText value="#{accountDetailsController.account.id}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.login']}" />
-            <h:outputText value="#{accountDetailsController.accountDTO.login}"/>
+            <h:outputText value="#{accountDetailsController.account.login}"/>
             
             <h:outputText value="#{msg['page.accountdetails.account.firstname']}" />
-            <h:outputText value="#{accountDetailsController.accountDTO.firstname}"/>
+            <h:outputText value="#{accountDetailsController.account.firstname}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastname']}" />
-            <h:outputText value="#{accountDetailsController.accountDTO.lastname}"/>
+            <h:outputText value="#{accountDetailsController.account.lastname}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.email']}" />
-            <h:outputText value="#{accountDetailsController.accountDTO.email}"/>
+            <h:outputText value="#{accountDetailsController.account.email}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.active']}" />
-            <h:outputText value="#{accountDetailsController.accountDTO.active ? 'Yes' : 'No'}"/>
+            <h:outputText value="#{accountDetailsController.account.active ? 'Yes' : 'No'}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.confirmed']}" />
-            <h:outputText value="#{accountDetailsController.accountDTO.confirmed ? 'Yes' : 'No'}"/>
+            <h:outputText value="#{accountDetailsController.account.confirmed ? 'Yes' : 'No'}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}" />
-            <ui:repeat value="#{accountDetailsController.accountDTO.accessLevelCollection}" var="lvl">
+            <ui:repeat value="#{accountDetailsController.account.accessLevelCollection}" var="lvl">
                 <h:outputText value="#{lvl}&#10;"/>
             </ui:repeat>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}" />
-            <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.accountDTO.lastSuccessfulAuth)}"/>
+            <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.account.lastSuccessfulAuth)}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsfailauth']}" />
-            <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.accountDTO.lastFailedAuth)}"/>
+            <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.account.lastFailedAuth)}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
-            <h:outputText value="#{accountDetailsController.accountDTO.lastAuthIp}"/>
+            <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
         </p:panelGrid>
         <div style="margin: 5px">
             <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>

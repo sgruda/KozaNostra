@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Named
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class ConfirmAccountDTOEndpoint implements Serializable {
+public class ConfirmAccountEndpoint implements Serializable {
 
     @Inject
     private AccountManager accountManager;

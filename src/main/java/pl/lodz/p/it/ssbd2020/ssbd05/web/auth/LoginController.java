@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginDTOEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -17,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-
 
 @Named
 @ViewScoped
@@ -34,9 +33,9 @@ public class LoginController implements Serializable {
     private String originalUrl;
 
     @Inject
-    private LastLoginDTOEndpoint lastLoginDTOEndpoint;
+    private LastLoginEndpoint lastLoginEndpoint;
     @Getter
-    private AccountDTO accountDTO;
+    private AccountDTO account;
 
     @PostConstruct
     public void init() {
@@ -58,15 +57,15 @@ public class LoginController implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-        this.accountDTO = lastLoginDTOEndpoint.findByLogin(username);
-        if(this.accountDTO.isActive() && this.accountDTO.isConfirmed()){
+        this.account = lastLoginEndpoint.findByLogin(username);
+        if(this.account.isActive() && this.account.isConfirmed()){
 
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
-            if(null != accountDTO.getLastSuccessfulAuth())
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", accountDTO.getLastSuccessfulAuth());
-            if(null != accountDTO.getLastFailedAuth())
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", accountDTO.getLastFailedAuth());
-            lastLoginController.startConversation(accountDTO);
+            if(null != account.getLastSuccessfulAuth())
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", account.getLastSuccessfulAuth());
+            if(null != account.getLastFailedAuth())
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", account.getLastFailedAuth());
+            lastLoginController.startConversation(account);
             try {
                 request.login(username, password);
                 roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
@@ -78,15 +77,15 @@ public class LoginController implements Serializable {
                 lastLoginController.updateLastFailedAuthDate();
             }
             lastLoginController.updateLastAuthIP();
-            this.lastLoginDTOEndpoint.edit(lastLoginController.endConversation());
-        }else if(!this.accountDTO.isActive()  && !this.accountDTO.isConfirmed()) {
+            this.lastLoginEndpoint.edit(lastLoginController.endConversation());
+        }else if(!this.account.isActive()  && !this.account.isConfirmed()) {
             updateAuthFailureInfo();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not confirmed", null));
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not active", null));
-        }else if(!this.accountDTO.isActive()  && this.accountDTO.isConfirmed()) {
+        }else if(!this.account.isActive()  && this.account.isConfirmed()) {
             updateAuthFailureInfo();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not active", null));
-        }else if(this.accountDTO.isActive()  && !this.accountDTO.isConfirmed()){
+        }else if(this.account.isActive()  && !this.account.isConfirmed()){
             updateAuthFailureInfo();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not confirmed", null));
         }
@@ -108,9 +107,9 @@ public class LoginController implements Serializable {
     }
 
     public void updateAuthFailureInfo(){
-        lastLoginController.startConversation(accountDTO);
+        lastLoginController.startConversation(account);
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
-        this.lastLoginDTOEndpoint.edit(lastLoginController.endConversation());
+        this.lastLoginEndpoint.edit(lastLoginController.endConversation());
     }
 }
