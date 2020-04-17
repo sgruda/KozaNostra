@@ -1,7 +1,8 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
+package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
 import com.sun.mail.smtp.SMTPTransport;
 
+import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,9 +17,12 @@ import java.util.Properties;
 
 public class EmailController {
 
-    private static final String SMTP_SERVER = "smtp.gmail.com";
-    private static final String USERNAME = "ssbd202005@gmail.com";
-    private static final String PASSWORD = "tzwsgrp22";
+//    private static final String SMTP_SERVER = "smtp.gmail.com";
+//    private static final String USERNAME = "ssbd202005@gmail.com";
+//    private static final String PASSWORD = "tzwsgrp22";
+
+    @Resource(lookup = "java:app/email")
+    private Session session;
 
     public void sendRegistrationEmail(String mail, String token, String login) {
         String subject = "Confirm your account";
@@ -31,14 +35,14 @@ public class EmailController {
     }
 
     private void sendEmail(String mail, String subject, String body) {
-        Properties prop = System.getProperties();
-        prop.put("mail.smtp.host", SMTP_SERVER);
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.ssl.trust", SMTP_SERVER);
-        prop.put("mail.smtp.starttls.enable", "true");
+//        Properties prop = System.getProperties();
+//        prop.put("mail.smtp.host", SMTP_SERVER);
+//        prop.put("mail.smtp.auth", "true");
+//        prop.put("mail.smtp.port", "587");
+//        prop.put("mail.smtp.ssl.trust", SMTP_SERVER);
+//        prop.put("mail.smtp.starttls.enable", "true");
 
-        Session session = Session.getInstance(prop, null);
+//        Session session = Session.getInstance(prop, null);
         Message msg = new MimeMessage(session);
 
         try {
@@ -47,7 +51,7 @@ public class EmailController {
             MimeMultipart mimeMultipart = new MimeMultipart();
             mimeMultipart.addBodyPart(mimeBodyPart);
 
-            msg.setFrom(new InternetAddress(USERNAME));
+            msg.setFrom(new InternetAddress(session.getProperty("username")));
             msg.setContent(mimeMultipart);
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(mail, false));
@@ -55,7 +59,7 @@ public class EmailController {
             msg.setSentDate(new Date());
 
             SMTPTransport t = (SMTPTransport) session.getTransport("smtp");
-            t.connect(SMTP_SERVER, USERNAME, PASSWORD);
+            t.connect(session.getProperty("mail.smtp.host"), session.getProperty("username"), session.getProperty("password"));
             t.sendMessage(msg, msg.getAllRecipients());
             t.close();
 

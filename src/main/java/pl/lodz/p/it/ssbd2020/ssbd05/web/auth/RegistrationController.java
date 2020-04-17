@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 import lombok.Data;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.web.mok.EmailController;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailController;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
