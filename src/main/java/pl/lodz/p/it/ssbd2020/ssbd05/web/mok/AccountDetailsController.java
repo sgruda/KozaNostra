@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDTODetailsEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.Conversation;
@@ -19,15 +19,15 @@ import java.util.Date;
 public class AccountDetailsController implements Serializable {
 
     @Inject
-    private AccountDTODetailsEndpoint accountDTODetailsEndpoint;
+    private AccountDetailsEndpoint accountDetailsEndpoint;
     @Inject
     private Conversation conversation;
     @Getter
-    private AccountDTO accountDTO;
+    private AccountDTO account;
 
     public String selectAccount(AccountDTO accountDTO) {
         conversation.begin();
-        this.accountDTO = accountDTODetailsEndpoint.getAccountDTO(accountDTO.getId());
+        this.account = accountDetailsEndpoint.getAccount(accountDTO.getId());
         return "accountDetails";
     }
 

@@ -7,7 +7,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class AccountConverter {
 
@@ -18,19 +17,11 @@ public class AccountConverter {
         accountDTO.setPassword(account.getPassword());
         accountDTO.setActive(account.isActive());
         accountDTO.setConfirmed(account.isConfirmed());
-        accountDTO.setAccessLevelCollection(
-                account
-                .getAccessLevelCollection()
-                .stream()
-                .map(AccessLevel::getAccessLevel)
-                .collect(Collectors.toList())
-        );
+
         accountDTO.setFirstname(account.getFirstname());
         accountDTO.setLastname(account.getLastname());
         accountDTO.setEmail(account.getEmail());
-        accountDTO.setLastSuccessfulAuth(account.getLastSuccessfulAuth());
-        accountDTO.setLastFailedAuth(account.getLastFailedAuth());
-        accountDTO.setLastAuthIp(account.getLastAuthIp());
+
         accountDTO.setVeryficationToken(account.getVeryficationToken());
         return accountDTO;
     }
@@ -57,7 +48,6 @@ public class AccountConverter {
         account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
         account.setLastFailedAuth(accountDTO.getLastFailedAuth());
         account.setLastAuthIp(accountDTO.getLastAuthIp());
-        account.setVeryficationToken(accountDTO.getVeryficationToken());
         account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
         return account;
 

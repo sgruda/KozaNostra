@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ListAccountDTOsEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ListAccountsEndpoint;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -18,12 +18,12 @@ import java.util.Collection;
 public class ListAccountsController implements Serializable {
 
     @Inject
-    private ListAccountDTOsEndpoint listAccountDTOsEndpoint;
+    private ListAccountsEndpoint listAccountsEndpoint;
     @Getter
-    private Collection<AccountDTO> accountDTOs;
+    private Collection<AccountDTO> accounts;
 
     @PostConstruct
     public void init() {
-        accountDTOs = listAccountDTOsEndpoint.getAllAccountDTOs();
+        accounts = listAccountsEndpoint.getAllAccounts();
     }
 }
