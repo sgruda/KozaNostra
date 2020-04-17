@@ -20,26 +20,26 @@ import java.util.Date;
 public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;
-    private AccountDTO accountDTO;
+    private AccountDTO account;
 
     public void startConversation(AccountDTO accountDTO) {
         conversation.begin();
-        this.accountDTO = accountDTO;
+        this.account = accountDTO;
     }
     public AccountDTO endConversation() {
         conversation.end();
-        return this.accountDTO;
+        return this.account;
     }
     public void updateLastAuthIP() {
-        accountDTO.setLastAuthIp(this.getIP());
+        account.setLastAuthIp(this.getIP());
     }
     public void updateLastSuccesfullAuthDate() {
-        accountDTO.setLastSuccessfulAuth(Date.from(Instant.now()));
-        accountDTO.setFailedAuthCounter(0);
+        account.setLastSuccessfulAuth(Date.from(Instant.now()));
+        account.setFailedAuthCounter(0);
     }
     public void updateLastFailedAuthDate() {
-        accountDTO.setLastFailedAuth(Date.from(Instant.now()));
-        accountDTO.setFailedAuthCounter(accountDTO.getFailedAuthCounter() + 1);
+        account.setLastFailedAuth(Date.from(Instant.now()));
+        account.setFailedAuthCounter(account.getFailedAuthCounter() + 1);
     }
     private String getIP() {
         URL urlToCheckIpAmazonaws;
