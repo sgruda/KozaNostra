@@ -2,9 +2,9 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
@@ -12,16 +12,16 @@ import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
-@Stateful
+@Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ConfirmAccountDTOEndpoint implements Serializable {
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountManager accountManager;
     private Account account;
 
     public AccountDTO getAccountByLogin(String login) {
-        account = accountFacade.findByLogin(login);
+        account = accountManager.findByLogin(login);
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(account.getId());
         accountDTO.setLogin(account.getLogin());
@@ -30,10 +30,10 @@ public class ConfirmAccountDTOEndpoint implements Serializable {
     }
 
     public void confirmAccount(AccountDTO accountDTO) {
-        account = accountFacade.find(accountDTO.getId());
+        account = accountManager.findById(accountDTO.getId());
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
-            accountFacade.edit(account);
+            accountManager.edit(account);
         }
     }
 }

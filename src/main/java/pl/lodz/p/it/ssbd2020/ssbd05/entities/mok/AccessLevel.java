@@ -25,6 +25,7 @@ public class AccessLevel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Setter(lombok.AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccessLevelIdGen")
     @Basic(optional = false)
