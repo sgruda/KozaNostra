@@ -5,9 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
-import javax.management.Query;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.Collection;

@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginDTOEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -17,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-
 
 @Named
 @ViewScoped
@@ -34,7 +33,7 @@ public class LoginController implements Serializable {
     private String originalUrl;
 
     @Inject
-    private LastLoginDTOEndpoint lastLoginDTOEndpoint;
+    private LastLoginEndpoint lastLoginEndpoint;
     @Getter
     private AccountDTO accountDTO;
 
@@ -58,7 +57,7 @@ public class LoginController implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-        this.accountDTO = lastLoginDTOEndpoint.findByLogin(username);
+        this.accountDTO = lastLoginEndpoint.findByLogin(username);
         if(this.accountDTO.isActive() && this.accountDTO.isConfirmed()){
 
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
@@ -78,7 +77,7 @@ public class LoginController implements Serializable {
                 lastLoginController.updateLastFailedAuthDate();
             }
             lastLoginController.updateLastAuthIP();
-            this.lastLoginDTOEndpoint.edit(lastLoginController.endConversation());
+            this.lastLoginEndpoint.edit(lastLoginController.endConversation());
         }else if(!this.accountDTO.isActive()  && !this.accountDTO.isConfirmed()) {
             updateAuthFailureInfo();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not confirmed", null));
@@ -111,6 +110,6 @@ public class LoginController implements Serializable {
         lastLoginController.startConversation(accountDTO);
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
-        this.lastLoginDTOEndpoint.edit(lastLoginController.endConversation());
+        this.lastLoginEndpoint.edit(lastLoginController.endConversation());
     }
 }
