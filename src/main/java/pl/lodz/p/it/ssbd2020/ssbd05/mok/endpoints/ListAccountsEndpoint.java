@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ListAccountsEndpoint {
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountManager accountManager;
 
     private AccountDTO accountToDTO(Account account) {
         AccountDTO accountDTO = new AccountDTO();
@@ -30,7 +30,7 @@ public class ListAccountsEndpoint {
     }
 
     public Collection<AccountDTO> getAllAccounts() {
-        return accountFacade.getAllAccounts()
+        return accountManager.getAllAccounts()
                 .stream()
                 .map(this::accountToDTO)
                 .collect(Collectors.toList());

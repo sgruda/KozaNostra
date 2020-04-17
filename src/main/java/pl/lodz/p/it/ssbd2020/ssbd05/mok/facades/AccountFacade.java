@@ -7,8 +7,8 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.Collection;
+import java.util.Optional;
 
 @Stateless
 public class AccountFacade extends AbstractFacade<Account> {
@@ -25,21 +25,13 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
-    public Collection<Account> getAllAccounts(){
-        try{
-            return this.em.createNamedQuery("Account.findAll",Account.class).getResultList();
-        }catch(Exception e){
-            throw e;
-        }
+    public Optional<Collection<Account>> getAllAccounts(){
+        return Optional.ofNullable(this.em.createNamedQuery("Account.findAll",Account.class).getResultList());
     }
-    public Account findByLogin(String username) {
-        TypedQuery<Account> query =  this.em.createNamedQuery("Account.findByLogin", Account.class);
-        query.setParameter("login", username);
-        try{
-            return query.getSingleResult();
-        }catch(Exception e){
-            throw e;
-        }
+
+    public Optional<Account> findByLogin(String username) {
+        return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
+                .setParameter("login", username).getSingleResult());
     }
 
     @PermitAll

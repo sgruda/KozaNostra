@@ -73,7 +73,7 @@ public class LoginController implements Serializable {
                 externalContext.getSessionMap().put("printLastLoginInfo", true);
                 lastLoginController.updateLastSuccesfullAuthDate();
             } catch (ServletException e) {
-                context.addMessage(null, new FacesMessage("Incorrect credentials"));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect credentials", null));
                 lastLoginController.updateLastFailedAuthDate();
             }
             lastLoginController.updateLastAuthIP();

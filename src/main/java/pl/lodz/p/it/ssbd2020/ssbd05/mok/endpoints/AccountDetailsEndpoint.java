@@ -20,7 +20,7 @@ public class AccountDetailsEndpoint implements Serializable {
 
     public AccountDTO getAccount(Long id) {
         AccountDTO accountDTO = new AccountDTO();
-        Account account = accountFacade.find(id);
+        Account account = accountFacade.find(id).get();
         accountDTO.setId(account.getId());
         accountDTO.setLogin(account.getLogin());
         accountDTO.setFirstname(account.getFirstname());

@@ -13,7 +13,9 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Entity
-@Table(name = "status", schema = "ssbd05schema")
+@Table(name = "status", schema = "ssbd05schema", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"status_name"})
+})
 @TableGenerator(name = "StatusIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "status", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s"),
@@ -24,6 +26,7 @@ public class Status implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Setter(lombok.AccessLevel.NONE)
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "StatusIdGen")
@@ -34,7 +37,7 @@ public class Status implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "status_name", nullable = false, length = 32)
+    @Column(name = "status_name", nullable = false, length = 32, unique = true)
     private String statusName;
 
     @Getter(lombok.AccessLevel.NONE)
