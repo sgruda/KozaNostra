@@ -10,7 +10,7 @@
     <ui:composition template = "/templates/template.xhtml">
         <ui:define name = "content">
                 <h:form>
-                    <p:dataTable var="account" value="#{listAccountsController.accountDTOs}">
+                    <p:dataTable var="account" value="#{listAccountsController.accounts}">
                         <p:column headerText="#{msg['page.listaccounts.account.id']}">
                             <h:outputText value="#{account.id}"/>
                         </p:column>
