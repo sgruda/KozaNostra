@@ -14,7 +14,7 @@
                 <h:form>
                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
                         <p:outputLabel for="@next" value="#{msg['page.changerole.title']}" />
-                        <p:selectOneMenu value="#{roleController.selectedRole}" rendered="#{roleController.isUserInOneOfRoles('ADMIN', 'MANAGER', 'CLIENT')}">
+                        <p:selectOneMenu value="#{roleController.selectedRole}" rendered="#{roleController.allUserRolesLength > 1}">
                             <c:forEach items="#{roleController.allUserRoles}" var="role">
                                 <f:selectItem itemLabel="#{role}" itemValue="#{role}"/>
                             </c:forEach>
