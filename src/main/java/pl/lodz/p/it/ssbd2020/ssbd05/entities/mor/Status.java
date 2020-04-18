@@ -48,9 +48,6 @@ public class Status implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "status")
-    private Collection<Reservation> reservationCollection = new ArrayList<>();
-
     public Status() {
     }
 
