@@ -61,9 +61,6 @@ public class ExtraService implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "extraServiceCollection")
-    private Collection<Reservation> reservationCollection = new ArrayList<>();
-
     public ExtraService() {
     }
 
