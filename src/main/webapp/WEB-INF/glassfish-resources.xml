@@ -36,14 +36,4 @@
     <property name="User" value="ssbd05mor"/>
     <property name="Password" value="mor123"/>
   </jdbc-connection-pool>
-
-    <mail-resource enabled="true" debug="true" jndi-name="java:app/mail" transport-protocol="smtp" host="smtp.gmail.com" user="ssbd202005@gmail.com" from="ssbd202005@gmail.com">
-      <property name="mail.smtp.host" value="smtp.gmail.com" />
-      <property name="mail.smtp.auth" value="true" />
-      <property name="mail.smtp.port" value="587" />
-      <property name="mail.smtp.ssl.trust" value="smtp.gmail.com" />
-      <property name="mail.smtp.starttls.enable" value="true" />
-      <property name="username" value="ssbd202005@gmail.com" />
-      <property name="password" value="tzwsgrp22" />
-    </mail-resource>
 </resources>
