@@ -18,7 +18,7 @@ public class LastLoginEndpoint implements Serializable {
 
     public AccountDTO findByLogin(String username) {
         AccountDTO accountDTO = new AccountDTO();
-        Account account = accountFacade.findByLogin(username);
+        Account account = accountFacade.findByLogin(username).get();
         accountDTO.setLogin(account.getLogin());
         accountDTO.setActive(account.isActive());
         accountDTO.setConfirmed(account.isConfirmed());
@@ -29,7 +29,7 @@ public class LastLoginEndpoint implements Serializable {
     }
 
     public void edit(AccountDTO accountDTO) {
-        Account account = accountFacade.findByLogin(accountDTO.getLogin());
+        Account account = accountFacade.findByLogin(accountDTO.getLogin()).get();
         account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
         account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
         account.setLastFailedAuth(accountDTO.getLastFailedAuth());
