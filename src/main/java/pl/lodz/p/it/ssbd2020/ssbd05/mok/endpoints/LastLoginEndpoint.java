@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -14,11 +15,11 @@ import java.io.Serializable;
 public class LastLoginEndpoint implements Serializable {
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountManager accountManager;
 
     public AccountDTO findByLogin(String username) {
         AccountDTO accountDTO = new AccountDTO();
-        Account account = accountFacade.findByLogin(username);
+        Account account = accountManager.findByLogin(username);
         accountDTO.setLogin(account.getLogin());
         accountDTO.setActive(account.isActive());
         accountDTO.setConfirmed(account.isConfirmed());
@@ -29,10 +30,10 @@ public class LastLoginEndpoint implements Serializable {
     }
 
     public void edit(AccountDTO accountDTO) {
-        Account account = accountFacade.findByLogin(accountDTO.getLogin());
+        Account account = accountManager.findByLogin(accountDTO.getLogin());
         account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
         account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
         account.setLastFailedAuth(accountDTO.getLastFailedAuth());
-        accountFacade.edit(account);
+        accountManager.edit(account);
     }
 }
