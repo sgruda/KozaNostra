@@ -47,10 +47,6 @@ public class EventType implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @JoinColumn(name = "hall_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Hall hall;
-
     public EventType() {
     }
 
