@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @Table(name = "password_history", schema = "ssbd05schema", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"password"})
+        @UniqueConstraint(columnNames = {"password", "account_id"})
 })
 @TableGenerator(name = "PasswordHistoryIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "password_history")
 @NamedQueries({
@@ -35,7 +35,7 @@ public class PreviousPassword implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
-    @Column(name = "password", nullable = false, length = 64, unique = true)
+    @Column(name = "password", nullable = false, length = 64)
     private String password;
 
     @Getter(lombok.AccessLevel.NONE)
