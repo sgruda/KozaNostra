@@ -84,10 +84,10 @@ public class Account implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "account")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "account")
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "account")
+    @OneToMany(mappedBy = "account")
     private Collection<PreviousPassword> previousPasswordCollection = new ArrayList<>();
 
     @Basic(optional = false)
@@ -118,7 +118,7 @@ public class Account implements Serializable {
     private Date lastFailedAuth;
 
     @Size(max = 255)
-    @Column(table = "authentication_data", name = "last_auth_ip", length = 255)
+    @Column(table = "authentication_data", name = "last_auth_ip")
     private String lastAuthIp;
 
     @Basic(optional = false)
