@@ -66,7 +66,7 @@ public class Reservation implements Serializable {
     @ManyToOne(optional = false)
     private Status status;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    @ManyToMany
     @JoinTable(name = "extra_service_mapping", schema = "ssbd05schema",
             uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id", "extra_service_id"})
     )
