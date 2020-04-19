@@ -11,7 +11,9 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Entity
-@Table(name = "access_level",  schema = "ssbd05schema")
+@Table(name = "access_level",  schema = "ssbd05schema", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"access_level", "account_id"})
+})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "access_level")
 @TableGenerator(name = "AccessLevelIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "access_level")

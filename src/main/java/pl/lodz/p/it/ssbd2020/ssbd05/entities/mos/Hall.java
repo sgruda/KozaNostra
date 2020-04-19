@@ -19,15 +19,15 @@ import javax.validation.constraints.Size;
 })
 @TableGenerator(name = "HallIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "hall", valueColumnName = "id_range")
 @NamedQueries({
-    @NamedQuery(name = "Hall.findAll", query = "SELECT h FROM Hall h"),
-    @NamedQuery(name = "Hall.findById", query = "SELECT h FROM Hall h WHERE h.id = :id"),
-    @NamedQuery(name = "Hall.findByName", query = "SELECT h FROM Hall h WHERE h.name = :name"),
-    @NamedQuery(name = "Hall.findByCapacity", query = "SELECT h FROM Hall h WHERE h.capacity = :capacity"),
-    @NamedQuery(name = "Hall.findByActive", query = "SELECT h FROM Hall h WHERE h.active = :active"),
-    @NamedQuery(name = "Hall.findByArea", query = "SELECT h FROM Hall h WHERE h.area = :area"),
-    @NamedQuery(name = "Hall.findByDescription", query = "SELECT h FROM Hall h WHERE h.description = :description"),
-    @NamedQuery(name = "Hall.findByPrice", query = "SELECT h FROM Hall h WHERE h.price = :price"),
-    @NamedQuery(name = "Hall.findByVersion", query = "SELECT h FROM Hall h WHERE h.version = :version")})
+        @NamedQuery(name = "Hall.findAll", query = "SELECT h FROM Hall h"),
+        @NamedQuery(name = "Hall.findById", query = "SELECT h FROM Hall h WHERE h.id = :id"),
+        @NamedQuery(name = "Hall.findByName", query = "SELECT h FROM Hall h WHERE h.name = :name"),
+        @NamedQuery(name = "Hall.findByCapacity", query = "SELECT h FROM Hall h WHERE h.capacity = :capacity"),
+        @NamedQuery(name = "Hall.findByActive", query = "SELECT h FROM Hall h WHERE h.active = :active"),
+        @NamedQuery(name = "Hall.findByArea", query = "SELECT h FROM Hall h WHERE h.area = :area"),
+        @NamedQuery(name = "Hall.findByDescription", query = "SELECT h FROM Hall h WHERE h.description = :description"),
+        @NamedQuery(name = "Hall.findByPrice", query = "SELECT h FROM Hall h WHERE h.price = :price"),
+        @NamedQuery(name = "Hall.findByVersion", query = "SELECT h FROM Hall h WHERE h.version = :version")})
 public class Hall implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -80,7 +80,7 @@ public class Hall implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hall")
+    @OneToMany
     private Collection<EventType> eventTypeCollection = new ArrayList<>();
 
     @NotNull
@@ -88,7 +88,7 @@ public class Hall implements Serializable {
     @ManyToOne(optional = false)
     private Address address;
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "hall")
+    @OneToMany(mappedBy = "hall")
     private Collection<Reservation> reservationCollection = new ArrayList<>();
 
     public Hall() {
@@ -133,5 +133,5 @@ public class Hall implements Serializable {
     public String toString() {
         return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall[ id=" + id + " ]";
     }
-    
+
 }

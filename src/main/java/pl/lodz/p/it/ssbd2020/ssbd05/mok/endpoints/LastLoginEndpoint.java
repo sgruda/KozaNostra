@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.ejb.Stateless;

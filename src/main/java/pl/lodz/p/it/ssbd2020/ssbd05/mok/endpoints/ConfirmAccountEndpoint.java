@@ -23,14 +23,13 @@ public class ConfirmAccountEndpoint implements Serializable {
     public AccountDTO getAccountByLogin(String login) {
         account = accountManager.findByLogin(login);
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(account.getId());
         accountDTO.setLogin(account.getLogin());
         accountDTO.setVeryficationToken(account.getVeryficationToken());
         return accountDTO;
     }
 
     public void confirmAccount(AccountDTO accountDTO) {
-        account = accountManager.findById(accountDTO.getId());
+        account = accountManager.findByLogin(accountDTO.getLogin());
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
             accountManager.edit(account);
