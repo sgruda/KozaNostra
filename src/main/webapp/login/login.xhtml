@@ -8,15 +8,16 @@
 
 <h:head>
     <title>#{msg['page.login.title']}</title>
+
 </h:head>
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name = "content">
                     <h:form id="login">
                 <p:panel id="loginPnl" header="Login"
                          >
-<!--                    <p:messages globalOnly="true">
+                    <p:messages globalOnly="true">
                         <p:autoUpdate/>
-                    </p:messages>-->
+                    </p:messages>
                     <h:panelGrid id="loginPanel" columns="3" >
                             <p:outputLabel for="username" indicateRequired="false" value="#{msg['page.login.username']} "/>
                             <p:inputText id="username" required="true" value="#{loginController.username}" requiredMessage="#{msg['page.login.username.required']}"/>
@@ -30,12 +31,11 @@
                     </h:panelGrid>                    
                     
                     <div style="display:flex;flex-direction: column;justify-content: center;">
-                        <p:commandButton id="submit" ajax="false" value="#{msg['page.login.login']}" icon="pi pi-sign-in"
-                                         validateClient="true" action="#{loginController.login()}"/>
                        <p:message for="password"/>
                        <p:message for="username"/> 
+                       <p:commandButton id="submit" ajax="false" value="#{msg['page.login.login']}" icon="pi pi-sign-in"
+                                         validateClient="true" action="#{loginController.login()}" style="align-self: center;margin:5px;"/>
                     </div>
-
                 </p:panel>
             </h:form>
     </ui:define>
