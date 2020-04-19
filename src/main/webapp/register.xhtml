@@ -12,6 +12,15 @@
 </h:head>
 <ui:composition template = "./templates/template.xhtml">
     <ui:define name = "content">
+            <style>
+                .main{
+                    background-image: url('pictures/backgroundLogin.jpg');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                }
+            </style>
             <h:form id="register">
                 <p:panel id="registrationPanel" header="#{msg['page.registration.account.title']}"
                          style="font-size: 24px;">
