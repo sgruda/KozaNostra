@@ -23,6 +23,9 @@ import java.util.UUID;
         @SecondaryTable(name = "authentication_data", schema = "ssbd05schema"),
         @SecondaryTable(name = "account_personal_data", schema = "ssbd05schema", uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"email"})
+        }),
+        @SecondaryTable(name = "forgot_password_token", schema = "ssbd05schema", uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"hash"})
         })
 })
 @TableGenerator(name = "AccountIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "account_login_data")
@@ -133,8 +136,16 @@ public class Account implements Serializable {
 
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
-    @Column(table = "authentication_data", name = "veryfication_token")
+    @Size(min = 32, max = 32)
+    @Column(table = "authentication_data", name = "veryfication_token", length = 32)
     private String veryficationToken;
+
+    @Size(min = 64, max = 64)
+    @Column(table = "forgot_password_token", name = "hash", length = 64)
+    private String forgotPasswordToken;
+
+    @Column(table = "forgot_password_token", name = "expire_date")
+    private Date forgotPasswordTokenExpireDate;
 
     public Account() {
         this.active = true;
