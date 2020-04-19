@@ -144,6 +144,7 @@ public class Account implements Serializable {
     @Column(table = "forgot_password_token", name = "hash", length = 64)
     private String forgotPasswordToken;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(table = "forgot_password_token", name = "expire_date")
     private Date forgotPasswordTokenExpireDate;
 
