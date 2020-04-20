@@ -80,7 +80,8 @@ public class Hall implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "event_types_mapping", schema = "ssbd05schema")
     private Collection<EventType> eventTypeCollection = new ArrayList<>();
 
     @NotNull
