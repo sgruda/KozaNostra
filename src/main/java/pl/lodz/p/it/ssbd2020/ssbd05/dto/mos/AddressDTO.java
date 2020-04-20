@@ -10,7 +10,6 @@ public @Data class AddressDTO {
 
     private Long id;
     private String street;
-    private String postalCode;
     private int streetNo;
     private String city;
 }

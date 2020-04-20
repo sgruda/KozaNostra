@@ -6,6 +6,7 @@
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.PreviousPassword</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.ForgotPasswordToken</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Admin</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Manager</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client</class>
@@ -43,7 +44,7 @@
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status</class>
-    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.ForgotPasswordToken</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
@@ -71,6 +72,7 @@
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address</class>
+    <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.ForgotPasswordToken</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>

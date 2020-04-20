@@ -21,7 +21,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "AccessLevel.findAll", query = "SELECT a FROM AccessLevel a"),
     @NamedQuery(name = "AccessLevel.findById", query = "SELECT a FROM AccessLevel a WHERE a.id = :id"),
     @NamedQuery(name = "AccessLevel.findByAccessLevel", query = "SELECT a FROM AccessLevel a WHERE a.accessLevel = :accessLevel"),
-    @NamedQuery(name = "AccessLevel.findByVersion", query = "SELECT a FROM AccessLevel a WHERE a.version = :version"),
     @NamedQuery(name = "AccessLevel.findByActive", query = "SELECT a FROM AccessLevel a WHERE a.active = :active")})
 public class AccessLevel implements Serializable {
 
