@@ -2,18 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.entities.mok;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
@@ -24,6 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "forgot_password_token", schema = "ssbd05schema")
+@TableGenerator(name = "ForgotPasswordTokenIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", valueColumnName = "id_range", pkColumnValue = "forgot_password_token")
 @NamedQueries({
         @NamedQuery(name = "ForgotPasswordToken.findAll", query = "SELECT f FROM ForgotPasswordToken f"),
         @NamedQuery(name = "ForgotPasswordToken.findById", query = "SELECT f FROM ForgotPasswordToken f WHERE f.id = :id"),
@@ -36,6 +26,7 @@ public class ForgotPasswordToken implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ForgotPasswordTokenIdGen")
     @Column(name = "id", nullable = false)
     @Setter(lombok.AccessLevel.NONE)
     private Long id;
@@ -49,10 +40,10 @@ public class ForgotPasswordToken implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
-    @Column(name = "hash", nullable = false)
+    @Column(name = "hash", nullable = false, unique = true)
     private String hash;
 
-    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, unique = true)
     @OneToOne(optional = false)
     private Account account;
 
