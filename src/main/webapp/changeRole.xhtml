@@ -15,9 +15,15 @@
                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
                         <p:outputLabel for="@next" value="#{msg['page.changerole.title']}" />
                         <p:selectOneMenu value="#{roleController.selectedRole}" rendered="#{roleController.allUserRolesLength > 1}">
-                            <c:forEach items="#{roleController.allUserRoles}" var="role">
-                                <f:selectItem itemLabel="#{role}" itemValue="#{role}"/>
-                            </c:forEach>
+                            <c:if test="#{facesContext.externalContext.isUserInRole('CLIENT')}">
+                                <f:selectItem itemLabel="#{msg['page.changelevel.client']}" itemValue="CLIENT"/>
+                            </c:if>
+                            <c:if test="#{facesContext.externalContext.isUserInRole('MANAGER')}">
+                                <f:selectItem itemLabel="#{msg['page.changelevel.manager']}" itemValue="MANAGER"/>
+                            </c:if>
+                            <c:if test="#{facesContext.externalContext.isUserInRole('ADMIN')}">
+                                <f:selectItem itemLabel="#{msg['page.changelevel.admin']}" itemValue="ADMIN"/>
+                            </c:if>
                         </p:selectOneMenu>
                     </h:panelGrid>
                     <p:commandButton value="#{msg['page.changerole.submit']}" action="#{facesContext.externalContext.redirect('index.xhtml')}"/>

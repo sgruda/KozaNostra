@@ -3,14 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 <h:head>
     <title>#{msg['page.accountdetails.title']}</title>
+    <style>
+        .acc-details-role {
+            margin: 0 5px; 
+        }
+    </style>
 </h:head>
 <ui:composition template = "../templates/template.xhtml">
     <ui:define name = "content">
-        
+        <div>
         <p:panelGrid columns="2">
             <f:facet name="header">
                 <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
@@ -37,9 +43,17 @@
             <h:outputText value="#{accountDetailsController.account.confirmed ? 'Yes' : 'No'}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}" />
-            <ui:repeat value="#{accountDetailsController.account.accessLevelCollection}" var="lvl">
-                <h:outputText value="#{lvl}&#10;"/>
-            </ui:repeat>
+            <ui:fragment>
+                <c:if test="#{accountDetailsController.account.accessLevelCollection.contains('CLIENT')}">
+                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.client']}"/>
+                </c:if>
+                <c:if test="#{accountDetailsController.account.accessLevelCollection.contains('MANAGER')}">
+                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.manager']}"/>
+                </c:if>
+                <c:if test="#{accountDetailsController.account.accessLevelCollection.contains('ADMIN')}">
+                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.admin']}"/>
+                </c:if>
+            </ui:fragment>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}" />
             <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.account.lastSuccessfulAuth)}"/>
@@ -50,9 +64,10 @@
             <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
             <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
         </p:panelGrid>
-        <div style="margin: 5px">
+        <div style="margin: 5px;display:flex;justify-content: center">
             <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
             <p:commandButton value="#{msg['page.accountdetails.edit']}" />
+        </div>
         </div>
     </ui:define>
     
