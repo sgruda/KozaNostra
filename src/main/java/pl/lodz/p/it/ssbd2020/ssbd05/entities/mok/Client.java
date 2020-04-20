@@ -17,10 +17,10 @@ import java.util.Collection;
 public class Client extends AccessLevel implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "client")
+    @OneToMany(mappedBy = "client")
     private Collection<Review> reviewCollection = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "client")
+    @OneToMany(mappedBy = "client")
     private Collection<Reservation> reservationCollection = new ArrayList<>();
 
     public Client() {
