@@ -76,3 +76,8 @@ body{
 body .ui-widget-overlay{
    width: 0 !important ; /* Overlay primefaces zasłaniał całą strone*/
 }
+
+body .ui-message{
+   padding:0;
+}
+
