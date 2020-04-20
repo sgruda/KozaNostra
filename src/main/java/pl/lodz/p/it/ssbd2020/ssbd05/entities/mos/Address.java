@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,7 +17,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a"),
     @NamedQuery(name = "Address.findById", query = "SELECT a FROM Address a WHERE a.id = :id"),
     @NamedQuery(name = "Address.findByStreet", query = "SELECT a FROM Address a WHERE a.street = :street"),
-    @NamedQuery(name = "Address.findByPostalCode", query = "SELECT a FROM Address a WHERE a.postalCode = :postalCode"),
     @NamedQuery(name = "Address.findByStreetNo", query = "SELECT a FROM Address a WHERE a.streetNo = :streetNo"),
     @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city"),
     @NamedQuery(name = "Address.findByVersion", query = "SELECT a FROM Address a WHERE a.version = :version")})
@@ -40,12 +37,6 @@ public class Address implements Serializable {
     @Size(min = 1, max = 32)
     @Column(name = "street", nullable = false, length = 32)
     private String street;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 6, max = 6)
-    @Column(name = "postal_code", nullable = false, length = 6)
-    private String postalCode;
 
     @Basic(optional = false)
     @NotNull
@@ -73,10 +64,9 @@ public class Address implements Serializable {
         this.id = id;
     }
 
-    public Address(Long id, String street, String postalCode, int streetNo, String city, long version) {
+    public Address(Long id, String street, int streetNo, String city, long version) {
         this.id = id;
         this.street = street;
-        this.postalCode = postalCode;
         this.streetNo = streetNo;
         this.city = city;
         this.version = version;

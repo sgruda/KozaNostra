@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "PreviousPassword.findAll", query = "SELECT p FROM PreviousPassword p"),
     @NamedQuery(name = "PreviousPassword.findById", query = "SELECT p FROM PreviousPassword p WHERE p.id = :id"),
     @NamedQuery(name = "PreviousPassword.findByPassword", query = "SELECT p FROM PreviousPassword p WHERE p.password = :password"),
-    @NamedQuery(name = "PreviousPassword.findByVersion", query = "SELECT p FROM PreviousPassword p WHERE p.version = :version")})
+    })
 public class PreviousPassword implements Serializable {
 
     private static final long serialVersionUID = 1L;

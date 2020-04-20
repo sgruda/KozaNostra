@@ -8,36 +8,44 @@
 
 <h:head>
     <title>#{msg['page.login.title']}</title>
+
 </h:head>
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name = "content">
-                    <h:form id="login">
-                <p:panel id="loginPnl" header="Login"
-                         >
+            <style type="text/css">
+                .main{
+                    background-image: url('../pictures/backgroundLogin.jpg');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                }
+            </style>
+            <h:form id="login">
+                <p:panel id="loginPnl" header="Login" style="font-size: 24px;">
                     <p:messages globalOnly="true">
                         <p:autoUpdate/>
                     </p:messages>
-                    <h:panelGrid id="loginPanel" columns="2" cellpadding="5" style="margin: 0 auto;">
-                        <div style="padding-bottom: 5px">
-                            <p:outputLabel for="username" value="#{msg['page.login.username']} ">
-                                <p:inputText id="username" required="true" value="#{loginController.username}" requiredMessage="#{msg['page.login.username.required']}"/>
-                            </p:outputLabel>
-                        </div>
-                        <div><p:message for="username"/></div>
-                        <div style="padding-bottom: 10px;padding-top: 5px">
-                            <p:outputLabel for="password" value="#{msg['page.login.password']} ">
-                                <p:password id="password" required="true" requiredMessage="#{msg['page.login.password.required']}"
+                    <h:panelGrid id="loginPanel" columns="3" >
+                            <p:outputLabel for="username" indicateRequired="false" value="#{msg['page.login.username']} "/>
+                            <p:inputText id="username" required="true" value="#{loginController.username}" requiredMessage="#{msg['page.login.username.required']}"/>
+                            <p:outputLabel for="username"/>
+
+                            <p:outputLabel for="password" indicateRequired="false" value="#{msg['page.login.password']} "/>
+                            <p:password id="password" required="true" requiredMessage="#{msg['page.login.password.required']}"
                                             value="#{loginController.password}"/>
-                            </p:outputLabel>
-                        </div>
-                        <div><p:message for="password"/></div>
-                    </h:panelGrid>
-                    <h:panelGrid columns="1" cellpadding="5" style="margin: 0 auto;background-color: transparent">
-                        <p:commandButton id="submit" ajax="false" value="#{msg['page.login.login']}" icon="pi pi-sign-in" style="float: center;"
-                                         validateClient="true" action="#{loginController.login()}"/>
-                    </h:panelGrid>
+                            <p:outputLabel for="password"/>
+                    </h:panelGrid>                    
+
+                    <div style="display:flex;flex-direction: column;justify-content: center;">
+                       <p:message for="password"/>
+                       <p:message for="username"/> 
+                       <p:commandButton id="submit" ajax="false" value="#{msg['page.login.login']}" icon="pi pi-sign-in"
+                                         validateClient="true" action="#{loginController.login()}" style="align-self: center;margin:5px;"/>
+                    </div>
                 </p:panel>
             </h:form>
+       
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.login.breadcrumbs']}" outcome="/login/login.xhtml" />
