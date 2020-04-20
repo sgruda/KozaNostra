@@ -32,23 +32,27 @@ import lombok.Setter;
 public class ForgotPasswordToken implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     @Setter(lombok.AccessLevel.NONE)
     private Long id;
+
     @Basic(optional = false)
     @NotNull
-    @Column(name = "expire_date")
+    @Column(name = "expire_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date expireDate;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
-    @Column(name = "hash")
+    @Column(name = "hash", nullable = false)
     private String hash;
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     @OneToOne(optional = false)
     private Account account;
 
