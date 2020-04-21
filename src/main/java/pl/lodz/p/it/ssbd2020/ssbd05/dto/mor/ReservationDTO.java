@@ -20,4 +20,5 @@ public @Data class ReservationDTO {
     private Collection<String> extraServiceCollection = new ArrayList<>();
     private String hallName;
     private String clientLogin;
+    private String reservationNumber;
 }
