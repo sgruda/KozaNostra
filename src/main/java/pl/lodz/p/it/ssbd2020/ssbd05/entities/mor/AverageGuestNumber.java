@@ -10,6 +10,12 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "average_guest_number", schema = "ssbd05schema")
+@TableGenerator(name = "AverageGuestNumberIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "average_guest_number", valueColumnName = "id_range")
+@NamedQueries({
+        @NamedQuery(name = "AverageGuestNumber.findAll", query = "SELECT a FROM AverageGuestNumber a"),
+        @NamedQuery(name = "AverageGuestNumber.findById", query = "SELECT a FROM AverageGuestNumber a WHERE a.id = :id"),
+        @NamedQuery(name = "AverageGuestNumber.findByGuestSum", query = "SELECT a FROM AverageGuestNumber a WHERE a.guestSum = :guestSum"),
+        @NamedQuery(name = "AverageGuestNumber.findByEventSum", query = "SELECT a FROM AverageGuestNumber a WHERE a.eventSum = :eventSum")})
 public class AverageGuestNumber {
 
     private static final long serialVersionUID = 1L;
