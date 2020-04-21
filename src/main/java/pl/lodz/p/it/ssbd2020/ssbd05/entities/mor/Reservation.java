@@ -27,7 +27,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Reservation.findByStartDate", query = "SELECT r FROM Reservation r WHERE r.startDate = :startDate"),
     @NamedQuery(name = "Reservation.findByEndDate", query = "SELECT r FROM Reservation r WHERE r.endDate = :endDate"),
     @NamedQuery(name = "Reservation.findByTotalPrice", query = "SELECT r FROM Reservation r WHERE r.totalPrice = :totalPrice"),
-    @NamedQuery(name = "Reservation.findByReservationNumber", query = "SELECT r FROM Reservation r WHERE r.reservationNumber = :reservationNumber")})
+    @NamedQuery(name = "Reservation.findByReservationNumber", query = "SELECT r FROM Reservation r WHERE r.reservationNumber = :reservationNumber"),
+    @NamedQuery(name = "Reservation.findByGuestsNumber", query = "SELECT r FROM Reservation r WHERE r.guestsNumber = :guestsNumber")})
 public class Reservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -92,6 +93,11 @@ public class Reservation implements Serializable {
     @Column(name = "reservation_number", nullable = false, length = 32)
     private String reservationNumber;
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "guests_number", nullable = false)
+    private Long guestsNumber;
+
     public Reservation() {
         this.reservationNumber = UUID.randomUUID().toString().replace("-", "");
     }
@@ -100,12 +106,13 @@ public class Reservation implements Serializable {
         this.id = id;
     }
 
-    public Reservation(Long id, Date startDate, Date endDate, double totalPrice, String reservationNumber) {
+    public Reservation(Long id, Date startDate, Date endDate, double totalPrice, String reservationNumber,Long guestsNumber) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
         this.reservationNumber = reservationNumber;
+        this.guestsNumber = guestsNumber;
     }
 
     @Override
