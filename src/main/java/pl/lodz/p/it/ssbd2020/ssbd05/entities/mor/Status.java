@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,8 +18,8 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s"),
     @NamedQuery(name = "Status.findById", query = "SELECT s FROM Status s WHERE s.id = :id"),
-    @NamedQuery(name = "Status.findByStatusName", query = "SELECT s FROM Status s WHERE s.statusName = :statusName"),
-    @NamedQuery(name = "Status.findByVersion", query = "SELECT s FROM Status s WHERE s.version = :version")})
+    @NamedQuery(name = "Status.findByStatusName", query = "SELECT s FROM Status s WHERE s.statusName = :statusName")
+})
 public class Status implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,16 +47,6 @@ public class Status implements Serializable {
     private long version;
 
     public Status() {
-    }
-
-    public Status(Long id) {
-        this.id = id;
-    }
-
-    public Status(Long id, String statusName, long version) {
-        this.id = id;
-        this.statusName = statusName;
-        this.version = version;
     }
 
     @Override

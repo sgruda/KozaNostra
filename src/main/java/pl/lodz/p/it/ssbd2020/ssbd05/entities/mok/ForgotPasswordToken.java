@@ -56,19 +56,7 @@ public class ForgotPasswordToken implements Serializable {
     private long version;
 
 
-
     public ForgotPasswordToken() {
-    }
-
-    public ForgotPasswordToken(Long id) {
-        this.id = id;
-    }
-
-    public ForgotPasswordToken(Long id, Date expireDate, String hash,Long version) {
-        this.id = id;
-        this.expireDate = expireDate;
-        this.hash = hash;
-        this.version = version;
     }
 
 
