@@ -15,7 +15,8 @@ import javax.validation.constraints.NotNull;
         @NamedQuery(name = "AverageGuestNumber.findAll", query = "SELECT a FROM AverageGuestNumber a"),
         @NamedQuery(name = "AverageGuestNumber.findById", query = "SELECT a FROM AverageGuestNumber a WHERE a.id = :id"),
         @NamedQuery(name = "AverageGuestNumber.findByGuestSum", query = "SELECT a FROM AverageGuestNumber a WHERE a.guestSum = :guestSum"),
-        @NamedQuery(name = "AverageGuestNumber.findByEventSum", query = "SELECT a FROM AverageGuestNumber a WHERE a.eventSum = :eventSum")})
+        @NamedQuery(name = "AverageGuestNumber.findByEventSum", query = "SELECT a FROM AverageGuestNumber a WHERE a.eventSum = :eventSum"),
+        @NamedQuery(name = "AverageGuestNumber.findByAverage", query = "SELECT a FROM AverageGuestNumber a WHERE a.average = :average")})
 public class AverageGuestNumber {
 
     private static final long serialVersionUID = 1L;
@@ -37,6 +38,11 @@ public class AverageGuestNumber {
     @NotNull
     @Column(name = "event_sum", nullable = false)
     private Long eventSum;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "average", nullable = false)
+    private Long average;
 
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
