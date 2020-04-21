@@ -4,18 +4,24 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 @Getter
 @Setter
 @Entity
-@Table(name = "reservation", schema = "ssbd05schema")
+@Table(name = "reservation", schema = "ssbd05schema", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"reservation_number"})
+})
 @TableGenerator(name = "ReservationIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "reservation", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Reservation.findAll", query = "SELECT r FROM Reservation r"),
@@ -23,7 +29,8 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Reservation.findByStartDate", query = "SELECT r FROM Reservation r WHERE r.startDate = :startDate"),
     @NamedQuery(name = "Reservation.findByEndDate", query = "SELECT r FROM Reservation r WHERE r.endDate = :endDate"),
     @NamedQuery(name = "Reservation.findByTotalPrice", query = "SELECT r FROM Reservation r WHERE r.totalPrice = :totalPrice"),
-    @NamedQuery(name = "Reservation.findByVersion", query = "SELECT r FROM Reservation r WHERE r.version = :version")})
+    @NamedQuery(name = "Reservation.findByReservationNumber", query = "SELECT r FROM Reservation r WHERE r.reservationNumber = :reservationNumber"),
+    @NamedQuery(name = "Reservation.findByGuestsNumber", query = "SELECT r FROM Reservation r WHERE r.guestsNumber = :guestsNumber")})
 public class Reservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -82,19 +89,37 @@ public class Reservation implements Serializable {
     @ManyToOne(optional = false)
     private Client client;
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 32, max = 32)
+    @Column(name = "reservation_number", nullable = false, length = 32)
+    private String reservationNumber;
+    
+    @NotNull
+    @JoinColumn(name = "event_type_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private EventType eventType;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "guests_number", nullable = false)
+    private Long guestsNumber;
+
     public Reservation() {
+        this.reservationNumber = UUID.randomUUID().toString().replace("-", "");
     }
 
     public Reservation(Long id) {
         this.id = id;
     }
 
-    public Reservation(Long id, Date startDate, Date endDate, double totalPrice, long version) {
+    public Reservation(Long id, Date startDate, Date endDate, double totalPrice, String reservationNumber,Long guestsNumber) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
-        this.version = version;
+        this.reservationNumber = reservationNumber;
+        this.guestsNumber = guestsNumber;
     }
 
     @Override

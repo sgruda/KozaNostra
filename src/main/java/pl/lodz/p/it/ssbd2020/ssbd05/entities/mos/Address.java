@@ -11,7 +11,9 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Entity
-@Table(name = "address", schema = "ssbd05schema")
+@Table(name = "address", schema = "ssbd05schema", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"city", "street", "street_no"})
+})
 @TableGenerator(name = "AddressIdGen", table = "id_generator", schema = "ssbd05schema", pkColumnName = "class_name", pkColumnValue = "address", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a"),

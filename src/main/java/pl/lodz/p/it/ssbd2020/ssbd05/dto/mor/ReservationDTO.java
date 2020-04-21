@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 public @Data class ReservationDTO {
 
-    private Long id;
+    private String reviewNumber;
     private Date startDate;
     private Date endDate;
     private double totalPrice;
@@ -20,4 +20,6 @@ public @Data class ReservationDTO {
     private Collection<String> extraServiceCollection = new ArrayList<>();
     private String hallName;
     private String clientLogin;
+    private String reservationNumber;
+    private String eventTypeName;
 }
