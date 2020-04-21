@@ -10,8 +10,8 @@ import java.util.Date;
 @AllArgsConstructor
 public @Data class ReviewDTO {
 
-    private Long id;
     private String content;
     private Date date;
     private String clientLogin;
+    private String reviewNumber;
 }
