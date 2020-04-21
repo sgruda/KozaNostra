@@ -12,4 +12,5 @@ public @Data class ExtraServiceDTO {
     private String description;
     private double price;
     private String serviceName;
+    private boolean active;
 }

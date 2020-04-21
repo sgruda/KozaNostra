@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -92,6 +93,7 @@ public class Reservation implements Serializable {
     private String reservationNumber;
 
     public Reservation() {
+        this.reservationNumber = UUID.randomUUID().toString().replace("-", "");
     }
 
     public Reservation(Long id) {
