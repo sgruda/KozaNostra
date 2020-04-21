@@ -92,6 +92,11 @@ public class Reservation implements Serializable {
     @Column(name = "reservation_number", nullable = false, length = 32)
     private String reservationNumber;
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "guests_number", nullable = false)
+    private Long guestsNumber;
+
     public Reservation() {
         this.reservationNumber = UUID.randomUUID().toString().replace("-", "");
     }
@@ -100,12 +105,13 @@ public class Reservation implements Serializable {
         this.id = id;
     }
 
-    public Reservation(Long id, Date startDate, Date endDate, double totalPrice, String reservationNumber) {
+    public Reservation(Long id, Date startDate, Date endDate, double totalPrice, String reservationNumber,Long guestsNumber) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
         this.reservationNumber = reservationNumber;
+        this.guestsNumber = guestsNumber;
     }
 
     @Override
