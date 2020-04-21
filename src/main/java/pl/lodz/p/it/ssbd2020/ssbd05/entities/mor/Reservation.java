@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 
 @Getter
 @Setter
@@ -91,6 +93,11 @@ public class Reservation implements Serializable {
     @Size(min = 32, max = 32)
     @Column(name = "reservation_number", nullable = false, length = 32)
     private String reservationNumber;
+    
+    @NotNull
+    @JoinColumn(name = "event_type_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private EventType eventType;
 
     public Reservation() {
         this.reservationNumber = UUID.randomUUID().toString().replace("-", "");

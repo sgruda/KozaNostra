@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,14 +14,17 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Entity
-@Table(name = "review", schema = "ssbd05schema")
+@Table(name = "review", schema = "ssbd05schema", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"review_number"})
+})
 @TableGenerator(name = "ReviewIdGen", table = "id_generator", schema = "ssbd05schema",  pkColumnName = "class_name", pkColumnValue = "review", valueColumnName = "id_range")
 @NamedQueries({
     @NamedQuery(name = "Review.findAll", query = "SELECT r FROM Review r"),
     @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id"),
     @NamedQuery(name = "Review.findByContent", query = "SELECT r FROM Review r WHERE r.content = :content"),
     @NamedQuery(name = "Review.findByDate", query = "SELECT r FROM Review r WHERE r.date = :date"),
-    @NamedQuery(name = "Review.findByVersion", query = "SELECT r FROM Review r WHERE r.version = :version")})
+    @NamedQuery(name = "Review.findByVersion", query = "SELECT r FROM Review r WHERE r.version = :version"),
+    @NamedQuery(name = "Review.findByReviewNumber", query = "SELECT r FROM Review r WHERE r.reviewNumber = :reviewNumber")})
 public class Review implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,19 +61,15 @@ public class Review implements Serializable {
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Client client;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 32, max = 32)
+    @Column(name = "review_number", nullable = false, length = 32)
+    private String reviewNumber;
 
     public Review() {
-    }
-
-    public Review(Long id) {
-        this.id = id;
-    }
-
-    public Review(Long id, String content, Date date, long version) {
-        this.id = id;
-        this.content = content;
-        this.date = date;
-        this.version = version;
+        this.reviewNumber = UUID.randomUUID().toString().replace("-", "");
     }
 
     @Override
