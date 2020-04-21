@@ -60,7 +60,7 @@ public class Account implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 8, max = 64)
+    @Size(min = 64, max = 64)
     @Column(name = "password", nullable = false, length = 64)
     private String password;
 
