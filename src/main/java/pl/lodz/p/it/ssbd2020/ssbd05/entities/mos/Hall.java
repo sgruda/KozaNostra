@@ -26,8 +26,8 @@ import javax.validation.constraints.Size;
         @NamedQuery(name = "Hall.findByActive", query = "SELECT h FROM Hall h WHERE h.active = :active"),
         @NamedQuery(name = "Hall.findByArea", query = "SELECT h FROM Hall h WHERE h.area = :area"),
         @NamedQuery(name = "Hall.findByDescription", query = "SELECT h FROM Hall h WHERE h.description = :description"),
-        @NamedQuery(name = "Hall.findByPrice", query = "SELECT h FROM Hall h WHERE h.price = :price"),
-        @NamedQuery(name = "Hall.findByVersion", query = "SELECT h FROM Hall h WHERE h.version = :version")})
+        @NamedQuery(name = "Hall.findByPrice", query = "SELECT h FROM Hall h WHERE h.price = :price")
+})
 public class Hall implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -95,20 +95,6 @@ public class Hall implements Serializable {
     public Hall() {
     }
 
-    public Hall(Long id) {
-        this.id = id;
-    }
-
-    public Hall(Long id, String name, int capacity, boolean active, double area, String description, double price, long version) {
-        this.id = id;
-        this.name = name;
-        this.capacity = capacity;
-        this.active = active;
-        this.area = area;
-        this.description = description;
-        this.price = price;
-        this.version = version;
-    }
 
     @Override
     public int hashCode() {

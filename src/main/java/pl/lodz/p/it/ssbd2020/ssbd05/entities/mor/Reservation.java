@@ -109,19 +109,6 @@ public class Reservation implements Serializable {
         this.reservationNumber = UUID.randomUUID().toString().replace("-", "");
     }
 
-    public Reservation(Long id) {
-        this.id = id;
-    }
-
-    public Reservation(Long id, Date startDate, Date endDate, double totalPrice, String reservationNumber,Long guestsNumber) {
-        this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.totalPrice = totalPrice;
-        this.reservationNumber = reservationNumber;
-        this.guestsNumber = guestsNumber;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;

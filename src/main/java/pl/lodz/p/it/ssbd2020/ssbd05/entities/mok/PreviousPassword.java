@@ -54,15 +54,6 @@ public class PreviousPassword implements Serializable {
     public PreviousPassword() {
     }
 
-    public PreviousPassword(Long id) {
-        this.id = id;
-    }
-
-    public PreviousPassword(Long id, String password, long version) {
-        this.id = id;
-        this.password = password;
-        this.version = version;
-    }
 
     @Override
     public int hashCode() {

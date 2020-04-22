@@ -61,17 +61,6 @@ public class AccessLevel implements Serializable {
     public AccessLevel() {
     }
 
-    public AccessLevel(Long id) {
-        this.id = id;
-    }
-
-    public AccessLevel(Long id, String accessLevel, long version) {
-        this.id = id;
-        this.accessLevel = accessLevel;
-        this.version = version;
-    }
-
-
     @Override
     public int hashCode() {
         int hash = 0;

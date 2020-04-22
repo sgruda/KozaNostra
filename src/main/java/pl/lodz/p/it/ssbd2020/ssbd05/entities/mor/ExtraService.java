@@ -67,18 +67,6 @@ public class ExtraService implements Serializable {
     public ExtraService() {
     }
 
-    public ExtraService(Long id) {
-        this.id = id;
-    }
-
-    public ExtraService(Long id, String description, double price, String serviceName, boolean active) {
-        this.id = id;
-        this.description = description;
-        this.price = price;
-        this.serviceName = serviceName;
-        this.active = active;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;

@@ -20,8 +20,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Address.findById", query = "SELECT a FROM Address a WHERE a.id = :id"),
     @NamedQuery(name = "Address.findByStreet", query = "SELECT a FROM Address a WHERE a.street = :street"),
     @NamedQuery(name = "Address.findByStreetNo", query = "SELECT a FROM Address a WHERE a.streetNo = :streetNo"),
-    @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city"),
-    @NamedQuery(name = "Address.findByVersion", query = "SELECT a FROM Address a WHERE a.version = :version")})
+    @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city")
+})
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,18 +60,6 @@ public class Address implements Serializable {
     private long version;
 
     public Address() {
-    }
-
-    public Address(Long id) {
-        this.id = id;
-    }
-
-    public Address(Long id, String street, int streetNo, String city, long version) {
-        this.id = id;
-        this.street = street;
-        this.streetNo = streetNo;
-        this.city = city;
-        this.version = version;
     }
 
     @Override
