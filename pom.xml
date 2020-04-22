@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>pl.lodz.p.it.ssbd2020</groupId>
     <artifactId>ssbd05</artifactId>
-    <version>0.2.8-SNAPSHOT</version>
+    <version>Wv0.2.10</version>
     <packaging>war</packaging>
     <name>ssbd05</name>
 
