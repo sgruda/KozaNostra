@@ -143,24 +143,6 @@ public class Account implements Serializable {
         this.veryficationToken = UUID.randomUUID().toString().replace("-", "");
     }
 
-    public Account(Long id) {
-        this.id = id;
-    }
-
-    public Account(Long id, String login, String password, boolean active, boolean confirmed, long version, String firstname, String lastname, String email, int failedAuthCounter, boolean forcePasswordChange) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.active = active;
-        this.confirmed = confirmed;
-        this.version = version;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.failedAuthCounter = failedAuthCounter;
-        this.forcePasswordChange = forcePasswordChange;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;

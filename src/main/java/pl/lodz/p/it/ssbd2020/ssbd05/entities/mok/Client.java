@@ -24,5 +24,6 @@ public class Client extends AccessLevel implements Serializable {
     private Collection<Reservation> reservationCollection = new ArrayList<>();
 
     public Client() {
+        super();
     }
 }

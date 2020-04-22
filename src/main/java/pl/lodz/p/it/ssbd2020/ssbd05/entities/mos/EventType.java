@@ -18,8 +18,8 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "EventTypes.findAll", query = "SELECT e FROM EventType e"),
     @NamedQuery(name = "EventTypes.findById", query = "SELECT e FROM EventType e WHERE e.id = :id"),
-    @NamedQuery(name = "EventTypes.findByTypeName", query = "SELECT e FROM EventType e WHERE e.typeName = :typeName"),
-    @NamedQuery(name = "EventTypes.findByVersion", query = "SELECT e FROM EventType e WHERE e.version = :version")})
+    @NamedQuery(name = "EventTypes.findByTypeName", query = "SELECT e FROM EventType e WHERE e.typeName = :typeName")
+})
 public class EventType implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,16 +47,6 @@ public class EventType implements Serializable {
     private long version;
 
     public EventType() {
-    }
-
-    public EventType(Long id) {
-        this.id = id;
-    }
-
-    public EventType(Long id, String typeName, long version) {
-        this.id = id;
-        this.typeName = typeName;
-        this.version = version;
     }
 
     @Override
