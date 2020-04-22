@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Optional;
 
 @Stateless
 public class AccountManager {
@@ -31,8 +32,8 @@ public class AccountManager {
     }
 
     public Collection<Account> getAllAccounts() {
-        if(accountFacade.getAllAccounts().isPresent())
-            return accountFacade.getAllAccounts().get();
+        if(Optional.ofNullable(accountFacade.findAll()).isPresent())
+            return accountFacade.findAll();
         else throw new IllegalArgumentException("Nie ma żadnych kont w bazie");
     }
 }

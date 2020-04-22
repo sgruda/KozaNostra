@@ -55,7 +55,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "login", nullable = false, length = 32, unique = true)
+    @Column(name = "login", nullable = false, length = 32, unique = true, updatable = false)
     private String login;
 
     @Basic(optional = false)
@@ -104,7 +104,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(table = "account_personal_data", name = "email", nullable = false, length = 32, unique = true)
+    @Column(table = "account_personal_data", name = "email", nullable = false, length = 32, unique = true, updatable = false)
     private String email;
 
     @Column(table = "authentication_data", name = "last_successful_auth")

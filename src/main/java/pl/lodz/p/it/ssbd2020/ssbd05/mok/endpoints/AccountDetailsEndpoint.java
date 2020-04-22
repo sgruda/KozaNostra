@@ -31,6 +31,7 @@ public class AccountDetailsEndpoint implements Serializable {
         accountDTO.setAccessLevelCollection(
                 account.getAccessLevelCollection()
                 .stream()
+                .filter(AccessLevel::getActive)
                 .map(AccessLevel::getAccessLevel)
                 .collect(Collectors.toList())
         );

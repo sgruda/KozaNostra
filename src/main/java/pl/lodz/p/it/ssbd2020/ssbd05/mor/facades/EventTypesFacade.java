@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 
-@Stateless
+@Stateless(name = "EventTypesFacadeMOR")
 public class EventTypesFacade extends AbstractFacade<EventType> {
 
     @PersistenceContext(unitName = "ssbd05morPU")

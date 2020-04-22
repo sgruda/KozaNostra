@@ -7,7 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 
 
-@Stateless
+@Stateless(name = "EventTypesFacadeMOS")
 public class EventTypesFacade extends AbstractFacade<EventType> {
 
     @PersistenceContext(unitName = "ssbd05mosPU")
