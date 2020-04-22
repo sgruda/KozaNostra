@@ -7,7 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@Stateless
+@Stateless(name = "ClientFacadeMOR")
 public class ClientFacade extends AbstractFacade<Client> {
 
     @PersistenceContext(unitName = "ssbd05morPU")
