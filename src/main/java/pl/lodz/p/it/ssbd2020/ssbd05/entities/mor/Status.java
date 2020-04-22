@@ -35,7 +35,7 @@ public class Status implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "status_name", nullable = false, length = 32, unique = true)
+    @Column(name = "status_name", nullable = false, length = 32, unique = true, updatable = false)
     private String statusName;
 
     @Getter(lombok.AccessLevel.NONE)

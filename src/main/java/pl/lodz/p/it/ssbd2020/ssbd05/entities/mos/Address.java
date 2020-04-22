@@ -37,18 +37,18 @@ public class Address implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "street", nullable = false, length = 32)
+    @Column(name = "street", nullable = false, length = 32, updatable = false)
     private String street;
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "street_no", nullable = false)
+    @Column(name = "street_no", nullable = false, updatable = false)
     private int streetNo;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "city", nullable = false, length = 32)
+    @Column(name = "city", nullable = false, length = 32, updatable = false)
     private String city;
 
     @Getter(lombok.AccessLevel.NONE)
