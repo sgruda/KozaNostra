@@ -35,7 +35,7 @@ public class EventType implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
-    @Column(name = "type_name", nullable = false, length = 32, unique = true)
+    @Column(name = "type_name", nullable = false, length = 32, unique = true, updatable = false)
     private String typeName;
 
     @Getter(lombok.AccessLevel.NONE)
