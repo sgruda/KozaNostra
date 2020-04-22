@@ -33,14 +33,14 @@ public class ForgotPasswordToken implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "expire_date", nullable = false)
+    @Column(name = "expire_date", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date expireDate;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
-    @Column(name = "hash", nullable = false, unique = true)
+    @Column(name = "hash", nullable = false, unique = true, updatable = false)
     private String hash;
 
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, unique = true)
