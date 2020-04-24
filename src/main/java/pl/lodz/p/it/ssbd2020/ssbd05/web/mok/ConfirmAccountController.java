@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ConfirmAccountEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -39,7 +40,7 @@ public class ConfirmAccountController implements Serializable {
         account = confirmAccountEndpoint.getAccountByLogin(login);
         if (account.getVeryficationToken().equals(token)) {
             confirmAccountEndpoint.confirmAccount();
-            facesContext.addMessage(null, new FacesMessage("Account was successfully confirmed!"));
+            facesContext.addMessage(null, new FacesMessage(ResourceBundles.getTranslatedText("messages.account.confirmed")));
             facesContext.getExternalContext().getFlash().setKeepMessages(true);
         } else facesContext.addMessage(null, new FacesMessage("Account could not be confirmed!"));
         return "home";
