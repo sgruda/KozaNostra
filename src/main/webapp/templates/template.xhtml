@@ -39,6 +39,10 @@
                        <h:commandLink class="link" value="#{msg['page.template.logout']}" action="#{logoutController.logout()}"/>
                    </h:form> 
                    <h:link class="link" value="#{msg['page.template.changerole']}" outcome="/changeRole.xhtml" rendered="#{roleController.allUserRolesLength > 1}"/>
+                    <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{roleController.selectedRole}"/>
+                    <h:outputText styleClass="templatetext" style="margin-left: 20px" value="#{msg['page.template.currentrole']}&#160;"/>
+                    <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{request.remoteUser}"/>
+                    <h:outputText styleClass="templatetext" value="#{msg['page.template.currentuser']}&#160;"/>
                 </ui:fragment>
              </div>
         </div>
