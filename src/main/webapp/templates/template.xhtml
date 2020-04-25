@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <h:head>
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'/>
     <link href='../css/content.css' rel='stylesheet'/>
@@ -30,20 +31,32 @@
                  <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
              </div>
              <div class = "header-right">
-                <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
-                   <h:link class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
-                   <h:link class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
-                </ui:fragment>
-                <ui:fragment id="authenticated-right-links" rendered="#{not empty request.remoteUser}">
-                   <h:form>
-                       <h:commandLink class="link" value="#{msg['page.template.logout']}" action="#{logoutController.logout()}"/>
-                   </h:form> 
-                   <h:link class="link" value="#{msg['page.template.changerole']}" outcome="/changeRole.xhtml" rendered="#{roleController.allUserRolesLength > 1}"/>
-                    <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{roleController.selectedRole}"/>
+                 <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
+                    <h:link class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
+                    <h:link class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
+                 </ui:fragment>
+                    <ui:fragment id="authenticated-right-links" rendered="#{not empty request.remoteUser}">
+                    <h:form>
+                        <h:commandLink class="link" value="#{msg['page.template.logout']}" action="#{logoutController.logout()}"/>
+                    </h:form>
+                    <h:link class="link" value="#{msg['page.template.changerole']}" outcome="/changeRole.xhtml" rendered="#{roleController.allUserRolesLength > 1}"/>
+
+                    <ui:fragment>
+                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('CLIENT')}">
+                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.client']}"/>
+                        </c:if>
+                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('MANAGER')}">
+                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.manager']}"/>
+                        </c:if>
+                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('ADMIN')}">
+                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.admin']}"/>
+                        </c:if>
+                    </ui:fragment>
                     <h:outputText styleClass="templatetext" style="margin-left: 20px" value="#{msg['page.template.currentrole']}&#160;"/>
+
                     <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{request.remoteUser}"/>
                     <h:outputText styleClass="templatetext" value="#{msg['page.template.currentuser']}&#160;"/>
-                </ui:fragment>
+                 </ui:fragment>
              </div>
         </div>
         <div class ="breadcrumb">
