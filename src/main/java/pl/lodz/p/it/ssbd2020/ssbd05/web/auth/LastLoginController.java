@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Properties;
 
 @Named
 @ConversationScoped
@@ -21,10 +22,12 @@ public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;
     private AccountDTO account;
+    private Properties properties;
 
-    public void startConversation(AccountDTO accountDTO) {
+    public void startConversation(AccountDTO accountDTO, Properties properties) {
         conversation.begin();
         this.account = accountDTO;
+        this.properties = properties;
     }
     public AccountDTO endConversation() {
         conversation.end();
@@ -40,6 +43,13 @@ public class LastLoginController implements Serializable {
     public void updateLastFailedAuthDate() {
         account.setLastFailedAuth(Date.from(Instant.now()));
         account.setFailedAuthCounter(account.getFailedAuthCounter() + 1);
+    }
+    public void checkFailedAuthCounter() throws Exception {
+        if(account.getFailedAuthCounter() >= Integer.parseInt(properties.getProperty("blockingAccountAfterFailedAttemptNumber"))) {
+            account.setActive(false);
+            throw new Exception("Account was blocked");
+            //TODO daj tu nasz wyjatek
+        }
     }
     private String getIP() {
         URL urlToCheckIpAmazonaws;
