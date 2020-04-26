@@ -27,6 +27,14 @@
                             <h:outputText value="#{account.email}"/>
                         </p:column>
 
+                        <p:column headerText="#{msg['page.listaccounts.account.lastsuccauth']}">
+                            <h:outputText value="#{listAccountsController.formatDate(account.lastSuccessfulAuth)}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['page.listaccounts.account.lastsauthip']}">
+                            <h:outputText value="#{account.lastAuthIp}"/>
+                        </p:column>
+
                         <p:column headerText="#{msg['page.listaccounts.account.details']}">
                             <p:commandButton value="#{msg['page.listaccounts.account.details']}" action="#{accountDetailsController.selectAccount(account)}"/>
                         </p:column>

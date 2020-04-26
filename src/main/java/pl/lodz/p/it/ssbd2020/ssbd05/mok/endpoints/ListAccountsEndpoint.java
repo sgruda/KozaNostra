@@ -25,6 +25,8 @@ public class ListAccountsEndpoint {
         accountDTO.setFirstname(account.getFirstname());
         accountDTO.setLastname(account.getLastname());
         accountDTO.setEmail(account.getEmail());
+        accountDTO.setLastSuccessfulAuth(account.getLastSuccessfulAuth());
+        accountDTO.setLastAuthIp(account.getLastAuthIp());
         return accountDTO;
     }
 

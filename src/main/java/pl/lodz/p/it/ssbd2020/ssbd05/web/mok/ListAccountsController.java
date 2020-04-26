@@ -10,7 +10,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 @Named
 @ViewScoped
@@ -25,5 +27,12 @@ public class ListAccountsController implements Serializable {
     @PostConstruct
     public void init() {
         accounts = listAccountsEndpoint.getAllAccounts();
+    }
+
+    public String formatDate(Date date) {
+        if(date == null)
+            return "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return simpleDateFormat.format(date);
     }
 }
