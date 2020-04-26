@@ -5,14 +5,14 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Named
-@Stateless
+@Stateful
 @RolesAllowed(value = "ADMIN")
 public class ListAccountsEndpoint {
 
