@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailController;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -32,7 +33,10 @@ public class AccountManager {
     }
 
     public void createAccount(Account account) {
+
         accountFacade.create(account);
+        EmailController emailController = new EmailController();
+        emailController.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken(), account.getLogin());
     }
 
     public Collection<Account> getAllAccounts() {

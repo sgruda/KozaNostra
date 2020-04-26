@@ -50,12 +50,9 @@ public class RegistrationController implements Serializable {
                 account.getAccessLevelCollection().add("CLIENT");
                 account.setActive(true);
                 account.setConfirmed(false);
-                account.setVeryficationToken(UUID.randomUUID().toString().replace("-", ""));
 
-                this.registerAccountEndpoint.createAccount(account);
+                this.registerAccountEndpoint.addNewAccount(account);
 
-                EmailController emailController = new EmailController();
-                emailController.sendRegistrationEmail(this.getEmailAddress(), account.getVeryficationToken(), this.getLogin());
                 FacesContext fc = FacesContext.getCurrentInstance();
                 fc.addMessage(null, new FacesMessage("Account created !"));
                 clear();

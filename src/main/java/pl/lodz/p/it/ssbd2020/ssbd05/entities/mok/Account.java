@@ -128,7 +128,8 @@ public class Account implements Serializable {
     @NotNull
     @Column(table = "authentication_data", name = "force_password_change", nullable = false, columnDefinition = "boolean default true")
     private boolean forcePasswordChange;
-    
+
+    @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Column(table = "authentication_data", name = "veryfication_token")
     private String veryficationToken;

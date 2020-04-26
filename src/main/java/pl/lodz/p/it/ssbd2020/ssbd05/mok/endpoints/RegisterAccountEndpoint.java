@@ -51,7 +51,6 @@ public class RegisterAccountEndpoint implements Serializable{
             account.setLastname(accountDTO.getLastname());
             account.setLogin(accountDTO.getLogin());
             account.setPassword(sha256(accountDTO.getPassword()));
-            account.setVeryficationToken(accountDTO.getVeryficationToken());
 
             accountManager.createAccount(account);
         }
