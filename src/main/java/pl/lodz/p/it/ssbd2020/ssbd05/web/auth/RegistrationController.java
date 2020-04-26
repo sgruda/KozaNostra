@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Data;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.RegisterAccountEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailController;
 
@@ -16,15 +18,18 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Named
 @Data
 @RequestScoped
 public class RegistrationController implements Serializable {
 
-    //TODO: proces rejestracji powinien korzystać z DTO, endpointów, managerów itd.
     @Inject
-    private AccountFacade accountFacade;
+    RegisterAccountEndpoint registerAccountEndpoint;
+
     private String login;
     private String password;
     private String confirmPassword;
@@ -34,87 +39,33 @@ public class RegistrationController implements Serializable {
 
 
     public void register() {
-            if (!checkIfEmailAlreadyExists(this.emailAddress)) {
-                if (!checkIfLoginAlreadyExists(this.login)) {
-                    if (password.equals(confirmPassword)) {
-                        Account account = new Account();
-                        account.setLogin(this.getLogin());
-                        account.setPassword(sha256(password));
-                        account.setFirstname(this.getFirstname());
-                        account.setLastname(this.getLastname());
-                        account.setEmail(this.getEmailAddress());
-                        account.getAccessLevelCollection().addAll(generateAccessLevels(account));
-                        this.getAccountFacade().create(account);
-                        EmailController emailController = new EmailController();
-                        emailController.sendRegistrationEmail(this.getEmailAddress(), account.getVeryficationToken(), this.getLogin());
-                        FacesContext fc=FacesContext.getCurrentInstance();
-                        fc.addMessage(null, new FacesMessage("Account created !"));
-                        clear();
-                    }
-                }
-            }
-    }
-
-    public boolean checkIfLoginAlreadyExists(String username) {
-        Collection<Account> accounts = this.accountFacade.findAll();
-        for (Account account : accounts) {
-            if (account.getLogin().equals(username)) return true;
-        }
-        return false;
-    }
-
-    public boolean checkIfEmailAlreadyExists(String emailAddress) {
-        Collection<Account> accounts = this.accountFacade.findAll();
-        for (Account account : accounts) {
-            if (account.getEmail().equals(emailAddress)) return true;
-        }
-        return false;
-    }
-
-    Collection<AccessLevel> generateAccessLevels(Account account) {
-        Collection<AccessLevel> accessLevels = new ArrayDeque<>();
-        Client client = new Client();
-        client.setAccount(account);
-        client.setAccessLevel("CLIENT");
-        client.setActive(true);
-
-        Manager manager = new Manager();
-        manager.setAccount(account);
-        manager.setAccessLevel("MANAGER");
-        manager.setActive(false);
-
-        Admin admin = new Admin();
-        admin.setAccount(account);
-        admin.setAccessLevel("ADMIN");
-        admin.setActive(false);
-
-        accessLevels.add(client);
-        accessLevels.add(manager);
-        accessLevels.add(admin);
-        return accessLevels;
-    }
-
-    private String sha256(String password) {
-        MessageDigest digest = null;
         try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        byte[] hash = new byte[0];
-        if (digest != null) {
-            hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-        }
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
+            if (password.equals(confirmPassword)) {
+                AccountDTO account = new AccountDTO();
+                account.setLogin(this.getLogin());
+                account.setPassword(password);
+                account.setFirstname(this.getFirstname());
+                account.setLastname(this.getLastname());
+                account.setEmail(this.getEmailAddress());
+                account.getAccessLevelCollection().add("CLIENT");
+                account.setActive(true);
+                account.setConfirmed(false);
+                account.setVeryficationToken(UUID.randomUUID().toString().replace("-", ""));
+
+                this.registerAccountEndpoint.createAccount(account);
+
+                EmailController emailController = new EmailController();
+                emailController.sendRegistrationEmail(this.getEmailAddress(), account.getVeryficationToken(), this.getLogin());
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.addMessage(null, new FacesMessage("Account created !"));
+                clear();
             }
-            hexString.append(hex);
+        } catch (Exception ex) {
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return hexString.toString();
-    }
+}
+
+
 
     public void clear() {
         this.setLogin("");

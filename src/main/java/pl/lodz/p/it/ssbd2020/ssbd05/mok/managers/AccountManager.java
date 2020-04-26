@@ -31,6 +31,10 @@ public class AccountManager {
         accountFacade.edit(account);
     }
 
+    public void createAccount(Account account) {
+        accountFacade.create(account);
+    }
+
     public Collection<Account> getAllAccounts() {
         if(Optional.ofNullable(accountFacade.findAll()).isPresent())
             return accountFacade.findAll();
