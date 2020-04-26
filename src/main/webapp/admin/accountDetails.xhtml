@@ -67,6 +67,8 @@
         <div style="margin: 5px;display:flex;justify-content: center">
             <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
             <p:commandButton value="#{msg['page.accountdetails.edit']}" />
+            <p:commandButton value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
+                             rendered="#{!accountDetailsController.account.active}" update="@all"/>
         </div>
         </div>
     </ui:define>
