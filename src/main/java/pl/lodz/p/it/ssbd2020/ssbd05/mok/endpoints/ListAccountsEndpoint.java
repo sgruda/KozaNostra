@@ -21,7 +21,6 @@ public class ListAccountsEndpoint {
 
     private AccountDTO accountToDTO(Account account) {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(account.getId());
         accountDTO.setLogin(account.getLogin());
         accountDTO.setFirstname(account.getFirstname());
         accountDTO.setLastname(account.getLastname());
