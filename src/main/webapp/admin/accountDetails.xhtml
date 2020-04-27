@@ -36,11 +36,24 @@
             <h:outputText value="#{accountDetailsController.account.email}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.active']}" />
-            <h:outputText value="#{accountDetailsController.account.active ? 'Yes' : 'No'}"/>
+            <c:choose>
+                <c:when test="#{accountDetailsController.account.active}">
+                    <h:outputText value="#{msg['page.common.yes']}"/>
+                </c:when>
+                <c:otherwise>
+                    <h:outputText value="#{msg['page.common.no']}"/>
+                </c:otherwise>
+            </c:choose>
 
             <h:outputText value="#{msg['page.accountdetails.account.confirmed']}" />
-            <h:outputText value="#{accountDetailsController.account.confirmed ? 'Yes' : 'No'}"/>
-
+            <c:choose>
+                <c:when test="#{accountDetailsController.account.confirmed}">
+                    <h:outputText value="#{msg['page.common.yes']}"/>
+                </c:when>
+                <c:otherwise>
+                    <h:outputText value="#{msg['page.common.no']}"/>
+                </c:otherwise>
+            </c:choose>
             <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}" />
             <ui:fragment>
                 <c:if test="#{accountDetailsController.account.accessLevelCollection.contains('CLIENT')}">
