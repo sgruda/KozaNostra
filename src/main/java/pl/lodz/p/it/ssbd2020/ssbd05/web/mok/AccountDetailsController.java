@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.Conversation;
@@ -12,7 +11,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +27,7 @@ public class AccountDetailsController implements Serializable {
     @Getter
     private AccountDTO account;
     @Inject
-    private ActivationAccountAccount activationAccountAccount;
+    private ActivationAccountController activationAccountController;
 
     public String selectAccount(AccountDTO accountDTO) {
         conversation.begin();
@@ -54,7 +52,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     public void unlockAccount() {
-        activationAccountAccount.unlockAccount(account);
+        activationAccountController.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?
         refresh();
     }

@@ -15,14 +15,13 @@ import java.io.Serializable;
 @Named
 @RequestScoped
 @RolesAllowed(value = "ADMIN")
-public class ActivationAccountAccount implements Serializable {
+public class ActivationAccountController implements Serializable {
     @Inject
     private EditAccountEndpoint editAccountEndpoint;
 
     public void unlockAccount(AccountDTO account) {
         editAccountEndpoint.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Account was unblocked.", null));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Account was unblocked.", null));
     }
 }

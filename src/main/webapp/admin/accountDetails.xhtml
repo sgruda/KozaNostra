@@ -17,6 +17,9 @@
 <ui:composition template = "../templates/template.xhtml">
     <ui:define name = "content">
         <div>
+            <p:messages globalOnly="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
         <p:panelGrid id="panelGrid" columns="2">
             <f:facet name="header">
                 <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
