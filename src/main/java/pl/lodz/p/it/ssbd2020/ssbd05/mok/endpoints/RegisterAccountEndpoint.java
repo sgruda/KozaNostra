@@ -23,7 +23,7 @@ import java.util.Collection;
 
 @Named
 @Stateful
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class RegisterAccountEndpoint implements Serializable{
 
 
