@@ -33,13 +33,16 @@ public class EmailController {
     }
 
     public void sendRegistrationEmail(String mail, String token, String login)  {
-        String subject = "Confirm your account";
+        String subject = ResourceBundles.getTranslatedText("mail.account.confirm.subject");
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String link = request.getRequestURL()
                 .substring(0, (request.getRequestURL().length() - request.getServletPath().length())).concat("/confirmAccount.xhtml?token=");
-        String body = "<a href=\"" + link + token + "&login=" + login + "\">Click here to confirm your account</a>";
+        String body = "<a href=\"" + link + token + "&login=" + login + "\">"+ ResourceBundles.getTranslatedText("mail.account.confirm.body") +"</a>";
 
-        this.sendEmail(mail, subject, body);
+        new Thread(() -> {
+            sendEmail(mail, subject, body);
+            return;
+        }).start();
     }
 
     private void sendEmail(String mail, String subject, String body) {

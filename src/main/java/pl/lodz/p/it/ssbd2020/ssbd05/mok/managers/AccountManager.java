@@ -3,12 +3,12 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Optional;
 
-@Stateless
+@Stateful
 public class AccountManager {
     @Inject
     private AccountFacade accountFacade;
