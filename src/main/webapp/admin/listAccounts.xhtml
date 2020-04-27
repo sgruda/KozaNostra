@@ -4,10 +4,10 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>#{msg['page.listaccounts.title']}</title>
-    </h:head>
     <ui:composition template = "/templates/template.xhtml">
+        <ui:define name="head">
+            <title>#{msg['page.listaccounts.title']}</title>
+        </ui:define>
         <ui:define name = "content">
                 <h:form>
                     <p:dataTable var="account" value="#{listAccountsController.accounts}">

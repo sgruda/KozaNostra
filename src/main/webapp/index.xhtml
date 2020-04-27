@@ -5,10 +5,10 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core" 
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:head>
-        <title>ssbd05</title>
-    </h:head>
     <ui:composition template = "./templates/template.xhtml">
+        <ui:define name="head">
+            <title>Strona główna</title>
+        </ui:define>
         <ui:define name = "content">
                     <p:imageSwitch effect="zoom" speed="700">
                         <p:graphicImage value="./pictures/picture0.jpg" style="width: 1000px; height: 600px; margin-top: 20px;"/>
