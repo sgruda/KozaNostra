@@ -27,7 +27,7 @@ public class AccountDetailsController implements Serializable {
 
     public String selectAccount(AccountDTO accountDTO) {
         conversation.begin();
-        this.account = accountDetailsEndpoint.getAccount(accountDTO.getId());
+        this.account = accountDetailsEndpoint.getAccount(accountDTO.getLogin());
         return "accountDetails";
     }
 
