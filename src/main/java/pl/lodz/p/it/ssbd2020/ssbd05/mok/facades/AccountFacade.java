@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.xml.crypto.Data;
 import java.util.Optional;
 
-@Stateful(name = "AccountFacadeMOK")
+@Stateless(name = "AccountFacadeMOK")
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")
