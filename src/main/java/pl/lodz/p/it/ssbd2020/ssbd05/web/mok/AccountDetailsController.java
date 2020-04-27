@@ -12,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,11 +25,11 @@ public class AccountDetailsController implements Serializable {
     @Inject
     private AccountDetailsEndpoint accountDetailsEndpoint;
     @Inject
-    private EditAccountEndpoint editAccountEndpoint;
-    @Inject
     private Conversation conversation;
     @Getter
     private AccountDTO account;
+    @Inject
+    private ActivationAccountAccount activationAccountAccount;
 
     public String selectAccount(AccountDTO accountDTO) {
         conversation.begin();
@@ -53,9 +54,11 @@ public class AccountDetailsController implements Serializable {
     }
 
     public void unlockAccount() {
-        editAccountEndpoint.unlockAccount(account);
+        activationAccountAccount.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Account was unblocked.", null));
+        refresh();
+    }
+    public void refresh() {
+        this.account = accountDetailsEndpoint.getAccount(account.getId());
     }
 }
