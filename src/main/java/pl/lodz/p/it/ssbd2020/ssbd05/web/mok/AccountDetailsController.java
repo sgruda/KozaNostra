@@ -51,6 +51,7 @@ public class AccountDetailsController implements Serializable {
         return conversation.getId();
     }
 
+    @RolesAllowed(value = "ADMIN")
     public void unlockAccount() {
         activationAccountController.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?

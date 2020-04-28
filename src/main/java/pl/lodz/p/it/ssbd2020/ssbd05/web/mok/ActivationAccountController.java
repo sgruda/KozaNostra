@@ -14,11 +14,11 @@ import java.io.Serializable;
 
 @Named
 @RequestScoped
-@RolesAllowed(value = "ADMIN")
 public class ActivationAccountController implements Serializable {
     @Inject
     private EditAccountEndpoint editAccountEndpoint;
 
+    @RolesAllowed(value = "ADMIN")
     public void unlockAccount(AccountDTO account) {
         editAccountEndpoint.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?
