@@ -11,6 +11,9 @@
     <link href='../css/content.css' rel='stylesheet'/>
     <h:outputStylesheet name="/css/content.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <ui:insert name="head">
+        <title>Template</title>
+    </ui:insert>
 </h:head>
     <div class = "wrapper">		
         <div class = "header" style="background: #{roleController.headerColorForRole}">
