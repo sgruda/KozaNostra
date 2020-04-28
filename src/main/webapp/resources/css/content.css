@@ -48,7 +48,7 @@
 .link {
     font-weight: bold;
     text-decoration: none;
-    margin: 0px 20px;
+    margin: 0 20px;
     font-size: 20px;
     cursor: pointer;
     color: white;
@@ -64,6 +64,13 @@
     font-family: 'Open Sans';
     font-size: 17px;
     background-color: #31708e;
+    color: white;
+}
+
+.templatetext {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 20px;
     color: white;
 }
 
