@@ -17,7 +17,10 @@
 <ui:composition template = "../templates/template.xhtml">
     <ui:define name = "content">
         <div>
-        <p:panelGrid columns="2">
+            <p:messages globalOnly="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+        <p:panelGrid id="panelGrid" columns="2">
             <f:facet name="header">
                 <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
             </f:facet>
@@ -65,12 +68,15 @@
             <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
         </p:panelGrid>
         <div style="margin: 5px;display:flex;justify-content: center">
-            <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
-            <p:commandButton value="#{msg['page.accountdetails.edit']}" />
+            <h:form id="commandButtons">
+                <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
+                <p:commandButton value="#{msg['page.accountdetails.edit']}" />
+                <p:commandButton value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
+                                 rendered="#{!accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
+            </h:form>
         </div>
         </div>
     </ui:define>
-    
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
         
