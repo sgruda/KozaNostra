@@ -5,15 +5,18 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Named
-@Stateless
+@Stateful
 @RolesAllowed(value = "ADMIN")
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class ListAccountsEndpoint {
 
     @Inject
@@ -21,11 +24,12 @@ public class ListAccountsEndpoint {
 
     private AccountDTO accountToDTO(Account account) {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(account.getId());
         accountDTO.setLogin(account.getLogin());
         accountDTO.setFirstname(account.getFirstname());
         accountDTO.setLastname(account.getLastname());
         accountDTO.setEmail(account.getEmail());
+        accountDTO.setLastSuccessfulAuth(account.getLastSuccessfulAuth());
+        accountDTO.setLastAuthIp(account.getLastAuthIp());
         return accountDTO;
     }
 

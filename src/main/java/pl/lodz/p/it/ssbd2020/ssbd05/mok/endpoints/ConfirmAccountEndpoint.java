@@ -4,7 +4,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
@@ -12,8 +12,8 @@ import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
-@Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@Stateful
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class ConfirmAccountEndpoint implements Serializable {
 
     @Inject
@@ -28,8 +28,7 @@ public class ConfirmAccountEndpoint implements Serializable {
         return accountDTO;
     }
 
-    public void confirmAccount(AccountDTO accountDTO) {
-        account = accountManager.findByLogin(accountDTO.getLogin());
+    public void confirmAccount() {
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
             accountManager.edit(account);

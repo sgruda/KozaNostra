@@ -5,23 +5,25 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.stream.Collectors;
 
 @Named
-@Stateless
+@Stateful
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class AccountDetailsEndpoint implements Serializable {
 
     @Inject
     private AccountFacade accountFacade;
 
-    public AccountDTO getAccount(Long id) {
+    public AccountDTO getAccount(String login) {
         AccountDTO accountDTO = new AccountDTO();
-        Account account = accountFacade.find(id).get();
-        accountDTO.setId(account.getId());
+        Account account = accountFacade.findByLogin(login).get();
         accountDTO.setLogin(account.getLogin());
         accountDTO.setFirstname(account.getFirstname());
         accountDTO.setLastname(account.getLastname());

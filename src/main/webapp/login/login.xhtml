@@ -6,21 +6,20 @@
       xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-<h:head>
-    <title>#{msg['page.login.title']}</title>
-
-</h:head>
 <ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <style type="text/css">
+            .main{
+                background-image: url('../pictures/backgroundLogin.jpg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-attachment: fixed;
+                background-size: cover;
+            }
+        </style>
+        <title>#{msg['page.login.title']}</title>
+    </ui:define>
     <ui:define name = "content">
-            <style type="text/css">
-                .main{
-                    background-image: url('../pictures/backgroundLogin.jpg');
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-attachment: fixed;
-                    background-size: cover;
-                }
-            </style>
             <h:form id="login">
                 <p:panel id="loginPnl" header="Login" style="font-size: 24px;">
                     <p:messages globalOnly="true">

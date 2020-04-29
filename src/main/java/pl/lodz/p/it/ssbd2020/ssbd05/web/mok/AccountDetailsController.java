@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
 
@@ -18,6 +19,7 @@ import java.util.Date;
 @Named
 @ConversationScoped
 @RolesAllowed(value = "ADMIN")
+@Slf4j
 public class AccountDetailsController implements Serializable {
 
     @Inject
@@ -30,8 +32,10 @@ public class AccountDetailsController implements Serializable {
     private ActivationAccountController activationAccountController;
 
     public String selectAccount(AccountDTO accountDTO) {
+        log.info("No siema kontoDTO to " + accountDTO);
         conversation.begin();
-        this.account = accountDetailsEndpoint.getAccount(accountDTO.getId());
+        this.account = accountDetailsEndpoint.getAccount(accountDTO.getLogin());
+        log.info("No siema konto to " + account);
         return "accountDetails";
     }
 
@@ -58,6 +62,6 @@ public class AccountDetailsController implements Serializable {
         refresh();
     }
     public void refresh() {
-        this.account = accountDetailsEndpoint.getAccount(account.getId());
+        this.account = accountDetailsEndpoint.getAccount(account.getLogin());
     }
 }
