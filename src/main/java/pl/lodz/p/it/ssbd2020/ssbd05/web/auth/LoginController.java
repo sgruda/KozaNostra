@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -78,7 +79,7 @@ public class LoginController implements Serializable {
                 try {
                     lastLoginController.checkFailedAuthCounter();
                 } catch (Exception ex) {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Another failed login attempt. Account was blocked.", null));
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundles.getTranslatedText("page.login.account.lock"), null));
                 }
             }
             lastLoginController.updateLastAuthIP();

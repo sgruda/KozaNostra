@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
-import lombok.Getter;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
 
@@ -22,6 +22,6 @@ public class ActivationAccountController implements Serializable {
     public void unlockAccount(AccountDTO account) {
         editAccountEndpoint.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Account was unblocked.", null));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ResourceBundles.getTranslatedText("page.accountdetails.unlock"), null));
     }
 }
