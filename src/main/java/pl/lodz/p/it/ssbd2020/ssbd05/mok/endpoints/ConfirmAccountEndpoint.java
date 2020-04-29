@@ -28,8 +28,7 @@ public class ConfirmAccountEndpoint implements Serializable {
         return accountDTO;
     }
 
-    public void confirmAccount(AccountDTO accountDTO) {
-        account = accountManager.findByLogin(accountDTO.getLogin());
+    public void confirmAccount() {
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
             accountManager.edit(account);

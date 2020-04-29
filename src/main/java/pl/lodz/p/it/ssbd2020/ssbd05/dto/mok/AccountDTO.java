@@ -12,7 +12,6 @@ import java.util.Date;
 @AllArgsConstructor
 public @Data class AccountDTO {
 
-    private Long id;
     private String login;
     private String password;
     private boolean active;
@@ -27,8 +26,7 @@ public @Data class AccountDTO {
     private String veryficationToken;
     private int failedAuthCounter;
 
-    public AccountDTO(Long id, String login, String password, boolean active, boolean confirmed, String firstname, String lastname, String email, String veryficationToken, int failedAuthCounter) {
-        this.id = id;
+    public AccountDTO(String login, String password, boolean active, boolean confirmed, String firstname, String lastname, String email, String veryficationToken, int failedAuthCounter) {
         this.login = login;
         this.password = password;
         this.active = active;

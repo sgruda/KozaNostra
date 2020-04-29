@@ -5,10 +5,10 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-    <h:head>
-        <title>#{msg['page.confirmaccount.title']}</title>
-    </h:head>
     <ui:composition template = "/templates/template.xhtml">
+        <ui:define name="head">
+            <title>#{msg['page.confirmaccount.title']}</title>
+        </ui:define>
         <ui:define name = "content">
             <body onload="setUrl()">
                 <script type="text/javascript">

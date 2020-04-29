@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailController;
 
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -9,6 +10,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Optional;
+
 
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
@@ -32,6 +34,13 @@ public class AccountManager {
 
     public void edit(Account account) {
         accountFacade.edit(account);
+    }
+
+    public void createAccount(Account account) {
+
+        accountFacade.create(account);
+        EmailController emailController = new EmailController();
+        emailController.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken(), account.getLogin());
     }
 
     public Collection<Account> getAllAccounts() {
