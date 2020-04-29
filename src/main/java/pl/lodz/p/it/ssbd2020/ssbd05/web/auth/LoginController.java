@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -65,7 +66,7 @@ public class LoginController implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", account.getLastSuccessfulAuth());
             if(null != account.getLastFailedAuth())
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", account.getLastFailedAuth());
-            lastLoginController.startConversation(account);
+            lastLoginController.startConversation(account, lastLoginEndpoint.getProperties());
             try {
                 request.login(username, password);
                 roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
@@ -75,6 +76,11 @@ public class LoginController implements Serializable {
             } catch (ServletException e) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect credentials", null));
                 lastLoginController.updateLastFailedAuthDate();
+                try {
+                    lastLoginController.checkFailedAuthCounter();
+                } catch (Exception ex) {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundles.getTranslatedText("page.login.account.lock"), null));
+                }
             }
             lastLoginController.updateLastAuthIP();
             this.lastLoginEndpoint.edit(lastLoginController.endConversation());
@@ -107,7 +113,7 @@ public class LoginController implements Serializable {
     }
 
     public void updateAuthFailureInfo(){
-        lastLoginController.startConversation(account);
+        lastLoginController.startConversation(account, lastLoginEndpoint.getProperties());
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
         this.lastLoginEndpoint.edit(lastLoginController.endConversation());
