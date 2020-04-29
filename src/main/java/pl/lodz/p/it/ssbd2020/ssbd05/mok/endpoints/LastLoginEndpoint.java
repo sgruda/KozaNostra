@@ -4,13 +4,16 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
-@Stateless
+@Stateful
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class LastLoginEndpoint implements Serializable {
 
     @Inject

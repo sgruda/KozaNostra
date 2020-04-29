@@ -5,14 +5,17 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.stream.Collectors;
 
 @Named
-@Stateless
+@Stateful
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class AccountDetailsEndpoint implements Serializable {
 
     @Inject

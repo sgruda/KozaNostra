@@ -13,6 +13,7 @@ import java.io.Serializable;
 
 @Named
 @Stateful
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class ConfirmAccountEndpoint implements Serializable {
 
     @Inject
