@@ -48,4 +48,11 @@ public class AccountManager {
             return accountFacade.findAll();
         else throw new IllegalArgumentException("Nie ma żadnych kont w bazie");
     }
+
+    public void unlockAccount(Account account) {
+        account.setActive(true);
+        account.setFailedAuthCounter(0);
+        this.edit(account);
+        //TODO wysylanie maila
+    }
 }

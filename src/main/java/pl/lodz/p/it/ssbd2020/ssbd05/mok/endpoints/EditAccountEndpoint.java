@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -16,42 +17,32 @@ import java.util.Properties;
 
 @Named
 @Stateful
-@TransactionAttribute(TransactionAttributeType.NEVER)
-public class LastLoginEndpoint implements Serializable {
-
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+//@RolesAllowed(value = "ADMIN")    TODO Kwesita jest, tego endpointa moze uzywac jeszcze klient, takze chyba jedna adntoacja nie wystarczy
+public class EditAccountEndpoint implements Serializable {
     @Inject
     private AccountManager accountManager;
-
-    public Properties getProperties() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("login.properties");
-        Properties properties = new Properties();
-        try {
-            if(inputStream != null)
-                properties.load(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
-
+    //Ustawilem tego cczego potrzebowalem do odblokowywania, przy edycji bedzie trzeba dodac reszte
     public AccountDTO findByLogin(String username) {
         AccountDTO accountDTO = new AccountDTO();
         Account account = accountManager.findByLogin(username);
         accountDTO.setLogin(account.getLogin());
         accountDTO.setActive(account.isActive());
-        accountDTO.setConfirmed(account.isConfirmed());
         accountDTO.setFailedAuthCounter(account.getFailedAuthCounter());
-        accountDTO.setLastSuccessfulAuth(account.getLastSuccessfulAuth());
-        accountDTO.setLastFailedAuth(account.getLastFailedAuth());
         return accountDTO;
     }
 
     public void edit(AccountDTO accountDTO) {
         Account account = accountManager.findByLogin(accountDTO.getLogin());
         account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
-        account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
-        account.setLastFailedAuth(accountDTO.getLastFailedAuth());
         account.setActive(accountDTO.isActive());
         accountManager.edit(account);
+    }
+
+    public void unlockAccount(AccountDTO accountDTO) {
+        Account account = accountManager.findByLogin(accountDTO.getLogin());
+        account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
+        account.setActive(accountDTO.isActive());
+        accountManager.unlockAccount(account);
     }
 }
