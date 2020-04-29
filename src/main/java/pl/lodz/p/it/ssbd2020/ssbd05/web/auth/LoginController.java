@@ -66,7 +66,7 @@ public class LoginController implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", account.getLastSuccessfulAuth());
             if(null != account.getLastFailedAuth())
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", account.getLastFailedAuth());
-            lastLoginController.startConversation(account, lastLoginEndpoint.getProperties());
+            lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
             try {
                 request.login(username, password);
                 roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
@@ -113,7 +113,7 @@ public class LoginController implements Serializable {
     }
 
     public void updateAuthFailureInfo(){
-        lastLoginController.startConversation(account, lastLoginEndpoint.getProperties());
+        lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
         this.lastLoginEndpoint.edit(lastLoginController.endConversation());
