@@ -5,10 +5,14 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailController;
 
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Optional;
 
+
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 public class AccountManager {
     @Inject
