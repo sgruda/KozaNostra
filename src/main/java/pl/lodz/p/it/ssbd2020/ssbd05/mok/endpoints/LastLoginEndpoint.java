@@ -22,8 +22,8 @@ public class LastLoginEndpoint implements Serializable {
     @Inject
     private AccountManager accountManager;
 
-    public Properties getProperties() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("login.properties");
+    public String getFailedAttemptNumberFromProperties() {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.login.properties");
         Properties properties = new Properties();
         try {
             if(inputStream != null)
@@ -31,7 +31,7 @@ public class LastLoginEndpoint implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return properties;
+        return properties.getProperty("blockingAccountAfterFailedAttemptNumber");
     }
 
     public AccountDTO findByLogin(String username) {

@@ -17,12 +17,12 @@ import java.util.Date;
 import java.util.Properties;
 
 
-public class EmailController {
+public class EmailSender {
 
     private Properties emailProperties;
 
-    public EmailController() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("email.properties");
+    public EmailSender() {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.email.properties");
         emailProperties = new Properties();
         try {
             if(inputStream != null)
