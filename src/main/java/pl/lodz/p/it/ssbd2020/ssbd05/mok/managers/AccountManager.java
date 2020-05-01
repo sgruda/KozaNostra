@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class AccountManager {
     @Inject
     private AccountFacade accountFacade;
+    @Inject
+    private EmailSender emailSender;
 
     public Account findById(Long id) {
         if(accountFacade.find(id).isPresent())
@@ -42,10 +45,18 @@ public class AccountManager {
         accountFacade.edit(account);
     }
 
+    public void confirmAccount(Account account) throws AccountAlreadyConfirmedException {
+        if(!account.isConfirmed()) {
+            account.setConfirmed(true);
+            account.setVeryficationToken("used");
+            accountFacade.edit(account);
+        }
+        else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
+    }
+
     public void createAccount(Account account) {
 
         accountFacade.create(account);
-        EmailSender emailSender = new EmailSender();
         emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
     }
 
@@ -58,7 +69,7 @@ public class AccountManager {
     public void unlockAccount(Account account) {
         account.setActive(true);
         account.setFailedAuthCounter(0);
-        this.edit(account);
+        accountFacade.edit(account);
         //TODO wysylanie maila
     }
 }
