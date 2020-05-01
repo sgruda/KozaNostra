@@ -2,7 +2,10 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -20,18 +23,19 @@ public class ConfirmAccountEndpoint implements Serializable {
     private AccountManager accountManager;
     private Account account;
 
-    public AccountDTO getAccountByLogin(String login) {
-        account = accountManager.findByLogin(login);
+    public AccountDTO getAccountByToken(String token) throws AppBaseException {
+        account = accountManager.findByToken(token);
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setLogin(account.getLogin());
         accountDTO.setVeryficationToken(account.getVeryficationToken());
         return accountDTO;
     }
 
-    public void confirmAccount() {
+    public void confirmAccount() throws AccountAlreadyConfirmedException {
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
+            account.setVeryficationToken("used");
             accountManager.edit(account);
         }
+        else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
     }
 }

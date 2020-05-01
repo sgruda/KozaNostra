@@ -1,8 +1,10 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -18,8 +20,6 @@ public class AccountManager {
     @Inject
     private AccountFacade accountFacade;
 
-    //TODO: stworzenie własnych wyjątków i obsługa ich
-
     public Account findById(Long id) {
         if(accountFacade.find(id).isPresent())
             return accountFacade.find(id).get();
@@ -32,6 +32,12 @@ public class AccountManager {
         else throw new IllegalArgumentException("Konto o podanym loginie nie istnieje");
     }
 
+    public Account findByToken(String token) throws AppBaseException {
+        if(accountFacade.findByToken(token).isPresent())
+            return accountFacade.findByToken(token).get();
+        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+    }
+
     public void edit(Account account) {
         accountFacade.edit(account);
     }
@@ -40,7 +46,7 @@ public class AccountManager {
 
         accountFacade.create(account);
         EmailSender emailSender = new EmailSender();
-        emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken(), account.getLogin());
+        emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
     }
 
     public Collection<Account> getAllAccounts() {
