@@ -34,31 +34,35 @@
                  <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
              </div>
              <div class = "header-right">
+                 <ui:fragment id="user-details" rendered="#{not empty request.remoteUser}">
+                     <h:form>
+                     <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" style="" />
+                     <p:slideMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:180px">
+                         <p:submenu label="#{msg['page.template.accountdetails']}" >
+                             <p:menuitem value="Do uzupelnienia" />
+                         </p:submenu>
+                         <p:submenu label="#{roleController.selectedRole}" disabled="true"/>
+                         <p:submenu label="#{msg['page.template.changerole']}" rendered="#{roleController.allUserRolesLength > 1}" >
+                             <c:if test="#{facesContext.externalContext.isUserInRole('CLIENT')}">
+                                 <p:menuitem value="#{msg['page.changelevel.client']}" action="#{roleController.setCurrentRole('Client')}" ajax="false"/>
+                             </c:if>
+                             <c:if test="#{facesContext.externalContext.isUserInRole('MANAGER')}">
+                                 <p:menuitem value="#{msg['page.changelevel.manager']}" action="#{roleController.setCurrentRole('Manager')}" ajax="false"/>
+                             </c:if>
+                             <c:if test="#{facesContext.externalContext.isUserInRole('ADMIN')}">
+                                 <p:menuitem value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole('Admin')}" ajax="false"/>
+                             </c:if>
+                         </p:submenu>
+                         <p:submenu label="#{msg['page.template.logout']}">
+                             <p:menuitem action="#{logoutController.logout()}" value="#{msg['page.template.logout']}"/>
+                         </p:submenu>
+                     </p:slideMenu>
+                     </h:form>
+                 </ui:fragment>
+
                  <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
                     <h:link class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
                     <h:link class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
-                 </ui:fragment>
-                    <ui:fragment id="authenticated-right-links" rendered="#{not empty request.remoteUser}">
-                    <h:form>
-                        <h:commandLink class="link" value="#{msg['page.template.logout']}" action="#{logoutController.logout()}"/>
-                    </h:form>
-                    <h:link class="link" value="#{msg['page.template.changerole']}" outcome="/changeRole.xhtml" rendered="#{roleController.allUserRolesLength > 1}"/>
-
-                    <ui:fragment>
-                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('CLIENT')}">
-                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.client']}"/>
-                        </c:if>
-                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('MANAGER')}">
-                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.manager']}"/>
-                        </c:if>
-                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('ADMIN')}">
-                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.admin']}"/>
-                        </c:if>
-                    </ui:fragment>
-                    <h:outputText styleClass="templatetext" style="margin-left: 20px" value="#{msg['page.template.currentrole']}&#160;"/>
-
-                    <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{request.remoteUser}"/>
-                    <h:outputText styleClass="templatetext" value="#{msg['page.template.currentuser']}&#160;"/>
                  </ui:fragment>
              </div>
         </div>
