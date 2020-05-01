@@ -29,7 +29,7 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
-    public void register() {
+    public String register() {
         try {
             if (password.equals(confirmPassword)) {
                 AccountDTO account = new AccountDTO();
@@ -45,12 +45,14 @@ public class RegistrationController implements Serializable {
                 this.registerAccountEndpoint.addNewAccount(account);
 
                 FacesContext fc = FacesContext.getCurrentInstance();
+                fc.getExternalContext().getFlash().setKeepMessages(true);
                 fc.addMessage(null, new FacesMessage("Account created !"));
                 clear();
             }
         } catch (Exception ex) {
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return "home";
 }
 
 
