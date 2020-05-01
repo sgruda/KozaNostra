@@ -61,7 +61,6 @@
     height: 25px;
     justify-content: center;
     align-items: center;
-    font-family: 'Open Sans';
     font-size: 17px;
     background-color: #31708e;
     color: white;
@@ -78,6 +77,7 @@ body{
     margin: 0;
     height: 100vh;
     width: 100vw;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body .ui-widget-overlay{
