@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos;
 
-public class HallNotFoundException extends Exception {
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+
+public class HallNotFoundException extends AppBaseException {
 
     public HallNotFoundException() {
         super();
@@ -8,5 +10,9 @@ public class HallNotFoundException extends Exception {
 
     public HallNotFoundException(String message) {
         super(message);
+    }
+
+    public HallNotFoundException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
