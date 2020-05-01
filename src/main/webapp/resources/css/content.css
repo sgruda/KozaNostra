@@ -74,6 +74,21 @@
     color: white;
 }
 
+.error-div {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 10vh;
+    justify-content: space-between;
+}
+
+.error-panel {
+    min-width: 30vw;
+}
+
+.error-description {
+    font-size: 24px !important
+}
 body{
     margin: 0;
     height: 100vh;

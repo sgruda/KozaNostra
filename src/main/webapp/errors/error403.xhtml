@@ -9,9 +9,9 @@
             <title>#{msg['page.error.403.title']}</title>
         </ui:define>
         <ui:define name = "content">
-            <p:panel header="#{msg['page.error.403.title']}" style="font-size: 24px;min-width: 50vw;min-height: 50vh">
-                <div style="display:flex;flex-direction: column;align-items: center;min-height: 10vh;">
-                    <p:outputLabel style="font-size: 24px">#{msg['page.error.403.desc']}</p:outputLabel>
+            <p:panel header="#{msg['page.error.403.title']}" styleClass="error-panel" style="font-size: 24px">
+                <div class="error-div">
+                    <p:outputLabel styleClass="error-description">#{msg['page.error.403.desc']}</p:outputLabel>
                     <p:button outcome="/index.xhtml?faces-redirect=true" value="#{msg['page.error.common.backbutton']}"  />
                 </div>
             </p:panel>
