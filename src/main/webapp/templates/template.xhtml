@@ -41,7 +41,15 @@
                          <p:submenu label="#{msg['page.template.accountdetails']}" >
                              <p:menuitem value="Do uzupelnienia" />
                          </p:submenu>
-                         <p:submenu label="#{roleController.selectedRole}" disabled="true"/>
+                         <c:if test="#{roleController.selectedRole.equalsIgnoreCase('CLIENT')}">
+                             <p:submenu label="#{msg['page.changelevel.client']}" disabled="true"/>
+                         </c:if>
+                         <c:if test="#{roleController.selectedRole.equalsIgnoreCase('MANAGER')}">
+                             <p:submenu label="#{msg['page.changelevel.manager']}" disabled="true"/>
+                         </c:if>
+                         <c:if test="#{roleController.selectedRole.equalsIgnoreCase('ADMIN')}">
+                             <p:submenu label="#{msg['page.changelevel.admin']}" disabled="true"/>
+                         </c:if>
                          <p:submenu label="#{msg['page.template.changerole']}" rendered="#{roleController.allUserRolesLength > 1}" >
                              <c:if test="#{facesContext.externalContext.isUserInRole('CLIENT')}">
                                  <p:menuitem value="#{msg['page.changelevel.client']}" action="#{roleController.setCurrentRole('Client')}" ajax="false"/>
