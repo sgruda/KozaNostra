@@ -15,6 +15,7 @@
         <title>Template</title>
     </ui:insert>
 </h:head>
+<h:body>
     <div class = "wrapper">		
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
@@ -82,4 +83,5 @@
         <p:growl id="informationBox" showDetail="true" life="3000"/>
         <f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
     </h:form>
+</h:body>
 </html>
