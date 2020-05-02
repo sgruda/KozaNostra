@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.PermitAll;
@@ -12,8 +13,10 @@ import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -36,10 +39,14 @@ public class RegisterAccountEndpoint implements Serializable{
 
         @Getter
         @Setter
+        private int lastActionMethodId = 0;
+
+        @Getter
+        @Setter
         private Collection<AccessLevel> accessLevels;
 
         @PermitAll
-        public  void addNewAccount(AccountDTO accountDTO){
+        public  void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
             accessLevels = new ArrayList<>();
             account = new Account();
             generateAccessLevels(accountDTO);
@@ -51,7 +58,6 @@ public class RegisterAccountEndpoint implements Serializable{
             account.setLastname(accountDTO.getLastname());
             account.setLogin(accountDTO.getLogin());
             account.setPassword(sha256(accountDTO.getPassword()));
-
             accountManager.createAccount(account);
         }
 

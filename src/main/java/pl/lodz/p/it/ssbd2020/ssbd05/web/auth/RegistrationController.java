@@ -2,7 +2,9 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Data;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.RegisterAccountEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -10,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +32,7 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
-    public void register() {
+    public void register() throws AppBaseException{
         try {
             if (password.equals(confirmPassword)) {
                 AccountDTO account = new AccountDTO();
@@ -44,11 +47,11 @@ public class RegistrationController implements Serializable {
 
                 this.registerAccountEndpoint.addNewAccount(account);
 
-                FacesContext fc = FacesContext.getCurrentInstance();
-                fc.addMessage(null, new FacesMessage("Account created !"));
+                ResourceBundles.emitMessage(null,"page.registration.account.created");
                 clear();
             }
-        } catch (Exception ex) {
+        } catch (AppBaseException ex) {
+            ResourceBundles.emitMessage(null,ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
         }
 }

@@ -19,6 +19,10 @@
         <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
         <param-value>6Lde2ucUAAAAABo2d2eehKupJ62B0c7avPKl0HoC</param-value>
     </context-param>
+    <context-param>
+        <param-name>numberOfTransactionRepeat</param-name>
+        <param-value>3</param-value>
+    </context-param>
 
     <context-param>
         <param-name>primefaces.THEME</param-name>
