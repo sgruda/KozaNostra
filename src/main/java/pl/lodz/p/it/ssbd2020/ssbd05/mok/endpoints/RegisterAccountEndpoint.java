@@ -27,63 +27,67 @@ import java.util.Collection;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class RegisterAccountEndpoint implements Serializable{
+public class RegisterAccountEndpoint implements Serializable {
 
 
-        @Inject
-        private AccountManager accountManager;
+    @Inject
+    private AccountManager accountManager;
 
-        @Getter
-        @Setter
-        private Account account;
+    @Getter
+    @Setter
+    private Account account;
 
-        @Getter
-        @Setter
-        private int lastActionMethodId = 0;
+    @Getter
+    @Setter
+    private Collection<AccessLevel> accessLevels;
 
-        @Getter
-        @Setter
-        private Collection<AccessLevel> accessLevels;
+    @PermitAll
+    public void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
+        accessLevels = new ArrayList<>();
+        account = new Account();
+        generateAccessLevels(accountDTO);
+        account.setAccessLevelCollection(accessLevels);
+        account.setActive(accountDTO.isActive());
+        account.setConfirmed(accountDTO.isConfirmed());
+        account.setEmail(accountDTO.getEmail());
+        account.setFirstname(accountDTO.getFirstname());
+        account.setLastname(accountDTO.getLastname());
+        account.setLogin(accountDTO.getLogin());
+        account.setPassword(sha256(accountDTO.getPassword()));
 
-        @PermitAll
-        public  void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
-            accessLevels = new ArrayList<>();
-            account = new Account();
-            generateAccessLevels(accountDTO);
-            account.setAccessLevelCollection(accessLevels);
-            account.setActive(accountDTO.isActive());
-            account.setConfirmed(accountDTO.isConfirmed());
-            account.setEmail(accountDTO.getEmail());
-            account.setFirstname(accountDTO.getFirstname());
-            account.setLastname(accountDTO.getLastname());
-            account.setLogin(accountDTO.getLogin());
-            account.setPassword(sha256(accountDTO.getPassword()));
+        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
+        do {
             accountManager.createAccount(account);
+            callCounter--;
+        } while (accountManager.isLastTransactionRollback() && callCounter > 0);
+        if (callCounter == 0) {
+            throw AppBaseException.ExceededNumberOfTransactionRetriesException();
         }
 
-        public void generateAccessLevels(AccountDTO accountDTO){
-            for (String accessLevel: accountDTO.getAccessLevelCollection()){
-                if(accessLevel.equals("CLIENT")){
-                    Client client = new Client();
-                    client.setAccount(account);
-                    client.setAccessLevel("CLIENT");
-                    client.setActive(true);
-                    accessLevels.add(client);
-                }
+    }
+
+    public void generateAccessLevels(AccountDTO accountDTO) {
+        for (String accessLevel : accountDTO.getAccessLevelCollection()) {
+            if (accessLevel.equals("CLIENT")) {
+                Client client = new Client();
+                client.setAccount(account);
+                client.setAccessLevel("CLIENT");
+                client.setActive(true);
+                accessLevels.add(client);
             }
-            Manager manager = new Manager();
-            manager.setAccount(account);
-            manager.setAccessLevel("MANAGER");
-            manager.setActive(false);
-            accessLevels.add(manager);
-
-            Admin admin = new Admin();
-            admin.setAccount(account);
-            admin.setAccessLevel("ADMIN");
-            admin.setActive(false);
-            accessLevels.add(admin);
         }
+        Manager manager = new Manager();
+        manager.setAccount(account);
+        manager.setAccessLevel("MANAGER");
+        manager.setActive(false);
+        accessLevels.add(manager);
 
+        Admin admin = new Admin();
+        admin.setAccount(account);
+        admin.setAccessLevel("ADMIN");
+        admin.setActive(false);
+        accessLevels.add(admin);
+    }
 
 
     private String sha256(String password) {

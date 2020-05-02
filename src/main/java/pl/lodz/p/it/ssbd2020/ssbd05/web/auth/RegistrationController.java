@@ -51,7 +51,7 @@ public class RegistrationController implements Serializable {
                 clear();
             }
         } catch (AppBaseException ex) {
-            ResourceBundles.emitMessage(null,ex.getMessage());
+            ResourceBundles.emitErrorMessage(null,ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
         }
 }

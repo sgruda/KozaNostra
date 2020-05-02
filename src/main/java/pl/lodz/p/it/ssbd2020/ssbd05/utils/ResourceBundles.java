@@ -9,8 +9,13 @@ public class ResourceBundles {
         return ResourceBundle.getBundle("i18n.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString(key);
     }
 
-    public static void emitMessage(final String id, final String key) {
+    public static void emitErrorMessage(final String id, final String key) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,getTranslatedText(key),getTranslatedText(key));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public static void emitMessage(final String id, final String key) {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,getTranslatedText(key),getTranslatedText(key));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }
