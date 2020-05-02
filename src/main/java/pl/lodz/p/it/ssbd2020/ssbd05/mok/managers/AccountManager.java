@@ -48,14 +48,12 @@ public class AccountManager {
     public void confirmAccount(Account account) throws AccountAlreadyConfirmedException {
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
-            account.setVeryficationToken("used");
             accountFacade.edit(account);
         }
         else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
     }
 
     public void createAccount(Account account) {
-
         accountFacade.create(account);
         emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
     }
