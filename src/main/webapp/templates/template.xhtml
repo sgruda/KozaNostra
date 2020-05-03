@@ -15,7 +15,8 @@
         <title>Template</title>
     </ui:insert>
 </h:head>
-    <div class = "wrapper">		
+<h:body>
+    <div class = "wrapper">
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
                 <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole('Admin')}">
@@ -27,18 +28,18 @@
                 </ui:fragment>
                 <p:commandButton value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
             </p:sidebar>
-             <div class = "header-left">
-                 <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole('Admin') or roleController.isSelectedRole('Manager')}">
-                    <i class="pi pi-bars" style="font-size: 3em;color: white" ></i> 
-                 </p:commandLink>
-                 <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
-             </div>
-             <div class = "header-right">
-                 <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
+            <div class = "header-left">
+                <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole('Admin') or roleController.isSelectedRole('Manager')}">
+                    <i class="pi pi-bars" style="font-size: 3em;color: white" ></i>
+                </p:commandLink>
+                <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link>
+            </div>
+            <div class = "header-right">
+                <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
                     <h:link class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
                     <h:link class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
-                 </ui:fragment>
-                    <ui:fragment id="authenticated-right-links" rendered="#{not empty request.remoteUser}">
+                </ui:fragment>
+                <ui:fragment id="authenticated-right-links" rendered="#{not empty request.remoteUser}">
                     <h:form>
                         <h:commandLink class="link" value="#{msg['page.template.logout']}" action="#{logoutController.logout()}"/>
                     </h:form>
@@ -59,8 +60,8 @@
 
                     <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{request.remoteUser}"/>
                     <h:outputText styleClass="templatetext" value="#{msg['page.template.currentuser']}&#160;"/>
-                 </ui:fragment>
-             </div>
+                </ui:fragment>
+            </div>
         </div>
         <div class ="breadcrumb">
             <p:breadCrumb>
@@ -68,7 +69,7 @@
                 <ui:insert name="breadcrumb-menuitems"/>
             </p:breadCrumb>
         </div>
-        <div class = "main"> 
+        <div class = "main">
             <ui:insert name="content" >
 
             </ui:insert>
@@ -82,4 +83,5 @@
         <p:growl id="informationBox" showDetail="true" life="3000"/>
         <f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
     </h:form>
+</h:body>
 </html>
