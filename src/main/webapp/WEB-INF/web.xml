@@ -19,6 +19,10 @@
         <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
         <param-value>6Lde2ucUAAAAABo2d2eehKupJ62B0c7avPKl0HoC</param-value>
     </context-param>
+    <context-param>
+        <param-name>numberOfTransactionRepeat</param-name>
+        <param-value>5</param-value>
+    </context-param>
 
     <context-param>
         <param-name>primefaces.THEME</param-name>
@@ -115,18 +119,4 @@
             <form-error-page>/login/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
-
-    <error-page>
-        <error-code>500</error-code>
-        <location>/errors/error500.xhtml</location>
-    </error-page>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/errors/error404.xhtml</location>
-    </error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/errors/error403.xhtml</location>
-    </error-page>
-
 </web-app>
