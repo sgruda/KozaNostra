@@ -7,6 +7,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,12 @@ public class RoleController implements Serializable {
 
     public boolean isSelectedRole(String role) {
         return selectedRole.equalsIgnoreCase(role);
+    }
+
+    public void setCurrentRole(String role) throws IOException {
+        this.setSelectedRole(role);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.redirect(externalContext.getRequestContextPath() + "/index.xhtml");
     }
 
     public String[] getAllUserRoles() {

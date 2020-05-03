@@ -15,7 +15,8 @@
         <title>Template</title>
     </ui:insert>
 </h:head>
-    <div class = "wrapper">		
+<h:body>
+    <div class = "wrapper">
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
                 <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole('Admin')}">
@@ -29,36 +30,46 @@
             </p:sidebar>
              <div class = "header-left">
                  <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole('Admin') or roleController.isSelectedRole('Manager')}">
-                    <i class="pi pi-bars" style="font-size: 3em;color: white" ></i> 
+                    <i class="pi pi-bars" style="font-size: 3em;color: white" ></i>
                  </p:commandLink>
-                 <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
+                 <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link>
              </div>
              <div class = "header-right">
+                 <ui:fragment id="user-details" rendered="#{not empty request.remoteUser}">
+                     <h:form>
+                     <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" />
+                     <p:slideMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:180px" backLabel="#{msg['page.template.menu.backbutton']}">
+                         <p:submenu label="#{msg['page.template.accountdetails']}" icon="pi pi-pencil" >
+                             <p:menuitem value="Do uzupelnienia" />
+                         </p:submenu>
+                         <c:if test="#{roleController.selectedRole.equalsIgnoreCase('CLIENT')}">
+                             <p:menuitem value="#{msg['page.changelevel.client']}" icon="pi pi-id-card" disabled="true"/>
+                         </c:if>
+                         <c:if test="#{roleController.selectedRole.equalsIgnoreCase('MANAGER')}">
+                             <p:menuitem value="#{msg['page.changelevel.manager']}" icon="pi pi-id-card" disabled="true"/>
+                         </c:if>
+                         <c:if test="#{roleController.selectedRole.equalsIgnoreCase('ADMIN')}">
+                             <p:menuitem value="#{msg['page.changelevel.admin']}" icon="pi pi-id-card" disabled="true"/>
+                         </c:if>
+                         <p:submenu label="#{msg['page.template.changerole']}" rendered="#{roleController.allUserRolesLength > 1}" icon="pi pi-user-edit">
+                             <c:if test="#{facesContext.externalContext.isUserInRole('CLIENT')}">
+                                 <p:menuitem value="#{msg['page.changelevel.client']}" action="#{roleController.setCurrentRole('Client')}"  ajax="false"/>
+                             </c:if>
+                             <c:if test="#{facesContext.externalContext.isUserInRole('MANAGER')}">
+                                 <p:menuitem value="#{msg['page.changelevel.manager']}" action="#{roleController.setCurrentRole('Manager')}" ajax="false"/>
+                             </c:if>
+                             <c:if test="#{facesContext.externalContext.isUserInRole('ADMIN')}">
+                                 <p:menuitem value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole('Admin')}" ajax="false"/>
+                             </c:if>
+                         </p:submenu>
+                         <p:menuitem value="#{msg['page.template.logout']}" icon="pi pi-sign-out" action="#{logoutController.logout()}"/>
+                     </p:slideMenu>
+                     </h:form>
+                 </ui:fragment>
+
                  <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
                     <h:link class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
                     <h:link class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
-                 </ui:fragment>
-                    <ui:fragment id="authenticated-right-links" rendered="#{not empty request.remoteUser}">
-                    <h:form>
-                        <h:commandLink class="link" value="#{msg['page.template.logout']}" action="#{logoutController.logout()}"/>
-                    </h:form>
-                    <h:link class="link" value="#{msg['page.template.changerole']}" outcome="/changeRole.xhtml" rendered="#{roleController.allUserRolesLength > 1}"/>
-
-                    <ui:fragment>
-                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('CLIENT')}">
-                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.client']}"/>
-                        </c:if>
-                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('MANAGER')}">
-                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.manager']}"/>
-                        </c:if>
-                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase('ADMIN')}">
-                            <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{msg['page.changelevel.admin']}"/>
-                        </c:if>
-                    </ui:fragment>
-                    <h:outputText styleClass="templatetext" style="margin-left: 20px" value="#{msg['page.template.currentrole']}&#160;"/>
-
-                    <h:outputText styleClass="templatetext" style="margin-right: 20px" value="#{request.remoteUser}"/>
-                    <h:outputText styleClass="templatetext" value="#{msg['page.template.currentuser']}&#160;"/>
                  </ui:fragment>
              </div>
         </div>
@@ -68,7 +79,7 @@
                 <ui:insert name="breadcrumb-menuitems"/>
             </p:breadCrumb>
         </div>
-        <div class = "main"> 
+        <div class = "main">
             <ui:insert name="content" >
 
             </ui:insert>
@@ -82,4 +93,5 @@
         <p:growl id="informationBox" showDetail="true" life="3000"/>
         <f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
     </h:form>
+</h:body>
 </html>

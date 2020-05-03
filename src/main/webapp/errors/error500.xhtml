@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.error.500.title']}</title>
+    </ui:define>
+    <ui:define name = "content">
+        <p:panel styleClass="error-panel" header="#{msg['page.error.500.title']}" style="font-size: 24px">
+            <div class="error-div">
+                <p:outputLabel styleClass="error-description">#{msg['page.error.500.desc']}</p:outputLabel>
+                <p:button outcome="/index.xhtml?faces-redirect=true" value="#{msg['page.error.common.backbutton']}"  />
+            </div>
+        </p:panel>
+    </ui:define>
+</ui:composition>
+</html>
