@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -64,11 +65,11 @@ public class AccountManager {
         else throw new IllegalArgumentException("Nie ma żadnych kont w bazie");
     }
 
-    public void blockAccount(Account account) throws Exception {
+    public void blockAccount(Account account) throws AccountBlockedException {
         account.setActive(false);
         accountFacade.edit(account);
         emailSender.sendBlockedAccountEmail(account.getEmail());
-        throw new Exception("Account was blocked");
+        throw new AccountBlockedException("Account was blocked");
     }
 
     public void unlockAccount(Account account) {

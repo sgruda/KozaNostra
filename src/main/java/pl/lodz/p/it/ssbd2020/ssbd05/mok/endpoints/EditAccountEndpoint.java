@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
@@ -40,7 +41,7 @@ public class EditAccountEndpoint implements Serializable {
         accountManager.edit(account);
     }
 
-    public void blockAccount(AccountDTO accountDTO) throws Exception {
+    public void blockAccount(AccountDTO accountDTO) throws AccountBlockedException {
         account = accountManager.findByLogin(accountDTO.getLogin());
         accountManager.blockAccount(account);
     }
