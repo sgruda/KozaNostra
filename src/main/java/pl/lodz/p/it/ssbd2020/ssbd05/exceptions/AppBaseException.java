@@ -1,7 +1,5 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.exceptions;
 
-import org.eclipse.persistence.exceptions.DatabaseException;
-
 import javax.ejb.ApplicationException;
 
 @ApplicationException(rollback = true)
