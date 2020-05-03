@@ -3,8 +3,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ConfirmAccountEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -27,23 +25,24 @@ public class ConfirmAccountController implements Serializable {
     @Getter
     @Setter
     private String url = "";
+    private String parameters = "";
     private String token = "";
+    private String login = "";
 
-    public String confirmAccount() throws AppBaseException {
+    public String confirmAccount() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        facesContext.getExternalContext().getFlash().setKeepMessages(true);
         if(url.contains("token="))
-            token = url.substring(url.indexOf("token=") + 6);
-        account = confirmAccountEndpoint.getAccountByToken(token);
+            parameters = url.substring(url.indexOf("token=") + 6);
+        if(url.contains("&login=")) {
+            token = parameters.substring(0, parameters.indexOf("&login="));
+            login = parameters.substring(parameters.indexOf("&login=") + 7);
+        }
+        account = confirmAccountEndpoint.getAccountByLogin(login);
         if (account.getVeryficationToken().equals(token)) {
-            try {
-                confirmAccountEndpoint.confirmAccount();
-                facesContext.addMessage(null, new FacesMessage(ResourceBundles.getTranslatedText("messages.account.confirmed")));
-            }
-            catch (AccountAlreadyConfirmedException e) {
-                facesContext.addMessage(null, new FacesMessage(ResourceBundles.getTranslatedText("error.account.confirmed")));
-            }
-        } else facesContext.addMessage(null, new FacesMessage(ResourceBundles.getTranslatedText("error.default")));
+            confirmAccountEndpoint.confirmAccount();
+            facesContext.addMessage(null, new FacesMessage(ResourceBundles.getTranslatedText("messages.account.confirmed")));
+            facesContext.getExternalContext().getFlash().setKeepMessages(true);
+        } else facesContext.addMessage(null, new FacesMessage("Account could not be confirmed!"));
         return "home";
     }
 }

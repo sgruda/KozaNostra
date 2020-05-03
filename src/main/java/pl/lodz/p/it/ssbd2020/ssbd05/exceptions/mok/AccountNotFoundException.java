@@ -3,6 +3,8 @@ package pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 public class AccountNotFoundException extends AppBaseException {
+    static final public String KEY_ACCOUNT_NOT_FOUND = "error.account.not.found";
+
 
     public AccountNotFoundException() {
         super();
@@ -12,7 +14,7 @@ public class AccountNotFoundException extends AppBaseException {
         super(message);
     }
 
-    public AccountNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+    public AccountNotFoundException(Throwable cause) {
+        super(KEY_ACCOUNT_NOT_FOUND, cause);
     }
 }

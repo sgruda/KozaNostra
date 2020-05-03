@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+
 import java.util.List;
 import java.util.Optional;
 import javax.ejb.TransactionAttribute;
@@ -17,8 +19,9 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
+    public void create(T entity) throws AppBaseException {
         getEntityManager().persist(entity);
+        getEntityManager().flush();
     }
 
     public void edit(T entity) {
