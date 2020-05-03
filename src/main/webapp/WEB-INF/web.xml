@@ -115,4 +115,18 @@
             <form-error-page>/login/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errors/error500.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errors/error404.xhtml</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/errors/error403.xhtml</location>
+    </error-page>
+
 </web-app>
