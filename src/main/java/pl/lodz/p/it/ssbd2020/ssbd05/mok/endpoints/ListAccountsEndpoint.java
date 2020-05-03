@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
@@ -22,21 +22,10 @@ public class ListAccountsEndpoint {
     @Inject
     private AccountManager accountManager;
 
-    private AccountDTO accountToDTO(Account account) {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setLogin(account.getLogin());
-        accountDTO.setFirstname(account.getFirstname());
-        accountDTO.setLastname(account.getLastname());
-        accountDTO.setEmail(account.getEmail());
-        accountDTO.setLastSuccessfulAuth(account.getLastSuccessfulAuth());
-        accountDTO.setLastAuthIp(account.getLastAuthIp());
-        return accountDTO;
-    }
-
     public Collection<AccountDTO> getAllAccounts() {
         return accountManager.getAllAccounts()
                 .stream()
-                .map(this::accountToDTO)
+                .map(AccountMapper.INSTANCE::toAccountDTO)
                 .collect(Collectors.toList());
     }
 }

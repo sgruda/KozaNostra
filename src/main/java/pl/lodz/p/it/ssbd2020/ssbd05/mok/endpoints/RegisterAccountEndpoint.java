@@ -2,14 +2,13 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateful;
-import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
@@ -26,59 +25,44 @@ import java.util.Collection;
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class RegisterAccountEndpoint implements Serializable{
 
+    @Inject
+    private AccountManager accountManager;
 
-        @Inject
-        private AccountManager accountManager;
+    @Getter
+    @Setter
+    private Account account;
 
-        @Getter
-        @Setter
-        private Account account;
+    @PermitAll
+    public  void addNewAccount(AccountDTO accountDTO){
+        account = AccountMapper.INSTANCE.createNewAccount(accountDTO);
+        account.setAccessLevelCollection(generateAccessLevels());
+        account.setPassword(sha256(accountDTO.getPassword()));
+        accountManager.createAccount(account);
+    }
 
-        @Getter
-        @Setter
-        private Collection<AccessLevel> accessLevels;
+    public Collection<AccessLevel> generateAccessLevels() {
+        Collection<AccessLevel> accessLevels = new ArrayList<>();
 
-        @PermitAll
-        public  void addNewAccount(AccountDTO accountDTO){
-            accessLevels = new ArrayList<>();
-            account = new Account();
-            generateAccessLevels(accountDTO);
-            account.setAccessLevelCollection(accessLevels);
-            account.setActive(accountDTO.isActive());
-            account.setConfirmed(accountDTO.isConfirmed());
-            account.setEmail(accountDTO.getEmail());
-            account.setFirstname(accountDTO.getFirstname());
-            account.setLastname(accountDTO.getLastname());
-            account.setLogin(accountDTO.getLogin());
-            account.setPassword(sha256(accountDTO.getPassword()));
+        Client client = new Client();
+        client.setAccount(account);
+        client.setAccessLevel("CLIENT");
+        client.setActive(true);
+        accessLevels.add(client);
 
-            accountManager.createAccount(account);
-        }
+        Manager manager = new Manager();
+        manager.setAccount(account);
+        manager.setAccessLevel("MANAGER");
+        manager.setActive(false);
+        accessLevels.add(manager);
 
-        public void generateAccessLevels(AccountDTO accountDTO){
-            for (String accessLevel: accountDTO.getAccessLevelCollection()){
-                if(accessLevel.equals("CLIENT")){
-                    Client client = new Client();
-                    client.setAccount(account);
-                    client.setAccessLevel("CLIENT");
-                    client.setActive(true);
-                    accessLevels.add(client);
-                }
-            }
-            Manager manager = new Manager();
-            manager.setAccount(account);
-            manager.setAccessLevel("MANAGER");
-            manager.setActive(false);
-            accessLevels.add(manager);
+        Admin admin = new Admin();
+        admin.setAccount(account);
+        admin.setAccessLevel("ADMIN");
+        admin.setActive(false);
+        accessLevels.add(admin);
 
-            Admin admin = new Admin();
-            admin.setAccount(account);
-            admin.setAccessLevel("ADMIN");
-            admin.setActive(false);
-            accessLevels.add(admin);
-        }
-
-
+        return accessLevels;
+    }
 
     private String sha256(String password) {
         MessageDigest digest = null;
