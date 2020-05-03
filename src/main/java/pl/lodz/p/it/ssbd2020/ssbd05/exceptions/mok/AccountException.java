@@ -5,8 +5,7 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
-@Getter
-@Setter
+
 public class AccountException extends AppBaseException {
     static final public String KEY_ACCOUNT_LOGIN_PROBLEM = "error.account.login.exists";
     static final public String KEY_ACCOUNT_EMAIL_PROBLEM = "error.account.email.exists";
