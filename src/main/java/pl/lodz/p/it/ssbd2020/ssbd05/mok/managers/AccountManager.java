@@ -62,7 +62,7 @@ public class AccountManager {
     public Collection<Account> getAllAccounts() {
         if(Optional.ofNullable(accountFacade.findAll()).isPresent())
             return accountFacade.findAll();
-        else throw new IllegalArgumentException("Nie ma żadnych kont w bazie");
+        else throw new IllegalArgumentException(ResourceBundles.getTranslatedText("error.account.blocked"));
     }
 
     public void blockAccount(Account account) throws AccountBlockedException {
