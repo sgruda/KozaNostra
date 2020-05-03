@@ -34,7 +34,7 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
-    public void register() throws AppBaseException{
+    public void register() throws AppBaseException {
         try {
             if (password.equals(confirmPassword)) {
                 AccountDTO account = new AccountDTO();

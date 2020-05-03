@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -22,14 +24,12 @@ public class AccountManager  implements SessionSynchronization {
     @Inject
     private AccountFacade accountFacade;
     private long txId;
-
     @Getter
     @Setter
     private boolean lastTransactionRollback;
-
     private static final Logger loger = Logger.getLogger(AccountManager.class.getName());
-
-    //TODO: stworzenie własnych wyjątków i obsługa ich
+    @Inject
+    private EmailSender emailSender;
 
     public Account findById(Long id) {
         if(accountFacade.find(id).isPresent())
@@ -43,14 +43,27 @@ public class AccountManager  implements SessionSynchronization {
         else throw new IllegalArgumentException("Konto o podanym loginie nie istnieje");
     }
 
+    public Account findByToken(String token) throws AppBaseException {
+        if(accountFacade.findByToken(token).isPresent())
+            return accountFacade.findByToken(token).get();
+        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+    }
+
     public void edit(Account account) {
         accountFacade.edit(account);
     }
 
+    public void confirmAccount(Account account) throws AccountAlreadyConfirmedException {
+        if(!account.isConfirmed()) {
+            account.setConfirmed(true);
+            accountFacade.edit(account);
+        }
+        else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
+    }
+
     public void createAccount(Account account) throws AppBaseException {
         accountFacade.create(account);
-        EmailSender emailSender = new EmailSender();
-        emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken(), account.getLogin());
+        emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
     }
 
     public Collection<Account> getAllAccounts() {
@@ -62,7 +75,7 @@ public class AccountManager  implements SessionSynchronization {
     public void unlockAccount(Account account) {
         account.setActive(true);
         account.setFailedAuthCounter(0);
-        this.edit(account);
+        accountFacade.edit(account);
         //TODO wysylanie maila
     }
 

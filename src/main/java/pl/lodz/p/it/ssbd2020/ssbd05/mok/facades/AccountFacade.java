@@ -40,6 +40,11 @@ public class AccountFacade extends AbstractFacade<Account> {
                 .setParameter("login", username).getSingleResult());
     }
 
+    public Optional<Account> findByToken(String token) {
+        return Optional.ofNullable(this.em.createNamedQuery("Account.findByToken", Account.class)
+                .setParameter("token", token).getSingleResult());
+    }
+
     @PermitAll
     public void create(Account entity) throws AppBaseException {
         try{
