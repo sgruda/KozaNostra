@@ -10,6 +10,13 @@
         </ui:define>
         <ui:define name = "content">
                 <h:form>
+                    <p:inputText value="#{listAccountsController.accountFilter}"  style="width: 1920px" placeholder="filter your accounts">
+<!--                        <p:watermark value="filter your accounts"/>-->
+<!--                        <p:commandButton value="Refresh" />-->
+                    </p:inputText>
+
+
+<!--                    action="#{listAccountsController.filterRents()}"-->
                     <p:dataTable var="account" value="#{listAccountsController.accounts}">
                         <p:column headerText="#{msg['page.listaccounts.account.login']}">
                             <h:outputText value="#{account.login}"/>
