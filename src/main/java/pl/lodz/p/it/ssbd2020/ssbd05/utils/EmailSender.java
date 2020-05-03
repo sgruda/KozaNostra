@@ -45,6 +45,26 @@ public class EmailSender {
         }).start();
     }
 
+    public void sendBlockedAccountEmail(String mail) {
+        String subject = ResourceBundles.getTranslatedText("mail.account.blocked.subject");
+        String body = ResourceBundles.getTranslatedText("mail.account.blocked");
+
+        new Thread(() -> {
+            sendEmail(mail, subject, body);
+            return;
+        }).start();
+    }
+
+    public void sendUnlockedAccountEmail(String mail) {
+        String subject = ResourceBundles.getTranslatedText("mail.account.unlocked");
+        String body = ResourceBundles.getTranslatedText("mail.account.unlocked");
+
+        new Thread(() -> {
+            sendEmail(mail, subject, body);
+            return;
+        }).start();
+    }
+
     private void sendEmail(String mail, String subject, String body) {
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", emailProperties.getProperty("host"));

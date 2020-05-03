@@ -64,10 +64,17 @@ public class AccountManager {
         else throw new IllegalArgumentException("Nie ma żadnych kont w bazie");
     }
 
+    public void blockAccount(Account account) throws Exception {
+        account.setActive(false);
+        accountFacade.edit(account);
+        emailSender.sendBlockedAccountEmail(account.getEmail());
+        throw new Exception("Account was blocked");
+    }
+
     public void unlockAccount(Account account) {
         account.setActive(true);
         account.setFailedAuthCounter(0);
         accountFacade.edit(account);
-        //TODO wysylanie maila
+        emailSender.sendUnlockedAccountEmail(account.getEmail());
     }
 }

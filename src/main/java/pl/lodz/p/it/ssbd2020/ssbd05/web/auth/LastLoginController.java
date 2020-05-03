@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
@@ -18,6 +19,8 @@ import java.util.Properties;
 public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;
+    @Inject
+    EditAccountEndpoint editAccountEndpoint;
     private AccountDTO account;
     private int blockingAccountAfterFailedAttemptNumber;
 
@@ -43,9 +46,7 @@ public class LastLoginController implements Serializable {
     }
     public void checkFailedAuthCounter() throws Exception {
         if(account.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
-            account.setActive(false);
-            throw new Exception("Account was blocked");
-            //TODO daj tu nasz wyjatek
+            editAccountEndpoint.blockAccount(account);
         }
     }
     private String getIP() {
