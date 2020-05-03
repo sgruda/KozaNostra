@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Stateful
 @RolesAllowed(value = "ADMIN")
 @TransactionAttribute(TransactionAttributeType.NEVER)
+@LocalBean
 public class ListAccountsEndpoint {
 
     @Inject

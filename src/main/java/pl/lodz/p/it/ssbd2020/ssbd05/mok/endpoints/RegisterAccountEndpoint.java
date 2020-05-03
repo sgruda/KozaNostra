@@ -8,10 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.PermitAll;
-import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.ejb.*;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -24,6 +21,7 @@ import java.util.Collection;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
+@LocalBean
 public class RegisterAccountEndpoint implements Serializable{
 
 

@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mos.facades;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address;
 
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -11,6 +12,7 @@ import javax.persistence.PersistenceContext;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
+@LocalBean
 public class AddressFacade extends AbstractFacade<Address> {
 
     @PersistenceContext(unitName = "ssbd05mosPU")

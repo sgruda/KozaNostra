@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
+@LocalBean
 public class AccountManager {
     @Inject
     private AccountFacade accountFacade;

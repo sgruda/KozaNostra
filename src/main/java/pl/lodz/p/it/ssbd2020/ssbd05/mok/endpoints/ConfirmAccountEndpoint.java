@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
+import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
+@LocalBean
 public class ConfirmAccountEndpoint implements Serializable {
 
     @Inject
