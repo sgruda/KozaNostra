@@ -3,6 +3,8 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 import lombok.Data;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.RegisterAccountEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -50,9 +52,12 @@ public class RegistrationController implements Serializable {
                 ResourceBundles.emitMessage(null,"page.registration.account.created");
                 clear();
             }
-        } catch (AppBaseException ex) {
+        } catch (LoginAlreadyExistsException ex) {
             ResourceBundles.emitErrorMessage(null,ex.getMessage());
-            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Login", ex);
+        }catch (EmailAlreadyExistsException ex){
+            ResourceBundles.emitErrorMessage(null,ex.getMessage());
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Email", ex);
         }
 }
 

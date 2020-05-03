@@ -4,7 +4,10 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -43,17 +46,17 @@ public class AccountFacade extends AbstractFacade<Account> {
             super.create(entity);
         }catch (DatabaseException ex){
             if(ex.getCause() instanceof SQLNonTransientConnectionException){
-                throw AppBaseException.DatabaseConnectionException(ex);
+                throw new DatabaseConnectionException(ex);
             }else{
-                throw AppBaseException.DatabaseQueryException(ex);
+                throw new DatabaseQueryException(ex);
             }
         }catch (PersistenceException e) {
             if (e.getMessage().contains("account_login_data_login_uindex")) {
-                throw AccountException.loginExistsException(e,entity);
+                throw new LoginAlreadyExistsException(e);
             }if (e.getMessage().contains("account_personal_data_email_uindex")) {
-                throw AccountException.emailExistsException(e, entity);
+                throw new EmailAlreadyExistsException(e);
             } else {
-                throw AppBaseException.DatabaseQueryException(e);
+                throw new DatabaseQueryException(e);
             }
         }
     }

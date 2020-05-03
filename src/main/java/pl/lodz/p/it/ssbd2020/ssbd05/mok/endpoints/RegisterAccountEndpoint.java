@@ -6,6 +6,7 @@ import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.PermitAll;
@@ -61,7 +62,7 @@ public class RegisterAccountEndpoint implements Serializable {
             callCounter--;
         } while (accountManager.isLastTransactionRollback() && callCounter > 0);
         if (callCounter == 0) {
-            throw AppBaseException.ExceededNumberOfTransactionRetriesException();
+            throw new ExceededTransactionRetriesException();
         }
 
     }
