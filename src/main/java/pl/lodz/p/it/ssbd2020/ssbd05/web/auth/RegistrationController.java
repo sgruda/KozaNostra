@@ -34,7 +34,7 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
-    public void register() throws AppBaseException {
+    public String register() throws AppBaseException {
         try {
             if (password.equals(confirmPassword)) {
                 AccountDTO account = new AccountDTO();
@@ -49,16 +49,20 @@ public class RegistrationController implements Serializable {
 
                 this.registerAccountEndpoint.addNewAccount(account);
 
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
                 ResourceBundles.emitMessage(null,"page.registration.account.created");
                 clear();
             }
         } catch (LoginAlreadyExistsException ex) {
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             ResourceBundles.emitErrorMessage(null,ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Login", ex);
         }catch (EmailAlreadyExistsException ex){
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             ResourceBundles.emitErrorMessage(null,ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Email", ex);
         }
+        return "home";
     }
 
     public void clear() {
