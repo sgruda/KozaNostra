@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
@@ -22,10 +23,12 @@ import java.util.Properties;
 public class EditAccountEndpoint implements Serializable {
     @Inject
     private AccountManager accountManager;
+    private Account account;
+
     //Ustawilem tego cczego potrzebowalem do odblokowywania, przy edycji bedzie trzeba dodac reszte
     public AccountDTO findByLogin(String username) {
+        account = accountManager.findByLogin(username);
         AccountDTO accountDTO = new AccountDTO();
-        Account account = accountManager.findByLogin(username);
         accountDTO.setLogin(account.getLogin());
         accountDTO.setActive(account.isActive());
         accountDTO.setFailedAuthCounter(account.getFailedAuthCounter());
@@ -33,16 +36,18 @@ public class EditAccountEndpoint implements Serializable {
     }
 
     public void edit(AccountDTO accountDTO) {
-        Account account = accountManager.findByLogin(accountDTO.getLogin());
         account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
         account.setActive(accountDTO.isActive());
         accountManager.edit(account);
     }
 
+    public void blockAccount(AccountDTO accountDTO) throws AccountBlockedException {
+        account = accountManager.findByLogin(accountDTO.getLogin());
+        accountManager.blockAccount(account);
+    }
+
     public void unlockAccount(AccountDTO accountDTO) {
-        Account account = accountManager.findByLogin(accountDTO.getLogin());
-        account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
-        account.setActive(accountDTO.isActive());
+        account = accountManager.findByLogin(accountDTO.getLogin());
         accountManager.unlockAccount(account);
     }
 }
