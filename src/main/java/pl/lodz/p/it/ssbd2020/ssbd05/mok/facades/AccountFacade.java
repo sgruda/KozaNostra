@@ -16,6 +16,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 import javax.persistence.PersistenceException;
 import java.sql.SQLNonTransientConnectionException;
 import java.util.Optional;
@@ -27,7 +28,6 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")
     private EntityManager em;
-
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -45,6 +45,11 @@ public class AccountFacade extends AbstractFacade<Account> {
     public Optional<Account> findByToken(String token) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByToken", Account.class)
                 .setParameter("token", token).getSingleResult());
+    }
+
+    public Collection<Account> filterAccounts(String accountFilter) {
+        return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
+                .setParameter("filter", accountFilter).getResultList();
     }
 
     @PermitAll

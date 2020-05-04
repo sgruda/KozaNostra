@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Optional;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -103,4 +104,12 @@ public class AccountManager  implements SessionSynchronization {
         lastTransactionRollback = !committed;
         loger.log(Level.SEVERE, "Transakcja o ID: " + txId + " zostala zakonczona przez: " + (committed?"zatwierdzenie":"wycofanie"));
     }
+
+    public Collection<Account> filterAccounts(String accountFilter){
+        if(Optional.ofNullable(accountFacade.filterAccounts(accountFilter)).isPresent()) {
+            return accountFacade.filterAccounts(accountFilter);
+        }
+        else throw new IllegalArgumentException("Nie ma kont pasujących do tego filtru");
+    }
+
 }
