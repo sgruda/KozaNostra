@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
@@ -12,8 +13,10 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Named
 @Stateful
 @RolesAllowed(value = "ADMIN")
@@ -35,10 +38,26 @@ public class ListAccountsEndpoint {
         return accountDTO;
     }
 
-    public Collection<AccountDTO> getAllAccounts() {
+    public List<AccountDTO> getAllAccounts() {
         return accountManager.getAllAccounts()
                 .stream()
                 .map(this::accountToDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<AccountDTO> filterAccounts (String accountFilter){
+        Collection<AccountDTO> accounts = accountManager.filterAccounts(accountFilter)
+                .stream()
+                .map(this::accountToDTO)
+                .collect(Collectors.toList());
+//        log.error(accountFilter);
+//        log.error(accounts.iterator().next().getFirstname() + " " + accounts.iterator().next().getLastname() + " " + accounts.iterator().next().getEmail() + " size " + accounts.size());
+        return accountManager.filterAccounts(accountFilter)
+                .stream()
+                .map(this::accountToDTO)
+                .collect(Collectors.toList());
+
+    }
+
+
 }

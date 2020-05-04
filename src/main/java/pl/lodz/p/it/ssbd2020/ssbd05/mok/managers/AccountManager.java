@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
+import ch.qos.logback.core.util.StringCollectionUtil;
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
@@ -13,9 +15,11 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-
+@Slf4j
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
@@ -72,4 +76,12 @@ public class AccountManager {
         accountFacade.edit(account);
         //TODO wysylanie maila
     }
+
+    public Collection<Account> filterAccounts(String accountFilter){
+        if(Optional.ofNullable(accountFacade.filterAccounts(accountFilter)).isPresent()) {
+            return accountFacade.filterAccounts(accountFilter);
+        }
+        else throw new IllegalArgumentException("Nie ma kont pasujących do tego filtru");
+    }
+
 }
