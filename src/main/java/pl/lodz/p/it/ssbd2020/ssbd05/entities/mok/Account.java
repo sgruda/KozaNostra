@@ -39,8 +39,8 @@ import java.util.UUID;
         @NamedQuery(name = "Account.findByLastFailedAuth", query = "SELECT a FROM Account a WHERE a.lastFailedAuth = :lastFailedAuth"),
         @NamedQuery(name = "Account.findByLastAuthIp", query = "SELECT a FROM Account a WHERE a.lastAuthIp = :lastAuthIp"),
         @NamedQuery(name = "Account.findByFailedAuthCounter", query = "SELECT a FROM Account a WHERE a.failedAuthCounter = :failedAuthCounter"),
-        @NamedQuery(name = "Account.findByForcePasswordChange", query = "SELECT a FROM Account a WHERE a.forcePasswordChange = :forcePasswordChange"),
-        @NamedQuery(name = "Account.findByToken", query = "SELECT a FROM Account a WHERE a.veryficationToken = :token")})
+        @NamedQuery(name = "Account.findByToken", query = "SELECT a FROM Account a WHERE a.veryficationToken = :token"),
+        @NamedQuery(name = "Account.findByForcePasswordChange", query = "SELECT a FROM Account a WHERE a.forcePasswordChange = :forcePasswordChange")})
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;

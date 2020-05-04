@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
@@ -18,34 +20,35 @@ import java.util.Properties;
 public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;
-    private AccountDTO account;
+    @Inject
+    EditAccountEndpoint editAccountEndpoint;
+    private AccountDTO accountDTO;
     private int blockingAccountAfterFailedAttemptNumber;
 
     public void startConversation(AccountDTO accountDTO, String blockingAccountAfterFailedAttemptNumber) {
         conversation.begin();
-        this.account = accountDTO;
+        this.accountDTO = accountDTO;
         this.blockingAccountAfterFailedAttemptNumber = Integer.parseInt(blockingAccountAfterFailedAttemptNumber);
     }
     public AccountDTO endConversation() {
         conversation.end();
-        return this.account;
+        return this.accountDTO;
     }
     public void updateLastAuthIP() {
-        account.setLastAuthIp(this.getIP());
+        accountDTO.setLastAuthIp(this.getIP());
     }
     public void updateLastSuccesfullAuthDate() {
-        account.setLastSuccessfulAuth(Date.from(Instant.now()));
-        account.setFailedAuthCounter(0);
+        accountDTO.setLastSuccessfulAuth(Date.from(Instant.now()));
+        accountDTO.setFailedAuthCounter(0);
     }
     public void updateLastFailedAuthDate() {
-        account.setLastFailedAuth(Date.from(Instant.now()));
-        account.setFailedAuthCounter(account.getFailedAuthCounter() + 1);
+        accountDTO.setLastFailedAuth(Date.from(Instant.now()));
+        accountDTO.setFailedAuthCounter(accountDTO.getFailedAuthCounter() + 1);
     }
-    public void checkFailedAuthCounter() throws Exception {
-        if(account.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
-            account.setActive(false);
-            throw new Exception("Account was blocked");
-            //TODO daj tu nasz wyjatek
+    public void checkFailedAuthCounter() throws AccountBlockedException {
+        if(accountDTO.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
+            accountDTO.setActive(false);
+            editAccountEndpoint.blockAccount(accountDTO);
         }
     }
     private String getIP() {

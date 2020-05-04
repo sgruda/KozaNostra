@@ -1,27 +1,34 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-import javax.ejb.LocalBean;
-import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.ejb.*;
 import javax.inject.Inject;
+import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Optional;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
-public class AccountManager {
+public class AccountManager  implements SessionSynchronization {
     @Inject
     private AccountFacade accountFacade;
+    private long txId;
+    @Getter
+    @Setter
+    private boolean lastTransactionRollback;
+    private static final Logger loger = Logger.getLogger(AccountManager.class.getName());
     @Inject
     private EmailSender emailSender;
 
@@ -55,7 +62,7 @@ public class AccountManager {
         else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
     }
 
-    public void createAccount(Account account) {
+    public void createAccount(Account account) throws AppBaseException {
         accountFacade.create(account);
         emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
     }
@@ -63,13 +70,37 @@ public class AccountManager {
     public Collection<Account> getAllAccounts() {
         if(Optional.ofNullable(accountFacade.findAll()).isPresent())
             return accountFacade.findAll();
-        else throw new IllegalArgumentException("Nie ma żadnych kont w bazie");
+        else throw new IllegalArgumentException(ResourceBundles.getTranslatedText("error.account.blocked"));
+    }
+
+    public void blockAccount(Account account) throws AccountBlockedException {
+        account.setActive(false);
+        accountFacade.edit(account);
+        emailSender.sendBlockedAccountEmail(account.getEmail());
+        throw new AccountBlockedException("Account was blocked");
     }
 
     public void unlockAccount(Account account) {
         account.setActive(true);
         account.setFailedAuthCounter(0);
         accountFacade.edit(account);
-        //TODO wysylanie maila
+        emailSender.sendUnlockedAccountEmail(account.getEmail());
+    }
+
+    @Override
+    public void afterBegin() throws EJBException, RemoteException {
+        txId = System.currentTimeMillis();
+        loger.log(Level.SEVERE, "Transakcja o ID: " + txId + " zostala rozpoczeta");
+    }
+
+    @Override
+    public void beforeCompletion() throws EJBException, RemoteException {
+        loger.log(Level.SEVERE, "Transakcja o ID: " + txId + " przed zakonczeniem");
+    }
+
+    @Override
+    public void afterCompletion(boolean committed) throws EJBException, RemoteException {
+        lastTransactionRollback = !committed;
+        loger.log(Level.SEVERE, "Transakcja o ID: " + txId + " zostala zakonczona przez: " + (committed?"zatwierdzenie":"wycofanie"));
     }
 }

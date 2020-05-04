@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -78,7 +79,7 @@ public class LoginController implements Serializable {
                 lastLoginController.updateLastFailedAuthDate();
                 try {
                     lastLoginController.checkFailedAuthCounter();
-                } catch (Exception ex) {
+                } catch (AccountBlockedException ex) {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundles.getTranslatedText("page.login.account.lock"), null));
                 }
             }

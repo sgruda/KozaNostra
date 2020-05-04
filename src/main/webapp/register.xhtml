@@ -33,29 +33,28 @@
                             <p:autoUpdate />
                         </p:messages>-->
                         
-                        <p:outputLabel for="login"  value="#{msg['page.registration.account.login']}"/>
+                        <p:outputLabel for="login" value="#{msg['page.registration.account.login']}"/>
                         <p:inputText id="login" required="true" value="#{registrationController.login}" requiredMessage="#{msg['page.registration.account.login.required']}"/>
-
-                        <p:outputLabel for="password"  value="#{msg['page.registration.account.password']}"/>
+                        
+                        <p:outputLabel for="password" value="#{msg['page.registration.account.password']}"/>
                         <p:password id="password" required="true" feedback="true" inline="true" match="confirmPassword" requiredMessage="#{msg['page.registration.account.password.required']}"
                                     value="#{registrationController.password}" validatorMessage="#{msg['page.registration.account.password.validation']}">
-                            <f:validateRegex
-                                    pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
+                            <f:validateRegex pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
                         </p:password>
 
-                        <p:outputLabel for="confirmPassword"  value="#{msg['page.registration.account.confirmPassword']}"/>
+                        <p:outputLabel for="confirmPassword" value="#{msg['page.registration.account.confirmPassword']}"/>
                             <p:password id="confirmPassword" required="true" feedback="true" inline="true" requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
                                         value="#{registrationController.confirmPassword}" />
-
-                        <p:outputLabel for="firstName"  value="#{msg['page.registration.account.firstname']}"/>
+                        
+                        <p:outputLabel for="firstName" value="#{msg['page.registration.account.firstname']}"/>
                             <p:inputText id="firstName" required="true"
                                         value="#{registrationController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}"/>
 
-                        <p:outputLabel for="lastName"  value="#{msg['page.registration.account.lastname']}"/>
+                        <p:outputLabel for="lastName" value="#{msg['page.registration.account.lastname']}"/>
                         <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.registration.account.lastname.required']}"
                                      value="#{registrationController.lastname}"/>
 
-                        <p:outputLabel for="emailAddress"  value="#{msg['page.registration.account.email']}"/>
+                        <p:outputLabel for="emailAddress" value="#{msg['page.registration.account.email']}"/>
                         <p:inputText id="emailAddress" required="true"
                                      value="#{registrationController.emailAddress}" validatorMessage="#{msg['page.registration.account.email.validation']}" requiredMessage="#{msg['page.registration.account.email.required']}">
                             <f:validateRegex

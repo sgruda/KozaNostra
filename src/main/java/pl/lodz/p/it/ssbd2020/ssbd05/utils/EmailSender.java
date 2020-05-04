@@ -38,6 +38,25 @@ public class EmailSender {
         String link = request.getRequestURL()
                 .substring(0, (request.getRequestURL().length() - request.getServletPath().length())).concat("/confirmAccount.xhtml?token=");
         String body = "<a href=\"" + link + token + "\">"+ ResourceBundles.getTranslatedText("mail.account.confirm.body") +"</a>";
+        new Thread(() -> {
+            sendEmail(mail, subject, body);
+            return;
+        }).start();
+    }
+
+    public void sendBlockedAccountEmail(String mail) {
+        String subject = ResourceBundles.getTranslatedText("mail.account.blocked.subject");
+        String body = ResourceBundles.getTranslatedText("mail.account.blocked");
+
+        new Thread(() -> {
+            sendEmail(mail, subject, body);
+            return;
+        }).start();
+    }
+
+    public void sendUnlockedAccountEmail(String mail) {
+        String subject = ResourceBundles.getTranslatedText("mail.account.unlocked");
+        String body = ResourceBundles.getTranslatedText("mail.account.unlocked");
 
         new Thread(() -> {
             sendEmail(mail, subject, body);
