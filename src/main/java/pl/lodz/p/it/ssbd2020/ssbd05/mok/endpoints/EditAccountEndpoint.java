@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -18,6 +19,7 @@ import java.util.Properties;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@LocalBean
 //@RolesAllowed(value = "ADMIN")    TODO Kwesita jest, tego endpointa moze uzywac jeszcze klient, takze chyba jedna adntoacja nie wystarczy
 public class EditAccountEndpoint implements Serializable {
     @Inject

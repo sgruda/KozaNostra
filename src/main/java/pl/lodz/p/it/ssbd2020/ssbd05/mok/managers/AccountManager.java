@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
+@LocalBean
 public class AccountManager  implements SessionSynchronization {
     @Inject
     private AccountFacade accountFacade;
