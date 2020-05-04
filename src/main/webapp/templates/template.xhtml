@@ -15,6 +15,7 @@
         <title>Template</title>
     </ui:insert>
 </h:head>
+<h:body>
     <div class = "wrapper">		
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
@@ -29,11 +30,15 @@
             </p:sidebar>
              <div class = "header-left">
                  <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole('Admin') or roleController.isSelectedRole('Manager')}">
-                    <i class="pi pi-bars" style="font-size: 3em;color: white" ></i> 
+                     <i class="pi pi-bars" style="font-size: 3em;color: white" ></i>
                  </p:commandLink>
                  <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
              </div>
-             <div class = "header-right">
+            <div class = "header-right">
+                <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
+                    <h:link class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
+                    <h:link class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
+                </ui:fragment>
                  <ui:fragment id="user-details" rendered="#{not empty request.remoteUser}">
                      <h:form>
                          <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" />
@@ -65,10 +70,6 @@
                          </p:slideMenu>
                      </h:form>
                  </ui:fragment>
-                 <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
-                    <h:link class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
-                    <h:link class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
-                 </ui:fragment>
              </div>
         </div>
         <div class ="breadcrumb">
@@ -90,4 +91,5 @@
         <p:growl id="informationBox" showDetail="true" life="3000"/>
         <f:event type="preRenderView" listener="#{loginController.informAboutLastAuthentication}" />
     </h:form>
+</h:body>
 </html>
