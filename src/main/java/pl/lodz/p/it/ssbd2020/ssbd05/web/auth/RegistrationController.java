@@ -52,6 +52,7 @@ public class RegistrationController implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
                 ResourceBundles.emitMessage(null,"page.registration.account.created");
                 clear();
+                return "home";
             }
         } catch (LoginAlreadyExistsException ex) {
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -62,7 +63,7 @@ public class RegistrationController implements Serializable {
             ResourceBundles.emitErrorMessage(null,ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Email", ex);
         }
-        return "home";
+        return "";
     }
 
     public void clear() {
