@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 
 import javax.annotation.security.PermitAll;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "AccountFacadeMOK")
+@LocalBean
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")
