@@ -6,10 +6,10 @@
       xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-<ui:composition template = "/templates/template.xhtml">
+<ui:composition template="/templates/template.xhtml">
     <ui:define name="head">
         <style type="text/css">
-            .main{
+            .main {
                 background-image: url('../pictures/backgroundLogin.jpg');
                 background-repeat: no-repeat;
                 background-position: center;
@@ -19,33 +19,37 @@
         </style>
         <title>#{msg['page.login.title']}</title>
     </ui:define>
-    <ui:define name = "content">
-            <h:form id="login">
-                <p:panel id="loginPnl" header="#{msg['page.login.form.title']}" style="font-size: 24px;">
-                    <p:messages globalOnly="true">
-                        <p:autoUpdate/>
-                    </p:messages>
-                    <h:panelGrid id="loginPanel" columns="2" >
-                            <p:outputLabel for="username"  value="#{msg['page.login.username']} "/>
-                            <p:inputText id="username" required="true" value="#{loginController.username}" requiredMessage="#{msg['page.login.username.required']}"/>
-
-                            <p:outputLabel for="password"  value="#{msg['page.login.password']} "/>
-                            <p:password id="password" required="true" requiredMessage="#{msg['page.login.password.required']}"
-                                            value="#{loginController.password}"/>
-                    </h:panelGrid>                    
-
-                    <div style="display:flex;flex-direction: column;justify-content: center;">
-                       <p:message for="password"/>
-                       <p:message for="username"/> 
-                       <p:commandButton id="submit" ajax="false" value="#{msg['page.login.login']}" icon="pi pi-sign-in"
-                                         validateClient="true" action="#{loginController.login()}" style="align-self: center;margin:5px;"/>
+    <ui:define name="content">
+        <h:form id="login">
+            <p:panel id="loginPnl" header="#{msg['page.login.form.title']}" style="font-size: 24px;">
+                <p:messages globalOnly="true">
+                    <p:autoUpdate/>
+                </p:messages>
+                <h:panelGrid id="loginPanel" columns="2">
+                    <div>
+                        <p:inputText id="username" required="true" value="#{loginController.username}"
+                                     requiredMessage="#{msg['page.login.username.required']}"
+                                     placeholder="#{msg['page.login.username']} *" />
                     </div>
-                </p:panel>
-            </h:form>
-       
+                    <div>
+                        <p:password id="password" required="true"
+                                    requiredMessage="#{msg['page.login.password.required']}"
+                                    value="#{loginController.password}" placeholder="#{msg['page.login.password']} *" />
+                    </div>
+                </h:panelGrid>
+                <div style="display:flex;flex-direction: column;justify-content: center;">
+                    <p:message for="password"/>
+                    <p:message for="username"/>
+                    <p:commandButton id="submit" ajax="false" value="#{msg['page.login.login']}" icon="pi pi-sign-in"
+                                     validateClient="true" action="#{loginController.login()}"
+                                     style="align-self: center;margin:5px;"/>
+                </div>
+            </p:panel>
+        </h:form>
+
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.login.breadcrumbs']}" outcome="/login/login.xhtml" />
+        <p:menuitem value="#{msg['page.login.breadcrumbs']}" outcome="/login/login.xhtml"/>
     </ui:define>
 </ui:composition>
 </html>
