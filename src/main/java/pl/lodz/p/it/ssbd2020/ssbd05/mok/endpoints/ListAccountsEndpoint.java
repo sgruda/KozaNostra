@@ -11,7 +11,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Named
@@ -35,10 +35,18 @@ public class ListAccountsEndpoint {
         return accountDTO;
     }
 
-    public Collection<AccountDTO> getAllAccounts() {
+    public List<AccountDTO> getAllAccounts() {
         return accountManager.getAllAccounts()
                 .stream()
                 .map(this::accountToDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<AccountDTO> filterAccounts (String accountFilter){
+        return accountManager.filterAccounts(accountFilter)
+                .stream()
+                .map(this::accountToDTO)
+                .collect(Collectors.toList());
+    }
+
 }

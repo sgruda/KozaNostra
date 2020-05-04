@@ -1,6 +1,10 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ListAccountsEndpoint;
 
@@ -13,6 +17,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Named
 @ViewScoped
@@ -22,11 +27,19 @@ public class ListAccountsController implements Serializable {
     @Inject
     private ListAccountsEndpoint listAccountsEndpoint;
     @Getter
-    private Collection<AccountDTO> accounts;
+    @Setter
+    private List<AccountDTO> accounts;
+    @Getter
+    @Setter
+    private String accountFilter;
 
     @PostConstruct
     public void init() {
         accounts = listAccountsEndpoint.getAllAccounts();
+    }
+
+    public void filterAccounts(){
+        accounts = listAccountsEndpoint.filterAccounts(accountFilter);
     }
 
     public String formatDate(Date date) {
