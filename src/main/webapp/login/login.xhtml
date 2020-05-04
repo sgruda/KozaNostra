@@ -21,7 +21,7 @@
     </ui:define>
     <ui:define name = "content">
             <h:form id="login">
-                <p:panel id="loginPnl" header="Login" style="font-size: 24px;">
+                <p:panel id="loginPnl" header="#{msg['page.login.form.title']}" style="font-size: 24px;">
                     <p:messages globalOnly="true">
                         <p:autoUpdate/>
                     </p:messages>
@@ -32,7 +32,7 @@
                             <p:outputLabel for="password"  value="#{msg['page.login.password']} "/>
                             <p:password id="password" required="true" requiredMessage="#{msg['page.login.password.required']}"
                                             value="#{loginController.password}"/>
-                    </h:panelGrid>
+                    </h:panelGrid>                    
 
                     <div style="display:flex;flex-direction: column;justify-content: center;">
                        <p:message for="password"/>

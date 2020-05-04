@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Properties;
-
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -23,6 +22,7 @@ public class LastLoginEndpoint implements Serializable {
 
     @Inject
     private AccountManager accountManager;
+    private Account account;
 
     public String getFailedAttemptNumberFromProperties() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.login.properties");
@@ -38,7 +38,7 @@ public class LastLoginEndpoint implements Serializable {
 
     public AccountDTO findByLogin(String username) {
         AccountDTO accountDTO = new AccountDTO();
-        Account account = accountManager.findByLogin(username);
+        account = accountManager.findByLogin(username);
         accountDTO.setLogin(account.getLogin());
         accountDTO.setActive(account.isActive());
         accountDTO.setConfirmed(account.isConfirmed());
@@ -49,7 +49,6 @@ public class LastLoginEndpoint implements Serializable {
     }
 
     public void edit(AccountDTO accountDTO) {
-        Account account = accountManager.findByLogin(accountDTO.getLogin());
         account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
         account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
         account.setLastFailedAuth(accountDTO.getLastFailedAuth());

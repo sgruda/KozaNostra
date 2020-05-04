@@ -27,6 +27,7 @@ public class ConfirmAccountEndpoint implements Serializable {
     public AccountDTO getAccountByToken(String token) throws AppBaseException {
         account = accountManager.findByToken(token);
         AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setLogin(account.getLogin());
         accountDTO.setVeryficationToken(account.getVeryficationToken());
         return accountDTO;
     }
