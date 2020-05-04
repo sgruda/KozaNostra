@@ -23,7 +23,7 @@ import javax.persistence.PersistenceException;
 import java.sql.SQLNonTransientConnectionException;
 import java.util.Optional;
 
-@TransactionAttribute(TransactionAttributeType.MANDATORY)
+//@TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "AccountFacadeMOK")
 @LocalBean
 public class AccountFacade extends AbstractFacade<Account> {

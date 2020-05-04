@@ -33,13 +33,6 @@ public class AccountDetailsController implements Serializable {
         return "accountDetails";
     }
 
-    public String formatDate(Date date) {
-        if(date == null)
-            return "";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return simpleDateFormat.format(date);
-    }
-
     public String goBack() {
         conversation.end();
         return "goBack";
