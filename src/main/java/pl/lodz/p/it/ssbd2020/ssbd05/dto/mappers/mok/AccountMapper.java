@@ -19,6 +19,7 @@ public interface AccountMapper {
     AccountDTO toAccountDTO(Account Account); //do wyswietlania
     Account createNewAccount(AccountDTO accountDTO); //do tworzenia nowych
     void updateAccountFromDTO(AccountDTO accountDTO, @MappingTarget Account account); //do update'u, nie ustawia accessLevelCollection
+    Collection<AccountDTO> toAccountDTOCollection(Collection<Account> accountCollection); //do wyswietlania listy
 
     //metoda uzywana w toAccountDTO
     default Collection<String> toAccessLevelStringCollection(Collection<AccessLevel> accessLevelCollection) {

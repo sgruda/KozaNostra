@@ -11,7 +11,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Named
 @Stateful
@@ -23,9 +22,6 @@ public class ListAccountsEndpoint {
     private AccountManager accountManager;
 
     public Collection<AccountDTO> getAllAccounts() {
-        return accountManager.getAllAccounts()
-                .stream()
-                .map(AccountMapper.INSTANCE::toAccountDTO)
-                .collect(Collectors.toList());
+        return AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.getAllAccounts());
     }
 }

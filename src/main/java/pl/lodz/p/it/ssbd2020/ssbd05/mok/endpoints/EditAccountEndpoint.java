@@ -34,15 +34,12 @@ public class EditAccountEndpoint implements Serializable {
         Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
         for (AccessLevel accessLevel : accessLevelCollection) {
-            if (accessLevel instanceof Admin
-            && collectionContainsIgnoreCase(accessLevelStringCollection, "admin")) {
-                accessLevel.setActive(true);
-            } else if (accessLevel instanceof Manager
-            && collectionContainsIgnoreCase(accessLevelStringCollection, "manager")) {
-                accessLevel.setActive(true);
-            } else if (accessLevel instanceof Client
-            && collectionContainsIgnoreCase(accessLevelStringCollection, "client")) {
-                accessLevel.setActive(true);
+            if (accessLevel instanceof Admin) {
+                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, "admin"));
+            } else if (accessLevel instanceof Manager) {
+                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, "manager"));
+            } else if (accessLevel instanceof Client) {
+                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, "client"));
             }
         }
         account.setAccessLevelCollection(accessLevelCollection);
