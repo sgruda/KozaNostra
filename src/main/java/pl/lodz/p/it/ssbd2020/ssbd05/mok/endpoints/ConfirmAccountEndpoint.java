@@ -32,7 +32,7 @@ public class ConfirmAccountEndpoint implements Serializable {
         return accountDTO;
     }
 
-    public void confirmAccount() throws AccountAlreadyConfirmedException {
+    public void confirmAccount() throws AppBaseException {
         accountManager.confirmAccount(account);
     }
 }

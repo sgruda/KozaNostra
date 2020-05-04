@@ -4,6 +4,7 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
@@ -15,6 +16,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import javax.persistence.PersistenceException;
@@ -73,7 +75,21 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
     @PermitAll
-    public void edit(Account entity) {
-        super.edit(entity);
+    public void edit(Account entity) throws AppBaseException {
+        try{
+            super.edit(entity);
+        }catch (DatabaseException ex){
+            if(ex.getCause() instanceof SQLNonTransientConnectionException){
+                throw new DatabaseConnectionException(ex);
+            } else {
+                throw new DatabaseQueryException(ex);
+            }
+        } catch (OptimisticLockException e) {
+            throw new AppOptimisticLockException();
+        } catch (PersistenceException e) {
+            throw new DatabaseQueryException(e);
+            //TODO tutaj dodamy wiecej wyjatkow, gdy juz bedziemy mieli edycje wieksza niz blokowanie/odblokowywanie konta
+        }
     }
+
 }
