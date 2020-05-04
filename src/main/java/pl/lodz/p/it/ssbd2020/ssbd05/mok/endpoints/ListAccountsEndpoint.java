@@ -46,18 +46,10 @@ public class ListAccountsEndpoint {
     }
 
     public List<AccountDTO> filterAccounts (String accountFilter){
-        Collection<AccountDTO> accounts = accountManager.filterAccounts(accountFilter)
-                .stream()
-                .map(this::accountToDTO)
-                .collect(Collectors.toList());
-//        log.error(accountFilter);
-//        log.error(accounts.iterator().next().getFirstname() + " " + accounts.iterator().next().getLastname() + " " + accounts.iterator().next().getEmail() + " size " + accounts.size());
         return accountManager.filterAccounts(accountFilter)
                 .stream()
                 .map(this::accountToDTO)
                 .collect(Collectors.toList());
-
     }
-
 
 }

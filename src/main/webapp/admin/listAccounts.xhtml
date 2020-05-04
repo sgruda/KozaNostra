@@ -9,11 +9,11 @@
             <title>#{msg['page.listaccounts.title']}</title>
         </ui:define>
         <ui:define name = "content">
-                <h:form>
-                    <p:inputText value="#{listAccountsController.accountFilter}"  style="width: 89.99%; border-radius: 0; margin: -1px" placeholder="filter your accounts"/>
-                        <p:commandButton value="#{msg['page.listaccounts.filter']}" style="width: 10%; border-radius: 0"
+                <h:form id="form1">
+                    <p:inputText value="#{listAccountsController.accountFilter}"  style="width: 89.99%; border-radius: 0; margin: -1px; alignment: top" placeholder="filter your accounts"/>
+                        <p:commandButton id="filterbutton" value="#{msg['page.listaccounts.filter']}" style="width: 10%; border-radius: 0"
                                          action="#{listAccountsController.filterAccounts()}"
-                                         update="commandButton, :dataTable"/>
+                                         update="filterbutton, :form1"/>
                     <p:dataTable var="account" value="#{listAccountsController.accounts}" >
                         <p:column headerText="#{msg['page.listaccounts.account.login']}">
                             <h:outputText value="#{account.login}"/>

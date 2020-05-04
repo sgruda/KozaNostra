@@ -46,15 +46,9 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     public Collection<Account> filterAccounts(String accountFilter) {
-//        log.error(accountFilter);
-//        Collection<Account> accounts = em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
-//                .setParameter("filter", accountFilter).getResultList();
-//        log.error(accounts.iterator().next().getFirstname() + " " + accounts.iterator().next().getLastname() + " " + accounts.iterator().next().getEmail() + " size " + accounts.size());
         return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
                 .setParameter("filter", accountFilter).getResultList();
-
     }
-
 
     @PermitAll
     public void create(Account entity){
