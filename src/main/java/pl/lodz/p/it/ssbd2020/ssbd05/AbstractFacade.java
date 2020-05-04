@@ -24,7 +24,7 @@ public abstract class AbstractFacade<T> {
         getEntityManager().flush();
     }
 
-    public void edit(T entity) {
+    public void edit(T entity) throws AppBaseException {
         getEntityManager().merge(entity);
         getEntityManager().flush();
     }

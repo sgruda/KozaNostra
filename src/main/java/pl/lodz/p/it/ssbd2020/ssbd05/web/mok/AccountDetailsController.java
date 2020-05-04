@@ -61,6 +61,12 @@ public class AccountDetailsController implements Serializable {
         //TODO jakas obsluga wyjatkow?
         refresh();
     }
+    @RolesAllowed(value = "ADMIN")
+    public void blockAccount() {
+        activationAccountController.blockAccount(account);
+        //TODO jakas obsluga wyjatkow?
+        refresh();
+    }
     public void refresh() {
         this.account = accountDetailsEndpoint.getAccount(account.getLogin());
     }

@@ -73,7 +73,19 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
     @PermitAll
-    public void edit(Account entity) {
-        super.edit(entity);
+    public void edit(Account entity) throws AppBaseException {
+        try{
+            super.edit(entity);
+        }catch (DatabaseException ex){
+            if(ex.getCause() instanceof SQLNonTransientConnectionException){
+                throw new DatabaseConnectionException(ex);
+            } else {
+                throw new DatabaseQueryException(ex);
+            }
+        } catch (PersistenceException e) {
+            throw new DatabaseQueryException(e);
+            //TODO tutaj dodamy wiecej wyjatkow, gdy juz bedziemy mieli edycje wieksza niz blokowanie/odblokowywanie konta
+        }
     }
+
 }

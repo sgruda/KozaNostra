@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.ejb.LocalBean;
@@ -48,7 +49,7 @@ public class LastLoginEndpoint implements Serializable {
         return accountDTO;
     }
 
-    public void edit(AccountDTO accountDTO) {
+    public void edit(AccountDTO accountDTO) throws AppBaseException {
         account.setFailedAuthCounter(accountDTO.getFailedAuthCounter());
         account.setLastSuccessfulAuth(accountDTO.getLastSuccessfulAuth());
         account.setLastFailedAuth(accountDTO.getLastFailedAuth());

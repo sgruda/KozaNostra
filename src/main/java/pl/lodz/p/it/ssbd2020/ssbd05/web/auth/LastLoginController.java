@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
 
@@ -48,7 +49,11 @@ public class LastLoginController implements Serializable {
     public void checkFailedAuthCounter() throws AccountBlockedException {
         if(accountDTO.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
             accountDTO.setActive(false);
-            editAccountEndpoint.blockAccount(accountDTO);
+            try {
+                editAccountEndpoint.blockAccount(accountDTO);
+            } catch (AppBaseException e) {
+                e.printStackTrace();
+            }
         }
     }
     private String getIP() {
