@@ -4,6 +4,7 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
@@ -15,6 +16,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import javax.persistence.PersistenceException;
@@ -28,6 +30,7 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")
     private EntityManager em;
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -54,26 +57,38 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @PermitAll
     public void create(Account entity) throws AppBaseException {
-        try{
+        try {
             super.create(entity);
-        }catch (DatabaseException ex){
-            if(ex.getCause() instanceof SQLNonTransientConnectionException){
+        } catch (DatabaseException ex) {
+            if (ex.getCause() instanceof SQLNonTransientConnectionException) {
                 throw new DatabaseConnectionException(ex);
-            }else{
+            } else {
                 throw new DatabaseQueryException(ex);
             }
-        }catch (PersistenceException e) {
+        } catch (PersistenceException e) {
             if (e.getMessage().contains("account_login_data_login_uindex")) {
                 throw new LoginAlreadyExistsException(e);
-            }if (e.getMessage().contains("account_personal_data_email_uindex")) {
+            }
+            if (e.getMessage().contains("account_personal_data_email_uindex")) {
                 throw new EmailAlreadyExistsException(e);
             } else {
                 throw new DatabaseQueryException(e);
             }
         }
     }
+
     @PermitAll
-    public void edit(Account entity) {
-        super.edit(entity);
+    public void edit(Account entity) throws AppBaseException {
+        try {
+            super.edit(entity);
+        } catch (DatabaseException ex) {
+            if (ex.getCause() instanceof SQLNonTransientConnectionException) {
+                throw new DatabaseConnectionException(ex);
+            } else {
+                throw new DatabaseQueryException(ex);
+            }
+        }catch (OptimisticLockException ex){
+            throw new AppOptimisticLockException(ex);
+        }
     }
 }

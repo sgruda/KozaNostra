@@ -3,10 +3,12 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.PreviousPassword;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.PreviousPasswordFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -25,6 +27,9 @@ import java.util.logging.Logger;
 public class AccountManager  implements SessionSynchronization {
     @Inject
     private AccountFacade accountFacade;
+    @Inject
+    private PreviousPasswordFacade previousPasswordFacade;
+
     private long txId;
     @Getter
     @Setter
@@ -34,7 +39,7 @@ public class AccountManager  implements SessionSynchronization {
     private EmailSender emailSender;
 
     public Account findById(Long id) {
-        if(accountFacade.find(id).isPresent())
+        if (accountFacade.find(id).isPresent())
             return accountFacade.find(id).get();
         else throw new IllegalArgumentException("Nie ma konta o takim ID");
     }
@@ -51,11 +56,11 @@ public class AccountManager  implements SessionSynchronization {
         else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
     }
 
-    public void edit(Account account) {
+    public void edit(Account account) throws AppBaseException{
         accountFacade.edit(account);
     }
 
-    public void confirmAccount(Account account) throws AccountAlreadyConfirmedException {
+    public void confirmAccount(Account account) throws AppBaseException {
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
             accountFacade.edit(account);
@@ -74,14 +79,14 @@ public class AccountManager  implements SessionSynchronization {
         else throw new IllegalArgumentException(ResourceBundles.getTranslatedText("error.account.blocked"));
     }
 
-    public void blockAccount(Account account) throws AccountBlockedException {
+    public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
         accountFacade.edit(account);
         emailSender.sendBlockedAccountEmail(account.getEmail());
         throw new AccountBlockedException("Account was blocked");
     }
 
-    public void unlockAccount(Account account) {
+    public void unlockAccount(Account account) throws AppBaseException{
         account.setActive(true);
         account.setFailedAuthCounter(0);
         accountFacade.edit(account);
@@ -111,5 +116,4 @@ public class AccountManager  implements SessionSynchronization {
         }
         else throw new IllegalArgumentException("Nie ma kont pasujących do tego filtru");
     }
-
 }

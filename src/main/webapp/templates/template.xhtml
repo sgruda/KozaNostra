@@ -44,7 +44,7 @@
                          <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" />
                          <p:slideMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:180px" backLabel="#{msg['page.template.menu.backbutton']}">
                              <p:submenu label="#{msg['page.template.accountdetails']}" icon="pi pi-pencil" >
-                                 <p:menuitem value="Do uzupelnienia" />
+                                 <p:menuitem value="Change password" outcome="changePassword.xhtml?faces-redirect=true"/>
                              </p:submenu>
                              <c:if test="#{roleController.selectedRole.equalsIgnoreCase('CLIENT')}">
                                  <p:menuitem value="#{msg['page.changelevel.client']}" icon="pi pi-id-card" disabled="true"/>
