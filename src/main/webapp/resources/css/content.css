@@ -61,7 +61,6 @@
     height: 25px;
     justify-content: center;
     align-items: center;
-    font-family: 'Open Sans';
     font-size: 17px;
     background-color: #31708e;
     color: white;
@@ -73,11 +72,26 @@
     font-size: 20px;
     color: white;
 }
+.error-div {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 10vh;
+    justify-content: space-between;
+}
 
+.error-panel {
+    min-width: 30vw;
+}
+
+.error-description {
+    font-size: 24px !important
+}
 body{
     margin: 0;
     height: 100vh;
     width: 100vw;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body .ui-widget-overlay{
