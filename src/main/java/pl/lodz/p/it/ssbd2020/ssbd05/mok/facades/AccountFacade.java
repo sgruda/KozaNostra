@@ -65,4 +65,8 @@ public class AccountFacade extends AbstractFacade<Account> {
             }
         }
     }
+    @PermitAll
+    public void edit(Account entity) {
+        super.edit(entity);
+    }
 }

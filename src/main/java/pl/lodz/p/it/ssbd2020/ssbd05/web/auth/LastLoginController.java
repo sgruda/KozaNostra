@@ -22,32 +22,33 @@ public class LastLoginController implements Serializable {
     private Conversation conversation;
     @Inject
     EditAccountEndpoint editAccountEndpoint;
-    private AccountDTO account;
+    private AccountDTO accountDTO;
     private int blockingAccountAfterFailedAttemptNumber;
 
     public void startConversation(AccountDTO accountDTO, String blockingAccountAfterFailedAttemptNumber) {
         conversation.begin();
-        this.account = accountDTO;
+        this.accountDTO = accountDTO;
         this.blockingAccountAfterFailedAttemptNumber = Integer.parseInt(blockingAccountAfterFailedAttemptNumber);
     }
     public AccountDTO endConversation() {
         conversation.end();
-        return this.account;
+        return this.accountDTO;
     }
     public void updateLastAuthIP() {
-        account.setLastAuthIp(this.getIP());
+        accountDTO.setLastAuthIp(this.getIP());
     }
     public void updateLastSuccesfullAuthDate() {
-        account.setLastSuccessfulAuth(Date.from(Instant.now()));
-        account.setFailedAuthCounter(0);
+        accountDTO.setLastSuccessfulAuth(Date.from(Instant.now()));
+        accountDTO.setFailedAuthCounter(0);
     }
     public void updateLastFailedAuthDate() {
-        account.setLastFailedAuth(Date.from(Instant.now()));
-        account.setFailedAuthCounter(account.getFailedAuthCounter() + 1);
+        accountDTO.setLastFailedAuth(Date.from(Instant.now()));
+        accountDTO.setFailedAuthCounter(accountDTO.getFailedAuthCounter() + 1);
     }
     public void checkFailedAuthCounter() throws AccountBlockedException {
-        if(account.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
-            editAccountEndpoint.blockAccount(account);
+        if(accountDTO.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
+            accountDTO.setActive(false);
+            editAccountEndpoint.blockAccount(accountDTO);
         }
     }
     private String getIP() {
