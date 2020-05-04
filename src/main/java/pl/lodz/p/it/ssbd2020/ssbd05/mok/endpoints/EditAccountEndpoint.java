@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Properties;
-
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)

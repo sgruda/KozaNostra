@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 public class AccountManager  implements SessionSynchronization {

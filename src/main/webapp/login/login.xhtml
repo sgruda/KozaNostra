@@ -25,15 +25,13 @@
                     <p:messages globalOnly="true">
                         <p:autoUpdate/>
                     </p:messages>
-                    <h:panelGrid id="loginPanel" columns="3" >
-                            <p:outputLabel for="username" indicateRequired="false" value="#{msg['page.login.username']} "/>
+                    <h:panelGrid id="loginPanel" columns="2" >
+                            <p:outputLabel for="username"  value="#{msg['page.login.username']} "/>
                             <p:inputText id="username" required="true" value="#{loginController.username}" requiredMessage="#{msg['page.login.username.required']}"/>
-                            <p:outputLabel for="username"/>
 
-                            <p:outputLabel for="password" indicateRequired="false" value="#{msg['page.login.password']} "/>
+                            <p:outputLabel for="password"  value="#{msg['page.login.password']} "/>
                             <p:password id="password" required="true" requiredMessage="#{msg['page.login.password.required']}"
                                             value="#{loginController.password}"/>
-                            <p:outputLabel for="password"/>
                     </h:panelGrid>                    
 
                     <div style="display:flex;flex-direction: column;justify-content: center;">
