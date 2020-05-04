@@ -2,11 +2,12 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.*;
@@ -46,11 +47,13 @@ public class LastLoginController implements Serializable {
         accountDTO.setLastFailedAuth(Date.from(Instant.now()));
         accountDTO.setFailedAuthCounter(accountDTO.getFailedAuthCounter() + 1);
     }
-    public void checkFailedAuthCounter() throws AccountBlockedException {
+    public void checkFailedAuthCounter() {
         if(accountDTO.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
             accountDTO.setActive(false);
             try {
                 editAccountEndpoint.blockAccount(accountDTO);
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+                ResourceBundles.emitErrorMessage(null, "page.login.account.lock");
             } catch (AppBaseException e) {
                 e.printStackTrace();
             }
