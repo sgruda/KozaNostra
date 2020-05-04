@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
@@ -21,11 +21,12 @@ import java.util.stream.Collectors;
 public class AccountDetailsEndpoint implements Serializable {
 
     @Inject
-    private AccountFacade accountFacade;
+    private AccountManager accountManager;
+    private Account account;
 
     public AccountDTO getAccount(String login) {
         AccountDTO accountDTO = new AccountDTO();
-        Account account = accountFacade.findByLogin(login).get();
+        account = accountManager.findByLogin(login);
         accountDTO.setLogin(account.getLogin());
         accountDTO.setFirstname(account.getFirstname());
         accountDTO.setLastname(account.getLastname());
