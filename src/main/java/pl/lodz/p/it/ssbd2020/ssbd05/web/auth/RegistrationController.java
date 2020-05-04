@@ -59,9 +59,7 @@ public class RegistrationController implements Serializable {
             ResourceBundles.emitErrorMessage(null,ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Email", ex);
         }
-}
-
-
+    }
 
     public void clear() {
         this.setLogin("");
