@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -26,10 +27,7 @@ public class ConfirmAccountEndpoint implements Serializable {
 
     public AccountDTO getAccountByToken(String token) throws AppBaseException {
         account = accountManager.findByToken(token);
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setLogin(account.getLogin());
-        accountDTO.setVeryficationToken(account.getVeryficationToken());
-        return accountDTO;
+        return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
     public void confirmAccount() throws AppBaseException {

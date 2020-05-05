@@ -6,7 +6,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.PreviousPassword;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.PreviousPasswordFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
@@ -56,7 +55,8 @@ public class AccountManager  implements SessionSynchronization {
         else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
     }
 
-    public void edit(Account account) throws AppBaseException{
+
+    public void edit(Account account) throws AppBaseException {
         accountFacade.edit(account);
     }
 
@@ -83,10 +83,8 @@ public class AccountManager  implements SessionSynchronization {
         account.setActive(false);
         accountFacade.edit(account);
         emailSender.sendBlockedAccountEmail(account.getEmail());
-        throw new AccountBlockedException("Account was blocked");
     }
-
-    public void unlockAccount(Account account) throws AppBaseException{
+    public void unlockAccount(Account account) throws AppBaseException {
         account.setActive(true);
         account.setFailedAuthCounter(0);
         accountFacade.edit(account);

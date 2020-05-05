@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+<ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.accountdetails.title']}</title>
+        <style type="text/css">
+            .acc-details-role {
+                margin: 0 5px;
+            }
+        </style>
+    </ui:define>
+    <ui:define name = "content">
+        <div>
+            <p:messages globalOnly="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+        <p:panelGrid id="panelGrid" columns="2">
+            <f:facet name="header">
+                <p:graphicImage value="/pictures/profile.png" style="width: 150px; height: 150px;"/>
+            </f:facet>
+
+            <h:outputText value="#{msg['page.accountdetails.account.login']}" />
+            <h:outputText value="#{ownAccountDetailsController.account.login}"/>
+            
+            <h:outputText value="#{msg['page.accountdetails.account.firstname']}" />
+            <h:outputText value="#{ownAccountDetailsController.account.firstname}"/>
+
+            <h:outputText value="#{msg['page.accountdetails.account.lastname']}" />
+            <h:outputText value="#{ownAccountDetailsController.account.lastname}"/>
+
+            <h:outputText value="#{msg['page.accountdetails.account.email']}" />
+            <h:outputText value="#{ownAccountDetailsController.account.email}"/>
+
+            <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}" />
+            <ui:fragment>
+                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains('CLIENT')}">
+                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.client']}"/>
+                </c:if>
+                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains('MANAGER')}">
+                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.manager']}"/>
+                </c:if>
+                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains('ADMIN')}">
+                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.admin']}"/>
+                </c:if>
+            </ui:fragment>
+
+            <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}" />
+            <h:outputText value="#{dateFormatter.formatDate(ownAccountDetailsController.account.lastSuccessfulAuth)}"/>
+
+            <h:outputText value="#{msg['page.accountdetails.account.lastsfailauth']}" />
+            <h:outputText value="#{dateFormatter.formatDate(ownAccountDetailsController.account.lastFailedAuth)}"/>
+
+            <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
+            <h:outputText value="#{ownAccountDetailsController.account.lastAuthIp}"/>
+        </p:panelGrid>
+        <div style="margin: 5px;display:flex;justify-content: center">
+            <h:form id="commandButtons">
+                <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{ownAccountDetailsController.goBack()}"/>
+                <p:commandButton value="#{msg['page.accountdetails.edit']}" />
+            </h:form>
+        </div>
+        </div>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/accountDetails.xhtml?cid=#{ownAccountDetailsController.accountDetailsConversationID}" />
+    </ui:define>
+</ui:composition>
+</html>
