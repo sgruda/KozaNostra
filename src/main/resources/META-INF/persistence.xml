@@ -2,7 +2,7 @@
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <persistence-unit name="ssbd05mokPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>java:app/jdbc/ssbd05mokDS</jta-data-source>
+    <jta-data-source>jdbc/ssbd05mokDS</jta-data-source>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.PreviousPassword</class>
@@ -31,7 +31,7 @@
 
   <persistence-unit name="ssbd05mosPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>java:app/jdbc/ssbd05mosDS</jta-data-source>
+    <jta-data-source>jdbc/ssbd05mosDS</jta-data-source>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address</class>
@@ -60,7 +60,7 @@
 
   <persistence-unit name="ssbd05morPU" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>java:app/jdbc/ssbd05morDS</jta-data-source>
+    <jta-data-source>jdbc/ssbd05morDS</jta-data-source>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation</class>
     <class>pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review</class>
