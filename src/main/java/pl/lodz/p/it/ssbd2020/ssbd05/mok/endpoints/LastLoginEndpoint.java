@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.ejb.LocalBean;
@@ -44,12 +45,10 @@ public class LastLoginEndpoint implements Serializable {
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
-
-    public void edit(AccountDTO accountDTO) {
+    public void edit(AccountDTO accountDTO) throws AppBaseException {
         Account account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
-        account.setAccessLevelCollection(accessLevelCollection);
         accountManager.edit(account);
     }
 }

@@ -72,10 +72,10 @@
             </ui:fragment>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}" />
-            <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.account.lastSuccessfulAuth)}"/>
+            <h:outputText value="#{dateFormatter.formatDate(accountDetailsController.account.lastSuccessfulAuth)}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsfailauth']}" />
-            <h:outputText value="#{accountDetailsController.formatDate(accountDetailsController.account.lastFailedAuth)}"/>
+            <h:outputText value="#{dateFormatter.formatDate(accountDetailsController.account.lastFailedAuth)}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
             <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
@@ -86,6 +86,8 @@
                 <p:commandButton value="#{msg['page.accountdetails.edit']}" />
                 <p:commandButton value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
                                  rendered="#{!accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
+                <p:commandButton value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
+                                 rendered="#{accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
             </h:form>
         </div>
         </div>

@@ -5,7 +5,6 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -51,11 +50,11 @@ public class AccountManager  implements SessionSynchronization {
         else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
     }
 
-    public void edit(Account account) {
+    public void edit(Account account) throws AppBaseException {
         accountFacade.edit(account);
     }
 
-    public void confirmAccount(Account account) throws AccountAlreadyConfirmedException {
+    public void confirmAccount(Account account) throws AppBaseException {
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
             accountFacade.edit(account);
@@ -74,14 +73,13 @@ public class AccountManager  implements SessionSynchronization {
         else throw new IllegalArgumentException(ResourceBundles.getTranslatedText("error.account.blocked"));
     }
 
-    public void blockAccount(Account account) throws AccountBlockedException {
+    public void blockAccount(Account account) throws AppBaseException {//throws AccountBlockedException {
         account.setActive(false);
         accountFacade.edit(account);
         emailSender.sendBlockedAccountEmail(account.getEmail());
-        throw new AccountBlockedException("Account was blocked");
     }
 
-    public void unlockAccount(Account account) {
+    public void unlockAccount(Account account) throws AppBaseException {
         account.setActive(true);
         account.setFailedAuthCounter(0);
         accountFacade.edit(account);

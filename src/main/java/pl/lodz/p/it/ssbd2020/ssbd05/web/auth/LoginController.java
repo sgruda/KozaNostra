@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -77,15 +77,16 @@ public class LoginController implements Serializable {
             } catch (ServletException e) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect credentials", null));
                 lastLoginController.updateLastFailedAuthDate();
-                try {
-                    lastLoginController.checkFailedAuthCounter();
-                } catch (AccountBlockedException ex) {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundles.getTranslatedText("page.login.account.lock"), null));
-                }
+                lastLoginController.checkFailedAuthCounter();
             }
+
             lastLoginController.updateLastAuthIP();
-            this.lastLoginEndpoint.edit(lastLoginController.endConversation());
-        }else if(!this.account.isActive()  && !this.account.isConfirmed()) {
+            try {
+                this.lastLoginEndpoint.edit(lastLoginController.endConversation());
+            } catch (AppBaseException e) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            }
+        } else if(!this.account.isActive()  && !this.account.isConfirmed()) {
             updateAuthFailureInfo();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not confirmed", null));
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not active", null));
@@ -117,6 +118,10 @@ public class LoginController implements Serializable {
         lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
-        this.lastLoginEndpoint.edit(lastLoginController.endConversation());
+        try {
+            this.lastLoginEndpoint.edit(lastLoginController.endConversation());
+        } catch (AppBaseException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+        }
     }
 }

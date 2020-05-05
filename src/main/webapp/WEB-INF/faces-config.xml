@@ -41,6 +41,24 @@
     </navigation-rule>
 
     <navigation-rule>
+        <from-view-id>/accountDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>goBack</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>ownAccountDetails</from-outcome>
+            <to-view-id>/accountDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
         <from-view-id>/*</from-view-id>
         <navigation-case>
             <from-outcome>home</from-outcome>

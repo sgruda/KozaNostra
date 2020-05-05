@@ -30,7 +30,7 @@ public class ConfirmAccountEndpoint implements Serializable {
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
-    public void confirmAccount() throws AccountAlreadyConfirmedException {
+    public void confirmAccount() throws AppBaseException {
         accountManager.confirmAccount(account);
     }
 }
