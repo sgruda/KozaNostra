@@ -55,7 +55,7 @@ public class LoginController implements Serializable {
         }
     }
 
-    public void login() throws IOException {
+    public void login() throws AppBaseException,IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
@@ -114,7 +114,7 @@ public class LoginController implements Serializable {
         }
     }
 
-    public void updateAuthFailureInfo(){
+    public void updateAuthFailureInfo() throws AppBaseException{
         lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();

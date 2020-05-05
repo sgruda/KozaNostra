@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
@@ -42,10 +43,13 @@ public class RegisterAccountEndpoint implements Serializable {
     private Collection<AccessLevel> accessLevels;
 
     @PermitAll
-    public  void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
+    public void addNewAccount (AccountDTO accountDTO) throws AppBaseException {
         account = AccountMapper.INSTANCE.createNewAccount(accountDTO);
         account.setAccessLevelCollection(generateAccessLevels());
-        account.setPassword(sha256(accountDTO.getPassword()));
+        account.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
+        PreviousPassword previousPassword = new PreviousPassword();
+        previousPassword.setPassword(account.getPassword());
+        previousPassword.setAccount(account);
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
             accountManager.createAccount(account);
@@ -56,7 +60,7 @@ public class RegisterAccountEndpoint implements Serializable {
         }
     }
 
-    public Collection<AccessLevel> generateAccessLevels() {
+    public Collection<AccessLevel> generateAccessLevels () {
         Collection<AccessLevel> accessLevels = new ArrayList<>();
 
         Client client = new Client();
@@ -78,27 +82,5 @@ public class RegisterAccountEndpoint implements Serializable {
         accessLevels.add(admin);
 
         return accessLevels;
-    }
-
-    private String sha256(String password) {
-        MessageDigest digest = null;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        byte[] hash = new byte[0];
-        if (digest != null) {
-            hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-        }
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
     }
 }

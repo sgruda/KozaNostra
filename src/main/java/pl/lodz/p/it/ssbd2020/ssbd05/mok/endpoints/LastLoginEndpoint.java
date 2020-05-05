@@ -46,8 +46,7 @@ public class LastLoginEndpoint implements Serializable {
     }
 
     public void edit(AccountDTO accountDTO) throws AppBaseException {
-        Account account = accountManager.findByLogin(accountDTO.getLogin());
-        Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
+        this.account = accountManager.findByLogin(accountDTO.getLogin());
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
         accountManager.edit(account);
     }

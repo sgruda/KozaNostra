@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
 
 import javax.annotation.security.RolesAllowed;
@@ -43,7 +44,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     @RolesAllowed(value = "ADMIN")
-    public void unlockAccount() {
+    public void unlockAccount() throws AppBaseException {
         activationAccountController.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?
         //activationAccountController ja zapewni, tylko czy aby na pewno
