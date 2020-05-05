@@ -21,9 +21,10 @@ public class AccountDetailsEndpoint implements Serializable {
 
     @Inject
     private AccountManager accountManager;
+    private Account account;
 
     public AccountDTO getAccount(String login) {
-        Account account = accountManager.findByLogin(login);
+        this.account = accountManager.findByLogin(login);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 }
