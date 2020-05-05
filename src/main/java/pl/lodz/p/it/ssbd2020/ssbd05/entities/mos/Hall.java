@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -67,6 +68,7 @@ public class Hall implements Serializable {
     @Column(name = "description", nullable = false, length = 512)
     private String description;
 
+    @Digits(integer = 7, fraction = 2)
     @Basic(optional = false)
     @NotNull
     @Column(name = "price", nullable = false)

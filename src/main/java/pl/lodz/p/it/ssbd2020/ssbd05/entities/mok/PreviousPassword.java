@@ -34,7 +34,7 @@ public class PreviousPassword implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 64)
+    @Size(min = 64, max = 64)
     @Column(name = "password", nullable = false, length = 64, updatable = false)
     private String password;
 
