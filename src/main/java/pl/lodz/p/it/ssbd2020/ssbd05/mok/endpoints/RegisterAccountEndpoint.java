@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -29,7 +30,6 @@ import java.util.Collection;
 @LocalBean
 public class RegisterAccountEndpoint implements Serializable {
 
-
     @Inject
     private AccountManager accountManager;
 
@@ -42,19 +42,10 @@ public class RegisterAccountEndpoint implements Serializable {
     private Collection<AccessLevel> accessLevels;
 
     @PermitAll
-    public void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
-        accessLevels = new ArrayList<>();
-        account = new Account();
-        generateAccessLevels(accountDTO);
-        account.setAccessLevelCollection(accessLevels);
-        account.setActive(accountDTO.isActive());
-        account.setConfirmed(accountDTO.isConfirmed());
-        account.setEmail(accountDTO.getEmail());
-        account.setFirstname(accountDTO.getFirstname());
-        account.setLastname(accountDTO.getLastname());
-        account.setLogin(accountDTO.getLogin());
+    public  void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
+        account = AccountMapper.INSTANCE.createNewAccount(accountDTO);
+        account.setAccessLevelCollection(generateAccessLevels());
         account.setPassword(sha256(accountDTO.getPassword()));
-
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
             accountManager.createAccount(account);
@@ -63,19 +54,17 @@ public class RegisterAccountEndpoint implements Serializable {
         if (callCounter == 0) {
             throw new ExceededTransactionRetriesException();
         }
-
     }
 
-    public void generateAccessLevels(AccountDTO accountDTO) {
-        for (String accessLevel : accountDTO.getAccessLevelCollection()) {
-            if (accessLevel.equals("CLIENT")) {
-                Client client = new Client();
-                client.setAccount(account);
-                client.setAccessLevel("CLIENT");
-                client.setActive(true);
-                accessLevels.add(client);
-            }
-        }
+    public Collection<AccessLevel> generateAccessLevels() {
+        Collection<AccessLevel> accessLevels = new ArrayList<>();
+
+        Client client = new Client();
+        client.setAccount(account);
+        client.setAccessLevel("CLIENT");
+        client.setActive(true);
+        accessLevels.add(client);
+
         Manager manager = new Manager();
         manager.setAccount(account);
         manager.setAccessLevel("MANAGER");
@@ -87,8 +76,9 @@ public class RegisterAccountEndpoint implements Serializable {
         admin.setAccessLevel("ADMIN");
         admin.setActive(false);
         accessLevels.add(admin);
-    }
 
+        return accessLevels;
+    }
 
     private String sha256(String password) {
         MessageDigest digest = null;

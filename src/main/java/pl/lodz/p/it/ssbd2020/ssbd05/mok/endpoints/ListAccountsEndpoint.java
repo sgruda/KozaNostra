@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Collection;
 
 @Named
 @Stateful
@@ -25,21 +27,10 @@ public class ListAccountsEndpoint {
     private AccountManager accountManager;
 
     private AccountDTO accountToDTO(Account account) {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setLogin(account.getLogin());
-        accountDTO.setFirstname(account.getFirstname());
-        accountDTO.setLastname(account.getLastname());
-        accountDTO.setEmail(account.getEmail());
-        accountDTO.setLastSuccessfulAuth(account.getLastSuccessfulAuth());
-        accountDTO.setLastAuthIp(account.getLastAuthIp());
-        return accountDTO;
+        return AccountMapper.INSTANCE.toAccountDTO(account);
     }
-
-    public List<AccountDTO> getAllAccounts() {
-        return accountManager.getAllAccounts()
-                .stream()
-                .map(this::accountToDTO)
-                .collect(Collectors.toList());
+    public Collection<AccountDTO> getAllAccounts() {
+        return AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.getAllAccounts());
     }
 
     public List<AccountDTO> filterAccounts (String accountFilter){
@@ -48,5 +39,4 @@ public class ListAccountsEndpoint {
                 .map(this::accountToDTO)
                 .collect(Collectors.toList());
     }
-
 }

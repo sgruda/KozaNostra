@@ -35,7 +35,7 @@ public class ListAccountsController implements Serializable {
 
     @PostConstruct
     public void init() {
-        accounts = listAccountsEndpoint.getAllAccounts();
+        accounts = (List<AccountDTO>) listAccountsEndpoint.getAllAccounts();
     }
 
     public void filterAccounts(){
