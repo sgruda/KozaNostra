@@ -45,14 +45,14 @@ public class ChangePasswordAccountController {
         if(HashGenerator.sha256(password).equals(accountDTO.getPassword())){
             try{
                 editAccountEndpoint.changePassword(newPassword,accountDTO);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully changed password", null));
+                ResourceBundles.emitMessage(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());
             }catch(AccountPasswordAlreadyUsedException ex){
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());
             }
         }else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wrong current password", null));
+            ResourceBundles.emitErrorMessage(null,"page.changepassword.wrong.current.password");
         }
     }
 }

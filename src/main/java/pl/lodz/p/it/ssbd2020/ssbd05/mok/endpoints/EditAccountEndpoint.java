@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.PreviousPassword;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountBlockedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
@@ -14,6 +15,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
@@ -62,7 +64,14 @@ public class EditAccountEndpoint implements Serializable {
             previousPassword.setAccount(account);
             previousPassword.setPassword(HashGenerator.sha256(newPassword));
             account.getPreviousPasswordCollection().add(previousPassword);
-            accountManager.edit(account);
+            int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
+            do {
+                accountManager.edit(account);
+                callCounter--;
+            } while (accountManager.isLastTransactionRollback() && callCounter > 0);
+            if (callCounter == 0) {
+                throw new ExceededTransactionRetriesException();
+            }
         }
     }
 

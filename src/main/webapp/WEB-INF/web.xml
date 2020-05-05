@@ -69,6 +69,7 @@
         </auth-constraint>
     </security-constraint>
 
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Manager resources</web-resource-name>
@@ -91,8 +92,8 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Changing role</web-resource-name>
-            <url-pattern>/changeRole.xhtml</url-pattern>
+            <web-resource-name>Changing password</web-resource-name>
+            <url-pattern>/changePassword.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMIN</role-name>
