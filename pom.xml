@@ -41,6 +41,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakartaee>8.0.0</jakartaee>
+        <lombok.version>1.18.12</lombok.version>
+        <mapstruct.version>1.3.1.Final</mapstruct.version>
     </properties>
 
     <dependencies>
@@ -53,7 +55,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -81,6 +83,11 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.10</version>
         </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,6 +102,18 @@
                     <compilerArguments>
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
@@ -130,7 +149,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--local-->
+            <!--remote-->
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
@@ -138,8 +157,7 @@
                 <configuration>
                     <container>
                         <containerId>glassfish5x</containerId>
-                        <type>installed</type>
-                        <home>/${env.PAYARA_HOME}</home>
+                        <type>remote</type>
                         <dependencies>
                             <dependency>
                                 <groupId>org.postgresql</groupId>
@@ -148,10 +166,12 @@
                         </dependencies>
                     </container>
                     <configuration>
-                        <type>existing</type>
-                        <home>/${env.PAYARA_HOME}/glassfish/domains</home>
+                        <type>runtime</type>
                         <properties>
-                            <cargo.glassfish.domain.name>domain1</cargo.glassfish.domain.name>
+                            <cargo.glassfish.admin.port>4805</cargo.glassfish.admin.port>
+                            <cargo.hostname>studapp.it.p.lodz.pl</cargo.hostname>
+                            <cargo.remote.password>tauWrefet8</cargo.remote.password>
+                            <cargo.remote.username>admin</cargo.remote.username>
                         </properties>
                     </configuration>
                 </configuration>
@@ -168,48 +188,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!--remote-->
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.cargo</groupId>-->
-<!--                <artifactId>cargo-maven2-plugin</artifactId>-->
-<!--                <version>1.7.12</version>-->
-<!--                <configuration>-->
-<!--                    <container>-->
-<!--                        <containerId>glassfish5x</containerId>-->
-<!--                        <type>remote</type>-->
-<!--                        <dependencies>-->
-<!--                            <dependency>-->
-<!--                                <groupId>org.postgresql</groupId>-->
-<!--                                <artifactId>postgresql</artifactId>-->
-<!--                            </dependency>-->
-<!--                        </dependencies>-->
-<!--                    </container>-->
-<!--                    <configuration>-->
-<!--                        <type>runtime</type>-->
-<!--                        <properties>-->
-<!--                            <cargo.glassfish.admin.port>4805</cargo.glassfish.admin.port>-->
-<!--                            <cargo.glassfish.domain.name>ssbd05</cargo.glassfish.domain.name>-->
-<!--                            <cargo.hostname>studapp.it.p.lodz.pl</cargo.hostname>-->
-<!--                            <cargo.remote.password>tauWrefet8</cargo.remote.password>-->
-<!--                            <cargo.remote.username>admin</cargo.remote.username>-->
-<!--                            <cargo.servlet.port>8005</cargo.servlet.port>-->
-<!--                        </properties>-->
-<!--                    </configuration>-->
-<!--                </configuration>-->
-<!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.glassfish.main.deployment</groupId>-->
-<!--                        <artifactId>deployment-client</artifactId>-->
-<!--                        <version>5.1.0</version>-->
-<!--                    </dependency>-->
-<!--                    <dependency>-->
-<!--                        <groupId>javax.xml.bind</groupId>-->
-<!--                        <artifactId>jaxb-api</artifactId>-->
-<!--                        <version>2.3.1</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--            </plugin>-->
         </plugins>
     </build>
-
 </project>
