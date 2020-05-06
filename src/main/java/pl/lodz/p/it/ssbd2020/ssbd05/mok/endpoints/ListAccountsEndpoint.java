@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Collection;
@@ -21,7 +22,7 @@ import java.util.Collection;
 @RolesAllowed(value = "ADMIN")
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @LocalBean
-public class ListAccountsEndpoint {
+public class ListAccountsEndpoint implements Serializable {
 
     @Inject
     private AccountManager accountManager;

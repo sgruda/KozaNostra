@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.PreviousPassword;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;

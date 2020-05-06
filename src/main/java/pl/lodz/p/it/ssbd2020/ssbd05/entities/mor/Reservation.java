@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -55,6 +56,7 @@ public class Reservation implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
+    @Digits(integer = 8, fraction = 2)
     @Basic(optional = false)
     @NotNull
     @Column(name = "total_price", nullable = false)

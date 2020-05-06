@@ -11,8 +11,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Named
 @ConversationScoped

@@ -39,7 +39,7 @@ public class ForgotPasswordToken implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 64)
+    @Size(min = 64, max = 64)
     @Column(name = "hash", nullable = false, unique = true, updatable = false)
     private String hash;
 
