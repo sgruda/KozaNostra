@@ -87,7 +87,7 @@ public class Account implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "account")
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "account")
     private Collection<PreviousPassword> previousPasswordCollection = new ArrayList<>();
 
     @Basic(optional = false)

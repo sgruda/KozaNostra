@@ -47,6 +47,7 @@ public class RegisterAccountEndpoint implements Serializable {
         PreviousPassword previousPassword = new PreviousPassword();
         previousPassword.setPassword(account.getPassword());
         previousPassword.setAccount(account);
+        account.getPreviousPasswordCollection().add(previousPassword);
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
             accountManager.createAccount(account);
