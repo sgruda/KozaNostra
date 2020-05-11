@@ -29,4 +29,14 @@ public class ResourceBundles {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,getTranslatedText(key),externalContext.getSessionMap().get(key2).toString() );
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+    public static void emitDetailedMessageWithFlash(final String id, final String key, final String data) {
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getTranslatedText(key), data);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    public static void emitDetailedErrorWithFlash(final String id, final String key, final String data) {
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key), data);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 }
