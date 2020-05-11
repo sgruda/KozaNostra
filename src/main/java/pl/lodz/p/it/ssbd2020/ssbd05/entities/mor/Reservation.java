@@ -3,20 +3,19 @@ package pl.lodz.p.it.ssbd2020.ssbd05.entities.mor;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -49,15 +48,13 @@ public class Reservation implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "start_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Future
     @Basic(optional = false)
     @NotNull
     @Column(name = "end_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @Digits(integer = 8, fraction = 2)
     @Basic(optional = false)
