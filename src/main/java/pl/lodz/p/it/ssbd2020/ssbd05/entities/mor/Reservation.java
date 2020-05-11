@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -44,12 +45,14 @@ public class Reservation implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Future
     @Basic(optional = false)
     @NotNull
     @Column(name = "start_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
+    @Future
     @Basic(optional = false)
     @NotNull
     @Column(name = "end_date", nullable = false)
