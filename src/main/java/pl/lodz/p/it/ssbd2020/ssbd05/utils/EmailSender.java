@@ -64,6 +64,16 @@ public class EmailSender {
         }).start();
     }
 
+    public void sendConfirmedAccountEmail(String mail) {
+        String subject = ResourceBundles.getTranslatedText("messages.account.confirmed");
+        String body = ResourceBundles.getTranslatedText("messages.account.confirmed");
+
+        new Thread(() -> {
+            sendEmail(mail, subject, body);
+            return;
+        }).start();
+    }
+
     private void sendEmail(String mail, String subject, String body) {
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", emailProperties.getProperty("host"));
