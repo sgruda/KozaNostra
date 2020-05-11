@@ -111,9 +111,12 @@ public class EditAccountEndpoint implements Serializable {
     public void unlockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
-        do {
+        do {try{
             accountManager.unlockAccount(account);
             callCounter--;
+        }catch (EJBTransactionRolledbackException ex){
+            throw new TransactionRolledbackException();
+        }
         } while (accountManager.isLastTransactionRollback() && callCounter > 0);
         if (callCounter == 0) {
             throw new ExceededTransactionRetriesException();
