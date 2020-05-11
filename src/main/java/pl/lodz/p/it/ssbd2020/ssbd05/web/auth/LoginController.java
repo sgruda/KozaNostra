@@ -5,9 +5,11 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.Resource;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -74,7 +76,7 @@ public class LoginController implements Serializable {
                 externalContext.getSessionMap().put("printLastLoginInfo", true);
                 lastLoginController.updateLastSuccesfullAuthDate();
             } catch (ServletException e) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect credentials", null));
+                ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
                 lastLoginController.updateLastFailedAuthDate();
                 lastLoginController.checkFailedAuthCounter();
             }
@@ -87,14 +89,14 @@ public class LoginController implements Serializable {
             }
         } else if(!this.account.isActive()  && !this.account.isConfirmed()) {
             updateAuthFailureInfo();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not confirmed", null));
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not active", null));
+            ResourceBundles.emitErrorMessage(null,"page.login.user.notconfirmed");
+            ResourceBundles.emitErrorMessage(null,"page.login.user.notactive");
         }else if(!this.account.isActive()  && this.account.isConfirmed()) {
             updateAuthFailureInfo();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not active", null));
+            ResourceBundles.emitErrorMessage(null,"page.login.user.notactive");
         }else if(this.account.isActive()  && !this.account.isConfirmed()){
             updateAuthFailureInfo();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "User is not confirmed", null));
+            ResourceBundles.emitErrorMessage(null,"page.login.user.notconfirmed");
         }
     }
 
@@ -104,9 +106,9 @@ public class LoginController implements Serializable {
         boolean printLastLoginInfo = (boolean) externalContext.getSessionMap().getOrDefault("printLastLoginInfo", false);
         if (printLastLoginInfo) {
             if(null != externalContext.getSessionMap().get("lastSuccesfullAuthDate"))
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Last correct authentication",  externalContext.getSessionMap().get("lastSuccesfullAuthDate").toString() ) );
+                ResourceBundles.emitMessageWithData(null,"page.login.successful.auth",externalContext,"lastSuccesfullAuthDate");
             if(null != externalContext.getSessionMap().get("lastFailedAuthDate"))
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Last incorrect authentication",  externalContext.getSessionMap().get("lastFailedAuthDate").toString() ) );
+                ResourceBundles.emitErrorMessageWithData(null,"page.login.failed.auth",externalContext,"lastFailedAuthDate");
             externalContext.getSessionMap().remove("printLastLoginInfo");
             externalContext.getSessionMap().remove("lastSuccesfullAuthDate");
             externalContext.getSessionMap().remove("lastFailedAuthDate");
