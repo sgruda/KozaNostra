@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
 import com.sun.mail.smtp.SMTPTransport;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.faces.context.FacesContext;
 import javax.mail.Message;
@@ -16,7 +17,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
-
+@Slf4j
 public class EmailSender {
 
     private Properties emailProperties;
@@ -101,6 +102,10 @@ public class EmailSender {
             SMTPTransport t = (SMTPTransport) session.getTransport("smtp");
             t.connect(emailProperties.getProperty("host"), emailProperties.getProperty("username"), emailProperties.getProperty("password"));
             t.sendMessage(msg, msg.getAllRecipients());
+
+            if(t.getLastReturnCode() != Integer.parseInt(emailProperties.getProperty("code")))
+                log.warn("An error occurred while sending email");
+
             t.close();
 
         } catch (MessagingException e) {
