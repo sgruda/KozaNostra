@@ -8,15 +8,14 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.TransactionRolledbackException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 
-import javax.ejb.LocalBean;
+import javax.ejb.*;
+
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 
-import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -96,8 +95,12 @@ public class EditAccountEndpoint implements Serializable {
         account = accountManager.findByLogin(accountDTO.getLogin());
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
-            accountManager.blockAccount(account);
-            callCounter--;
+            try{
+                accountManager.blockAccount(account);
+                callCounter--;
+            }catch (EJBTransactionRolledbackException ex){
+                throw new TransactionRolledbackException();
+            }
         } while (accountManager.isLastTransactionRollback() && callCounter > 0);
         if (callCounter == 0) {
             throw new ExceededTransactionRetriesException();

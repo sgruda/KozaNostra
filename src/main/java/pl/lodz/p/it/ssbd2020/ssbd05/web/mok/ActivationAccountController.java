@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.TransactionRolledbackException;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
@@ -26,7 +27,9 @@ public class ActivationAccountController implements Serializable {
             editAccountEndpoint.unlockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
             e.printStackTrace();
-        } catch (AppBaseException e) {
+        } catch (TransactionRolledbackException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }catch (AppBaseException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ResourceBundles.getTranslatedText("page.accountdetails.unlock"), null));
@@ -37,6 +40,8 @@ public class ActivationAccountController implements Serializable {
             editAccountEndpoint.blockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
             e.printStackTrace();
+        }catch (TransactionRolledbackException ex){
+            ResourceBundles.emitErrorMessage(null,ex.getMessage());
         } catch (AppBaseException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
