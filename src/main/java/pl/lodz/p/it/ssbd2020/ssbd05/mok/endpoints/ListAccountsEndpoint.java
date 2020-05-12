@@ -31,10 +31,7 @@ public class ListAccountsEndpoint implements Serializable {
         return AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.getAllAccounts());
     }
 
-    public List<AccountDTO> filterAccounts (String accountFilter){
-        return accountManager.filterAccounts(accountFilter)
-                .stream()
-                .map(AccountMapper.INSTANCE::toAccountDTO)
-                .collect(Collectors.toList());
+    public Collection<AccountDTO> filterAccounts (String accountFilter) {
+        return AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.filterAccounts(accountFilter));
     }
 }
