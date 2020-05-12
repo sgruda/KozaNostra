@@ -70,6 +70,12 @@
     <group-name>ADMIN</group-name>
   </security-role-mapping>
   <security-role-mapping>
+    <role-name>getOwnAccount</role-name>
+    <group-name>CLIENT</group-name>
+    <group-name>MANAGER</group-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
     <role-name>getOtherAccount</role-name>
     <group-name>ADMIN</group-name>
   </security-role-mapping>
