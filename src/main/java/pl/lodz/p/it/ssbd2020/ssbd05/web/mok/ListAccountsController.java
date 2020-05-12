@@ -36,6 +36,6 @@ public class ListAccountsController implements Serializable {
     }
 
     public void filterAccounts(){
-        accounts = listAccountsEndpoint.filterAccounts(accountFilter);
+        accounts = (List<AccountDTO>) listAccountsEndpoint.filterAccounts(accountFilter);
     }
 }
