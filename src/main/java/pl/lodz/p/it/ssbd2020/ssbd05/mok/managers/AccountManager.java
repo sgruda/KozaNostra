@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
@@ -9,15 +10,16 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.*;
 import javax.inject.Inject;
 import java.rmi.RemoteException;
 import java.util.Collection;
-import java.util.Optional;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Slf4j
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
@@ -30,8 +32,6 @@ public class AccountManager  implements SessionSynchronization {
     @Setter
     private boolean lastTransactionRollback;
     private static final Logger loger = Logger.getLogger(AccountManager.class.getName());
-    @Inject
-    private EmailSender emailSender;
 
     public Account findById(Long id) {
         if (accountFacade.find(id).isPresent())
@@ -64,27 +64,27 @@ public class AccountManager  implements SessionSynchronization {
         else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
     }
 
+    @PermitAll
     public void createAccount(Account account) throws AppBaseException {
         accountFacade.create(account);
-        emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
     }
 
     public Collection<Account> getAllAccounts() {
-        if(Optional.ofNullable(accountFacade.findAll()).isPresent())
-            return accountFacade.findAll();
-        else throw new IllegalArgumentException(ResourceBundles.getTranslatedText("error.account.blocked"));
+        return accountFacade.findAll();
+    }
+
+    public Collection<Account> filterAccounts(String accountFilter) {
+        return accountFacade.filterAccounts(accountFilter);
     }
 
     public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
         accountFacade.edit(account);
-        emailSender.sendBlockedAccountEmail(account.getEmail());
     }
     public void unlockAccount(Account account) throws AppBaseException {
         account.setActive(true);
         account.setFailedAuthCounter(0);
         accountFacade.edit(account);
-        emailSender.sendUnlockedAccountEmail(account.getEmail());
     }
 
     @Override
@@ -102,12 +102,5 @@ public class AccountManager  implements SessionSynchronization {
     public void afterCompletion(boolean committed) throws EJBException, RemoteException {
         lastTransactionRollback = !committed;
         loger.log(Level.SEVERE, "Transakcja o ID: " + txId + " zostala zakonczona przez: " + (committed?"zatwierdzenie":"wycofanie"));
-    }
-
-    public Collection<Account> filterAccounts(String accountFilter){
-        if(Optional.ofNullable(accountFacade.filterAccounts(accountFilter)).isPresent()) {
-            return accountFacade.filterAccounts(accountFilter);
-        }
-        else throw new IllegalArgumentException("Nie ma kont pasujących do tego filtru");
     }
 }

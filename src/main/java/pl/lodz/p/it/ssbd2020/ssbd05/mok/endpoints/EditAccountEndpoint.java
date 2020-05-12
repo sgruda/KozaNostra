@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
@@ -8,15 +9,15 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.TransactionRolledbackException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 
-import javax.ejb.LocalBean;
+import javax.ejb.*;
+
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 
-import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,6 +27,7 @@ import java.util.Collection;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
+@Slf4j
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -36,15 +38,9 @@ public class EditAccountEndpoint implements Serializable {
     private AccountManager accountManager;
     private Account account;
 
-
     public AccountDTO findByLogin(String username) {
         account = accountManager.findByLogin(username);
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setLogin(account.getLogin());
-        accountDTO.setActive(account.isActive());
-        accountDTO.setPassword(account.getPassword());
-        accountDTO.setFailedAuthCounter(account.getFailedAuthCounter());
-        return accountDTO;
+        return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
     public void changePassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
@@ -75,7 +71,7 @@ public class EditAccountEndpoint implements Serializable {
 
 
     public void edit(AccountDTO accountDTO) throws AppBaseException {
-        Account account = accountManager.findByLogin(accountDTO.getLogin());
+        account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
         Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
@@ -94,11 +90,23 @@ public class EditAccountEndpoint implements Serializable {
 
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
+        boolean rollback;
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
-            accountManager.blockAccount(account);
-            callCounter--;
-        } while (accountManager.isLastTransactionRollback() && callCounter > 0);
+            try {
+                accountManager.blockAccount(account);
+                rollback = accountManager.isLastTransactionRollback();
+                callCounter--;
+            }
+            catch (EJBTransactionRolledbackException e) {
+                log.warn("EJBTransactionRolledBack");
+                rollback = true;
+            }
+        } while (rollback && callCounter > 0);
+        if (!rollback) {
+            EmailSender emailSender = new EmailSender();
+            emailSender.sendBlockedAccountEmail(account.getEmail());
+        }
         if (callCounter == 0) {
             throw new ExceededTransactionRetriesException();
         }
@@ -107,11 +115,23 @@ public class EditAccountEndpoint implements Serializable {
 
     public void unlockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
+        boolean rollback;
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
-            accountManager.unlockAccount(account);
-            callCounter--;
-        } while (accountManager.isLastTransactionRollback() && callCounter > 0);
+            try {
+                accountManager.unlockAccount(account);
+                rollback = accountManager.isLastTransactionRollback();
+                callCounter--;
+            }
+            catch (EJBTransactionRolledbackException e) {
+                log.warn("EJBTransactionRolledBack");
+                rollback = true;
+            }
+        } while (rollback && callCounter > 0);
+        if (!rollback) {
+            EmailSender emailSender = new EmailSender();
+            emailSender.sendUnlockedAccountEmail(account.getEmail());
+        }
         if (callCounter == 0) {
             throw new ExceededTransactionRetriesException();
         }

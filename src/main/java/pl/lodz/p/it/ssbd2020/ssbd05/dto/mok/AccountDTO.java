@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,8 +19,8 @@ public @Data class AccountDTO {
     private String firstname;
     private String lastname;
     private String email;
-    private Date lastSuccessfulAuth;
-    private Date lastFailedAuth;
+    private String lastSuccessfulAuth;
+    private String lastFailedAuth;
     private String lastAuthIp;
     private String veryficationToken;
     private int failedAuthCounter;

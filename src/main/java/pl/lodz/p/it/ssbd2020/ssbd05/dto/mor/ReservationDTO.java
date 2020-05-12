@@ -6,15 +6,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 public @Data class ReservationDTO {
 
     private String reviewNumber;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private double totalPrice;
     private String statusName;
     private Collection<String> extraServiceCollection = new ArrayList<>();

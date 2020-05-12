@@ -38,11 +38,11 @@ public class ConfirmAccountController implements Serializable {
         if (account.getVeryficationToken().equals(token)) {
             try {
                 confirmAccountEndpoint.confirmAccount();
-                facesContext.addMessage(null, new FacesMessage(ResourceBundles.getTranslatedText("messages.account.confirmed")));
+                ResourceBundles.emitMessage(null, "messages.account.confirmed");
             } catch (AccountAlreadyConfirmedException e) {
-                facesContext.addMessage(null, new FacesMessage(ResourceBundles.getTranslatedText("error.account.confirmed")));
+                ResourceBundles.emitErrorMessage(null, "error.account.confirmed");
             }
-        } else facesContext.addMessage(null, new FacesMessage(ResourceBundles.getTranslatedText("error.default")));
+        } else ResourceBundles.emitErrorMessage(null, "error.default");
         return "home";
     }
 }

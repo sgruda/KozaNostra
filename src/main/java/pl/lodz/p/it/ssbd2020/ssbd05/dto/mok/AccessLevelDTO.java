@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public @Data class AccessLevelDTO {
 
-    private Long id;
     private String accessLevel;
     private boolean active;
 }

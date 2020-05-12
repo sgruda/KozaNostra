@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Named
@@ -36,13 +36,6 @@ public class ListAccountsController implements Serializable {
     }
 
     public void filterAccounts(){
-        accounts = listAccountsEndpoint.filterAccounts(accountFilter);
-    }
-
-    public String formatDate(Date date) {
-        if(date == null)
-            return "";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return simpleDateFormat.format(date);
+        accounts = (List<AccountDTO>) listAccountsEndpoint.filterAccounts(accountFilter);
     }
 }
