@@ -14,4 +14,67 @@
     <role-name>CLIENT</role-name>
     <group-name>CLIENT</group-name>
   </security-role-mapping>
+
+  <security-role-mapping>
+    <role-name>changeAccessLevel</role-name>
+    <group-name>CLIENT</group-name>
+    <group-name>MANAGER</group-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>createAccount</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>blockAccount</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>unlockAccount</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>addAccessLevel</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>revokeAccessLevel</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>listAccounts</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>filterAccounts</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>changeOwnPassword</role-name>
+    <group-name>CLIENT</group-name>
+    <group-name>MANAGER</group-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>changeOtherAccountPassword</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>editOwnAccount</role-name>
+    <group-name>CLIENT</group-name>
+    <group-name>MANAGER</group-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>editOtherAccount</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>getOtherAccount</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>findByLogin</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
 </payara-web-app>

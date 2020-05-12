@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -29,6 +30,7 @@ public class LastLoginEndpoint implements Serializable {
     private AccountManager accountManager;
     private Account account;
 
+    @PermitAll
     public String getFailedAttemptNumberFromProperties() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.login.properties");
         Properties properties = new Properties();
@@ -41,11 +43,13 @@ public class LastLoginEndpoint implements Serializable {
         return properties.getProperty("blockingAccountAfterFailedAttemptNumber");
     }
 
+    @PermitAll
     public AccountDTO findByLogin(String username) {
         Account account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    @PermitAll
     public void edit(AccountDTO accountDTO) throws AppBaseException {
         this.account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
