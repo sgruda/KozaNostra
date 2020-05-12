@@ -9,7 +9,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.Resource;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -56,7 +55,7 @@ public class LoginController implements Serializable {
         }
     }
 
-    public void login() throws AppBaseException,IOException {
+    public void login() throws AppBaseException, IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
@@ -64,16 +63,16 @@ public class LoginController implements Serializable {
         if(this.account.isActive() && this.account.isConfirmed()){
 
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
+
             if(null != account.getLastSuccessfulAuth())
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastSuccesfullAuthDate", account.getLastSuccessfulAuth());
+                ResourceBundles.emitDetailedMessageWithFlash(null, "page.login.successful.auth", account.getLastSuccessfulAuth().toString());
             if(null != account.getLastFailedAuth())
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastFailedAuthDate", account.getLastFailedAuth());
+                ResourceBundles.emitDetailedErrorWithFlash(null, "page.login.failed.auth", account.getLastFailedAuth().toString());
             lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
             try {
                 request.login(username, password);
                 roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
                 externalContext.redirect(originalUrl);
-                externalContext.getSessionMap().put("printLastLoginInfo", true);
                 lastLoginController.updateLastSuccesfullAuthDate();
             } catch (ServletException e) {
                 ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
@@ -97,21 +96,6 @@ public class LoginController implements Serializable {
         }else if(this.account.isActive()  && !this.account.isConfirmed()){
             updateAuthFailureInfo();
             ResourceBundles.emitErrorMessage(null,"page.login.user.notconfirmed");
-        }
-    }
-
-    public void informAboutLastAuthentication() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        boolean printLastLoginInfo = (boolean) externalContext.getSessionMap().getOrDefault("printLastLoginInfo", false);
-        if (printLastLoginInfo) {
-            if(null != externalContext.getSessionMap().get("lastSuccesfullAuthDate"))
-                ResourceBundles.emitMessageWithData(null,"page.login.successful.auth",externalContext,"lastSuccesfullAuthDate");
-            if(null != externalContext.getSessionMap().get("lastFailedAuthDate"))
-                ResourceBundles.emitErrorMessageWithData(null,"page.login.failed.auth",externalContext,"lastFailedAuthDate");
-            externalContext.getSessionMap().remove("printLastLoginInfo");
-            externalContext.getSessionMap().remove("lastSuccesfullAuthDate");
-            externalContext.getSessionMap().remove("lastFailedAuthDate");
         }
     }
 
