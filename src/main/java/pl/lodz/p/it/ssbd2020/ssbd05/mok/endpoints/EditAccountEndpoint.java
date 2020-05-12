@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.TransactionRolledbackException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
@@ -89,8 +90,8 @@ public class EditAccountEndpoint implements Serializable {
 
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
-        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         boolean rollback;
+        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
             try {
                 accountManager.blockAccount(account);
@@ -114,8 +115,8 @@ public class EditAccountEndpoint implements Serializable {
 
     public void unlockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
-        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         boolean rollback;
+        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
             try {
                 accountManager.unlockAccount(account);
