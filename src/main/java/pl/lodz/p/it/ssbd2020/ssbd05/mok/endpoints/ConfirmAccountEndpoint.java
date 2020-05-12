@@ -25,8 +25,6 @@ public class ConfirmAccountEndpoint implements Serializable {
     @Inject
     private AccountManager accountManager;
     private Account account;
-    @Inject
-    private EmailSender emailSender;
 
     public AccountDTO getAccountByToken(String token) throws AppBaseException {
         account = accountManager.findByToken(token);
@@ -47,6 +45,7 @@ public class ConfirmAccountEndpoint implements Serializable {
             }
         } while (rollback && callCounter > 0);
         if (!rollback) {
+            EmailSender emailSender = new EmailSender();
             emailSender.sendConfirmedAccountEmail(account.getEmail());
         }
         if (callCounter == 0 && rollback) {

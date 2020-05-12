@@ -36,8 +36,6 @@ public class EditAccountEndpoint implements Serializable {
     @Inject
     private AccountManager accountManager;
     private Account account;
-    @Inject
-    private EmailSender emailSender;
 
     public AccountDTO findByLogin(String username) {
         account = accountManager.findByLogin(username);
@@ -110,6 +108,7 @@ public class EditAccountEndpoint implements Serializable {
             }
         } while (rollback && callCounter > 0);
         if (!rollback) {
+            EmailSender emailSender = new EmailSender();
             emailSender.sendBlockedAccountEmail(account.getEmail());
         }
         if (callCounter == 0) {
@@ -134,6 +133,7 @@ public class EditAccountEndpoint implements Serializable {
             }
         } while (rollback && callCounter > 0);
         if (!rollback) {
+            EmailSender emailSender = new EmailSender();
             emailSender.sendUnlockedAccountEmail(account.getEmail());
         }
         if (callCounter == 0) {

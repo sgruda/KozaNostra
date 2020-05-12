@@ -39,9 +39,6 @@ public class RegisterAccountEndpoint implements Serializable {
     @Setter
     private Collection<AccessLevel> accessLevels;
 
-    @Inject
-    private EmailSender emailSender;
-
     @PermitAll
     public void addNewAccount (AccountDTO accountDTO) throws AppBaseException {
         account = AccountMapper.INSTANCE.createNewAccount(accountDTO);
@@ -63,6 +60,7 @@ public class RegisterAccountEndpoint implements Serializable {
             }
         } while (rollback && callCounter > 0);
         if (!rollback) {
+            EmailSender emailSender = new EmailSender();
             emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
         }
         if (callCounter == 0 && rollback) {
