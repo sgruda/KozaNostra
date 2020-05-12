@@ -39,12 +39,7 @@ public class EditAccountEndpoint implements Serializable {
 
     public AccountDTO findByLogin(String username) {
         account = accountManager.findByLogin(username);
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setLogin(account.getLogin());
-        accountDTO.setActive(account.isActive());
-        accountDTO.setPassword(account.getPassword());
-        accountDTO.setFailedAuthCounter(account.getFailedAuthCounter());
-        return accountDTO;
+        return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
     public void changePassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
@@ -75,7 +70,7 @@ public class EditAccountEndpoint implements Serializable {
 
 
     public void edit(AccountDTO accountDTO) throws AppBaseException {
-        Account account = accountManager.findByLogin(accountDTO.getLogin());
+        account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
         Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
