@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountMapper {
 
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
