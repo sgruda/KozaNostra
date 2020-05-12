@@ -2,14 +2,15 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.PreviousPasswordFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.*;
 import javax.inject.Inject;
 import java.rmi.RemoteException;
@@ -19,6 +20,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Slf4j
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
@@ -33,8 +35,6 @@ public class AccountManager  implements SessionSynchronization {
     @Setter
     private boolean lastTransactionRollback;
     private static final Logger loger = Logger.getLogger(AccountManager.class.getName());
-    @Inject
-    private EmailSender emailSender;
 
     public Account findById(Long id) {
         if (accountFacade.find(id).isPresent())
@@ -67,9 +67,9 @@ public class AccountManager  implements SessionSynchronization {
         else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
     }
 
+    @PermitAll
     public void createAccount(Account account) throws AppBaseException {
         accountFacade.create(account);
-        emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
     }
 
     public Collection<Account> getAllAccounts() {
@@ -83,13 +83,11 @@ public class AccountManager  implements SessionSynchronization {
     public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
         accountFacade.edit(account);
-        emailSender.sendBlockedAccountEmail(account.getEmail());
     }
     public void unlockAccount(Account account) throws AppBaseException {
         account.setActive(true);
         account.setFailedAuthCounter(0);
         accountFacade.edit(account);
-        emailSender.sendUnlockedAccountEmail(account.getEmail());
     }
 
     @Override
