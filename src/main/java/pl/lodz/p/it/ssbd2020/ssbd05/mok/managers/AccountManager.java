@@ -73,9 +73,11 @@ public class AccountManager  implements SessionSynchronization {
     }
 
     public Collection<Account> getAllAccounts() {
-        if(Optional.ofNullable(accountFacade.findAll()).isPresent())
-            return accountFacade.findAll();
-        else throw new IllegalArgumentException(ResourceBundles.getTranslatedText("error.account.blocked"));
+        return accountFacade.findAll();
+    }
+
+    public Collection<Account> filterAccounts(String accountFilter) {
+        return accountFacade.filterAccounts(accountFilter);
     }
 
     public void blockAccount(Account account) throws AppBaseException {
@@ -105,12 +107,5 @@ public class AccountManager  implements SessionSynchronization {
     public void afterCompletion(boolean committed) throws EJBException, RemoteException {
         lastTransactionRollback = !committed;
         loger.log(Level.SEVERE, "Transakcja o ID: " + txId + " zostala zakonczona przez: " + (committed?"zatwierdzenie":"wycofanie"));
-    }
-
-    public Collection<Account> filterAccounts(String accountFilter){
-        if(Optional.ofNullable(accountFacade.filterAccounts(accountFilter)).isPresent()) {
-            return accountFacade.filterAccounts(accountFilter);
-        }
-        else throw new IllegalArgumentException("Nie ma kont pasujących do tego filtru");
     }
 }

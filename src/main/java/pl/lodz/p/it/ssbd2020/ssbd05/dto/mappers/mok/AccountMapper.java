@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.WITH_SECONDS;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountMapper {
 
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
@@ -36,6 +37,7 @@ public interface AccountMapper {
     //metoda uzywana w toAccountDTO
     default Collection<String> toAccessLevelStringCollection(Collection<AccessLevel> accessLevelCollection) {
         return accessLevelCollection.stream()
+                .filter(AccessLevel::getActive)
                 .map(AccessLevel::getAccessLevel)
                 .collect(Collectors.toList());
     }
