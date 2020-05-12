@@ -93,15 +93,17 @@ public class EditAccountEndpoint implements Serializable {
 
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
+        boolean rollback;
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
             try{
                 accountManager.blockAccount(account);
+                rollback = accountManager.isLastTransactionRollback();
                 callCounter--;
             }catch (EJBTransactionRolledbackException ex){
-                throw new TransactionRolledbackException();
+                rollback=true;
             }
-        } while (accountManager.isLastTransactionRollback() && callCounter > 0);
+        } while (rollback && callCounter > 0);
         if (callCounter == 0) {
             throw new ExceededTransactionRetriesException();
         }
@@ -110,11 +112,17 @@ public class EditAccountEndpoint implements Serializable {
 
     public void unlockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
+        boolean rollback;
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
-            accountManager.unlockAccount(account);
-            callCounter--;
-        } while (accountManager.isLastTransactionRollback() && callCounter > 0);
+            try{
+                accountManager.unlockAccount(account);
+                rollback = accountManager.isLastTransactionRollback();
+                callCounter--;
+            }catch (EJBTransactionRolledbackException ex){
+                rollback = true;
+            }
+        } while (rollback && callCounter > 0);
         if (callCounter == 0) {
             throw new ExceededTransactionRetriesException();
         }

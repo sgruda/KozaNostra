@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.TransactionRolledbackException;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -26,25 +27,25 @@ public class ActivationAccountController implements Serializable {
         try {
             editAccountEndpoint.unlockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
-            e.printStackTrace();
-        } catch (TransactionRolledbackException ex) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+        } catch (AppOptimisticLockException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (AppBaseException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+        }catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ResourceBundles.getTranslatedText("page.accountdetails.unlock"), null));
+        ResourceBundles.emitMessage(null,"page.accountdetails.unlock");
     }
     @RolesAllowed(value = "ADMIN")
     public void blockAccount(AccountDTO account) {
         try {
             editAccountEndpoint.blockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
-            e.printStackTrace();
-        }catch (TransactionRolledbackException ex){
-            ResourceBundles.emitErrorMessage(null,ex.getMessage());
-        } catch (AppBaseException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+           ResourceBundles.emitErrorMessage(null, e.getMessage());
+        }catch (AppOptimisticLockException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ResourceBundles.getTranslatedText("page.accountdetails.blocked"), null));
+        ResourceBundles.emitMessage(null,"page.accountdetails.blocked");
     }
 }
