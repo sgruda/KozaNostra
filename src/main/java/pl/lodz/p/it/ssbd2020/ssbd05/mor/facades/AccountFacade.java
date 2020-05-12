@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -28,6 +29,19 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
+    @Override
+    //    @RolesAllowed()
+    public Optional<Account> find(Object id) {
+        return super.find(id);
+    }
+
+    @Override
+    //    @RolesAllowed()
+    public List<Account> findAll() {
+        return super.findAll();
+    }
+
+    //    @RolesAllowed()
     public Optional<Account> findByLogin(String username) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
                 .setParameter("login", username).getSingleResult());
