@@ -10,7 +10,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.RegisterAccountEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -48,22 +47,18 @@ public class RegistrationController implements Serializable {
 
                 this.registerAccountEndpoint.addNewAccount(account);
 
-                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-                ResourceBundles.emitMessage(null,"page.registration.account.created");
+                ResourceBundles.emitMessageWithFlash(null,"page.registration.account.created");
                 clear();
                 return "home";
             }
         } catch (LoginAlreadyExistsException ex) {
-            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Login", ex);
         }catch (EmailAlreadyExistsException ex){
-            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Email", ex);
         } catch (ExceededTransactionRetriesException ex) {
-            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
         }
         return "";

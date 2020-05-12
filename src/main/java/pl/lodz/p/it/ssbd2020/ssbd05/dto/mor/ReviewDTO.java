@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @NoArgsConstructor
 @AllArgsConstructor
 public @Data class ReviewDTO {
 
     private String content;
-    private Date date;
+    private String date;
     private String clientLogin;
     private String reviewNumber;
 }

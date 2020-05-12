@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -87,7 +87,7 @@ public class Account implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "account")
     private Collection<AccessLevel> accessLevelCollection = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "account")
     private Collection<PreviousPassword> previousPasswordCollection = new ArrayList<>();
 
     @Basic(optional = false)
@@ -110,12 +110,10 @@ public class Account implements Serializable {
     private String email;
 
     @Column(table = "authentication_data", name = "last_successful_auth")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastSuccessfulAuth;
+    private LocalDateTime lastSuccessfulAuth;
 
     @Column(table = "authentication_data", name = "last_failed_auth")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastFailedAuth;
+    private LocalDateTime lastFailedAuth;
 
     @Pattern(regexp = "(([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))", message = "Invalid IPv4")
     @Size(max = 255)

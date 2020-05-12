@@ -5,7 +5,7 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -45,8 +45,7 @@ public class Review implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private LocalDateTime date;
 
     @Getter(lombok.AccessLevel.NONE)
     @Setter(lombok.AccessLevel.NONE)
