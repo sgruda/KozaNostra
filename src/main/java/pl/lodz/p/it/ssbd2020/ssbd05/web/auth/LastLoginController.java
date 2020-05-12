@@ -52,8 +52,7 @@ public class LastLoginController implements Serializable {
             accountDTO.setActive(false);
             try {
                 editAccountEndpoint.blockAccount(accountDTO);
-                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-                ResourceBundles.emitErrorMessage(null, "page.login.account.lock");
+                ResourceBundles.emitErrorMessageWithFlash(null, "page.login.account.lock");
             } catch (AppBaseException e) {
                 e.printStackTrace();
             }
