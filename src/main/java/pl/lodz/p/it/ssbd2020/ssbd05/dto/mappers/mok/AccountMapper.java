@@ -25,6 +25,7 @@ public interface AccountMapper {
     //metoda uzywana w toAccountDTO
     default Collection<String> toAccessLevelStringCollection(Collection<AccessLevel> accessLevelCollection) {
         return accessLevelCollection.stream()
+                .filter(AccessLevel::getActive)
                 .map(AccessLevel::getAccessLevel)
                 .collect(Collectors.toList());
     }
