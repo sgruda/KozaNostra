@@ -18,7 +18,6 @@ import java.util.List;
 
 @Named
 @ViewScoped
-@RolesAllowed(value = "ADMIN")
 public class ListAccountsController implements Serializable {
 
     @Inject
