@@ -41,7 +41,7 @@
                                         value="#{registrationController.password}" validatorMessage="#{msg['page.registration.account.password.validation']}" placeholder="#{msg['page.registration.account.password']} *">
                                 <f:validateRegex pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
                             </p:password>
-                            <p:password id="confirmPassword" required="true" feedback="true" promptLabel="#{msg['password.prompt']}"
+                            <p:password id="confirmPassword" required="true" feedback="true" promptLabel="#{msg['confirmpassword.prompt']}"
                                         weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
                                         inline="true" requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
                                         value="#{registrationController.confirmPassword}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
