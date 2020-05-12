@@ -13,9 +13,10 @@ import javax.inject.Named;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Properties;
+
+import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.formatDate;
 
 @Named
 @ConversationScoped
@@ -23,7 +24,7 @@ public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;
     @Inject
-    EditAccountEndpoint editAccountEndpoint;
+    private EditAccountEndpoint editAccountEndpoint;
     private AccountDTO accountDTO;
     private int blockingAccountAfterFailedAttemptNumber;
 
@@ -40,11 +41,11 @@ public class LastLoginController implements Serializable {
         accountDTO.setLastAuthIp(this.getIP());
     }
     public void updateLastSuccesfullAuthDate() {
-        accountDTO.setLastSuccessfulAuth(Date.from(Instant.now()));
+        accountDTO.setLastSuccessfulAuth(formatDate(LocalDateTime.now()));
         accountDTO.setFailedAuthCounter(0);
     }
     public void updateLastFailedAuthDate() {
-        accountDTO.setLastFailedAuth(Date.from(Instant.now()));
+        accountDTO.setLastSuccessfulAuth(formatDate(LocalDateTime.now()));
         accountDTO.setFailedAuthCounter(accountDTO.getFailedAuthCounter() + 1);
     }
     public void checkFailedAuthCounter() throws AppBaseException {

@@ -19,7 +19,7 @@ import java.util.Properties;
 
 public class EmailSender {
 
-    private Properties emailProperties;
+    private final Properties emailProperties;
 
     public EmailSender() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.email.properties");
