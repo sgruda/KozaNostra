@@ -6,7 +6,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.PreviousPasswordFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -25,8 +24,6 @@ import java.util.logging.Logger;
 public class AccountManager  implements SessionSynchronization {
     @Inject
     private AccountFacade accountFacade;
-    @Inject
-    private PreviousPasswordFacade previousPasswordFacade;
 
     private long txId;
     @Getter

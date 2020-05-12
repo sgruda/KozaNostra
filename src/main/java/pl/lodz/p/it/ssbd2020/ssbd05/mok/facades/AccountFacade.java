@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -21,6 +22,7 @@ import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import javax.persistence.PersistenceException;
 import java.sql.SQLNonTransientConnectionException;
+import java.util.List;
 import java.util.Optional;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -40,21 +42,37 @@ public class AccountFacade extends AbstractFacade<Account> {
         super(Account.class);
     }
 
+    @Override
+    //    @RolesAllowed()
+    public Optional<Account> find(Object id) {
+        return super.find(id);
+    }
+
+    @Override
+    //    @RolesAllowed()
+    public List<Account> findAll() {
+        return super.findAll();
+    }
+
+//    @RolesAllowed()
     public Optional<Account> findByLogin(String username) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
                 .setParameter("login", username).getSingleResult());
     }
 
+    //    @RolesAllowed()
     public Optional<Account> findByToken(String token) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByToken", Account.class)
                 .setParameter("token", token).getSingleResult());
     }
 
+    //    @RolesAllowed()
     public Collection<Account> filterAccounts(String accountFilter) {
         return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
                 .setParameter("filter", accountFilter).getResultList();
     }
 
+    @Override
     @PermitAll
     public void create(Account entity) throws AppBaseException {
         try {
@@ -77,6 +95,7 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    @Override
     @PermitAll
     public void edit(Account entity) throws AppBaseException {
         try {
