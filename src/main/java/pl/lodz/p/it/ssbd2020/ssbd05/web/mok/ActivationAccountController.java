@@ -27,10 +27,8 @@ public class ActivationAccountController implements Serializable {
         try {
             editAccountEndpoint.unlockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
-            e.printStackTrace();
-        } catch (TransactionRolledbackException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (AppOptimisticLockException ex) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+        } catch (AppOptimisticLockException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
@@ -42,9 +40,7 @@ public class ActivationAccountController implements Serializable {
         try {
             editAccountEndpoint.blockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
-            e.printStackTrace();
-        }catch (TransactionRolledbackException ex){
-            ResourceBundles.emitErrorMessage(null,ex.getMessage());
+           ResourceBundles.emitErrorMessage(null, e.getMessage());
         }catch (AppOptimisticLockException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }catch (AppBaseException ex) {
