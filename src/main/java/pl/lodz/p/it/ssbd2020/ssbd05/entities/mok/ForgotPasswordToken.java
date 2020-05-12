@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.entities.mok;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,8 +34,7 @@ public class ForgotPasswordToken implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "expire_date", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expireDate;
+    private LocalDateTime expireDate;
 
     @Basic(optional = false)
     @NotNull
