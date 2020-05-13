@@ -1,7 +1,13 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class ResourceBundles {
@@ -36,5 +42,16 @@ public class ResourceBundles {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getTranslatedText(key), data);
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    public static Properties loadProperties(String propertiesKey) throws AppBaseException {
+        InputStream inputStream = ResourceBundles.class.getClassLoader().getResourceAsStream(propertiesKey);
+        Properties properties = new Properties();
+        try {
+            if(inputStream != null)
+                properties.load(inputStream);
+        } catch (IOException e) {
+            throw new PropertiesLoadingException();
+        }
+        return properties;
     }
 }

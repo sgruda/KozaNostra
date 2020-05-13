@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database;
+package pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
