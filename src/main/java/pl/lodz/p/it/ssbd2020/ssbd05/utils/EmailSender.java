@@ -127,7 +127,7 @@ public class EmailSender {
             t.close();
 
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.warn("An error occurred while sending email");
         }
     }
 }
