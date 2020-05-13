@@ -82,6 +82,7 @@ public class LoginController implements Serializable {
                 lastLoginController.checkFailedAuthCounter();
             }
 
+            // TODO przy mergowaniu zamienić zhardcodowane "ADMIN"
             if(account.getAccessLevelCollection().contains("ADMIN")) {
                 EmailSender emailSender = new EmailSender();
                 emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
