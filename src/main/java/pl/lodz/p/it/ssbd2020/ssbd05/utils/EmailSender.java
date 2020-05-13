@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Properties;
 
@@ -69,6 +70,23 @@ public class EmailSender {
         }).start();
     }
 
+    public void sendAuthorizedAdminEmail(String mail, LocalDateTime date, String ip) {
+        String subject = ResourceBundles.getTranslatedText("mail.admin.login.subject");
+        StringBuilder body = new StringBuilder();
+        body.append(ResourceBundles.getTranslatedText("mail.admin.login.subject"))
+                .append(", ")
+                .append(ResourceBundles.getTranslatedText("mail.admin.login.date"))
+                .append(" ").append(DateFormatter.formatDate(date))
+                .append(", ")
+                .append(ResourceBundles.getTranslatedText("mail.admin.login.ip"))
+                .append(" ").append(ip);
+
+        new Thread(() -> {
+            sendEmail(mail, subject, body.toString());
+            return;
+        }).start();
+    }
+
     private void sendEmail(String mail, String subject, String body) {
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", emailProperties.getProperty("host"));
@@ -103,7 +121,7 @@ public class EmailSender {
             t.close();
 
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.warn("An error occurred while sending email");
         }
     }
 }

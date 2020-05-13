@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,6 +87,16 @@ public class LoginController implements Serializable {
             } catch(PropertiesLoadingException ex) {
                 ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
                 Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+            }
+            Properties properties = new Properties();
+            try {
+                properties = ResourceBundles.loadProperties("config.user_roles.properties");
+            } catch (AppBaseException e) {
+                ResourceBundles.emitErrorMessage(null, "error.simple");
+            }
+            if(account.getAccessLevelCollection().contains( properties.getProperty("roleAdmin"))) {
+                EmailSender emailSender = new EmailSender();
+                emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
             }
 
             lastLoginController.updateLastAuthIP();
