@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
@@ -29,16 +30,8 @@ public class LastLoginEndpoint implements Serializable {
     private AccountManager accountManager;
     private Account account;
 
-    public String getFailedAttemptNumberFromProperties() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.login.properties");
-        Properties properties = new Properties();
-        try {
-            if(inputStream != null)
-                properties.load(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties.getProperty("blockingAccountAfterFailedAttemptNumber");
+    public String getFailedAttemptNumberFromProperties() throws AppBaseException {
+        return ResourceBundles.loadProperties("config.login.properties").getProperty("blockingAccountAfterFailedAttemptNumber");
     }
 
     public AccountDTO findByLogin(String username) {

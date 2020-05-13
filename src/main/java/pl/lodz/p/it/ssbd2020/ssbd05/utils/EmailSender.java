@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
 import com.sun.mail.smtp.SMTPTransport;
 import lombok.extern.slf4j.Slf4j;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.faces.context.FacesContext;
 import javax.mail.Message;
@@ -22,15 +23,8 @@ public class EmailSender {
 
     private final Properties emailProperties;
 
-    public EmailSender() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.email.properties");
-        emailProperties = new Properties();
-        try {
-            if(inputStream != null)
-                emailProperties.load(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public EmailSender() throws AppBaseException {
+        emailProperties = ResourceBundles.loadProperties("config.email.properties");
     }
 
     public void sendRegistrationEmail(String mail, String token)  {
