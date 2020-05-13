@@ -80,10 +80,10 @@ public class EmailSender {
         String subject = ResourceBundles.getTranslatedText("mail.admin.login.subject");
         StringBuilder body = new StringBuilder();
         body.append(ResourceBundles.getTranslatedText("mail.admin.login.subject"))
-                .append("\n")
+                .append(", ")
                 .append(ResourceBundles.getTranslatedText("mail.admin.login.date"))
                 .append(" ").append(DateFormatter.formatDate(date))
-                .append("\n")
+                .append(", ")
                 .append(ResourceBundles.getTranslatedText("mail.admin.login.ip"))
                 .append(" ").append(ip);
 

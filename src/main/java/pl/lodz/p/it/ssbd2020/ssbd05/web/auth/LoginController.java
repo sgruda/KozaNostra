@@ -5,6 +5,7 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Named
 @ViewScoped
@@ -78,6 +80,11 @@ public class LoginController implements Serializable {
                 ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
                 lastLoginController.updateLastFailedAuthDate();
                 lastLoginController.checkFailedAuthCounter();
+            }
+
+            if(account.getAccessLevelCollection().contains("ADMIN")) {
+                EmailSender emailSender = new EmailSender();
+                emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
             }
 
             lastLoginController.updateLastAuthIP();

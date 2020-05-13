@@ -59,7 +59,8 @@ public class LastLoginController implements Serializable {
             }
         }
     }
-    private String getIP() {
+
+    public String getIP() {
         URL urlToCheckIpAmazonaws;
         String ipAddress = "";
 
