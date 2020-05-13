@@ -14,7 +14,6 @@ import java.io.Serializable;
 
 @Named
 @ConversationScoped
-@RolesAllowed({"ADMIN","MANAGER","CLIENT"})
 public class OwnAccountDetailsController implements Serializable {
 
     @Inject
@@ -26,8 +25,7 @@ public class OwnAccountDetailsController implements Serializable {
 
     public String selectOwnAccount() {
         conversation.begin();
-        String login = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        this.account = accountDetailsEndpoint.getAccount(login);
+        this.account = accountDetailsEndpoint.getOwnAccount();
         return "ownAccountDetails";
     }
 

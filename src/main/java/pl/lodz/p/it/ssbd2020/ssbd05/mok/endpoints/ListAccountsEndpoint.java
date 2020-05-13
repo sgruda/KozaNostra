@@ -27,10 +27,11 @@ public class ListAccountsEndpoint implements Serializable {
     @Inject
     private AccountManager accountManager;
 
+    @RolesAllowed("listAccounts")
     public Collection<AccountDTO> getAllAccounts() {
         return AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.getAllAccounts());
     }
-
+    @RolesAllowed("filterAccounts")
     public Collection<AccountDTO> filterAccounts (String accountFilter) {
         return AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.filterAccounts(accountFilter));
     }

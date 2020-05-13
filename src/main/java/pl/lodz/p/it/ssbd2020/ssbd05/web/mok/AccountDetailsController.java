@@ -15,7 +15,6 @@ import java.io.Serializable;
 
 @Named
 @ConversationScoped
-@RolesAllowed(value = "ADMIN")
 public class AccountDetailsController implements Serializable {
 
     @Inject

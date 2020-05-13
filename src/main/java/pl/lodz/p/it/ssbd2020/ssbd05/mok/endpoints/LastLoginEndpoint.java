@@ -8,17 +8,15 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Properties;
 
 @Named
 @Stateful
@@ -30,15 +28,18 @@ public class LastLoginEndpoint implements Serializable {
     private AccountManager accountManager;
     private Account account;
 
+    @PermitAll
     public String getFailedAttemptNumberFromProperties() throws AppBaseException {
         return ResourceBundles.loadProperties("config.login.properties").getProperty("blockingAccountAfterFailedAttemptNumber");
     }
 
+    @PermitAll
     public AccountDTO findByLogin(String username) {
         Account account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    @PermitAll
     public void edit(AccountDTO accountDTO) throws AppBaseException {
         this.account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();

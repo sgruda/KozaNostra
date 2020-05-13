@@ -4,6 +4,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -31,13 +32,13 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @PermitAll
     public void create(AccessLevel entity) throws AppBaseException {
         super.create(entity);
     }
 
     @Override
-    //    @RolesAllowed()
+    @PermitAll
     public void edit(AccessLevel entity) throws AppBaseException {
         super.edit(entity);
     }

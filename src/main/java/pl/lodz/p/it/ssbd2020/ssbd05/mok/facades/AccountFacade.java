@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -48,12 +49,12 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("listAccounts")
     public List<Account> findAll() {
         return super.findAll();
     }
 
-//    @RolesAllowed()
+    @PermitAll
     public Optional<Account> findByLogin(String username) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
                 .setParameter("login", username).getSingleResult());
