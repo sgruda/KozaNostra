@@ -7,10 +7,11 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.*;
@@ -20,6 +21,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Properties;
 
 @Slf4j
 @Named
@@ -68,26 +70,26 @@ public class RegisterAccountEndpoint implements Serializable {
             throw new ExceededTransactionRetriesException();
         }
     }
-
     @PermitAll
-    public Collection<AccessLevel> generateAccessLevels () {
+    public Collection<AccessLevel> generateAccessLevels () throws AppBaseException {
         Collection<AccessLevel> accessLevels = new ArrayList<>();
+        Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
 
         Client client = new Client();
         client.setAccount(account);
-        client.setAccessLevel("CLIENT");
+        client.setAccessLevel(properties.getProperty("roleClient"));
         client.setActive(true);
         accessLevels.add(client);
 
         Manager manager = new Manager();
         manager.setAccount(account);
-        manager.setAccessLevel("MANAGER");
+        manager.setAccessLevel(properties.getProperty("roleManager"));
         manager.setActive(false);
         accessLevels.add(manager);
 
         Admin admin = new Admin();
         admin.setAccount(account);
-        admin.setAccessLevel("ADMIN");
+        admin.setAccessLevel(properties.getProperty("roleAdmin"));
         admin.setActive(false);
         accessLevels.add(admin);
 

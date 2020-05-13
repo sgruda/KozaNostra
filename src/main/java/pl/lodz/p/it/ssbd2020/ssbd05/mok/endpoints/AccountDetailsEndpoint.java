@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
+import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ public class AccountDetailsEndpoint implements Serializable {
 
     @Inject
     private AccountManager accountManager;
-    @Inject
+    @Resource
     private SessionContext sessionContext;
 
     private Account account;
