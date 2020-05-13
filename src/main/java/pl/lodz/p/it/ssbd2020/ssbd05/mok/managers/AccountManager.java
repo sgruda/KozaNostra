@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import java.rmi.RemoteException;
@@ -33,29 +34,33 @@ public class AccountManager  implements SessionSynchronization {
     private boolean lastTransactionRollback;
     private static final Logger loger = Logger.getLogger(AccountManager.class.getName());
 
+    //TODO Bedzie ta metoda gdzies uzywana ?
     public Account findById(Long id) {
         if (accountFacade.find(id).isPresent())
             return accountFacade.find(id).get();
         else throw new IllegalArgumentException("Nie ma konta o takim ID");
     }
 
+    @PermitAll
     public Account findByLogin(String login) {
         if(accountFacade.findByLogin(login).isPresent())
             return accountFacade.findByLogin(login).get();
         else throw new IllegalArgumentException("Konto o podanym loginie nie istnieje");
     }
 
+    @PermitAll
     public Account findByToken(String token) throws AppBaseException {
         if(accountFacade.findByToken(token).isPresent())
             return accountFacade.findByToken(token).get();
         else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
     }
 
-
+    @PermitAll
     public void edit(Account account) throws AppBaseException {
         accountFacade.edit(account);
     }
 
+    @PermitAll
     public void confirmAccount(Account account) throws AppBaseException {
         if(!account.isConfirmed()) {
             account.setConfirmed(true);
@@ -69,18 +74,21 @@ public class AccountManager  implements SessionSynchronization {
         accountFacade.create(account);
     }
 
+    @RolesAllowed("listAccounts")
     public Collection<Account> getAllAccounts() {
         return accountFacade.findAll();
     }
-
+    @RolesAllowed("filterAccounts")
     public Collection<Account> filterAccounts(String accountFilter) {
         return accountFacade.filterAccounts(accountFilter);
     }
-
+    @RolesAllowed("blockAccount")
     public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
         accountFacade.edit(account);
     }
+
+    @RolesAllowed("unlockAccount")
     public void unlockAccount(Account account) throws AppBaseException {
         account.setActive(true);
         account.setFailedAuthCounter(0);

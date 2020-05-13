@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -21,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Named
 @ViewScoped
@@ -70,8 +74,8 @@ public class LoginController implements Serializable {
                 ResourceBundles.emitDetailedMessageWithFlash(null, "page.login.successful.auth", account.getLastSuccessfulAuth().toString());
             if(null != account.getLastFailedAuth())
                 ResourceBundles.emitDetailedErrorWithFlash(null, "page.login.failed.auth", account.getLastFailedAuth().toString());
-            lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
             try {
+                lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
                 request.login(username, password);
                 roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
                 externalContext.redirect(originalUrl);
@@ -80,10 +84,17 @@ public class LoginController implements Serializable {
                 ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
                 lastLoginController.updateLastFailedAuthDate();
                 lastLoginController.checkFailedAuthCounter();
+            } catch(PropertiesLoadingException ex) {
+                ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
+                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
             }
-
-            // TODO przy mergowaniu zamienić zhardcodowane "ADMIN"
-            if(account.getAccessLevelCollection().contains("ADMIN")) {
+            Properties properties = new Properties();
+            try {
+                properties = ResourceBundles.loadProperties("config.user_roles.properties");
+            } catch (AppBaseException e) {
+                ResourceBundles.emitErrorMessage(null, "error.simple");
+            }
+            if(account.getAccessLevelCollection().contains( properties.getProperty("roleAdmin"))) {
                 EmailSender emailSender = new EmailSender();
                 emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
             }
@@ -108,7 +119,12 @@ public class LoginController implements Serializable {
     }
 
     public void updateAuthFailureInfo() throws AppBaseException{
-        lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
+        try {
+            lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
+        } catch(PropertiesLoadingException ex) {
+                ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
+                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+        }
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
         try {

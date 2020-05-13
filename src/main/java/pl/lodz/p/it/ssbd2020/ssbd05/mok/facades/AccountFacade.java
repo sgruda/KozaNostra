@@ -4,9 +4,9 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.AppOptimisticLockException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.DatabaseConnectionException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 
@@ -49,12 +49,12 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("listAccounts")
     public List<Account> findAll() {
         return super.findAll();
     }
 
-//    @RolesAllowed()
+    @PermitAll
     public Optional<Account> findByLogin(String username) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
                 .setParameter("login", username).getSingleResult());

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>pl.lodz.p.it.ssbd2020</groupId>
     <artifactId>ssbd05</artifactId>
-    <version>v0.2.32-SNAPSHOT</version>
+    <version>v0.2.33-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>ssbd05</name>
 
@@ -184,7 +184,7 @@
                     <dependency>
                         <groupId>javax.xml.bind</groupId>
                         <artifactId>jaxb-api</artifactId>
-                        <version>2.3.1</version>
+                        <version>2.3.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
