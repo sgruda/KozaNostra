@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.database.ExceededTransactionRetri
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.*;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -26,11 +27,13 @@ public class ConfirmAccountEndpoint implements Serializable {
     private AccountManager accountManager;
     private Account account;
 
+    @PermitAll
     public AccountDTO getAccountByToken(String token) throws AppBaseException {
         account = accountManager.findByToken(token);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    @PermitAll
     public void confirmAccount() throws AppBaseException {
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         boolean rollback;

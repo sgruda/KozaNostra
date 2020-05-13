@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
@@ -32,17 +33,17 @@ import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsI
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @LocalBean
-//@RolesAllowed(value = "ADMIN")    TODO Kwesita jest, tego endpointa moze uzywac jeszcze klient, takze chyba jedna adntoacja nie wystarczy
 public class EditAccountEndpoint implements Serializable {
     @Inject
     private AccountManager accountManager;
     private Account account;
 
+    @RolesAllowed("findByLogin")
     public AccountDTO findByLogin(String username) {
         account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
-
+    @RolesAllowed("changeOtherAccountPassword")
     public void changePassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
         boolean alreadyUsed = false;
@@ -69,7 +70,7 @@ public class EditAccountEndpoint implements Serializable {
         }
     }
 
-
+    @RolesAllowed("editOtherAccount")
     public void edit(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
@@ -87,7 +88,7 @@ public class EditAccountEndpoint implements Serializable {
         account.setAccessLevelCollection(accessLevelCollection);
         accountManager.edit(account);
     }
-
+    @RolesAllowed("blockAccount")
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
         boolean rollback;
@@ -112,7 +113,7 @@ public class EditAccountEndpoint implements Serializable {
         }
     }
 
-
+    @RolesAllowed("unlockAccount")
     public void unlockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
         boolean rollback;

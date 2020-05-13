@@ -49,12 +49,12 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("listAccounts")
     public List<Account> findAll() {
         return super.findAll();
     }
 
-//    @RolesAllowed()
+    @PermitAll
     public Optional<Account> findByLogin(String username) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
                 .setParameter("login", username).getSingleResult());

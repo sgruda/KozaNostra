@@ -69,6 +69,7 @@ public class RegisterAccountEndpoint implements Serializable {
         }
     }
 
+    @PermitAll
     public Collection<AccessLevel> generateAccessLevels () {
         Collection<AccessLevel> accessLevels = new ArrayList<>();
 
