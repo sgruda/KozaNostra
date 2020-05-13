@@ -52,10 +52,10 @@
             </ui:fragment>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}" />
-            <h:outputText value="#{dateFormatter.formatDate(ownAccountDetailsController.account.lastSuccessfulAuth)}"/>
+            <h:outputText value="#{ownAccountDetailsController.account.lastSuccessfulAuth}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsfailauth']}" />
-            <h:outputText value="#{dateFormatter.formatDate(ownAccountDetailsController.account.lastFailedAuth)}"/>
+            <h:outputText value="#{ownAccountDetailsController.account.lastFailedAuth}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
             <h:outputText value="#{ownAccountDetailsController.account.lastAuthIp}"/>
