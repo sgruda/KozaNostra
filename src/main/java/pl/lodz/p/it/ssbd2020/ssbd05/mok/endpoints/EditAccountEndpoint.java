@@ -16,6 +16,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import javax.ejb.*;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -23,6 +24,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 
 import java.util.Collection;
+import java.util.Properties;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
@@ -74,13 +76,14 @@ public class EditAccountEndpoint implements Serializable {
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
         Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
+        Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
         for (AccessLevel accessLevel : accessLevelCollection) {
             if (accessLevel instanceof Admin) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, "admin"));
+                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleAdmin")));
             } else if (accessLevel instanceof Manager) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, "manager"));
+                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleManager")));
             } else if (accessLevel instanceof Client) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, "client"));
+                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleClient")));
             }
         }
         account.setAccessLevelCollection(accessLevelCollection);
