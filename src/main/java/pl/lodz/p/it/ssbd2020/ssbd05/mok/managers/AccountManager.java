@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -42,10 +43,13 @@ public class AccountManager  implements SessionSynchronization {
     }
 
     @PermitAll
-    public Account findByLogin(String login) {
-        if(accountFacade.findByLogin(login).isPresent())
+    public Account findByLogin(String login) throws AccountNotFoundException {
+        try {
             return accountFacade.findByLogin(login).get();
-        else throw new IllegalArgumentException("Konto o podanym loginie nie istnieje");
+        } catch (AccountNotFoundException e) {
+            log.warn(e.getClass().getName() + " " + e.getMessage());
+            throw new AccountNotFoundException(e);
+        }
     }
 
     @PermitAll

@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
 
 import javax.annotation.security.RolesAllowed;
@@ -26,7 +27,7 @@ public class AccountDetailsController implements Serializable {
     @Inject
     private ActivationAccountController activationAccountController;
 
-    public String selectAccount(AccountDTO accountDTO) {
+    public String selectAccount(AccountDTO accountDTO) throws AccountNotFoundException {
         conversation.begin();
         this.account = accountDetailsEndpoint.getAccount(accountDTO.getLogin());
         return "accountDetails";
@@ -49,13 +50,13 @@ public class AccountDetailsController implements Serializable {
         refresh();
     }
     @RolesAllowed(value = "ADMIN")
-    public void blockAccount() {
+    public void blockAccount() throws AccountNotFoundException {
         activationAccountController.blockAccount(account);
         //TODO jakas obsluga wyjatkow?
         //activationAccountController ja zapewni, tylko czy aby na pewno
         refresh();
     }
-    public void refresh() {
+    public void refresh() throws AccountNotFoundException {
         this.account = accountDetailsEndpoint.getAccount(account.getLogin());
     }
 }

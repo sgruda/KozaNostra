@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.PreviousPassword;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
@@ -40,7 +41,7 @@ public class EditAccountEndpoint implements Serializable {
     private Account account;
 
     @RolesAllowed("findByLogin")
-    public AccountDTO findByLogin(String username) {
+    public AccountDTO findByLogin(String username) throws AccountNotFoundException {
         account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }

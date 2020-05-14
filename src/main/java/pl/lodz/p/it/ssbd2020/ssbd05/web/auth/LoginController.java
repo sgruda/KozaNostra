@@ -2,9 +2,11 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -26,6 +28,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Slf4j
 @Named
 @ViewScoped
 public class LoginController implements Serializable {
@@ -61,11 +64,13 @@ public class LoginController implements Serializable {
         }
     }
 
-    public void login() throws AppBaseException, IOException {
+    public void login(){
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-        this.account = lastLoginEndpoint.findByLogin(username);
+        try {
+            this.account = lastLoginEndpoint.findByLogin(username);
+
         if(this.account.isActive() && this.account.isConfirmed()){
 
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
@@ -83,11 +88,15 @@ public class LoginController implements Serializable {
             } catch (ServletException e) {
                 ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
                 lastLoginController.updateLastFailedAuthDate();
-                lastLoginController.checkFailedAuthCounter();
             } catch(PropertiesLoadingException ex) {
                 ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
                 Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+            } catch(AppBaseException appBaseException){
+                ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("niepoprawne dane"));
+            } catch (IOException e) {
+                ResourceBundles.emitErrorMessage(null,ResourceBundles.getTranslatedText("błąd przekierowania"));
             }
+
             Properties properties = new Properties();
             try {
                 properties = ResourceBundles.loadProperties("config.user_roles.properties");
@@ -95,7 +104,12 @@ public class LoginController implements Serializable {
                 ResourceBundles.emitErrorMessage(null, "error.simple");
             }
             if(account.getAccessLevelCollection().contains( properties.getProperty("roleAdmin"))) {
-                EmailSender emailSender = new EmailSender();
+                EmailSender emailSender = null;
+                try {
+                    emailSender = new EmailSender();
+                } catch (AppBaseException appBaseException) {
+                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
+                }
                 emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
             }
 
@@ -116,14 +130,19 @@ public class LoginController implements Serializable {
             updateAuthFailureInfo();
             ResourceBundles.emitErrorMessage(null,"page.login.user.notconfirmed");
         }
+        } catch (AccountNotFoundException e) {
+            ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
+        }
     }
 
-    public void updateAuthFailureInfo() throws AppBaseException{
+    public void updateAuthFailureInfo() {
         try {
             lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
         } catch(PropertiesLoadingException ex) {
                 ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
                 Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+        } catch (AppBaseException appBaseException) {
+                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, appBaseException.getClass().toString(), appBaseException);
         }
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
