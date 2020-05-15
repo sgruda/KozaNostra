@@ -45,7 +45,7 @@ public class LastLoginController implements Serializable {
         accountDTO.setFailedAuthCounter(0);
     }
     public void updateLastFailedAuthDate() {
-        accountDTO.setLastSuccessfulAuth(formatDate(LocalDateTime.now()));
+        accountDTO.setLastFailedAuth(formatDate(LocalDateTime.now()));
         accountDTO.setFailedAuthCounter(accountDTO.getFailedAuthCounter() + 1);
     }
     public void checkFailedAuthCounter() throws AppBaseException {

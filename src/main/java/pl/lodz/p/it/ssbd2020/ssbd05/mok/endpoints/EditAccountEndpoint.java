@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 
@@ -44,7 +45,7 @@ public class EditAccountEndpoint implements Serializable {
         account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
-    @RolesAllowed("changeOtherAccountPassword")
+    @RolesAllowed({"changeOtherAccountPassword","changeOwnAccountPassword"})
     public void changePassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
         boolean alreadyUsed = false;
@@ -90,7 +91,7 @@ public class EditAccountEndpoint implements Serializable {
         account.setAccessLevelCollection(accessLevelCollection);
         accountManager.edit(account);
     }
-    @RolesAllowed("blockAccount")
+    @PermitAll
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
         boolean rollback;

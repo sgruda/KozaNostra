@@ -63,7 +63,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
         return accountFacade.filterAccounts(accountFilter);
     }
 
-    @RolesAllowed("blockAccount")
+    @PermitAll
     public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
         accountFacade.edit(account);
