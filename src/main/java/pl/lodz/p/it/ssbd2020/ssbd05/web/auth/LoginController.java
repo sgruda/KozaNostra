@@ -71,9 +71,9 @@ public class LoginController implements Serializable {
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
 
             if(null != account.getLastSuccessfulAuth())
-                ResourceBundles.emitDetailedMessageWithFlash(null, "page.login.successful.auth", account.getLastSuccessfulAuth().toString());
+                ResourceBundles.emitDetailedMessageWithFlash(null, "page.login.successful.auth", account.getLastSuccessfulAuth());
             if(null != account.getLastFailedAuth())
-                ResourceBundles.emitDetailedErrorWithFlash(null, "page.login.failed.auth", account.getLastFailedAuth().toString());
+                ResourceBundles.emitDetailedErrorWithFlash(null, "page.login.failed.auth", account.getLastFailedAuth());
             try {
                 lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
                 request.login(username, password);
