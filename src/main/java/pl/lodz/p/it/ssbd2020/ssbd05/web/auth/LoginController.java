@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+@Slf4j
 @Named
 @ViewScoped
 public class LoginController implements Serializable {
@@ -69,15 +70,11 @@ public class LoginController implements Serializable {
         if(this.account.isActive() && this.account.isConfirmed()){
 
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
-
-            if(null != account.getLastSuccessfulAuth())
-                ResourceBundles.emitDetailedMessageWithFlash(null, "page.login.successful.auth", account.getLastSuccessfulAuth());
-            if(null != account.getLastFailedAuth())
-                ResourceBundles.emitDetailedErrorWithFlash(null, "page.login.failed.auth", account.getLastFailedAuth());
             try {
                 lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
                 request.login(username, password);
                 roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
+                this.emitMessegesAfterLogin();
                 externalContext.redirect(originalUrl);
                 lastLoginController.updateLastSuccesfullAuthDate();
             } catch (ServletException e) {
@@ -118,7 +115,7 @@ public class LoginController implements Serializable {
         }
     }
 
-    public void updateAuthFailureInfo() throws AppBaseException{
+    private void updateAuthFailureInfo() throws AppBaseException{
         try {
             lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
         } catch(PropertiesLoadingException ex) {
@@ -132,5 +129,12 @@ public class LoginController implements Serializable {
         } catch (AppBaseException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
+    }
+    private void emitMessegesAfterLogin() {
+        if(null != account.getLastSuccessfulAuth()) {
+            ResourceBundles.emitDetailedMessageWithFlash(null, "page.login.successful.auth", account.getLastSuccessfulAuth());
+        }
+        if(null != account.getLastFailedAuth())
+            ResourceBundles.emitDetailedErrorWithFlash(null, "page.login.failed.auth", account.getLastFailedAuth());
     }
 }
