@@ -56,6 +56,8 @@ public class RegisterAccountEndpoint implements Serializable {
             try {
                 accountManager.createAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");

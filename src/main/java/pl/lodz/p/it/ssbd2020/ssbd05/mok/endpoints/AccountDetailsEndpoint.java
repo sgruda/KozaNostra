@@ -37,6 +37,8 @@ public class AccountDetailsEndpoint implements Serializable {
             try {
                 this.account = accountManager.findByLogin(login);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
@@ -58,6 +60,8 @@ public class AccountDetailsEndpoint implements Serializable {
                 String login = sessionContext.getCallerPrincipal().getName();
                 this.account = accountManager.findByLogin(login);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
             log.warn("EJBTransactionRolledBack");

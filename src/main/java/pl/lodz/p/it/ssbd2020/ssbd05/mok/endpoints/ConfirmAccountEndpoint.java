@@ -35,6 +35,8 @@ public class ConfirmAccountEndpoint implements Serializable {
             try {
                 account = accountManager.findByToken(token);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
@@ -55,6 +57,8 @@ public class ConfirmAccountEndpoint implements Serializable {
             try {
                 accountManager.confirmAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");

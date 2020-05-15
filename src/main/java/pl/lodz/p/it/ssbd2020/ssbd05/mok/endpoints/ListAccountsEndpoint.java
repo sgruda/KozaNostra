@@ -14,7 +14,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Slf4j
 @Named
@@ -35,6 +34,8 @@ public class ListAccountsEndpoint implements Serializable {
             try {
                 list = AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.getAllAccounts());
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
@@ -56,6 +57,8 @@ public class ListAccountsEndpoint implements Serializable {
             try {
                 list = AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.filterAccounts(accountFilter));
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");

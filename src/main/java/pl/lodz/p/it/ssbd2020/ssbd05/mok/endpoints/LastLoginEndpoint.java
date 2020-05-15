@@ -41,6 +41,8 @@ public class LastLoginEndpoint implements Serializable {
             try {
                 this.account = accountManager.findByLogin(username);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
@@ -65,6 +67,8 @@ public class LastLoginEndpoint implements Serializable {
             try {
                 accountManager.edit(account);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
