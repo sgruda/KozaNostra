@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
@@ -37,12 +36,12 @@ public class ChangePasswordAccountController {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         AccountDTO accountDTO = editAccountEndpoint.findByLogin(context.getRemoteUser());
         if(HashGenerator.sha256(password).equals(accountDTO.getPassword())){
-            try{
-                editAccountEndpoint.changePassword(newPassword,accountDTO);
-                ResourceBundles.emitMessage(null,"page.changepassword.message");
-            }catch(AppOptimisticLockException ex){
-                ResourceBundles.emitErrorMessage(null,ex.getMessage());
+            try {
+                editAccountEndpoint.changePassword(newPassword, accountDTO);
+                ResourceBundles.emitMessage(null, "page.changepassword.message");
             }catch(AccountPasswordAlreadyUsedException ex){
+                ResourceBundles.emitErrorMessage(null,ex.getMessage());
+            }catch(AppBaseException ex){
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());
             }
         }else{

@@ -9,7 +9,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ConfirmAccountEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -41,6 +40,8 @@ public class ConfirmAccountController implements Serializable {
                 ResourceBundles.emitMessage(null, "messages.account.confirmed");
             } catch (AccountAlreadyConfirmedException e) {
                 ResourceBundles.emitErrorMessage(null, "error.account.confirmed");
+            } catch (AppBaseException e) {
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             }
         } else ResourceBundles.emitErrorMessage(null, "error.default");
         return "home";

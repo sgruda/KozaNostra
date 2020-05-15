@@ -4,6 +4,7 @@ import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.Conversation;
@@ -28,7 +29,11 @@ public class AccountDetailsController implements Serializable {
 
     public String selectAccount(AccountDTO accountDTO) {
         conversation.begin();
-        this.account = accountDetailsEndpoint.getAccount(accountDTO.getLogin());
+        try {
+            this.account = accountDetailsEndpoint.getAccount(accountDTO.getLogin());
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
         return "accountDetails";
     }
 
@@ -42,12 +47,13 @@ public class AccountDetailsController implements Serializable {
     }
 
     @RolesAllowed(value = "ADMIN")
-    public void unlockAccount() throws AppBaseException {
+    public void unlockAccount() {
         activationAccountController.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?
         //activationAccountController ja zapewni, tylko czy aby na pewno
         refresh();
     }
+
     @RolesAllowed(value = "ADMIN")
     public void blockAccount() {
         activationAccountController.blockAccount(account);
@@ -55,7 +61,12 @@ public class AccountDetailsController implements Serializable {
         //activationAccountController ja zapewni, tylko czy aby na pewno
         refresh();
     }
+
     public void refresh() {
-        this.account = accountDetailsEndpoint.getAccount(account.getLogin());
+        try {
+            this.account = accountDetailsEndpoint.getAccount(account.getLogin());
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
     }
 }

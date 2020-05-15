@@ -4,16 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ListAccountsEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Named
@@ -31,10 +30,18 @@ public class ListAccountsController implements Serializable {
 
     @PostConstruct
     public void init() {
-        accounts = (List<AccountDTO>) listAccountsEndpoint.getAllAccounts();
+        try {
+            accounts = (List<AccountDTO>) listAccountsEndpoint.getAllAccounts();
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+        }
     }
 
     public void filterAccounts(){
-        accounts = (List<AccountDTO>) listAccountsEndpoint.filterAccounts(accountFilter);
+        try {
+            accounts = (List<AccountDTO>) listAccountsEndpoint.filterAccounts(accountFilter);
+        } catch (AppBaseException e) {
+            e.printStackTrace();
+        }
     }
 }
