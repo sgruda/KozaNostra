@@ -114,8 +114,7 @@ public class Account implements Serializable {
 
     @Column(table = "authentication_data", name = "last_failed_auth")
     private LocalDateTime lastFailedAuth;
-
-    @Pattern(regexp = "(([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))", message = "Invalid IPv4")
+    
     @Size(max = 255)
     @Column(table = "authentication_data", name = "last_auth_ip")
     private String lastAuthIp;
