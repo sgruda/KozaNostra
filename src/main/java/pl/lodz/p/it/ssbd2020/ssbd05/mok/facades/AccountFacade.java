@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.facades;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;

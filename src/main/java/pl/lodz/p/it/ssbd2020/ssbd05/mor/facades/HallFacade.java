@@ -1,8 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 
-import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
