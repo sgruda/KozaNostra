@@ -20,6 +20,7 @@ public class ActivationAccountController implements Serializable {
     @RolesAllowed(value = "ADMIN")
     public void unlockAccount(AccountDTO account) {
         try {
+            editAccountEndpoint.findByLogin(account.getLogin());
             editAccountEndpoint.unlockAccount(account);
         }catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
@@ -30,6 +31,7 @@ public class ActivationAccountController implements Serializable {
     @RolesAllowed(value = "ADMIN")
     public void blockAccount(AccountDTO account) {
         try {
+            editAccountEndpoint.findByLogin(account.getLogin());
             editAccountEndpoint.blockAccount(account);
         }catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
