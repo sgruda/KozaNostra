@@ -82,7 +82,7 @@ public class AccountManager  implements SessionSynchronization {
     public Collection<Account> filterAccounts(String accountFilter) {
         return accountFacade.filterAccounts(accountFilter);
     }
-    @RolesAllowed("blockAccount")
+    @PermitAll
     public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
         accountFacade.edit(account);
