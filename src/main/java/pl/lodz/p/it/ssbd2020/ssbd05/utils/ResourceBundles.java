@@ -54,4 +54,8 @@ public class ResourceBundles {
         }
         return properties;
     }
+
+    public static int getTransactionRepeatLimit() {
+        return Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
+    }
 }

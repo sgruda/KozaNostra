@@ -15,7 +15,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.*;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -50,23 +49,24 @@ public class RegisterAccountEndpoint implements Serializable {
         previousPassword.setPassword(account.getPassword());
         previousPassword.setAccount(account);
         account.getPreviousPasswordCollection().add(previousPassword);
-        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
+
+        int callCounter = 0;
         boolean rollback;
         do {
             try {
                 accountManager.createAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
-                callCounter--;
+                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter > 0);
+        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
         }
-        if (callCounter == 0 && rollback) {
+        if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
     }
