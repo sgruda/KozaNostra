@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.facades;
 
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
@@ -27,6 +29,7 @@ import java.util.Optional;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "AccountFacadeMOK")
 @LocalBean
+@Slf4j
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")
@@ -102,6 +105,9 @@ public class AccountFacade extends AbstractFacade<Account> {
     @Override
     @PermitAll
     public void edit(Account entity) throws AppBaseException {
+        String temp = "";
+        for(AccessLevel s : entity.getAccessLevelCollection())
+            temp += s.getAccessLevel() + " = " + s.getActive() + " + ";
         try {
             super.edit(entity);
         } catch (DatabaseException ex) {

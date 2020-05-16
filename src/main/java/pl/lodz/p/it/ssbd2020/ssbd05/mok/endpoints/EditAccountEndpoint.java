@@ -73,20 +73,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
     @RolesAllowed("editOtherAccount")
     public void edit(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
-        Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
-        Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
-        Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
-        for (AccessLevel accessLevel : accessLevelCollection) {
-            if (accessLevel instanceof Admin) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleAdmin")));
-            } else if (accessLevel instanceof Manager) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleManager")));
-            } else if (accessLevel instanceof Client) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleClient")));
-            }
-        }
-        account.setAccessLevelCollection(accessLevelCollection);
         accountManager.edit(account);
     }
     @PermitAll
