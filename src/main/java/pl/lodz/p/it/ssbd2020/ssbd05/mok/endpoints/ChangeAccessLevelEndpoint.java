@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotHaveActiveAccessLevelsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ChangeAccessLevelEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -43,11 +44,11 @@ public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLeve
     @Override
     @RolesAllowed("changeAccessLevel")
     public void changeAccessLevel(AccountDTO accountDTO) throws AppBaseException {
-        log.info("WTF endpoint Dostalem " + accountDTO.getAccessLevelCollection());
         account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
         Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
         Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
+        int activeAccessLevels = 0;
         for (AccessLevel accessLevel : accessLevelCollection) {
             if (accessLevel instanceof Admin) {
                 accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleAdmin")));
@@ -56,13 +57,13 @@ public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLeve
             } else if (accessLevel instanceof Client) {
                 accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleClient")));
             }
+            if(accessLevel.getActive())
+                activeAccessLevels++;
         }
+        if(activeAccessLevels == 0)
+            throw new AccountNotHaveActiveAccessLevelsException();
 
         account.setAccessLevelCollection(accessLevelCollection);
-        String temp = "";
-        for(AccessLevel s : account.getAccessLevelCollection())
-            temp += s.getAccessLevel() + " = " + s.getActive() + " + ";
-        log.info("WTF, to zapisuje " + temp);
         int callCounter = 0;
         boolean rollback;
         do {
