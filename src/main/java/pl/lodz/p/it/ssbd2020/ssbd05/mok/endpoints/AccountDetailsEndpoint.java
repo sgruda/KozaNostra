@@ -3,8 +3,8 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
 
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;

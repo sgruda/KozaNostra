@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;

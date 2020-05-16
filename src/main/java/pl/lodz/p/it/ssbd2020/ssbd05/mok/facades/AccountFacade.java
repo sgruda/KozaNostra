@@ -9,7 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionExc
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;

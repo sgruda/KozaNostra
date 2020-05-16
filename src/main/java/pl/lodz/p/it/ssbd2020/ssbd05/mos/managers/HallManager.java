@@ -2,8 +2,8 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mos.managers;
 
 
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.HallFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
 
 import javax.ejb.*;
 import javax.inject.Inject;

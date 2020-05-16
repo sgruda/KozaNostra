@@ -1,10 +1,11 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.utils;
+package pl.lodz.p.it.ssbd2020.ssbd05.interceptors;
 
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
+import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 public class TrackerInterceptor {
@@ -14,9 +15,11 @@ public class TrackerInterceptor {
 
     @AroundInvoke
     public Object traceInvoke(InvocationContext invocationContext) throws Exception{
+        LocalDateTime interceptionTime = LocalDateTime.now();
         StringBuilder message = new StringBuilder("Intercepted method invocation: ");
         message.append(invocationContext.getMethod().toString());
-        message.append(" User: " + sessionContext.getCallerPrincipal().getName());
+        message.append(" Interception time: ").append(interceptionTime);
+        message.append(" User: ").append(sessionContext.getCallerPrincipal().getName());
         message.append(" With parameters: ");
 
         if (invocationContext.getParameters() != null) {
@@ -24,19 +27,20 @@ public class TrackerInterceptor {
                 if (null == param) {
                     message.append("null ");
                 } else {
-                    message.append(param.toString() + ", ");
+                    message.append(param.toString()).append(", ");
                 }
             }
         }
         else {
             message.append("null ");
         }
+
         Object result;
         try {
             result = invocationContext.proceed();
         }catch (Exception e) {
             message.append("With exception: ");
-            message.append(TrackerInterceptor.class.getName() + " ");
+            message.append(TrackerInterceptor.class.getName()).append(" ");
             message.append(e);
             logger.severe(message.toString());
             throw e;
