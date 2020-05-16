@@ -38,12 +38,6 @@ public class AccountDetailsController implements Serializable {
     private ChangeAccessLevelEndpointLocal changeAccessLevelEndpointLocal;
     private Properties roleProperties;
     @Getter
-    private String roleAdmin;
-    @Getter
-    private String roleManager;
-    @Getter
-    private String roleClient;
-    @Getter
     @Setter
     private boolean roleAdminActive;
     @Getter
@@ -111,9 +105,6 @@ public class AccountDetailsController implements Serializable {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessage(null, "error.simple");
         }
-        this.roleAdmin = roleProperties.getProperty("roleAdmin");
-        this.roleManager = roleProperties.getProperty("roleManager");
-        this.roleClient = roleProperties.getProperty("roleClient");
         Collection<String> accessLevelStringCollection = account.getAccessLevelCollection();
         roleManagerActive = false;
         roleAdminActive = false;

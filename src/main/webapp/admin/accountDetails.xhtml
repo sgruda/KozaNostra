@@ -91,22 +91,21 @@
             </h:form>
             <h:form id="changeAccessLevel">
                 <p:commandButton value="#{msg['page.accountdetails.changeAccessLevel']}" onclick="PF('dialog').show();"/>
-                <p:dialog header="Modal Dialog" widgetVar="dialog" modal="true" height="100">
+                <p:dialog header="#{msg['page.accountdetails.addAccessLevel']}" widgetVar="dialog" modal="true" height="100">
                     <h:form>
                         <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
-<!--                            <p:selectBooleanCheckbox value="#{accountDetailsController.account.login}" itemLabel="#{accountDetailsController.account.login}"/>-->
                             <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleClientActive}"
                                                      value="#{accountDetailsController.roleClientActive}"
-                                                     itemLabel="#{accountDetailsController.roleClient}"/>
+                                                     itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
                             <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleManagerActive}"
                                                      value="#{accountDetailsController.roleManagerActive}"
-                                                     itemLabel="#{accountDetailsController.roleManager}"/>
+                                                     itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
                             <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleAdminActive}"
                                                      value="#{accountDetailsController.roleAdminActive}"
-                                                     itemLabel="#{accountDetailsController.roleAdmin}"/>
+                                                     itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
 
                         </h:panelGrid>
-                        <p:commandButton value="Submit" icon="pi pi-check"  style="float: center;" action="#{accountDetailsController.addAccessLevels}"
+                        <p:commandButton value="#{msg['page.accountdetails.accessLevel.add']}" icon="pi pi-check"  style="float: center;" action="#{accountDetailsController.addAccessLevels}"
                                          onclick="PF('dialog').close();"/>
                     </h:form>
                 </p:dialog>
