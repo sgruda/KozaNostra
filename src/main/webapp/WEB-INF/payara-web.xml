@@ -16,7 +16,7 @@
   </security-role-mapping>
 
   <security-role-mapping>
-    <role-name>createAccount</role-name>
+    <role-name>addAccount</role-name>
     <group-name>ADMIN</group-name>
   </security-role-mapping>
   <security-role-mapping>
