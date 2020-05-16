@@ -3,7 +3,10 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.Conversation;
@@ -43,17 +46,33 @@ public class AccountDetailsController implements Serializable {
 
     @RolesAllowed(value = "ADMIN")
     public void unlockAccount() throws AppBaseException {
-        activationAccountController.unlockAccount(account);
-        //TODO jakas obsluga wyjatkow?
-        //activationAccountController ja zapewni, tylko czy aby na pewno
-        refresh();
+        try{
+            activationAccountController.unlockAccount(account);
+            refresh();
+        }catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+        } catch (AppOptimisticLockException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }
+
+
     }
     @RolesAllowed(value = "ADMIN")
     public void blockAccount() {
-        activationAccountController.blockAccount(account);
-        //TODO jakas obsluga wyjatkow?
-        //activationAccountController ja zapewni, tylko czy aby na pewno
-        refresh();
+        try{
+            activationAccountController.blockAccount(account);
+            refresh();
+        }catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+        } catch (AppOptimisticLockException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }
+
+
     }
     public void refresh() {
         this.account = accountDetailsEndpoint.getAccount(account.getLogin());

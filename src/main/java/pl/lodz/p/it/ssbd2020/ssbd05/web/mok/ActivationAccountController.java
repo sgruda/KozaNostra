@@ -20,29 +20,15 @@ public class ActivationAccountController implements Serializable {
     private EditAccountEndpoint editAccountEndpoint;
 
     @RolesAllowed(value = "ADMIN")
-    public void unlockAccount(AccountDTO account) {
-        try {
+    public void unlockAccount(AccountDTO account) throws AppBaseException{
             editAccountEndpoint.unlockAccount(account);
-        } catch (ExceededTransactionRetriesException e) {
-            ResourceBundles.emitErrorMessage(null, e.getMessage());
-        } catch (AppOptimisticLockException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }
-        ResourceBundles.emitMessage(null,"page.accountdetails.unlock");
+            ResourceBundles.emitMessage(null,"page.accountdetails.unlock");
+
+
     }
     @RolesAllowed(value = "ADMIN")
-    public void blockAccount(AccountDTO account) {
-        try {
+    public void blockAccount(AccountDTO account) throws AppBaseException{
             editAccountEndpoint.blockAccount(account);
-        } catch (ExceededTransactionRetriesException e) {
-           ResourceBundles.emitErrorMessage(null, e.getMessage());
-        }catch (AppOptimisticLockException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }
-        ResourceBundles.emitMessage(null,"page.accountdetails.blocked");
+            ResourceBundles.emitMessage(null,"page.accountdetails.blocked");
     }
 }
