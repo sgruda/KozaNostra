@@ -72,6 +72,20 @@ public class EditAccountEndpoint implements Serializable {
         }
     }
 
+    @RolesAllowed("editOwnAccount")
+    public void editOwnAccount(AccountDTO accountDTO) throws AppBaseException{
+        account = accountManager.findByLogin(accountDTO.getLogin());
+        AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
+        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
+        do {
+            accountManager.edit(account);
+            callCounter--;
+        } while (accountManager.isLastTransactionRollback() && callCounter > 0);
+        if (callCounter == 0) {
+            throw new ExceededTransactionRetriesException();
+        }
+    }
+
     @RolesAllowed("editOtherAccount")
     public void edit(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
@@ -91,6 +105,7 @@ public class EditAccountEndpoint implements Serializable {
         account.setAccessLevelCollection(accessLevelCollection);
         accountManager.edit(account);
     }
+
     @PermitAll
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         account = accountManager.findByLogin(accountDTO.getLogin());
