@@ -3,9 +3,9 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
@@ -17,12 +17,12 @@ import java.io.Serializable;
 @RequestScoped
 public class ActivationAccountController implements Serializable {
     @Inject
-    private EditAccountEndpoint editAccountEndpoint;
+    private EditAccountEndpointLocal editAccountEndpointLocal;
 
     @RolesAllowed(value = "ADMIN")
     public void unlockAccount(AccountDTO account) {
         try {
-            editAccountEndpoint.unlockAccount(account);
+            editAccountEndpointLocal.unlockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessage(null, e.getMessage());
         } catch (AppOptimisticLockException ex) {
@@ -35,7 +35,7 @@ public class ActivationAccountController implements Serializable {
     @RolesAllowed(value = "ADMIN")
     public void blockAccount(AccountDTO account) {
         try {
-            editAccountEndpoint.blockAccount(account);
+            editAccountEndpointLocal.blockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
            ResourceBundles.emitErrorMessage(null, e.getMessage());
         }catch (AppOptimisticLockException ex) {

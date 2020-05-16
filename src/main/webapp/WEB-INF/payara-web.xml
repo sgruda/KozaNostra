@@ -16,17 +16,7 @@
   </security-role-mapping>
 
   <security-role-mapping>
-    <role-name>changeAccessLevel</role-name>
-    <group-name>CLIENT</group-name>
-    <group-name>MANAGER</group-name>
-    <group-name>ADMIN</group-name>
-  </security-role-mapping>
-  <security-role-mapping>
     <role-name>createAccount</role-name>
-    <group-name>ADMIN</group-name>
-  </security-role-mapping>
-  <security-role-mapping>
-    <role-name>blockAccount</role-name>
     <group-name>ADMIN</group-name>
   </security-role-mapping>
   <security-role-mapping>
@@ -60,6 +50,18 @@
     <group-name>ADMIN</group-name>
   </security-role-mapping>
   <security-role-mapping>
+    <role-name>changeOwnAccountPassword</role-name>
+    <group-name>ADMIN</group-name>
+    <group-name>CLIENT</group-name>
+    <group-name>MANAGER</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>findByLogin</role-name>
+    <group-name>ADMIN</group-name>
+    <group-name>CLIENT</group-name>
+    <group-name>MANAGER</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
     <role-name>editOwnAccount</role-name>
     <group-name>CLIENT</group-name>
     <group-name>MANAGER</group-name>
@@ -77,10 +79,6 @@
   </security-role-mapping>
   <security-role-mapping>
     <role-name>getOtherAccount</role-name>
-    <group-name>ADMIN</group-name>
-  </security-role-mapping>
-  <security-role-mapping>
-    <role-name>findByLogin</role-name>
     <group-name>ADMIN</group-name>
   </security-role-mapping>
 </payara-web-app>

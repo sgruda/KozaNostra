@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.facades;
 
-import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 

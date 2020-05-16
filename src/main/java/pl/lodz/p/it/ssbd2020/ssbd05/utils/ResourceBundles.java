@@ -24,8 +24,8 @@ public class ResourceBundles {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key),getTranslatedText(key));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    public static void emitErrorMessageWithDetails(final String id, final String key, final String key2) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key),getTranslatedText(key2));
+    public static void emitErrorMessageWithDetails(final String id, final String titleKey, final String detailsKey) {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(titleKey), getTranslatedText(detailsKey));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     public static void emitErrorMessageWithFlash(final String id, final String key) {

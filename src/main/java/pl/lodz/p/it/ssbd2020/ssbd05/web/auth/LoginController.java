@@ -7,7 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.LastLoginEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -43,7 +43,7 @@ public class LoginController implements Serializable {
     private String originalUrl;
 
     @Inject
-    private LastLoginEndpoint lastLoginEndpoint;
+    private LastLoginEndpointLocal lastLoginEndpointLocal;
     @Getter
     private AccountDTO account;
 
@@ -56,7 +56,6 @@ public class LoginController implements Serializable {
             originalUrl = externalContext.getRequestContextPath() + "/index.xhtml";
         } else {
             String originalQuery = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_QUERY_STRING);
-
             if (originalQuery != null) {
                 originalUrl += "?" + originalQuery;
             }
@@ -68,85 +67,54 @@ public class LoginController implements Serializable {
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         try {
-            this.account = lastLoginEndpoint.findByLogin(username);
-
-
-        if(this.account.isActive() && this.account.isConfirmed()){
-
-            //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
-            try {
-                try {
-                    lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
-                } catch (AppBaseException appBaseException) {
-                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
-                }
-                request.login(username, password);
-                roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
-                this.emitMessegesAfterLogin();
-                try {
-                    externalContext.redirect(originalUrl);
-                } catch (IOException e) {
-                    log.warn(e.getClass().toString() + " " + e.getMessage());
-                    ResourceBundles.emitErrorMessage(null, "page.login.redirect");
-                }
-                lastLoginController.updateLastSuccesfullAuthDate();
-            } catch (ServletException e) {
-                ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
-                lastLoginController.updateLastFailedAuthDate();
-                try {
-                    lastLoginController.checkFailedAuthCounter();
-                } catch (AppBaseException appBaseException) {
-                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
-                }
+            this.account = lastLoginEndpointLocal.findByLogin(username);
+             if(this.account.isActive() && this.account.isConfirmed()) {
+                 try {
+                     lastLoginController.startConversation(account, lastLoginEndpointLocal.getFailedAttemptNumberFromProperties());
+                     request.login(username, password);
+                     roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
+                     this.emitMessegesAfterLogin();
+                     externalContext.redirect(originalUrl);
+                     lastLoginController.updateLastSuccesfullAuthDate();
+                 } catch (ServletException e) {
+                     log.warn(e.getClass().toString() + " " + e.getMessage());
+                     ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
+                     lastLoginController.updateLastFailedAuthDate();
+                     lastLoginController.checkFailedAuthCounter();
+                 }
+                 Properties properties = ResourceBundles.loadProperties("config.user_roles.properties");
+                 if(account.getAccessLevelCollection().contains( properties.getProperty("roleAdmin"))) {
+                     EmailSender emailSender;
+                     emailSender = new EmailSender();
+                     emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
+                 }
+                 lastLoginController.updateLastAuthIP();
+                 this.lastLoginEndpointLocal.edit(lastLoginController.endConversation());
+            }  else if(!this.account.isActive() || !this.account.isConfirmed()) {
+                 updateAuthFailureInfo();
+                 ResourceBundles.emitErrorMessageWithDetails(null,"page.login.account.notconfirmed.or.notactive", "page.login.contactadmin");
             }
-            Properties properties = new Properties();
-            try {
-                properties = ResourceBundles.loadProperties("config.user_roles.properties");
-            } catch (AppBaseException e) {
-                ResourceBundles.emitErrorMessage(null, "error.simple");
-            }
-            if(account.getAccessLevelCollection().contains( properties.getProperty("roleAdmin"))) {
-                EmailSender emailSender = null;
-                try {
-                    emailSender = new EmailSender();
-                } catch (AppBaseException appBaseException) {
-                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
-                }
-                emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
-            }
-
-            lastLoginController.updateLastAuthIP();
-            try {
-                this.lastLoginEndpoint.edit(lastLoginController.endConversation());
-            } catch (AppBaseException e) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
-            }
-        }  else if(!this.account.isActive() || !this.account.isConfirmed()) {
-            try {
-                updateAuthFailureInfo();
-            } catch (AppBaseException appBaseException) {
-                log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
-            }
-            ResourceBundles.emitErrorMessageWithDetails(null,"page.login.account.notconfirmed.or.notactive", "page.login.contactadmin");
-        }
-    } catch (AccountNotFoundException e) {
+        } catch (AccountNotFoundException  e) {
+            log.warn(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
+        } catch (AppBaseException e) {
+            log.warn(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessage(null, "error.simple");
+        } catch (IOException e) {
+            log.warn(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessage(null, "page.login.redirect");
         }
     }
 
-    private void updateAuthFailureInfo() throws AppBaseException{
+    private void updateAuthFailureInfo() {
         try {
-            lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
-        } catch(PropertiesLoadingException ex) {
+            lastLoginController.startConversation(account, lastLoginEndpointLocal.getFailedAttemptNumberFromProperties());
+            lastLoginController.updateLastFailedAuthDate();
+            lastLoginController.updateLastAuthIP();
+            this.lastLoginEndpointLocal.edit(lastLoginController.endConversation());
+        } catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
-        }
-        lastLoginController.updateLastFailedAuthDate();
-        lastLoginController.updateLastAuthIP();
-        try {
-            this.lastLoginEndpoint.edit(lastLoginController.endConversation());
-        } catch (AppBaseException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
     }
     private void emitMessegesAfterLogin() {
