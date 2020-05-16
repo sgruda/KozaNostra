@@ -25,4 +25,13 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
     public void addExtraService(ExtraService extraService) throws AppBaseException {
         // TODO implementacja
     }
+
+    public ExtraService getExtraServiceByName(String name) throws AppBaseException {
+        // TODO implementacja
+        return null;
+    }
+
+    void changeActivity(ExtraService extraService) throws AppBaseException {
+        // TODO implementacja
+    }
 }

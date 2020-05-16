@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -67,6 +68,16 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
     public List<ExtraService> findAll() throws AppBaseException {
         try {
             return super.findAll();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
+    }
+
+    //    @RolesAllowed()
+    public Optional<ExtraService> findByName(String name) throws AppBaseException {
+        try {
+            // TODO implementacja
+            return Optional.empty();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException();
         }
