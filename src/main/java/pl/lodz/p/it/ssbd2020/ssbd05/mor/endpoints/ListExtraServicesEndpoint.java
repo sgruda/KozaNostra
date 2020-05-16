@@ -1,8 +1,8 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
+package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.ListHallsEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListExtraServicesEndpointLocal;
 
 import javax.ejb.Local;
 import javax.ejb.Stateful;
@@ -17,10 +17,10 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Stateful
 @Local
-public class ListHallsEndpoint implements Serializable, ListHallsEndpointLocal {
+public class ListExtraServicesEndpoint implements Serializable, ListExtraServicesEndpointLocal {
 
     @Override
-    public List<HallDTO> getFilteredHalls(String hallFilter) throws AppBaseException {
+    public List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException {
         // TODO implementacja
         return new ArrayList<>();
     }

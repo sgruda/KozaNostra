@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -39,6 +40,8 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         try {
             super.create(entity);
         } catch (DatabaseException | PersistenceException e) {
+            if(e.getMessage().contains("extra_service_service_name_uindex"))
+                throw new ExtraServiceAlreadyExistsException();
             throw new DatabaseConnectionException();
         }
     }
