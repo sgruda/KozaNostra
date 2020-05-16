@@ -162,6 +162,6 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account[ id=" + id + " version=" + version +  " ]";
     }
 }
