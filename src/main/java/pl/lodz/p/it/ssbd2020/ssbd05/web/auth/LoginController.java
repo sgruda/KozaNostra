@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.LastLoginEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -42,7 +42,7 @@ public class LoginController implements Serializable {
     private String originalUrl;
 
     @Inject
-    private LastLoginEndpoint lastLoginEndpoint;
+    private LastLoginEndpointLocal lastLoginEndpointLocal;
     @Getter
     private AccountDTO account;
 
@@ -66,12 +66,12 @@ public class LoginController implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-        this.account = lastLoginEndpoint.findByLogin(username);
+        this.account = lastLoginEndpointLocal.findByLogin(username);
         if(this.account.isActive() && this.account.isConfirmed()){
 
         //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
             try {
-                lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
+                lastLoginController.startConversation(account, lastLoginEndpointLocal.getFailedAttemptNumberFromProperties());
                 request.login(username, password);
                 roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
                 this.emitMessegesAfterLogin();
@@ -98,7 +98,7 @@ public class LoginController implements Serializable {
 
             lastLoginController.updateLastAuthIP();
             try {
-                this.lastLoginEndpoint.edit(lastLoginController.endConversation());
+                this.lastLoginEndpointLocal.edit(lastLoginController.endConversation());
             } catch (AppBaseException e) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
             }
@@ -117,7 +117,7 @@ public class LoginController implements Serializable {
 
     private void updateAuthFailureInfo() throws AppBaseException{
         try {
-            lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
+            lastLoginController.startConversation(account, lastLoginEndpointLocal.getFailedAttemptNumberFromProperties());
         } catch(PropertiesLoadingException ex) {
                 ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
                 Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
@@ -125,7 +125,7 @@ public class LoginController implements Serializable {
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
         try {
-            this.lastLoginEndpoint.edit(lastLoginController.endConversation());
+            this.lastLoginEndpointLocal.edit(lastLoginController.endConversation());
         } catch (AppBaseException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
