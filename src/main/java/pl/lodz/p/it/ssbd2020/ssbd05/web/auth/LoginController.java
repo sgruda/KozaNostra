@@ -64,7 +64,7 @@ public class LoginController implements Serializable {
         }
     }
 
-    public void login(){
+    public void login() throws AppBaseException{
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
@@ -86,30 +86,30 @@ public class LoginController implements Serializable {
                 externalContext.redirect(originalUrl);
                 lastLoginController.updateLastSuccesfullAuthDate();
             } catch (ServletException e) {
-                ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
-                lastLoginController.updateLastFailedAuthDate();
+//                ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
+//                lastLoginController.updateLastFailedAuthDate();
             } catch(PropertiesLoadingException ex) {
-                ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
-                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+//                ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
+//                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
             } catch(AppBaseException appBaseException){
-                ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("niepoprawne dane"));
+//                ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
             } catch (IOException e) {
-                ResourceBundles.emitErrorMessage(null,ResourceBundles.getTranslatedText("błąd przekierowania"));
+                ResourceBundles.emitErrorMessage(null, "page.login.redirect");
             }
 
             Properties properties = new Properties();
-            try {
+//            try {
                 properties = ResourceBundles.loadProperties("config.user_roles.properties");
-            } catch (AppBaseException e) {
-                ResourceBundles.emitErrorMessage(null, "error.simple");
-            }
+//            } catch (AppBaseException e) {
+//                ResourceBundles.emitErrorMessage(null, "error.simple");
+//            }
             if(account.getAccessLevelCollection().contains( properties.getProperty("roleAdmin"))) {
                 EmailSender emailSender = null;
-                try {
+//                try {
                     emailSender = new EmailSender();
-                } catch (AppBaseException appBaseException) {
-                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
-                }
+//                } catch (AppBaseException appBaseException) {
+//                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
+//                }
                 emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
             }
 
@@ -117,39 +117,33 @@ public class LoginController implements Serializable {
             try {
                 this.lastLoginEndpoint.edit(lastLoginController.endConversation());
             } catch (AppBaseException e) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+//                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
             }
-        } else if(!this.account.isActive()  && !this.account.isConfirmed()) {
+        } else if(!this.account.isActive() || !this.account.isConfirmed()) {
             updateAuthFailureInfo();
-            ResourceBundles.emitErrorMessage(null,"page.login.user.notconfirmed");
-            ResourceBundles.emitErrorMessage(null,"page.login.user.notactive");
-        }else if(!this.account.isActive()  && this.account.isConfirmed()) {
-            updateAuthFailureInfo();
-            ResourceBundles.emitErrorMessage(null,"page.login.user.notactive");
-        }else if(this.account.isActive()  && !this.account.isConfirmed()){
-            updateAuthFailureInfo();
-            ResourceBundles.emitErrorMessage(null,"page.login.user.notconfirmed");
+            ResourceBundles.emitErrorMessage(null,"page.login.account.notconfirmed");
+            ResourceBundles.emitErrorMessage(null,"page.login.account.notactive");
         }
         } catch (AccountNotFoundException e) {
             ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
         }
     }
 
-    public void updateAuthFailureInfo() {
+    public void updateAuthFailureInfo()  {
         try {
             lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
         } catch(PropertiesLoadingException ex) {
-                ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
-                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+//                ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
+//                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
         } catch (AppBaseException appBaseException) {
-                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, appBaseException.getClass().toString(), appBaseException);
+//                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, appBaseException.getClass().toString(), appBaseException);
         }
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
         try {
             this.lastLoginEndpoint.edit(lastLoginController.endConversation());
         } catch (AppBaseException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
     }
 }
