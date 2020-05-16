@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
