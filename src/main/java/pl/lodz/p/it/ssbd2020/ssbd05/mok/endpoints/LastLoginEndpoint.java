@@ -9,7 +9,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -21,24 +20,26 @@ import java.util.Collection;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class LastLoginEndpoint implements Serializable {
+public class LastLoginEndpoint implements Serializable, LastLoginEndpointLocal {
 
     @Inject
     private AccountManager accountManager;
     private Account account;
 
+    @Override
     @PermitAll
     public String getFailedAttemptNumberFromProperties() throws AppBaseException {
         return ResourceBundles.loadProperties("config.login.properties").getProperty("blockingAccountAfterFailedAttemptNumber");
     }
 
+    @Override
     @PermitAll
     public AccountDTO findByLogin(String username) {
         Account account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    @Override
     @PermitAll
     public void edit(AccountDTO accountDTO) throws AppBaseException {
         this.account = accountManager.findByLogin(accountDTO.getLogin());

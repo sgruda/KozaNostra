@@ -9,6 +9,7 @@ import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,27 +61,13 @@ public class LastLoginController implements Serializable {
     }
 
     public String getIP() {
-        URL urlToCheckIpAmazonaws;
-        String ipAddress = "";
-
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.ip_url.properties");
-        Properties properties = new Properties();
-        try {
-            if(inputStream != null)
-                properties.load(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        final String remoteAddr = request.getHeader("X-FORWARDED-FOR");
+        if(remoteAddr != null){
+            return remoteAddr.replaceFirst(",.*","");
         }
-        try {
-            urlToCheckIpAmazonaws = new URL(properties.getProperty("urlToCheckIpAmazonaws"));
-            try(BufferedReader in = new BufferedReader(new InputStreamReader(urlToCheckIpAmazonaws.openStream()))) {
-                ipAddress = in.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        else{
+            return  request.getRemoteAddr();
         }
-        return ipAddress;
     }
 }
