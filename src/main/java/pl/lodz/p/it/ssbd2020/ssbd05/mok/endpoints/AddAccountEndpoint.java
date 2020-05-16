@@ -8,7 +8,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AddAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -20,6 +19,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 @Log
@@ -56,37 +56,40 @@ public class AddAccountEndpoint implements AddAccountEndpointLocal {
                 rollback = true;
             }
         } while (rollback && callCounter < 5); //TODO po merge: ResourceBundles.getTransactionRepeatLimit()
-        if (!rollback) {
-            EmailSender emailSender = new EmailSender();
-            emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
-        }
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
     }
 
     private Collection<AccessLevel> generateAccessLevels(AccountDTO accountDTO) throws AppBaseException {
-        Collection<AccessLevel> accessLevels = new ArrayList<>();
+        List<AccessLevel> accessLevels = new ArrayList<>();
         Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
+
+        AccessLevel client = new Client();
+        client.setAccount(account);
+        client.setAccessLevel(properties.getProperty("roleClient"));
+        client.setActive(false);
+        accessLevels.add(client);
+
+        AccessLevel manager = new Manager();
+        manager.setAccount(account);
+        manager.setAccessLevel(properties.getProperty("roleManager"));
+        manager.setActive(false);
+        accessLevels.add(manager);
+
+        AccessLevel admin = new Admin();
+        admin.setAccount(account);
+        admin.setAccessLevel(properties.getProperty("roleAdmin"));
+        admin.setActive(false);
+        accessLevels.add(admin);
+
         for (String accessLevelStr : accountDTO.getAccessLevelCollection()) {
             if (accessLevelStr.equals(properties.getProperty("roleClient"))) {
-                AccessLevel client = new Client();
-                client.setAccount(account);
-                client.setAccessLevel(properties.getProperty("roleClient"));
-                client.setActive(true);
-                accessLevels.add(client);
+                accessLevels.get(accessLevels.indexOf(client)).setActive(true);
             } else if (accessLevelStr.equals(properties.getProperty("roleManager"))) {
-                AccessLevel manager = new Manager();
-                manager.setAccount(account);
-                manager.setAccessLevel(properties.getProperty("roleManager"));
-                manager.setActive(true);
-                accessLevels.add(manager);
+                accessLevels.get(accessLevels.indexOf(manager)).setActive(true);
             } else if (accessLevelStr.equals(properties.getProperty("roleAdmin"))) {
-                AccessLevel admin = new Admin();
-                admin.setAccount(account);
-                admin.setAccessLevel(properties.getProperty("roleAdmin"));
-                admin.setActive(true);
-                accessLevels.add(admin);
+                accessLevels.get(accessLevels.indexOf(admin)).setActive(true);
             }
         }
         return accessLevels;
