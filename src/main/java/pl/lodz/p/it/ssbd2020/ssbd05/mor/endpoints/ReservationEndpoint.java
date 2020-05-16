@@ -1,12 +1,19 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
-import javax.ejb.*;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
 @Named
 @Stateful
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
+@Interceptors(TrackerInterceptor.class)
 public class ReservationEndpoint implements Serializable {
 }

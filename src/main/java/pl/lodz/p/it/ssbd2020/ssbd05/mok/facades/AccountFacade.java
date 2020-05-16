@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionExc
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -16,18 +17,20 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
-import java.util.Collection;
 import javax.persistence.PersistenceException;
 import java.sql.SQLNonTransientConnectionException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "AccountFacadeMOK")
 @LocalBean
+@Interceptors(TrackerInterceptor.class)
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")

@@ -6,16 +6,19 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.Collection;
 
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
+@Interceptors(TrackerInterceptor.class)
 public class AccountManager extends AbstractManager implements SessionSynchronization {
     @Inject
     private AccountFacade accountFacade;

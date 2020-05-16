@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
@@ -15,6 +16,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -22,6 +24,7 @@ import java.util.Collection;
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @LocalBean
+@Interceptors(TrackerInterceptor.class)
 public class LastLoginEndpoint implements Serializable {
 
     @Inject

@@ -4,18 +4,21 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
 
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @LocalBean
+@Interceptors(TrackerInterceptor.class)
 public class AccountDetailsEndpoint implements Serializable {
 
     @Inject

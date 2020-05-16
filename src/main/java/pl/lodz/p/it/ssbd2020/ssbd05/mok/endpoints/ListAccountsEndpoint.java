@@ -2,8 +2,8 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
@@ -12,9 +12,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Collection;
 
 @Named
@@ -22,6 +21,7 @@ import java.util.Collection;
 @RolesAllowed(value = "ADMIN")
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @LocalBean
+@Interceptors(TrackerInterceptor.class)
 public class ListAccountsEndpoint implements Serializable {
 
     @Inject

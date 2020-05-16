@@ -12,12 +12,14 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.TrackerInterceptor;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.*;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +30,7 @@ import java.util.Properties;
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @LocalBean
+@Interceptors(TrackerInterceptor.class)
 public class RegisterAccountEndpoint implements Serializable {
 
     @Inject
