@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.security.RolesAllowed;
@@ -28,11 +29,11 @@ public class ListAccountsEndpoint implements Serializable {
     private AccountManager accountManager;
 
     @RolesAllowed("listAccounts")
-    public Collection<AccountDTO> getAllAccounts() {
+    public Collection<AccountDTO> getAllAccounts() throws AppBaseException {
         return AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.getAllAccounts());
     }
     @RolesAllowed("filterAccounts")
-    public Collection<AccountDTO> filterAccounts (String accountFilter) {
+    public Collection<AccountDTO> filterAccounts (String accountFilter) throws AppBaseException {
         return AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.filterAccounts(accountFilter));
     }
 }

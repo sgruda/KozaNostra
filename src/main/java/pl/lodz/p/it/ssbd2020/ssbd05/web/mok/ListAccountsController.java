@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ListAccountsEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -31,10 +33,18 @@ public class ListAccountsController implements Serializable {
 
     @PostConstruct
     public void init() {
-        accounts = (List<AccountDTO>) listAccountsEndpoint.getAllAccounts();
+        try {
+            accounts = (List<AccountDTO>) listAccountsEndpoint.getAllAccounts();
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
     }
 
     public void filterAccounts(){
-        accounts = (List<AccountDTO>) listAccountsEndpoint.filterAccounts(accountFilter);
+        try {
+            accounts = (List<AccountDTO>) listAccountsEndpoint.filterAccounts(accountFilter);
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
     }
 }

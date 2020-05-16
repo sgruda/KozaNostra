@@ -54,12 +54,12 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     }
 
     @RolesAllowed("listAccounts")
-    public Collection<Account> getAllAccounts() {
+    public Collection<Account> getAllAccounts() throws AppBaseException {
         return accountFacade.findAll();
     }
 
     @RolesAllowed("filterAccounts")
-    public Collection<Account> filterAccounts(String accountFilter) {
+    public Collection<Account> filterAccounts(String accountFilter) throws AppBaseException {
         return accountFacade.filterAccounts(accountFilter);
     }
 
