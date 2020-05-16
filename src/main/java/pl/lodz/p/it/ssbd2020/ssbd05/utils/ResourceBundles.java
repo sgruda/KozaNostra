@@ -24,6 +24,10 @@ public class ResourceBundles {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key),getTranslatedText(key));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+    public static void emitErrorMessageWithDetails(final String id, final String key, final String key2) {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key),getTranslatedText(key2));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
     public static void emitErrorMessageWithFlash(final String id, final String key) {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key),getTranslatedText(key));
@@ -55,11 +59,7 @@ public class ResourceBundles {
             if(inputStream != null)
                 properties.load(inputStream);
         } catch (IOException e) {
-//            try {
                 throw new PropertiesLoadingException();
-//            } catch (PropertiesLoadingException propertiesLoadingException) {
-//                Logger.getLogger(ResourceBundles.class.getName()).log(Level.SEVERE, propertiesLoadingException.getClass().toString(), propertiesLoadingException);
-//            }
         }
         return properties;
     }

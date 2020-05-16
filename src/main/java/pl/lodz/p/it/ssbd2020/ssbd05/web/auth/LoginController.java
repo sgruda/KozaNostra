@@ -87,6 +87,7 @@ public class LoginController implements Serializable {
                     externalContext.redirect(originalUrl);
                 } catch (IOException e) {
                     log.warn(e.getClass().toString() + " " + e.getMessage());
+                    ResourceBundles.emitErrorMessage(null, "page.login.redirect");
                 }
                 lastLoginController.updateLastSuccesfullAuthDate();
             } catch (ServletException e) {
@@ -126,8 +127,7 @@ public class LoginController implements Serializable {
             } catch (AppBaseException appBaseException) {
                 log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
             }
-            ResourceBundles.emitErrorMessage(null,"page.login.account.notconfirmed");
-            ResourceBundles.emitErrorMessage(null,"page.login.account.notactive");
+            ResourceBundles.emitErrorMessageWithDetails(null,"page.login.account.notconfirmed.or.notactive", "page.login.contactadmin");
         }
     } catch (AccountNotFoundException e) {
             ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
