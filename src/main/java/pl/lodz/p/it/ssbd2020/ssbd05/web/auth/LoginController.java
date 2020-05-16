@@ -27,7 +27,6 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 @Slf4j
 @Named
 @ViewScoped
@@ -64,52 +63,54 @@ public class LoginController implements Serializable {
         }
     }
 
-    public void login() throws AppBaseException{
+    public void login()  {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         try {
             this.account = lastLoginEndpoint.findByLogin(username);
 
+
         if(this.account.isActive() && this.account.isConfirmed()){
 
-        //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
-
-            if(null != account.getLastSuccessfulAuth())
-                ResourceBundles.emitDetailedMessageWithFlash(null, "page.login.successful.auth", account.getLastSuccessfulAuth().toString());
-            if(null != account.getLastFailedAuth())
-                ResourceBundles.emitDetailedErrorWithFlash(null, "page.login.failed.auth", account.getLastFailedAuth().toString());
+            //TODO A co z wyjatkiem? jak nie znajdzie? Jakis catch by sie przydal
             try {
-                lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
+                try {
+                    lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
+                } catch (AppBaseException appBaseException) {
+                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
+                }
                 request.login(username, password);
                 roleController.setSelectedRole(roleController.getAllUserRoles()[0]);
-                externalContext.redirect(originalUrl);
+                this.emitMessegesAfterLogin();
+                try {
+                    externalContext.redirect(originalUrl);
+                } catch (IOException e) {
+                    log.warn(e.getClass().toString() + " " + e.getMessage());
+                }
                 lastLoginController.updateLastSuccesfullAuthDate();
             } catch (ServletException e) {
-//                ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
-//                lastLoginController.updateLastFailedAuthDate();
-            } catch(PropertiesLoadingException ex) {
-//                ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
-//                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
-            } catch(AppBaseException appBaseException){
-//                ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
-            } catch (IOException e) {
-                ResourceBundles.emitErrorMessage(null, "page.login.redirect");
+                ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
+                lastLoginController.updateLastFailedAuthDate();
+                try {
+                    lastLoginController.checkFailedAuthCounter();
+                } catch (AppBaseException appBaseException) {
+                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
+                }
             }
-
             Properties properties = new Properties();
-//            try {
+            try {
                 properties = ResourceBundles.loadProperties("config.user_roles.properties");
-//            } catch (AppBaseException e) {
-//                ResourceBundles.emitErrorMessage(null, "error.simple");
-//            }
+            } catch (AppBaseException e) {
+                ResourceBundles.emitErrorMessage(null, "error.simple");
+            }
             if(account.getAccessLevelCollection().contains( properties.getProperty("roleAdmin"))) {
                 EmailSender emailSender = null;
-//                try {
+                try {
                     emailSender = new EmailSender();
-//                } catch (AppBaseException appBaseException) {
-//                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
-//                }
+                } catch (AppBaseException appBaseException) {
+                    log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
+                }
                 emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
             }
 
@@ -117,33 +118,42 @@ public class LoginController implements Serializable {
             try {
                 this.lastLoginEndpoint.edit(lastLoginController.endConversation());
             } catch (AppBaseException e) {
-//                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
             }
-        } else if(!this.account.isActive() || !this.account.isConfirmed()) {
-            updateAuthFailureInfo();
+        }  else if(!this.account.isActive() || !this.account.isConfirmed()) {
+            try {
+                updateAuthFailureInfo();
+            } catch (AppBaseException appBaseException) {
+                log.warn(appBaseException.getClass().toString() + " " + appBaseException.getMessage());
+            }
             ResourceBundles.emitErrorMessage(null,"page.login.account.notconfirmed");
             ResourceBundles.emitErrorMessage(null,"page.login.account.notactive");
         }
-        } catch (AccountNotFoundException e) {
-            ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
+    } catch (AccountNotFoundException e) {
+            ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
         }
     }
 
-    public void updateAuthFailureInfo()  {
+    private void updateAuthFailureInfo() throws AppBaseException{
         try {
             lastLoginController.startConversation(account, lastLoginEndpoint.getFailedAttemptNumberFromProperties());
         } catch(PropertiesLoadingException ex) {
-//                ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
-//                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
-        } catch (AppBaseException appBaseException) {
-//                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, appBaseException.getClass().toString(), appBaseException);
+            ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
         }
         lastLoginController.updateLastFailedAuthDate();
         lastLoginController.updateLastAuthIP();
         try {
             this.lastLoginEndpoint.edit(lastLoginController.endConversation());
         } catch (AppBaseException e) {
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
+    }
+    private void emitMessegesAfterLogin() {
+        if(null != account.getLastSuccessfulAuth()) {
+            ResourceBundles.emitDetailedMessageWithFlash(null, "page.login.successful.auth", account.getLastSuccessfulAuth());
+        }
+        if(null != account.getLastFailedAuth())
+            ResourceBundles.emitDetailedErrorWithFlash(null, "page.login.failed.auth", account.getLastFailedAuth());
     }
 }
