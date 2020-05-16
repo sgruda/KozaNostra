@@ -2,12 +2,11 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.*;
@@ -24,7 +23,7 @@ public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;
     @Inject
-    private EditAccountEndpoint editAccountEndpoint;
+    private EditAccountEndpointLocal editAccountEndpoint;
     private AccountDTO accountDTO;
     private int blockingAccountAfterFailedAttemptNumber;
 

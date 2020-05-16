@@ -5,11 +5,10 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ConfirmAccountEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ConfirmAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,7 +19,7 @@ import java.io.Serializable;
 public class ConfirmAccountController implements Serializable {
 
     @Inject
-    private ConfirmAccountEndpoint confirmAccountEndpoint;
+    private ConfirmAccountEndpointLocal confirmAccountEndpoint;
 
     @Getter
     private AccountDTO account;

@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
@@ -34,8 +35,8 @@ import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsI
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class EditAccountEndpoint implements Serializable {
+@Local
+public class EditAccountEndpoint implements Serializable, EditAccountEndpointLocal {
     @Inject
     private AccountManager accountManager;
     private Account account;

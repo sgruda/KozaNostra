@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AccountDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 
 import javax.annotation.Resource;
@@ -15,8 +16,8 @@ import java.io.Serializable;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class AccountDetailsEndpoint implements Serializable {
+@Local
+public class AccountDetailsEndpoint implements Serializable, AccountDetailsEndpointLocal {
 
     @Inject
     private AccountManager accountManager;
