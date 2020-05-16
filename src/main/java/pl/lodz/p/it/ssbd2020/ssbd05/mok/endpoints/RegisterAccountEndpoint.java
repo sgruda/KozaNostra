@@ -14,7 +14,10 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
-import javax.ejb.*;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,8 +30,7 @@ import java.util.Properties;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class RegisterAccountEndpoint implements Serializable {
+public class RegisterAccountEndpoint implements Serializable, RegisterAccountEndpointLocal {
 
     @Inject
     private AccountManager accountManager;
@@ -41,8 +43,9 @@ public class RegisterAccountEndpoint implements Serializable {
     @Setter
     private Collection<AccessLevel> accessLevels;
 
+    @Override
     @PermitAll
-    public void addNewAccount (AccountDTO accountDTO) throws AppBaseException {
+    public void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
         account = AccountMapper.INSTANCE.createNewAccount(accountDTO);
         account.setAccessLevelCollection(generateAccessLevels());
         account.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
@@ -70,8 +73,9 @@ public class RegisterAccountEndpoint implements Serializable {
             throw new ExceededTransactionRetriesException();
         }
     }
+    @Override
     @PermitAll
-    public Collection<AccessLevel> generateAccessLevels () throws AppBaseException {
+    public Collection<AccessLevel> generateAccessLevels() throws AppBaseException {
         Collection<AccessLevel> accessLevels = new ArrayList<>();
         Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
 
