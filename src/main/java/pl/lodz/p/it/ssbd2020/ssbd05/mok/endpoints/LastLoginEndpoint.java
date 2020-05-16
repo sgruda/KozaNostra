@@ -5,6 +5,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.LastLoginEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -13,11 +15,9 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Collection;
 
-@Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class LastLoginEndpoint implements Serializable, LastLoginEndpointLocal {
@@ -34,8 +34,8 @@ public class LastLoginEndpoint implements Serializable, LastLoginEndpointLocal {
 
     @Override
     @PermitAll
-    public AccountDTO findByLogin(String username) {
-        Account account = accountManager.findByLogin(username);
+    public AccountDTO findByLogin(String username) throws AppBaseException{
+        account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 

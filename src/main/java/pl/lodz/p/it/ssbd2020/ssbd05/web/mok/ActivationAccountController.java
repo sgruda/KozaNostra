@@ -17,12 +17,12 @@ import java.io.Serializable;
 @RequestScoped
 public class ActivationAccountController implements Serializable {
     @Inject
-    private EditAccountEndpointLocal editAccountEndpoint;
+    private EditAccountEndpointLocal editAccountEndpointLocal;
 
     @RolesAllowed(value = "ADMIN")
     public void unlockAccount(AccountDTO account) {
         try {
-            editAccountEndpoint.unlockAccount(account);
+            editAccountEndpointLocal.unlockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessage(null, e.getMessage());
         } catch (AppOptimisticLockException ex) {
@@ -35,7 +35,7 @@ public class ActivationAccountController implements Serializable {
     @RolesAllowed(value = "ADMIN")
     public void blockAccount(AccountDTO account) {
         try {
-            editAccountEndpoint.blockAccount(account);
+            editAccountEndpointLocal.blockAccount(account);
         } catch (ExceededTransactionRetriesException e) {
            ResourceBundles.emitErrorMessage(null, e.getMessage());
         }catch (AppOptimisticLockException ex) {

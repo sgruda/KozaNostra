@@ -21,7 +21,7 @@ import javax.inject.Named;
 public class ChangePasswordAccountController {
 
     @Inject
-    private EditAccountEndpointLocal editAccountEndpoint;
+    private EditAccountEndpointLocal editAccountEndpointLocal;
 
     @Getter
     @Setter
@@ -35,10 +35,10 @@ public class ChangePasswordAccountController {
 
     public void setPassword() throws AppBaseException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        AccountDTO accountDTO = editAccountEndpoint.findByLogin(context.getRemoteUser());
+        AccountDTO accountDTO = editAccountEndpointLocal.findByLogin(context.getRemoteUser());
         if(HashGenerator.sha256(password).equals(accountDTO.getPassword())){
             try{
-                editAccountEndpoint.changePassword(newPassword,accountDTO);
+                editAccountEndpointLocal.changePassword(newPassword,accountDTO);
                 ResourceBundles.emitMessage(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());

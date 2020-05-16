@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class ConfirmAccountController implements Serializable {
 
     @Inject
-    private ConfirmAccountEndpointLocal confirmAccountEndpoint;
+    private ConfirmAccountEndpointLocal confirmAccountEndpointLocal;
 
     @Getter
     private AccountDTO account;
@@ -33,10 +33,10 @@ public class ConfirmAccountController implements Serializable {
         facesContext.getExternalContext().getFlash().setKeepMessages(true);
         if (url.contains("token="))
             token = url.substring(url.indexOf("token=") + 6);
-        account = confirmAccountEndpoint.getAccountByToken(token);
+        account = confirmAccountEndpointLocal.getAccountByToken(token);
         if (account.getVeryficationToken().equals(token)) {
             try {
-                confirmAccountEndpoint.confirmAccount();
+                confirmAccountEndpointLocal.confirmAccount();
                 ResourceBundles.emitMessage(null, "messages.account.confirmed");
             } catch (AccountAlreadyConfirmedException e) {
                 ResourceBundles.emitErrorMessage(null, "error.account.confirmed");

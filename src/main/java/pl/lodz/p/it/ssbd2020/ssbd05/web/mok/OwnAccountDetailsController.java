@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AccountDetailsEndpointLocal;
 
 import javax.enterprise.context.Conversation;
@@ -15,15 +16,15 @@ import java.io.Serializable;
 public class OwnAccountDetailsController implements Serializable {
 
     @Inject
-    private AccountDetailsEndpointLocal accountDetailsEndpoint;
+    private AccountDetailsEndpointLocal accountDetailsEndpointLocal;
     @Inject
     private Conversation conversation;
     @Getter
     private AccountDTO account;
 
-    public String selectOwnAccount() {
+    public String selectOwnAccount() throws AppBaseException {
         conversation.begin();
-        this.account = accountDetailsEndpoint.getOwnAccount();
+        this.account = accountDetailsEndpointLocal.getOwnAccount();
         return "ownAccountDetails";
     }
 

@@ -8,7 +8,7 @@ import javax.ejb.Local;
 
 @Local
 public interface EditAccountEndpointLocal {
-    AccountDTO findByLogin(String username);
+    AccountDTO findByLogin(String username) throws AppBaseException;
     void changePassword(String newPassword, AccountDTO accountDTO) throws AppBaseException;
     void edit(AccountDTO accountDTO) throws AppBaseException;
     void blockAccount(AccountDTO accountDTO) throws AppBaseException;

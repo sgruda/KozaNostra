@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.ListAccountsEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ListAccountsEndpointLocal;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;

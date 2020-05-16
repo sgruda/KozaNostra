@@ -23,7 +23,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 
 import java.util.Collection;
@@ -32,7 +31,6 @@ import java.util.Properties;
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
 @Slf4j
-@Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class EditAccountEndpoint implements Serializable, EditAccountEndpointLocal {
@@ -41,7 +39,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
     private Account account;
 
     @RolesAllowed("findByLogin")
-    public AccountDTO findByLogin(String username) {
+    public AccountDTO findByLogin(String username) throws AppBaseException {
         account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }

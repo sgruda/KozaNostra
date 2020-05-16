@@ -14,11 +14,9 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.*;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 
 @Slf4j
-@Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class ConfirmAccountEndpoint implements Serializable, ConfirmAccountEndpointLocal {
