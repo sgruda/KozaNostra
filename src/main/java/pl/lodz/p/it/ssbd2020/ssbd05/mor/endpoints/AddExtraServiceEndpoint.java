@@ -7,10 +7,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.AddExtraServiceEndp
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.inject.Named;
 import java.io.Serializable;
 
-@Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class AddExtraServiceEndpoint implements Serializable, AddExtraServiceEndpointLocal {
