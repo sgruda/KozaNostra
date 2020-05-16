@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListExtraServicesEndpointLocal;
 
-import javax.ejb.Local;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -14,9 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@TransactionAttribute(TransactionAttributeType.NEVER)
 @Stateful
-@Local
+@TransactionAttribute(TransactionAttributeType.NEVER)
 public class ListExtraServicesEndpoint implements Serializable, ListExtraServicesEndpointLocal {
 
     @Override
