@@ -35,7 +35,6 @@ import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsI
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@Local
 public class EditAccountEndpoint implements Serializable, EditAccountEndpointLocal {
     @Inject
     private AccountManager accountManager;

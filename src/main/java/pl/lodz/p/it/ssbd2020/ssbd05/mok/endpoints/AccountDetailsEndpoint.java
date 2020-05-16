@@ -16,7 +16,6 @@ import java.io.Serializable;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@Local
 public class AccountDetailsEndpoint implements Serializable, AccountDetailsEndpointLocal {
 
     @Inject

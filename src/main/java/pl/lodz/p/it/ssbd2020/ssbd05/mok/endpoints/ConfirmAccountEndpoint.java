@@ -21,7 +21,6 @@ import java.io.Serializable;
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@Local
 public class ConfirmAccountEndpoint implements Serializable, ConfirmAccountEndpointLocal {
 
     @Inject
