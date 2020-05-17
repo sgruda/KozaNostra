@@ -9,20 +9,15 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockExce
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
-import pl.lodz.p.it.ssbd2020.ssbd05.web.auth.RegistrationController;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Slf4j
 @Named
@@ -38,7 +33,7 @@ public class EditAccountController {
     public void editAccount() throws AppBaseException {
         try {
             editAccountEndpointLocal.editOwnAccount(accountDTO);
-            ResourceBundles.emitMessage(null,"page.edit.ownacoount.message");
+            ResourceBundles.emitMessage(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.error(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
