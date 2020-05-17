@@ -60,7 +60,7 @@ public class EditOtherAccountController implements Serializable {
 
     public void editAccount() throws AppBaseException {
         try {
-            editAccountEndpointLocal.editOtherAccount(accountDTO);
+            editAccountEndpointLocal.editAccount(accountDTO);
             ResourceBundles.emitMessage(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.error(ex.getMessage() + ", " + LocalDateTime.now());

@@ -13,16 +13,17 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpoint
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Slf4j
 @Named
-@RequestScoped
-public class EditAccountController {
+@ViewScoped
+public class EditAccountController implements Serializable {
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
 
@@ -32,7 +33,7 @@ public class EditAccountController {
 
     public void editAccount() throws AppBaseException {
         try {
-            editAccountEndpointLocal.editOwnAccount(accountDTO);
+            editAccountEndpointLocal.editAccount(accountDTO);
             ResourceBundles.emitMessage(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.error(ex.getMessage() + ", " + LocalDateTime.now());

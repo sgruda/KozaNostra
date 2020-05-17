@@ -91,8 +91,8 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
-    @RolesAllowed("editOwnAccount")
-    public void editOwnAccount(AccountDTO accountDTO) throws AppBaseException {
+    @RolesAllowed({"editOwnAccount","editOtherAccount"})
+    public void editAccount(AccountDTO accountDTO) throws AppBaseException {
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
         int callCounter = 0;
         boolean rollback;
@@ -113,27 +113,6 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
-    @RolesAllowed("editOtherAccount")
-    public void editOtherAccount(AccountDTO accountDTO) throws AppBaseException {
-        AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
-        int callCounter = 0;
-        boolean rollback;
-        do {
-            try {
-                accountManager.edit(account);
-                rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
-                callCounter++;
-            } catch (EJBTransactionRolledbackException e) {
-                log.warning("EJBTransactionRolledBack");
-                rollback = true;
-            }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
-        if (rollback) {
-            throw new ExceededTransactionRetriesException();
-        }
-    }
 
     @RolesAllowed("editOtherAccount")
     public void edit(AccountDTO accountDTO) throws AppBaseException {
