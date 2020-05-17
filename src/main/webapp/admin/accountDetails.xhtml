@@ -89,7 +89,7 @@
                 <p:commandButton value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
                                  rendered="#{accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
             </h:form>
-            <p:commandButton value="Change password" action="#{changeOtherAccountPasswordController.redirectToChangePassword()}"/>
+            <p:commandButton value="Change password" action="#{changeOtherAccountPasswordController.redirectToChangePassword()}" actionListener="#{changeOtherAccountPasswordController.init(accountDetailsController.account.login)}"/>
         </div>
         </div>
     </ui:define>
