@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionExc
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.web.auth.RegistrationController;
 
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
 @RequestScoped
 public class EditAccountController {
     @Inject
-    private EditAccountEndpoint editAccountEndpoint;
+    private EditAccountEndpointLocal editAccountEndpointLocal;
 
     @Getter
     @Setter
@@ -36,7 +37,7 @@ public class EditAccountController {
 
     public void editAccount() throws AppBaseException {
         try {
-            editAccountEndpoint.editOwnAccount(accountDTO);
+            editAccountEndpointLocal.editOwnAccount(accountDTO);
             ResourceBundles.emitMessage(null,"page.edit.ownacoount.message");
         } catch (AppOptimisticLockException ex) {
             log.error(ex.getMessage() + ", " + LocalDateTime.now());
@@ -57,7 +58,7 @@ public class EditAccountController {
     @PostConstruct
     public void init() {
         try {
-            accountDTO = editAccountEndpoint.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+            accountDTO = editAccountEndpointLocal.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         } catch (AppBaseException ex) {
             log.error(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));

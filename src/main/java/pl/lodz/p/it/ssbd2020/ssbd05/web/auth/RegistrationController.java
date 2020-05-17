@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class RegistrationController implements Serializable {
 
     @Inject
-    RegisterAccountEndpointLocal registerAccountEndpointLocal;
+    private RegisterAccountEndpointLocal registerAccountEndpointLocal;
 
     private String login;
     private String password;

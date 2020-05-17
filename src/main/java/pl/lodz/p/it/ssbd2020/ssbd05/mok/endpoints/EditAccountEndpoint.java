@@ -71,7 +71,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
     }
 
     @RolesAllowed("editOwnAccount")
-    public void editOwnAccount(AccountDTO accountDTO) throws AppBaseException{
+    public void editOwnAccount(AccountDTO accountDTO) throws AppBaseException {
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
         int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
         do {
