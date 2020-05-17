@@ -50,7 +50,7 @@ public class AccountDetailsController implements Serializable {
     public String selectAccount(AccountDTO accountDTO) throws AppBaseException {
         conversation.begin();
         this.account = accountDetailsEndpointLocal.getAccount(accountDTO.getLogin());
-        this.setRolesInfo();
+        this.setRolesInfo(this.account.getAccessLevelCollection());
         return "accountDetails";
     }
 
@@ -95,20 +95,15 @@ public class AccountDetailsController implements Serializable {
             changeAccessLevelEndpointLocal.changeAccessLevel(account);
         } catch(AccountNotHaveActiveAccessLevelsException e) {
             account.setAccessLevelCollection(accessLevelsBackup);
+            this.setRolesInfo(accessLevelsBackup);
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.account.not.have.active.access.levels");
         } catch (AppBaseException e) {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.simple");
         }
-        try {
-            refresh();
-        } catch (AppBaseException e) {
-            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.simple");
-        }
     }
-    private void setRolesInfo() {
+    private void setRolesInfo(Collection<String> accessLevelStringCollection) {
         roleProperties = null;
         try {
             roleProperties = ResourceBundles.loadProperties("config.user_roles.properties");
@@ -116,7 +111,6 @@ public class AccountDetailsController implements Serializable {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessage(null, "error.simple");
         }
-        Collection<String> accessLevelStringCollection = account.getAccessLevelCollection();
         roleManagerActive = false;
         roleAdminActive = false;
         roleClientActive = false;
