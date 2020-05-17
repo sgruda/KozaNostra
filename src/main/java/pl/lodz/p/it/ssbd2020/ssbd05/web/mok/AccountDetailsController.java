@@ -5,6 +5,9 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotHaveActiveAccessLevelsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AccountDetailsEndpointLocal;
@@ -68,18 +71,30 @@ public class AccountDetailsController implements Serializable {
         return conversation.getId();
     }
 
-    public void unlockAccount() {
-        activationAccountController.unlockAccount(account);
-        //TODO jakas obsluga wyjatkow?
-        //activationAccountController ja zapewni, tylko czy aby na pewno
-        refresh();
+    public void unlockAccount()  {
+        try {
+            activationAccountController.unlockAccount(account);
+            refresh();
+        } catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+        } catch (AppOptimisticLockException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        } catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }
     }
 
     public void blockAccount() {
-        activationAccountController.blockAccount(account);
-        //TODO jakas obsluga wyjatkow?
-        //activationAccountController ja zapewni, tylko czy aby na pewno
-        refresh();
+        try{
+            activationAccountController.blockAccount(account);
+            refresh();
+        }catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+        } catch (AppOptimisticLockException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }
     }
 
     public void refresh() {
