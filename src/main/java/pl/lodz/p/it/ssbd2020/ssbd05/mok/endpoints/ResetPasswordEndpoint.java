@@ -17,6 +17,6 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
 
     @Override
     public void resetPassword(String mail) throws AppBaseException {
-
+        
     }
 }

@@ -21,6 +21,14 @@ public class ResetPasswordController {
     @Setter
     private String mail;
 
+    @Getter
+    @Setter
+    private String password;
+
+    @Getter
+    @Setter
+    private String confirmPassword;
+
     public String goBack() {
         return "/login/login.xhtml?faces-redirect=true";
     }
@@ -32,9 +40,15 @@ public class ResetPasswordController {
     public String resetPassword() {
         try {
             resetPasswordEndpoint.resetPassword(mail);
+            ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.mail");
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
+        return "home";
+    }
+
+    public String changePassword() {
+
         return "home";
     }
 }
