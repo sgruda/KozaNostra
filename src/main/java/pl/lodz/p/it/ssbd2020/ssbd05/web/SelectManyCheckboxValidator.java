@@ -16,7 +16,7 @@ public class SelectManyCheckboxValidator implements Validator<List<String>> {
     @Override
     public void validate(FacesContext facesContext, UIComponent uiComponent, List<String> o) throws ValidatorException {
         if (o.size() < 1) {
-            throw new ValidatorException(new FacesMessage(ResourceBundles.getTranslatedText("page.addaccount.noaccesslevels")));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundles.getTranslatedText("page.addaccount.noaccesslevels"), ResourceBundles.getTranslatedText("page.addaccount.noaccesslevels")));
         }
     }
 }
