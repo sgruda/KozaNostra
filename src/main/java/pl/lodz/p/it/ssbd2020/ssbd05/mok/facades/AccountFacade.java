@@ -49,8 +49,12 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @Override
     @RolesAllowed("listAccounts")
-    public List<Account> findAll() {
-        return super.findAll();
+    public List<Account> findAll() throws AppBaseException {
+        try {
+            return super.findAll();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     @PermitAll
@@ -71,9 +75,13 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     //    @RolesAllowed()
-    public Collection<Account> filterAccounts(String accountFilter) {
-        return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
-                .setParameter("filter", accountFilter).getResultList();
+    public Collection<Account> filterAccounts(String accountFilter) throws AppBaseException {
+        try {
+            return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
+                    .setParameter("filter", accountFilter).getResultList();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     @Override
