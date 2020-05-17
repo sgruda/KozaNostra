@@ -43,7 +43,6 @@ public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLeve
     @Override
     @RolesAllowed("changeAccessLevel")
     public void changeAccessLevel(AccountDTO accountDTO) throws AppBaseException {
-        log.info("WTF endpoint Dostalem " + accountDTO.getAccessLevelCollection());
         account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
         Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
@@ -59,10 +58,6 @@ public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLeve
         }
 
         account.setAccessLevelCollection(accessLevelCollection);
-        String temp = "";
-        for(AccessLevel s : account.getAccessLevelCollection())
-            temp += s.getAccessLevel() + " = " + s.getActive() + " + ";
-        log.info("WTF, to zapisuje " + temp);
         int callCounter = 0;
         boolean rollback;
         do {
