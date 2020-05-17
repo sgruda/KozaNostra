@@ -59,8 +59,6 @@ public class ChangeOtherAccountPasswordController implements Serializable {
         conversation.begin();
         this.accountDTO=editAccountEndpointLocal.findByLogin(login);
         this.previousCid=cid;
-        log.severe("siema" + this.accountDTO.getLogin() + " " + this.accountDTO.getFirstname());
-
     }
 
     public void setPassword() throws AppBaseException {
@@ -73,13 +71,6 @@ public class ChangeOtherAccountPasswordController implements Serializable {
         } catch (AccountPasswordAlreadyUsedException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
-        try {
-            FacesContext.getCurrentInstance()
-                    .getExternalContext().redirect("/ssbd05/admin/accountDetails.xhtml?cid="+previousCid);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return;
     }
 
 
@@ -92,7 +83,7 @@ public class ChangeOtherAccountPasswordController implements Serializable {
             FacesContext.getCurrentInstance()
                     .getExternalContext().redirect("/ssbd05/admin/accountDetails.xhtml?cid="+previousCid);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info(e.getMessage());
         }
         return;
     }
