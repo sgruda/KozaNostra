@@ -116,6 +116,8 @@ public class EditAccountEndpoint implements Serializable {
             try {
                 accountManager.edit(account);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
@@ -134,6 +136,8 @@ public class EditAccountEndpoint implements Serializable {
             try {
                 accountManager.blockAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             }
             catch (EJBTransactionRolledbackException e) {
@@ -158,6 +162,8 @@ public class EditAccountEndpoint implements Serializable {
             try {
                 accountManager.unlockAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             }
             catch (EJBTransactionRolledbackException e) {
