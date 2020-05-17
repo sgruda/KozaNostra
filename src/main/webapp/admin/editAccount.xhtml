@@ -9,27 +9,27 @@
 
 <ui:composition template = "../templates/template.xhtml">
     <ui:define name="head">
-        <title>#{msg['page.edit.ownaccount.title']}</title>
+        <title>#{msg['page.edit.account.title']}</title>
     </ui:define>
     <ui:define name = "content">
         <h:form id="editAccount">
-            <p:panel id="editPnl" header="#{msg['page.edit.ownaccount.title']}" style="font-size: 24px;">
+            <p:panel id="editPnl" header="#{msg['page.edit.account.title']}" style="font-size: 24px;">
                 <p:messages globalOnly="true">
                     <p:autoUpdate/>
                 </p:messages>
                 <p:panelGrid columns="1" id="editPnlGrid">
-                <h:outputLabel for="login" value="#{msg['page.edit.ownaccount.form.login']}" >
+                <h:outputLabel for="login" value="#{msg['page.edit.account.form.login']}" >
                 <p:inputText id="login" value="${editOtherAccountController.accountDTO.login}" disabled="true"/>
                 </h:outputLabel>
-                <h:outputLabel for="firstName" value="#{msg['page.edit.ownaccount.form.firstname']}" >
+                <h:outputLabel for="firstName" value="#{msg['page.edit.account.form.firstname']}" >
                 <p:inputText id="firstName" required="true"
-                             value="${editOtherAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.ownaccount.form.firstname.required']}"/>
+                             value="${editOtherAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.account.form.firstname.required']}"/>
                 </h:outputLabel>
-                <h:outputLabel for="lastName" value="#{msg['page.edit.ownaccount.form.lastname']}" >
-                <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.edit.ownaccount.form.lastname.required']}"
+                <h:outputLabel for="lastName" value="#{msg['page.edit.account.form.lastname']}" >
+                <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.edit.account.form.lastname.required']}"
                              value="${editOtherAccountController.accountDTO.lastname}"/>
                 </h:outputLabel>
-                <h:outputLabel for="emailAddress" value="#{msg['page.edit.ownaccount.form.email']}" >
+                <h:outputLabel for="emailAddress" value="#{msg['page.edit.account.form.email']}" >
                 <p:inputText id="emailAddress"
                              value="${editOtherAccountController.accountDTO.email}" disabled="true"/>
                 </h:outputLabel>
@@ -41,7 +41,7 @@
                 <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:growl id="message" showDetail="true" />
                         <p:button value="#{msg['page.accountdetails.back']}" outcome="/admin/accountDetails.xhtml?cid=#{editOtherAccountController.editAccountConversationID}"/>
-                        <p:commandButton id="submit" value="#{msg['page.edit.ownaccount.button.edit']}" icon="pi pi-check" actionListener="#{editOtherAccountController.editAccount}" style="float: center;">
+                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" icon="pi pi-check" actionListener="#{editOtherAccountController.editAccount}" style="float: center;">
                             <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
