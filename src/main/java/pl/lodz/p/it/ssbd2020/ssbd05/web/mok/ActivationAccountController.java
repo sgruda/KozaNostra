@@ -19,14 +19,13 @@ public class ActivationAccountController implements Serializable {
     @Inject
     private EditAccountEndpoint editAccountEndpoint;
 
-    @RolesAllowed(value = "ADMIN")
     public void unlockAccount(AccountDTO account) throws AppBaseException{
             editAccountEndpoint.unlockAccount(account);
             ResourceBundles.emitMessage(null,"page.accountdetails.unlock");
 
 
     }
-    @RolesAllowed(value = "ADMIN")
+
     public void blockAccount(AccountDTO account) throws AppBaseException{
             editAccountEndpoint.blockAccount(account);
             ResourceBundles.emitMessage(null,"page.accountdetails.blocked");

@@ -44,7 +44,6 @@ public class AccountDetailsController implements Serializable {
         return conversation.getId();
     }
 
-    @RolesAllowed(value = "ADMIN")
     public void unlockAccount() throws AppBaseException {
         try{
             activationAccountController.unlockAccount(account);
@@ -59,7 +58,7 @@ public class AccountDetailsController implements Serializable {
 
 
     }
-    @RolesAllowed(value = "ADMIN")
+
     public void blockAccount() {
         try{
             activationAccountController.blockAccount(account);
