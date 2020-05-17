@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class ForgotPasswordTokenDTO {
-    
+
     private LocalDateTime expireDate;
     private String hash;
+    private String account;
 }

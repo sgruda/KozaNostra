@@ -59,7 +59,7 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
     }
 
     @Override
-    //    @RolesAllowed()
+    @PermitAll
     public void remove(ForgotPasswordToken entity) throws AppBaseException {
         try {
             super.remove(entity);

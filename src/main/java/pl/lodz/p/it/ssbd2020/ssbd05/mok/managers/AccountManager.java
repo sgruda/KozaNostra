@@ -109,4 +109,19 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
             return forgotPasswordTokenFacade.findByHash(hash).get();
         else throw new AppBaseException();
     }
+
+    @PermitAll
+    public void setPasswordAfterReset(Account account) throws AppBaseException {
+        accountFacade.edit(account);
+    }
+
+    @PermitAll
+    public Collection<ForgotPasswordToken> getAllTokens() throws AppBaseException {
+        return forgotPasswordTokenFacade.findAll();
+    }
+
+    @PermitAll
+    public void deletePreviousToken(ForgotPasswordToken forgotPasswordToken) throws AppBaseException {
+        forgotPasswordTokenFacade.remove(forgotPasswordToken);
+    }
 }

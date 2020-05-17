@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.ForgotPasswordTokenDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.ForgotPasswordToken;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.WITH_SECONDS;
@@ -16,4 +17,8 @@ public interface ForgotPasswordTokenMapper {
 
     @Mapping(target = "expireDate", dateFormat = WITH_SECONDS)
     ForgotPasswordTokenDTO toTokenDTO(ForgotPasswordToken forgotPasswordToken);
+
+    default String toAccountString(Account account) {
+        return account.getLogin();
+    }
 }
