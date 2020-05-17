@@ -13,7 +13,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 @Log
@@ -32,42 +33,34 @@ public class AddAccountController {
     private String firstname;
     private String lastname;
     private String emailAddress;
-    private String[] accessLevels = new String[3];
+    private List<String> accessLevels = new ArrayList<>();
     private boolean active;
 
     public String addAccount() {
-        if (!password.equals(confirmPassword)) {
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("page.registration.account.confirmPassword.required"));
-            return "";
-        } else if (accessLevels.length == 0) {
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("page.addaccount.noaccesslevels"));
-            return "";
-        } else {
-            AccountDTO account = new AccountDTO();
-            account.setLogin(login);
-            account.setPassword(password);
-            account.setFirstname(firstname);
-            account.setLastname(lastname);
-            account.setEmail(emailAddress);
-            account.setActive(active);
-            account.setAccessLevelCollection(Arrays.asList(accessLevels));
-            account.setConfirmed(true);
+        AccountDTO account = new AccountDTO();
+        account.setLogin(login);
+        account.setPassword(password);
+        account.setFirstname(firstname);
+        account.setLastname(lastname);
+        account.setEmail(emailAddress);
+        account.setActive(active);
+        account.setAccessLevelCollection(accessLevels);
+        account.setConfirmed(true);
 
-            try {
-                addAccountEndpoint.addAccount(account);
-                ResourceBundles.emitMessageWithFlash(null,"page.registration.account.created");
-            } catch (LoginAlreadyExistsException ex) {
-                ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-                log.log(Level.SEVERE, "Login", ex);
-            } catch (EmailAlreadyExistsException ex) {
-                ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-                log.log(Level.SEVERE, "Email", ex);
-            } catch (AppBaseException ex) {
-                ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-                log.log(Level.SEVERE, ex.getClass().toString(), ex);
-            }
-            return goBack();
+        try {
+            addAccountEndpoint.addAccount(account);
+            ResourceBundles.emitMessageWithFlash(null,"page.registration.account.created");
+        } catch (LoginAlreadyExistsException ex) {
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            log.log(Level.SEVERE, "Login", ex);
+        } catch (EmailAlreadyExistsException ex) {
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            log.log(Level.SEVERE, "Email", ex);
+        } catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            log.log(Level.SEVERE, ex.getClass().toString(), ex);
         }
+        return goBack();
     }
 
     public String goBack() {

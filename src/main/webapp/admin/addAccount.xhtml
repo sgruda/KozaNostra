@@ -31,7 +31,7 @@
 
                         <p:password id="password" required="true" feedback="true" promptLabel="#{msg['password.prompt']}"
                                     weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
-                                    inline="true" requiredMessage="#{msg['page.registration.account.password.required']}"
+                                    inline="true" match="confirmPassword" requiredMessage="#{msg['page.registration.account.password.required']}"
                                     value="#{addAccountController.password}" validatorMessage="#{msg['page.registration.account.password.validation']}" placeholder="#{msg['page.registration.account.password']} *">
                             <f:validateRegex pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
                         </p:password>
@@ -39,7 +39,7 @@
                         <p:password id="confirmPassword" required="true" feedback="true" promptLabel="#{msg['confirmpassword.prompt']}"
                                     weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
                                     inline="true" requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
-                                    value="#{addAccountController.confirmPassword}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
+                                    value="#{addAccountController.password}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
 
                         <p:inputText id="firstName" required="true"
                                      value="#{addAccountController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}" placeholder="#{msg['page.registration.account.firstname']} *"/>
@@ -58,6 +58,7 @@
                             <f:selectItem itemLabel="#{msg['page.changelevel.client']}" itemValue="CLIENT"/>
                             <f:selectItem itemLabel="#{msg['page.changelevel.manager']}" itemValue="MANAGER"/>
                             <f:selectItem itemLabel="#{msg['page.changelevel.admin']}" itemValue="ADMIN"/>
+                            <f:validator validatorId="atLeastOneCheckedValidator"/>
                         </p:selectManyCheckbox>
 
                         <h:outputLabel for="active" value="#{msg['page.addaccount.activelabel']}:" style="font-size: 14px; text-align: left;"/>
@@ -71,6 +72,7 @@
                         <p:message for="firstName"/>
                         <p:message for="lastName"/>
                         <p:message for="emailAddress"/>
+                        <p:message for="accessLevels"/>
                     </div>
 
                     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
