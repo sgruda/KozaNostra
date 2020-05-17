@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -14,6 +15,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
+@Log
 @Named
 @ViewScoped
 public class ListAccountsController implements Serializable {
@@ -32,7 +34,8 @@ public class ListAccountsController implements Serializable {
         try {
             accounts = (List<AccountDTO>) listAccountsEndpointLocal.getAllAccounts();
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
         }
     }
 
@@ -40,9 +43,8 @@ public class ListAccountsController implements Serializable {
         try {
             accounts = (List<AccountDTO>) listAccountsEndpointLocal.filterAccounts(accountFilter);
         } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
-        //accounts = (List<AccountDTO>) listAccountsEndpointLocal.getAllAccounts();
     }
-
 }

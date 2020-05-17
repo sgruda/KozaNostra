@@ -71,6 +71,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     @PermitAll
     public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
+        log.info("Siema w managerze " + account.getLogin() + " " + account.isActive());
         accountFacade.edit(account);
     }
 

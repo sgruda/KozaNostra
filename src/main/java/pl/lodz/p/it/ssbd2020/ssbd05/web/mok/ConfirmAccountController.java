@@ -40,6 +40,8 @@ public class ConfirmAccountController implements Serializable {
                 ResourceBundles.emitMessage(null, "messages.account.confirmed");
             } catch (AccountAlreadyConfirmedException e) {
                 ResourceBundles.emitErrorMessage(null, "error.account.confirmed");
+            } catch (AppBaseException e) {
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             }
         } else ResourceBundles.emitErrorMessage(null, "error.default");
         return "home";

@@ -68,7 +68,7 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
 
-    //    @RolesAllowed()
+    @PermitAll
     public Optional<Account> findByToken(String token) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByToken", Account.class)
                 .setParameter("token", token).getSingleResult());

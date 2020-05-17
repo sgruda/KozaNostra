@@ -19,7 +19,6 @@ import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,23 +51,26 @@ public class RegisterAccountEndpoint implements Serializable, RegisterAccountEnd
         previousPassword.setPassword(account.getPassword());
         previousPassword.setAccount(account);
         account.getPreviousPasswordCollection().add(previousPassword);
-        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
+
+        int callCounter = 0;
         boolean rollback;
         do {
             try {
                 accountManager.createAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
-                callCounter--;
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
+                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter > 0);
+        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
         }
-        if (callCounter == 0 && rollback) {
+        if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
     }
