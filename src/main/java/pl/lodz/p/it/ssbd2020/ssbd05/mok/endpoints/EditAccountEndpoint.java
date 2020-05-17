@@ -115,7 +115,6 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
 
     @RolesAllowed("editOtherAccount")
     public void editOtherAccount(AccountDTO accountDTO) throws AppBaseException {
-        this.account = accountManager.findByLogin(accountDTO.getLogin());
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
         int callCounter = 0;
         boolean rollback;

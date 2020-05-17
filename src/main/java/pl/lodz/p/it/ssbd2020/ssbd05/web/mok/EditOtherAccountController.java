@@ -33,8 +33,24 @@ public class EditOtherAccountController implements Serializable {
     @Setter
     private AccountDTO accountDTO;
 
-    public String selectAccount(AccountDTO accountDTO) {
+    public String selectAccount(AccountDTO accountDTO) throws AppBaseException {
         this.accountDTO = accountDTO;
+        try{
+            editAccountEndpointLocal.findByLogin(accountDTO.getLogin());
+        }
+        catch (AppOptimisticLockException ex) {
+            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        } catch (ExceededTransactionRetriesException ex) {
+            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        } catch (DatabaseQueryException ex) {
+            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }catch (DatabaseConnectionException ex){
+            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }
         return "editAccount";
     }
 
