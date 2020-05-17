@@ -20,12 +20,14 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 
 @Log
 @Named
 @ConversationScoped
 public class ChangeOtherAccountPasswordController implements Serializable {
+
 
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
@@ -45,22 +47,24 @@ public class ChangeOtherAccountPasswordController implements Serializable {
     @Getter
     @Setter
     private AccountDTO accountDTO;
+    @Getter
+    @Setter
+    private String previousCid;
 
 
-    public void init(String login) throws AppBaseException{
+    public void init(String login, String cid) throws AppBaseException{
         if(!conversation.isTransient()) {
             conversation.end();
         }
         conversation.begin();
         this.accountDTO=editAccountEndpointLocal.findByLogin(login);
+        this.previousCid=cid;
         log.severe("siema" + this.accountDTO.getLogin() + " " + this.accountDTO.getFirstname());
 
     }
 
     public void setPassword() throws AppBaseException {
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        AccountDTO accountDTO = editAccountEndpointLocal.findByLogin(context.getRemoteUser());
-
+        AccountDTO accountDTO = editAccountEndpointLocal.findByLogin(this.accountDTO.getLogin());
         try {
             editAccountEndpointLocal.changePassword(newPassword, accountDTO);
             ResourceBundles.emitMessage(null, "page.changepassword.message");
@@ -69,11 +73,31 @@ public class ChangeOtherAccountPasswordController implements Serializable {
         } catch (AccountPasswordAlreadyUsedException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
+        try {
+            FacesContext.getCurrentInstance()
+                    .getExternalContext().redirect("/ssbd05/admin/accountDetails.xhtml?cid="+previousCid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return;
     }
 
 
-    @RolesAllowed(value = "ADMIN")
     public String redirectToChangePassword() {
         return "changePassword";
+    }
+
+    public void goBack(){
+        try {
+            FacesContext.getCurrentInstance()
+                    .getExternalContext().redirect("/ssbd05/admin/accountDetails.xhtml?cid="+previousCid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+
+    public String getChangeOtherPasswdConversationID(){
+        return conversation.getId();
     }
 }
