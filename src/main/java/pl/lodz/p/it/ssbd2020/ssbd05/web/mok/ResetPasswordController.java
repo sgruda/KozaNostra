@@ -32,6 +32,11 @@ public class ResetPasswordController {
     @Setter
     private String confirmPassword;
 
+    @Getter
+    @Setter
+    private String url = "";
+    private String token = "";
+
     public String goBack() {
         return "/login/login.xhtml?faces-redirect=true";
     }
@@ -55,6 +60,8 @@ public class ResetPasswordController {
     }
 
     public String changePassword() {
+        if(url.contains("token="))
+            token = url.substring(url.indexOf("token=") + 6);
 
         return "home";
     }
