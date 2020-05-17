@@ -7,5 +7,6 @@ import javax.ejb.Local;
 @Local
 public interface ResetPasswordEndpointLocal {
 
+    void findByMail(String mail) throws AppBaseException;
     void resetPassword(String mail) throws AppBaseException;
 }
