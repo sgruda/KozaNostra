@@ -41,15 +41,6 @@
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/admin/addAccount.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>listAccounts</from-outcome>
-            <to-view-id>/admin/listAccounts.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
         <from-view-id>/accountDetails.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>goBack</from-outcome>
@@ -75,6 +66,5 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-
 
 </faces-config>

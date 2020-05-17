@@ -36,7 +36,7 @@ public class AddAccountController {
     private List<String> accessLevels = new ArrayList<>();
     private boolean active;
 
-    public String addAccount() {
+    public void addAccount() {
         AccountDTO account = new AccountDTO();
         account.setLogin(login);
         account.setPassword(password);
@@ -60,7 +60,6 @@ public class AddAccountController {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.log(Level.SEVERE, ex.getClass().toString(), ex);
         }
-        return goBack();
     }
 
     public String goBack() {

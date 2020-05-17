@@ -63,7 +63,7 @@ public class AddAccountEndpoint implements AddAccountEndpointLocal {
 
     private Collection<AccessLevel> generateAccessLevels(AccountDTO accountDTO) throws AppBaseException {
         List<AccessLevel> accessLevels = new ArrayList<>();
-        Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
+        Properties properties = ResourceBundles.loadProperties("config.user_roles.properties");
 
         AccessLevel client = new Client();
         client.setAccount(account);

@@ -76,7 +76,7 @@
                     </div>
 
                     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
-                        <p:commandButton value="#{msg['page.accountdetails.back']}" style="margin-right:20px;" action="#{addAccountController.goBack()}"/>
+                        <p:commandButton id="back" immediate="true" value="#{msg['page.accountdetails.back']}" style="margin-right:20px;" action="#{addAccountController.goBack()}"/>
                         <p:commandButton value="#{msg['page.registration.account.reset']}" style="margin-right:20px;" icon="pi pi-undo">
                             <p:ajax update="register" resetValues="true" />
                         </p:commandButton>
