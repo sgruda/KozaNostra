@@ -3,27 +3,25 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.PreviousPassword;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
-
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
-
 import javax.inject.Inject;
-import java.io.Serializable;
+import javax.interceptor.Interceptors;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Properties;
 
@@ -32,6 +30,7 @@ import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsI
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
+@Interceptors(TrackerInterceptor.class)
 public class EditAccountEndpoint implements Serializable, EditAccountEndpointLocal {
     @Inject
     private AccountManager accountManager;

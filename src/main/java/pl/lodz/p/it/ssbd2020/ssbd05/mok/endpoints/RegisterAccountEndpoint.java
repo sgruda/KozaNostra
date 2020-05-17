@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.RegisterAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
@@ -20,6 +21,8 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +31,7 @@ import java.util.Properties;
 @Slf4j
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
+@Interceptors(TrackerInterceptor.class)
 public class RegisterAccountEndpoint implements Serializable, RegisterAccountEndpointLocal {
 
     @Inject

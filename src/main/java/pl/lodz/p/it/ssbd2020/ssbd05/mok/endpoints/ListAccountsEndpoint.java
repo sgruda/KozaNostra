@@ -1,9 +1,9 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ListAccountsEndpointLocal;
@@ -16,17 +16,16 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collection;
 
 
 @Log
-@Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
+@Interceptors(TrackerInterceptor.class)
 public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointLocal {
 
     @Inject

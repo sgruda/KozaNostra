@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
+package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
@@ -11,8 +11,8 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
 @Stateful
-@LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
+@LocalBean
 @Interceptors(TrackerInterceptor.class)
-public class ReservationEndpoint implements Serializable {
+public class HallEndpoint implements Serializable {
 }
