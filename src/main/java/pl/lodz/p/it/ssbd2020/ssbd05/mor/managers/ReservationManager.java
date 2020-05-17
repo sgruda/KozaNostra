@@ -1,15 +1,19 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
 
-import javax.ejb.LocalBean;
-import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReservationFacade;
+
+import javax.ejb.*;
+import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @LocalBean
-public class ReservationManager {
+public class ReservationManager extends AbstractManager implements SessionSynchronization {
+    @Inject
+    private ReservationFacade reservationFacade;
+
+
 }

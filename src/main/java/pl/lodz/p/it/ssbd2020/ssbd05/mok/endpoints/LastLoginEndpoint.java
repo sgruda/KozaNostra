@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
@@ -7,34 +8,40 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.LastLoginEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
-import javax.ejb.*;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Collection;
 
-@Slf4j
+
+@Log
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class LastLoginEndpoint implements Serializable {
+public class LastLoginEndpoint implements Serializable, LastLoginEndpointLocal {
 
     @Inject
     private AccountManager accountManager;
     private Account account;
 
+    @Override
     @PermitAll
     public String getFailedAttemptNumberFromProperties() throws AppBaseException {
         return ResourceBundles.loadProperties("config.login.properties").getProperty("blockingAccountAfterFailedAttemptNumber");
     }
 
+    @Override
     @PermitAll
-    public AccountDTO findByLogin(String username) throws ExceededTransactionRetriesException {
+    public AccountDTO findByLogin(String username) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;
         do {
@@ -45,7 +52,7 @@ public class LastLoginEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -55,6 +62,7 @@ public class LastLoginEndpoint implements Serializable {
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    @Override
     @PermitAll
     public void edit(AccountDTO accountDTO) throws AppBaseException {
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
@@ -71,7 +79,7 @@ public class LastLoginEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());

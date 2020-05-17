@@ -1,8 +1,10 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.facades;
 
-import pl.lodz.p.it.ssbd2020.ssbd05.AbstractFacade;
+import org.eclipse.persistence.exceptions.DatabaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
@@ -11,6 +13,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,13 +37,21 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
     @Override
     @PermitAll
     public void create(AccessLevel entity) throws AppBaseException {
-        super.create(entity);
+        try {
+            super.create(entity);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     @Override
     @PermitAll
     public void edit(AccessLevel entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     @Override
@@ -51,7 +62,11 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
 
     @Override
     //    @RolesAllowed()
-    public List<AccessLevel> findAll() {
-        return super.findAll();
+    public List<AccessLevel> findAll() throws AppBaseException {
+        try {
+            return super.findAll();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 }

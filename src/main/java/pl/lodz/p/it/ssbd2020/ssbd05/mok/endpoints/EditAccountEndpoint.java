@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
@@ -9,9 +9,10 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -21,7 +22,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 
 import java.util.Collection;
@@ -29,18 +29,16 @@ import java.util.Properties;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
-@Slf4j
-@Named
+@Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class EditAccountEndpoint implements Serializable {
+public class EditAccountEndpoint implements Serializable, EditAccountEndpointLocal {
     @Inject
     private AccountManager accountManager;
     private Account account;
 
     @RolesAllowed("findByLogin")
-    public AccountDTO findByLogin(String username) throws ExceededTransactionRetriesException {
+    public AccountDTO findByLogin(String username) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;
         do {
@@ -51,7 +49,7 @@ public class EditAccountEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -84,7 +82,29 @@ public class EditAccountEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
+    }
+
+    @RolesAllowed("editOwnAccount")
+    public void editOwnAccount(AccountDTO accountDTO) throws AppBaseException {
+        AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                accountManager.edit(account);
+                rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
+                callCounter++;
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -120,7 +140,7 @@ public class EditAccountEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -128,8 +148,10 @@ public class EditAccountEndpoint implements Serializable {
             throw new ExceededTransactionRetriesException();
         }
     }
+
     @PermitAll
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
+        log.warning("Siema endpoint " + account.getLogin() + account.isActive());
         boolean rollback;
         int callCounter = 0;
         do {
@@ -141,7 +163,7 @@ public class EditAccountEndpoint implements Serializable {
                 callCounter++;
             }
             catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -167,7 +189,7 @@ public class EditAccountEndpoint implements Serializable {
                 callCounter++;
             }
             catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());

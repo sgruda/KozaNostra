@@ -1,32 +1,40 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ListAccountsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.*;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collection;
 
-@Slf4j
+
+@Log
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class ListAccountsEndpoint implements Serializable {
+public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointLocal {
 
     @Inject
     private AccountManager accountManager;
 
+    @Override
     @RolesAllowed("listAccounts")
-    public Collection<AccountDTO> getAllAccounts() throws ExceededTransactionRetriesException {
+    public Collection<AccountDTO> getAllAccounts() throws AppBaseException {
         Collection<AccountDTO> list = new ArrayList<>();
         int callCounter = 0;
         boolean rollback;
@@ -38,7 +46,7 @@ public class ListAccountsEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -47,9 +55,9 @@ public class ListAccountsEndpoint implements Serializable {
         }
         return list;
     }
-
+    @Override
     @RolesAllowed("filterAccounts")
-    public Collection<AccountDTO> filterAccounts (String accountFilter) throws ExceededTransactionRetriesException {
+    public Collection<AccountDTO> filterAccounts (String accountFilter) throws AppBaseException {
         Collection<AccountDTO> list = new ArrayList<>();
         int callCounter = 0;
         boolean rollback;
@@ -61,7 +69,7 @@ public class ListAccountsEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());

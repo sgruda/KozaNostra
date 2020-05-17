@@ -1,10 +1,14 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AccountDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -15,12 +19,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
-@Slf4j
+@Log
 @Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class AccountDetailsEndpoint implements Serializable {
+public class AccountDetailsEndpoint implements Serializable, AccountDetailsEndpointLocal {
 
     @Inject
     private AccountManager accountManager;
@@ -30,7 +33,7 @@ public class AccountDetailsEndpoint implements Serializable {
     private Account account;
 
     @RolesAllowed("getOtherAccount")
-    public AccountDTO getAccount(String login) throws ExceededTransactionRetriesException {
+    public AccountDTO getAccount(String login) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;
         do {
@@ -41,7 +44,7 @@ public class AccountDetailsEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -52,7 +55,7 @@ public class AccountDetailsEndpoint implements Serializable {
     }
 
     @RolesAllowed("getOwnAccount")
-    public AccountDTO getOwnAccount() throws ExceededTransactionRetriesException {
+    public AccountDTO getOwnAccount() throws AppBaseException {
         int callCounter = 0;
         boolean rollback;
         do {
@@ -64,7 +67,7 @@ public class AccountDetailsEndpoint implements Serializable {
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-            log.warn("EJBTransactionRolledBack");
+            log.warning("EJBTransactionRolledBack");
             rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
