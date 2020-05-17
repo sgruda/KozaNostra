@@ -29,7 +29,7 @@ public abstract class AbstractFacade<T> {
         getEntityManager().flush();
     }
 
-    public void remove(T entity) {
+    public void remove(T entity) throws AppBaseException {
 
         getEntityManager().remove(getEntityManager().merge(entity));
         getEntityManager().flush();
@@ -39,19 +39,10 @@ public abstract class AbstractFacade<T> {
         return Optional.ofNullable(getEntityManager().find(entityClass, id));
     }
 
-    public List<T> findAll() {
+    public List<T> findAll() throws AppBaseException {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
-    }
-
-    public List<T> findRange(int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0] + 1);
-        q.setFirstResult(range[0]);
-        return q.getResultList();
     }
 
     public int count() {

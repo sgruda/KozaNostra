@@ -3,7 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.Getter;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.AccountDetailsEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AccountDetailsEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.Conversation;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class AccountDetailsController implements Serializable {
 
     @Inject
-    private AccountDetailsEndpoint accountDetailsEndpoint;
+    private AccountDetailsEndpointLocal accountDetailsEndpointLocal;
     @Inject
     private Conversation conversation;
     @Getter
@@ -26,9 +26,9 @@ public class AccountDetailsController implements Serializable {
     @Inject
     private ActivationAccountController activationAccountController;
 
-    public String selectAccount(AccountDTO accountDTO) {
+    public String selectAccount(AccountDTO accountDTO) throws AppBaseException {
         conversation.begin();
-        this.account = accountDetailsEndpoint.getAccount(accountDTO.getLogin());
+        this.account = accountDetailsEndpointLocal.getAccount(accountDTO.getLogin());
         return "accountDetails";
     }
 
@@ -49,13 +49,13 @@ public class AccountDetailsController implements Serializable {
         refresh();
     }
     @RolesAllowed(value = "ADMIN")
-    public void blockAccount() {
+    public void blockAccount() throws AppBaseException {
         activationAccountController.blockAccount(account);
         //TODO jakas obsluga wyjatkow?
         //activationAccountController ja zapewni, tylko czy aby na pewno
         refresh();
     }
-    public void refresh() {
-        this.account = accountDetailsEndpoint.getAccount(account.getLogin());
+    public void refresh() throws AppBaseException {
+        this.account = accountDetailsEndpointLocal.getAccount(account.getLogin());
     }
 }
