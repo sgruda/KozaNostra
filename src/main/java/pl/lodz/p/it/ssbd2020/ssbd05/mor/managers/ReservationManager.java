@@ -14,4 +14,6 @@ import javax.inject.Named;
 public class ReservationManager extends AbstractManager implements SessionSynchronization {
     @Inject
     private ReservationFacade reservationFacade;
+
+
 }

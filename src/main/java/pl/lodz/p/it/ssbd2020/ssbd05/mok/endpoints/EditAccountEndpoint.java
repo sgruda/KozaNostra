@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
@@ -22,7 +23,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 
 import java.util.Collection;
@@ -31,17 +31,15 @@ import java.util.Properties;
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
 @Slf4j
-@Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
-public class EditAccountEndpoint implements Serializable {
+public class EditAccountEndpoint implements Serializable, EditAccountEndpointLocal {
     @Inject
     private AccountManager accountManager;
     private Account account;
 
     @RolesAllowed("findByLogin")
-    public AccountDTO findByLogin(String username) {
+    public AccountDTO findByLogin(String username) throws AppBaseException {
         account = accountManager.findByLogin(username);
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
