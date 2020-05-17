@@ -7,8 +7,10 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -16,11 +18,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.Collection;
-import javax.persistence.PersistenceException;
 import java.sql.SQLNonTransientConnectionException;
 import java.util.List;
 import java.util.Optional;
@@ -59,10 +58,15 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     @PermitAll
-    public Optional<Account> findByLogin(String username) {
-        return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
-                .setParameter("login", username).getSingleResult());
+    public Optional<Account> findByLogin(String username) throws AccountNotFoundException {
+        try{
+            return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
+                    .setParameter("login", username).getSingleResult());
+        } catch(NoResultException noResultException) {
+           throw new AccountNotFoundException(noResultException);
+        }
     }
+
 
     //    @RolesAllowed()
     public Optional<Account> findByToken(String token) {

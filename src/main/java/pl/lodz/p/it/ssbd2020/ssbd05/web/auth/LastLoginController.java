@@ -1,8 +1,9 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.EditAccountEndpoint;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.Conversation;
@@ -10,6 +11,8 @@ import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,13 +21,14 @@ import java.util.Properties;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.formatDate;
 
+@Slf4j
 @Named
 @ConversationScoped
 public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;
     @Inject
-    private EditAccountEndpoint editAccountEndpoint;
+    private EditAccountEndpointLocal editAccountEndpoint;
     private AccountDTO accountDTO;
     private int blockingAccountAfterFailedAttemptNumber;
 
@@ -55,33 +59,19 @@ public class LastLoginController implements Serializable {
                 editAccountEndpoint.blockAccount(accountDTO);
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.login.account.lock");
             } catch (AppBaseException e) {
-                e.printStackTrace();
+               log.warn(e.getClass().toString() + " " + e.getMessage());
             }
         }
     }
 
     public String getIP() {
-        URL urlToCheckIpAmazonaws;
-        String ipAddress = "";
-
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.ip_url.properties");
-        Properties properties = new Properties();
-        try {
-            if(inputStream != null)
-                properties.load(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        final String remoteAddr = request.getHeader("X-FORWARDED-FOR");
+        if(remoteAddr != null){
+            return remoteAddr.replaceFirst(",.*","");
         }
-        try {
-            urlToCheckIpAmazonaws = new URL(properties.getProperty("urlToCheckIpAmazonaws"));
-            try(BufferedReader in = new BufferedReader(new InputStreamReader(urlToCheckIpAmazonaws.openStream()))) {
-                ipAddress = in.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        else{
+            return  request.getRemoteAddr();
         }
-        return ipAddress;
     }
 }
