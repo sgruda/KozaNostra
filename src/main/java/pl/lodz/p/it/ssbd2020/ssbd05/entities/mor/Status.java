@@ -3,10 +3,10 @@ package pl.lodz.p.it.ssbd2020.ssbd05.entities.mor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -71,7 +71,7 @@ public class Status implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status[ id=" + id + " version=" + version + " ]";
     }
     
 }

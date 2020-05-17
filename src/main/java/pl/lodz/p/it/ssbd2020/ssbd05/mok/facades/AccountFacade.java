@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryExceptio
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
@@ -20,16 +21,22 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
+import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.*;
 import java.util.Collection;
 import java.sql.SQLNonTransientConnectionException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "AccountFacadeMOK")
 @LocalBean
-@Slf4j
+@Interceptors(TrackerInterceptor.class)
 public class AccountFacade extends AbstractFacade<Account> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")
@@ -52,8 +59,12 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @Override
     @RolesAllowed("listAccounts")
-    public List<Account> findAll() {
-        return super.findAll();
+    public List<Account> findAll() throws AppBaseException {
+        try {
+            return super.findAll();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     @PermitAll
@@ -67,16 +78,20 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
 
-    //    @RolesAllowed()
+    @PermitAll
     public Optional<Account> findByToken(String token) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByToken", Account.class)
                 .setParameter("token", token).getSingleResult());
     }
 
     //    @RolesAllowed()
-    public Collection<Account> filterAccounts(String accountFilter) {
-        return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
-                .setParameter("filter", accountFilter).getResultList();
+    public Collection<Account> filterAccounts(String accountFilter) throws AppBaseException {
+        try {
+            return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
+                    .setParameter("filter", accountFilter).getResultList();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     @Override

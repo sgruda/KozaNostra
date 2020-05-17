@@ -6,6 +6,7 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotHaveActiveAccessLevelsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AccountDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ChangeAccessLevelEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -18,7 +19,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Level;
-
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
 @Log
@@ -47,9 +47,14 @@ public class AccountDetailsController implements Serializable {
     @Setter
     private boolean roleClientActive;
 
-    public String selectAccount(AccountDTO accountDTO) throws AppBaseException {
+    public String selectAccount(AccountDTO accountDTO) {
         conversation.begin();
-        this.account = accountDetailsEndpointLocal.getAccount(accountDTO.getLogin());
+        try {
+            this.account = accountDetailsEndpointLocal.getAccount(accountDTO.getLogin());
+        } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
         this.setRolesInfo(this.account.getAccessLevelCollection());
         return "accountDetails";
     }
@@ -63,22 +68,26 @@ public class AccountDetailsController implements Serializable {
         return conversation.getId();
     }
 
-    @RolesAllowed(value = "ADMIN")
-    public void unlockAccount() throws AppBaseException {
+    public void unlockAccount() {
         activationAccountController.unlockAccount(account);
         //TODO jakas obsluga wyjatkow?
         //activationAccountController ja zapewni, tylko czy aby na pewno
         refresh();
     }
-    @RolesAllowed(value = "ADMIN")
-    public void blockAccount() throws AppBaseException {
+
+    public void blockAccount() {
         activationAccountController.blockAccount(account);
         //TODO jakas obsluga wyjatkow?
         //activationAccountController ja zapewni, tylko czy aby na pewno
         refresh();
     }
-    public void refresh() throws AppBaseException {
-        this.account = accountDetailsEndpointLocal.getAccount(account.getLogin());
+
+    public void refresh() {
+        try {
+            this.account = accountDetailsEndpointLocal.getAccount(account.getLogin());
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
     }
 
     public void changeAccessLevels() {
