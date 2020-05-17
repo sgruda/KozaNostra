@@ -56,7 +56,12 @@ public class EditAccountController {
 
     @PostConstruct
     public void init() {
-        accountDTO = editAccountEndpoint.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+        try {
+            accountDTO = editAccountEndpoint.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+        } catch (AppBaseException ex) {
+            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+        }
     }
 
 
