@@ -50,6 +50,7 @@ public class AddAccountController {
         try {
             addAccountEndpoint.addAccount(account);
             ResourceBundles.emitMessageWithFlash(null,"page.registration.account.created");
+            clear();
         } catch (LoginAlreadyExistsException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.log(Level.SEVERE, "Login", ex);
@@ -64,5 +65,16 @@ public class AddAccountController {
 
     public String goBack() {
         return "home";
+    }
+
+    private void clear() {
+        login = "";
+        password = "";
+        confirmPassword = "";
+        firstname = "";
+        lastname = "";
+        emailAddress = "";
+        accessLevels = new ArrayList<>();
+        active = false;
     }
 }
