@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<ui:composition template = "../templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.edit.ownaccount.title']}</title>
+    </ui:define>
+    <ui:define name = "content">
+        <h:form id="editAccount">
+            <p:panel id="editPnl" header="#{msg['page.edit.ownaccount.title']}" style="font-size: 24px;">
+                <p:messages globalOnly="true">
+                    <p:autoUpdate/>
+                </p:messages>
+                <p:panelGrid columns="1" id="editPnlGrid">
+                <h:outputLabel for="login" value="#{msg['page.edit.ownaccount.form.login']}" >
+                <p:inputText id="login" value="${editOtherAccountController.accountDTO.login}" disabled="true"/>
+                </h:outputLabel>
+                <h:outputLabel for="firstName" value="#{msg['page.edit.ownaccount.form.firstname']}" >
+                <p:inputText id="firstName" required="true"
+                             value="${editOtherAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.ownaccount.form.firstname.required']}"/>
+                </h:outputLabel>
+                <h:outputLabel for="lastName" value="#{msg['page.edit.ownaccount.form.lastname']}" >
+                <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.edit.ownaccount.form.lastname.required']}"
+                             value="${editOtherAccountController.accountDTO.lastname}"/>
+                </h:outputLabel>
+                <h:outputLabel for="emailAddress" value="#{msg['page.edit.ownaccount.form.email']}" >
+                <p:inputText id="emailAddress"
+                             value="${editOtherAccountController.accountDTO.email}" disabled="true"/>
+                </h:outputLabel>
+                </p:panelGrid>
+                <div style="display:flex; flex-direction: column;">
+                    <p:message for="firstName"/>
+                    <p:message for="lastName"/>
+                </div>
+                <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
+                        <p:growl id="message" showDetail="true" />
+                        <p:button value="#{msg['page.accountdetails.back']}" outcome="/admin/accountDetails.xhtml?cid=#{editOtherAccountController.editAccountConversationID}"/>
+                        <p:commandButton id="submit" value="#{msg['page.edit.ownaccount.button.edit']}" icon="pi pi-check" actionListener="#{editOtherAccountController.editAccount}" style="float: center;">
+                            <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+                            <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                            <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
+        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/admin/accountDetails.xhtml?cid=#{editOtherAccountController.editAccountConversationID}" />
+        <p:menuitem value="#{msg['page.edit.breadcrumbs']}" outcome="/admin/editAccount.xhtml?cid=#{editOtherAccountController.editAccountConversationID}" />
+    </ui:define>
+</ui:composition>
+</html>
