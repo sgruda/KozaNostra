@@ -85,11 +85,11 @@ public class AddAccountEndpoint implements AddAccountEndpointLocal {
 
         for (String accessLevelStr : accountDTO.getAccessLevelCollection()) {
             if (accessLevelStr.equals(properties.getProperty("roleClient"))) {
-                accessLevels.get(accessLevels.indexOf(client)).setActive(true);
+                client.setActive(true);
             } else if (accessLevelStr.equals(properties.getProperty("roleManager"))) {
-                accessLevels.get(accessLevels.indexOf(manager)).setActive(true);
+                manager.setActive(true);
             } else if (accessLevelStr.equals(properties.getProperty("roleAdmin"))) {
-                accessLevels.get(accessLevels.indexOf(admin)).setActive(true);
+                admin.setActive(true);
             }
         }
         return accessLevels;
