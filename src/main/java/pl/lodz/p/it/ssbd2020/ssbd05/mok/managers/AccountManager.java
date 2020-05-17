@@ -2,11 +2,13 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
 import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -16,6 +18,7 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.Collection;
+
 @Slf4j
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
@@ -25,6 +28,8 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     @Inject
     private AccountFacade accountFacade;
 
+    @Inject
+    private AccessLevelFacade accessLevelFacade;
     @PermitAll
     public Account findByLogin(String login) throws AccountNotFoundException {
         try {
@@ -45,6 +50,8 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     @PermitAll
     public void edit(Account account) throws AppBaseException {
         accountFacade.edit(account);
+        for(AccessLevel accessLevel : account.getAccessLevelCollection())
+            accessLevelFacade.edit(accessLevel);
     }
 
     @PermitAll

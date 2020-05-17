@@ -2,10 +2,9 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.LastLoginEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
@@ -27,7 +26,8 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-@Slf4j
+
+@Log
 @Named
 @ViewScoped
 public class LoginController implements Serializable {
@@ -77,7 +77,7 @@ public class LoginController implements Serializable {
                      externalContext.redirect(originalUrl);
                      lastLoginController.updateLastSuccesfullAuthDate();
                  } catch (ServletException e) {
-                     log.warn(e.getClass().toString() + " " + e.getMessage());
+                     log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
                      ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
                      lastLoginController.updateLastFailedAuthDate();
                      lastLoginController.checkFailedAuthCounter();
@@ -95,13 +95,13 @@ public class LoginController implements Serializable {
                  ResourceBundles.emitErrorMessageWithDetails(null,"page.login.account.notconfirmed.or.notactive", "page.login.contactadmin");
             }
         } catch (AccountNotFoundException  e) {
-            log.warn(e.getClass().toString() + " " + e.getMessage());
+            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
         } catch (AppBaseException e) {
-            log.warn(e.getClass().toString() + " " + e.getMessage());
+            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessage(null, "error.simple");
         } catch (IOException e) {
-            log.warn(e.getClass().toString() + " " + e.getMessage());
+            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessage(null, "page.login.redirect");
         }
     }
