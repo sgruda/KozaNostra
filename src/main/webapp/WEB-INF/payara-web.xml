@@ -56,6 +56,10 @@
     <group-name>MANAGER</group-name>
   </security-role-mapping>
   <security-role-mapping>
+    <role-name>changeAccessLevel</role-name>
+    <group-name>ADMIN</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
     <role-name>findByLogin</role-name>
     <group-name>ADMIN</group-name>
     <group-name>CLIENT</group-name>

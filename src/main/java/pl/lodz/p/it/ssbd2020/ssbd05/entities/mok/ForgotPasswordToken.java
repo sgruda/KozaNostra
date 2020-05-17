@@ -1,12 +1,13 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.entities.mok;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -81,7 +82,7 @@ public class ForgotPasswordToken implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.ForgotPasswordToken[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.ForgotPasswordToken[ id=" + id + " version=" + version + " ]";
     }
 
 }
