@@ -3,9 +3,9 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
-import org.primefaces.PrimeFaces;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotHaveActiveAccessLevelsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AccountDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ChangeAccessLevelEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -50,7 +50,7 @@ public class AccountDetailsController implements Serializable {
     public String selectAccount(AccountDTO accountDTO) throws AppBaseException {
         conversation.begin();
         this.account = accountDetailsEndpointLocal.getAccount(accountDTO.getLogin());
-        this.setRolesInfo();
+        this.setRolesInfo(this.account.getAccessLevelCollection());
         return "accountDetails";
     }
 
@@ -81,8 +81,9 @@ public class AccountDetailsController implements Serializable {
         this.account = accountDetailsEndpointLocal.getAccount(account.getLogin());
     }
 
-    public void addAccessLevels() {
+    public void changeAccessLevels() {
         Collection<String> accessLevels = new LinkedList<>();
+        Collection<String> accessLevelsBackup = account.getAccessLevelCollection();
         if(roleClientActive)
             accessLevels.add(roleProperties.getProperty("roleClient"));
         if(roleManagerActive)
@@ -92,12 +93,17 @@ public class AccountDetailsController implements Serializable {
         account.setAccessLevelCollection(accessLevels);
         try {
             changeAccessLevelEndpointLocal.changeAccessLevel(account);
+        } catch(AccountNotHaveActiveAccessLevelsException e) {
+            account.setAccessLevelCollection(accessLevelsBackup);
+            this.setRolesInfo(accessLevelsBackup);
+            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.account.not.have.active.access.levels");
         } catch (AppBaseException e) {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessage(null, "error.simple");
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.simple");
         }
     }
-    private void setRolesInfo() {
+    private void setRolesInfo(Collection<String> accessLevelStringCollection) {
         roleProperties = null;
         try {
             roleProperties = ResourceBundles.loadProperties("config.user_roles.properties");
@@ -105,7 +111,6 @@ public class AccountDetailsController implements Serializable {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessage(null, "error.simple");
         }
-        Collection<String> accessLevelStringCollection = account.getAccessLevelCollection();
         roleManagerActive = false;
         roleAdminActive = false;
         roleClientActive = false;
