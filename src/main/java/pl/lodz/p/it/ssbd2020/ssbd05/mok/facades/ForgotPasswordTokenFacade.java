@@ -7,12 +7,14 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -37,7 +39,7 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
     }
 
     @Override
-    //    @RolesAllowed()
+    @PermitAll
     public void create(ForgotPasswordToken entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -76,6 +78,18 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
     public List<ForgotPasswordToken> findAll() throws AppBaseException {
         try {
             return super.findAll();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
+    }
+
+    @PermitAll
+    public Optional<ForgotPasswordToken> findByHash(String hash) throws AppBaseException {
+        try {
+            return Optional.ofNullable(this.em.createNamedQuery("ForgotPasswordToken.findByHash", ForgotPasswordToken.class)
+                    .setParameter("hash", hash).getSingleResult());
+        } catch (NoResultException e) {
+            throw new AppBaseException();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException();
         }

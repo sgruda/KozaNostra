@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
 import lombok.extern.slf4j.Slf4j;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.ForgotPasswordTokenMapper;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.ForgotPasswordTokenDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.ForgotPasswordToken;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -31,6 +33,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
     @Inject
     private AccountManager accountManager;
     private Account account;
+    private ForgotPasswordToken forgotPasswordToken;
 
     @Override
     public void findByMail(String mail) throws AppBaseException {
@@ -83,5 +86,27 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
+    }
+
+    @Override
+    public ForgotPasswordTokenDTO findByHash(String hash) throws AppBaseException {
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                forgotPasswordToken = accountManager.findTokenByHash(hash);
+                rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
+                callCounter++;
+            } catch (EJBTransactionRolledbackException e) {
+                log.warn("EJBTransactionRolledBack");
+                rollback = true;
+            }
+        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
+        return ForgotPasswordTokenMapper.INSTANCE.toTokenDTO(forgotPasswordToken);
     }
 }
