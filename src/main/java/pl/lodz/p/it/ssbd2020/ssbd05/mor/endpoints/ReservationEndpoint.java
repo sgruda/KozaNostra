@@ -10,7 +10,6 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
-@Named
 @Stateful
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)

@@ -16,4 +16,6 @@ import javax.interceptor.Interceptors;
 public class ReservationManager extends AbstractManager implements SessionSynchronization {
     @Inject
     private ReservationFacade reservationFacade;
+
+
 }

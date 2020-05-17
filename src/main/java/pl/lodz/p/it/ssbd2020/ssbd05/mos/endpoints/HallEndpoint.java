@@ -11,7 +11,6 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
 @Stateful
-@Named
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @LocalBean
 @Interceptors(TrackerInterceptor.class)

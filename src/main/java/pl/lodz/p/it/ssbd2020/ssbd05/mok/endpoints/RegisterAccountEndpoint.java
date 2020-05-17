@@ -9,14 +9,17 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.RegisterAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
-import javax.ejb.*;
-import javax.faces.context.FacesContext;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
@@ -26,12 +29,10 @@ import java.util.Collection;
 import java.util.Properties;
 
 @Slf4j
-@Named
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
-@LocalBean
 @Interceptors(TrackerInterceptor.class)
-public class RegisterAccountEndpoint implements Serializable {
+public class RegisterAccountEndpoint implements Serializable, RegisterAccountEndpointLocal {
 
     @Inject
     private AccountManager accountManager;
@@ -44,8 +45,9 @@ public class RegisterAccountEndpoint implements Serializable {
     @Setter
     private Collection<AccessLevel> accessLevels;
 
+    @Override
     @PermitAll
-    public void addNewAccount (AccountDTO accountDTO) throws AppBaseException {
+    public void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
         account = AccountMapper.INSTANCE.createNewAccount(accountDTO);
         account.setAccessLevelCollection(generateAccessLevels());
         account.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
@@ -53,28 +55,32 @@ public class RegisterAccountEndpoint implements Serializable {
         previousPassword.setPassword(account.getPassword());
         previousPassword.setAccount(account);
         account.getPreviousPasswordCollection().add(previousPassword);
-        int callCounter = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("numberOfTransactionRepeat"));
+
+        int callCounter = 0;
         boolean rollback;
         do {
             try {
                 accountManager.createAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
-                callCounter--;
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
+                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warn("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter > 0);
+        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
         }
-        if (callCounter == 0 && rollback) {
+        if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
     }
+    @Override
     @PermitAll
-    public Collection<AccessLevel> generateAccessLevels () throws AppBaseException {
+    public Collection<AccessLevel> generateAccessLevels() throws AppBaseException {
         Collection<AccessLevel> accessLevels = new ArrayList<>();
         Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
 

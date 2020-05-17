@@ -1,8 +1,11 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 
+import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -11,6 +14,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +44,12 @@ public class AccountFacade extends AbstractFacade<Account> {
 
     @Override
     //    @RolesAllowed()
-    public List<Account> findAll() {
-        return super.findAll();
+    public List<Account> findAll() throws AppBaseException {
+        try {
+            return super.findAll();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     //    @RolesAllowed()
