@@ -89,6 +89,43 @@
         <group-name>MANAGER</group-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>getStatusByName</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getReservationByNumber</role-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>changeReservationStatus</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getStatusCanceled</role-name>
+        <group-name>CLIENT</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>cancelReservation</role-name>
+        <group-name>CLIENT</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getAllReservations</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getReviewByReviewNumber</role-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>removeReview</role-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+
     <security-role-mapping>
         <role-name>addHall</role-name>
         <group-name>MANAGER</group-name>

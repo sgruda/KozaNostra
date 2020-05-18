@@ -77,7 +77,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     // @ORolesAllowed()
-    public Optional<Reservation> findByLogin(String login) throws AppBaseException{
+    public Optional<Reservation> findByNumber(String number) throws AppBaseException{
         try{
            //TODO Implementacja
             return null;
