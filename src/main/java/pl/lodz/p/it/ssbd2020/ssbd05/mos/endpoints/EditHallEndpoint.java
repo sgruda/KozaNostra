@@ -37,4 +37,10 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
     public List<EventTypeDTO> getAllEventTypes() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    @RolesAllowed("ActivateDeactivateHall")
+    public void changeActivity(HallDTO hallDTO) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
 }
