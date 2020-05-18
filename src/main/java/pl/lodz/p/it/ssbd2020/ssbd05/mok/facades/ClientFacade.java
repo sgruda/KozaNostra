@@ -1,21 +1,27 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.facades;
 
+import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "ClientFacadeMOK")
 @LocalBean
+@Interceptors(TrackerInterceptor.class)
 public class ClientFacade extends AbstractFacade<Client> {
 
     @PersistenceContext(unitName = "ssbd05mokPU")
@@ -33,13 +39,21 @@ public class ClientFacade extends AbstractFacade<Client> {
     @Override
     //    @RolesAllowed()
     public void create(Client entity) throws AppBaseException {
-        super.create(entity);
+        try {
+            super.create(entity);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     @Override
     //    @RolesAllowed()
     public void edit(Client entity) throws AppBaseException {
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     @Override
@@ -50,7 +64,11 @@ public class ClientFacade extends AbstractFacade<Client> {
 
     @Override
     //    @RolesAllowed()
-    public List<Client> findAll() {
-        return super.findAll();
+    public List<Client> findAll() throws AppBaseException {
+        try {
+            return super.findAll();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 }

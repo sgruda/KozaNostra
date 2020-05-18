@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
@@ -16,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+@Log
 @Named
 @RequestScoped
 public class ChangePasswordAccountController {
@@ -42,7 +44,12 @@ public class ChangePasswordAccountController {
                 ResourceBundles.emitMessage(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());
+                log.warning(ex.getClass().toString() + " " + ex.getMessage());
             }catch(AccountPasswordAlreadyUsedException ex){
+                log.warning(ex.getClass().toString() + " " + ex.getMessage());
+                ResourceBundles.emitErrorMessage(null,ex.getMessage());
+            }catch(AppBaseException ex){
+                log.warning(ex.getClass().toString() + " " + ex.getMessage());
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());
             }
         }else{

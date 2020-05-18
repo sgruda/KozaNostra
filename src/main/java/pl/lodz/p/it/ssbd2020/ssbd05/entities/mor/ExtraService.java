@@ -91,7 +91,7 @@ public class ExtraService implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService[ id=" + id + " version=" + version + " ]";
     }
 
 }
