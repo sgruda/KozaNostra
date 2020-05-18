@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -39,7 +40,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("addHall")
     public void create(Hall entity) throws AppBaseException {
         try {
             super.create(entity);
