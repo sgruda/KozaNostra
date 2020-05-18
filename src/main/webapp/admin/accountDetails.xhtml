@@ -89,6 +89,7 @@
                 <p:commandButton value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
                                  rendered="#{accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
             </h:form>
+            <p:commandButton value="#{msg['page.accountdetails.changePassword']}" action="#{changeOtherAccountPasswordController.redirectToChangePassword()}" actionListener="#{changeOtherAccountPasswordController.init(accountDetailsController.account.login,accountDetailsController.accountDetailsConversationID)}"/>
             <h:form id="addAccessLevel">
                 <p:commandButton value="#{msg['page.accountdetails.addAccessLevel']}" onclick="PF('addAccessLevelDialog').show();"/>
                 <p:dialog header="#{msg['page.accountdetails.addAccessLevel']}" widgetVar="addAccessLevelDialog" modal="true" height="100">
