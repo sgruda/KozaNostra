@@ -23,4 +23,9 @@ public class EditExtraServiceEndpoint implements Serializable, EditExtraServiceE
     public void changeActivity(ExtraServiceDTO extraServiceDTO) throws AppBaseException {
         // TODO implementacja
     }
+
+    @Override
+    public void editExtraService(ExtraServiceDTO extraServiceDTO) throws AppBaseException {
+        //TODO Implementacja
+    }
 }

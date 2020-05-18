@@ -4,6 +4,8 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
@@ -42,6 +44,8 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         try {
             super.create(entity);
         } catch (DatabaseException | PersistenceException e) {
+            if(e.getMessage().contains("reservation_number_uindex"))
+                throw new ReservationAlreadyExistsException();
             throw new DatabaseConnectionException();
         }
     }
@@ -67,6 +71,16 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     public List<Reservation> findAll() throws AppBaseException {
         try {
             return super.findAll();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
+    }
+
+    // @ORolesAllowed()
+    public Optional<Reservation> findByLogin(String login) throws AppBaseException{
+        try{
+           //TODO Implementacja
+            return null;
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException();
         }
