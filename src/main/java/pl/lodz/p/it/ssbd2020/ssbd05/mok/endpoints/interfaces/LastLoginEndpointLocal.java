@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
+package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -9,7 +9,7 @@ import javax.ejb.Local;
 public interface LastLoginEndpointLocal {
     String getFailedAttemptNumberFromProperties() throws AppBaseException;
 
-    AccountDTO findByLogin(String username);
+    AccountDTO findByLogin(String username) throws AppBaseException;
 
     void edit(AccountDTO accountDTO) throws AppBaseException;
 }

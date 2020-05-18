@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -92,7 +92,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review[ id=" + id + " version=" + version + " ]";
     }
     
 }

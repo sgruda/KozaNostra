@@ -7,7 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.RegisterAccountEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.RegisterAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.RequestScoped;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class RegistrationController implements Serializable {
 
     @Inject
-    RegisterAccountEndpointLocal registerAccountEndpointLocal;
+    private RegisterAccountEndpointLocal registerAccountEndpointLocal;
 
     private String login;
     private String password;

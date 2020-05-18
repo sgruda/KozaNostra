@@ -1,9 +1,14 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
+import lombok.extern.slf4j.Slf4j;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -11,20 +16,28 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.Collection;
 
+@Slf4j
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
+@Interceptors(TrackerInterceptor.class)
 public class AccountManager extends AbstractManager implements SessionSynchronization {
     @Inject
     private AccountFacade accountFacade;
 
+    @Inject
+    private AccessLevelFacade accessLevelFacade;
     @PermitAll
-    public Account findByLogin(String login) {
-        if(accountFacade.findByLogin(login).isPresent())
+    public Account findByLogin(String login) throws AccountNotFoundException {
+        try {
             return accountFacade.findByLogin(login).get();
-        else throw new IllegalArgumentException("Konto o podanym loginie nie istnieje");
+        } catch (AccountNotFoundException e) {
+            log.warn(e.getClass().getName() + " " + e.getMessage());
+            throw new AccountNotFoundException(e);
+        }
     }
 
     @PermitAll
@@ -37,6 +50,8 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     @PermitAll
     public void edit(Account account) throws AppBaseException {
         accountFacade.edit(account);
+        for(AccessLevel accessLevel : account.getAccessLevelCollection())
+            accessLevelFacade.edit(accessLevel);
     }
 
     @PermitAll
@@ -54,18 +69,19 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     }
 
     @RolesAllowed("listAccounts")
-    public Collection<Account> getAllAccounts() {
+    public Collection<Account> getAllAccounts() throws AppBaseException {
         return accountFacade.findAll();
     }
 
     @RolesAllowed("filterAccounts")
-    public Collection<Account> filterAccounts(String accountFilter) {
+    public Collection<Account> filterAccounts(String accountFilter) throws AppBaseException {
         return accountFacade.filterAccounts(accountFilter);
     }
 
     @PermitAll
     public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
+        log.info("Siema w managerze " + account.getLogin() + " " + account.isActive());
         accountFacade.edit(account);
     }
 

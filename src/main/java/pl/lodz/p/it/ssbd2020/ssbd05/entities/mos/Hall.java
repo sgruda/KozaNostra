@@ -4,13 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -120,7 +120,7 @@ public class Hall implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall[ id=" + id + " ]";
+        return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall[ id=" + id + " version=" + version + " ]";
     }
 
 }

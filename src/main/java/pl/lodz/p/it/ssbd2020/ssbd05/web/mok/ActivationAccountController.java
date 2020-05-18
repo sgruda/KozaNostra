@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
@@ -7,42 +8,27 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpoint
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 
-import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
+@Log
 @Named
 @RequestScoped
 public class ActivationAccountController implements Serializable {
     @Inject
-    private EditAccountEndpointLocal editAccountEndpoint;
+    private EditAccountEndpointLocal editAccountEndpointLocal;
 
-    @RolesAllowed(value = "ADMIN")
-    public void unlockAccount(AccountDTO account) {
-        try {
-            editAccountEndpoint.unlockAccount(account);
-        } catch (ExceededTransactionRetriesException e) {
-            ResourceBundles.emitErrorMessage(null, e.getMessage());
-        } catch (AppOptimisticLockException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }
+    public void unlockAccount(AccountDTO account) throws AppBaseException {
+        editAccountEndpointLocal.findByLogin(account.getLogin());
+        editAccountEndpointLocal.unlockAccount(account);
         ResourceBundles.emitMessage(null,"page.accountdetails.unlock");
     }
-    @RolesAllowed(value = "ADMIN")
-    public void blockAccount(AccountDTO account) {
-        try {
-            editAccountEndpoint.blockAccount(account);
-        } catch (ExceededTransactionRetriesException e) {
-           ResourceBundles.emitErrorMessage(null, e.getMessage());
-        }catch (AppOptimisticLockException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }
+
+    public void blockAccount(AccountDTO account) throws AppBaseException {
+        editAccountEndpointLocal.findByLogin(account.getLogin());
+        editAccountEndpointLocal.blockAccount(account);
         ResourceBundles.emitMessage(null,"page.accountdetails.blocked");
     }
 }

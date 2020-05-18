@@ -63,7 +63,7 @@
         <div style="margin: 5px;display:flex;justify-content: center">
             <h:form id="commandButtons">
                 <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{ownAccountDetailsController.goBack()}"/>
-                <p:commandButton value="#{msg['page.accountdetails.edit']}" />
+                <p:button value="#{msg['page.accountdetails.edit']}" outcome="/editAccount.xhtml"/>
             </h:form>
         </div>
         </div>
