@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
@@ -17,6 +18,7 @@ import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,5 +86,9 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException();
         }
+    }
+
+    public List<Reservation> findByDate( Date date){
+        return null;
     }
 }
