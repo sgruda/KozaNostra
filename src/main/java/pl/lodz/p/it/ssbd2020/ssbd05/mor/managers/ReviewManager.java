@@ -6,10 +6,12 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReviewFacade;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.util.List;
 
 @Stateful
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -36,6 +38,11 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
 
     @RolesAllowed("addReview")
     public void editReview(Review review) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
+
+    @PermitAll
+    public List<Review> getAllReviews() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 }
