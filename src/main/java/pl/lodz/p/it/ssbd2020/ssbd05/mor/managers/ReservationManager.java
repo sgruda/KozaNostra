@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReservationFacade;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         return null;
     }
 
-    public List<Reservation> getReservationsByDate(Date date){
+    public List<Reservation> getReservationsByDate(LocalDateTime localDateTime){
         return null;
     }
 
