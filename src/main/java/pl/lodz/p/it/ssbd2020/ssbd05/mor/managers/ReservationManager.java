@@ -79,7 +79,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         throw new UnsupportedOperationException();
     }
 
-    @RolesAllowed("addReview")
+    @RolesAllowed("getUserReviewableReservations")
     public List<ReservationDTO> getUserReviewableReservations(String login) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

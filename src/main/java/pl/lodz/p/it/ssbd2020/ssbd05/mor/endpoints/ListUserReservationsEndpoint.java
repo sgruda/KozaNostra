@@ -30,7 +30,7 @@ public class ListUserReservationsEndpoint implements Serializable, ListUserReser
     }
 
     @Override
-    @RolesAllowed("addReview")
+    @RolesAllowed("getUserReviewableReservations")
     public List<ReservationDTO> getUserReviewableReservations(String login) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
