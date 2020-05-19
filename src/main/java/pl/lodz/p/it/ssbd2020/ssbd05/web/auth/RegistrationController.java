@@ -15,6 +15,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Properties;
 import java.util.logging.Level;
 
 @Log
@@ -43,7 +44,8 @@ public class RegistrationController implements Serializable {
                 account.setFirstname(this.getFirstname());
                 account.setLastname(this.getLastname());
                 account.setEmail(this.getEmailAddress());
-                account.getAccessLevelCollection().add("CLIENT");
+                Properties properties = ResourceBundles.loadProperties("config.user_roles.properties");
+                account.getAccessLevelCollection().add(properties.getProperty("roleClient"));
                 account.setActive(true);
                 account.setConfirmed(false);
 
