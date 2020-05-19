@@ -116,6 +116,10 @@
         <group-name>MANAGER</group-name>
     </security-role-mapping>
     <security-role-mapping>
+        <role-name>filterReservations</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
         <role-name>getReviewByReviewNumber</role-name>
         <group-name>CLIENT</group-name>
         <group-name>MANAGER</group-name>

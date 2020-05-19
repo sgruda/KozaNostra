@@ -4,10 +4,9 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -84,5 +83,9 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException();
         }
+    }
+
+    public List<Reservation> filterReservations(String filter) throws AppBaseException{
+        throw new UnsupportedOperationException();
     }
 }
