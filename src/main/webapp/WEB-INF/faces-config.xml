@@ -68,6 +68,15 @@
     </navigation-rule>
 
     <navigation-rule>
+        <from-view-id>/login/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>resetPassword</from-outcome>
+            <to-view-id>/resetPassword.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
         <from-view-id>/*</from-view-id>
         <navigation-case>
             <from-outcome>home</from-outcome>
