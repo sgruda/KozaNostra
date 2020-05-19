@@ -8,5 +8,7 @@ import java.util.List;
 
 @Local
 public interface ListHallsEndpointLocal {
+
+    List<HallDTO> getAllHalls() throws AppBaseException;
     List<HallDTO> getFilteredHalls(String hallFilter) throws AppBaseException;
 }

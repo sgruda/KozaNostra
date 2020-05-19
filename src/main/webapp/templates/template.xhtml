@@ -20,12 +20,19 @@
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
                 <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole('Admin')}">
                     <h1 style="font-weight:normal">#{msg['page.template.admin.console']}</h1>
-                    <p:button value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
+                    <div>
+                        <p:button value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
+                    </div>
+                    <div>
+                        <p:button value="#{msg['page.template.admin.addAccount']}" outcome="/admin/addAccount.xhtml"/>
+                    </div>
                 </ui:fragment>
                 <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole('Manager')}">
                     <h1 style="font-weight:normal">#{msg['page.template.manager.console']}</h1>
                 </ui:fragment>
-                <p:commandButton value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
+                <div>
+                    <p:commandButton value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
+                </div>
             </p:sidebar>
              <div class = "header-left">
                  <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole('Admin') or roleController.isSelectedRole('Manager')}">
