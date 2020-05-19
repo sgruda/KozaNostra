@@ -5,7 +5,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
 
-
 @Local
 public interface EditAccountEndpointLocal {
     AccountDTO findByLogin(String username) throws AppBaseException;

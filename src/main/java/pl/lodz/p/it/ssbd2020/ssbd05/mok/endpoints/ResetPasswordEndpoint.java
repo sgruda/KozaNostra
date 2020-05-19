@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.ForgotPasswordTokenMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Slf4j
+@Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Interceptors(TrackerInterceptor.class)
@@ -53,7 +53,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.severe("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -75,7 +75,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.severe("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -100,7 +100,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -131,7 +131,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -157,7 +157,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
@@ -191,7 +191,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                     log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
-                log.warn("EJBTransactionRolledBack");
+                log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
         } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());

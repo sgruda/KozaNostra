@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
@@ -19,7 +19,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Slf4j
+@Log
 @Named
 @ConversationScoped
 public class EditOtherAccountController implements Serializable {
@@ -39,16 +39,16 @@ public class EditOtherAccountController implements Serializable {
             editAccountEndpointLocal.findByLogin(accountDTO.getLogin());
         }
         catch (AppOptimisticLockException ex) {
-            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         } catch (ExceededTransactionRetriesException ex) {
-            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         } catch (DatabaseQueryException ex) {
-            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }catch (DatabaseConnectionException ex){
-            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
         return "editAccount";
@@ -63,16 +63,16 @@ public class EditOtherAccountController implements Serializable {
             editAccountEndpointLocal.editAccount(accountDTO);
             ResourceBundles.emitMessage(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
-            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         } catch (ExceededTransactionRetriesException ex) {
-            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         } catch (DatabaseQueryException ex) {
-            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }catch (DatabaseConnectionException ex){
-            log.error(ex.getMessage() + ", " + LocalDateTime.now());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
 

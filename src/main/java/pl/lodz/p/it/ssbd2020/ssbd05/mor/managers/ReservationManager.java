@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
-
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;

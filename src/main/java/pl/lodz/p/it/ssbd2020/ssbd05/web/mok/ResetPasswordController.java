@@ -2,7 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.ForgotPasswordTokenDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDateTime;
 
-@Slf4j
+@Log
 @Named
 @RequestScoped
 public class ResetPasswordController {
@@ -53,7 +53,7 @@ public class ResetPasswordController {
             resetPasswordEndpoint.resetPassword(mail);
             ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.mail");
         } catch (AccountNotFoundException e) {
-            log.warn(e.getMessage() + "Wrong email provided during resetting password");
+            log.warning(e.getMessage() + "Wrong email provided during resetting password");
             ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.mail");
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());

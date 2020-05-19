@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
@@ -11,17 +11,13 @@ import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.Properties;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.formatDate;
 
-@Slf4j
+@Log
 @Named
 @ConversationScoped
 public class LastLoginController implements Serializable {
@@ -59,7 +55,7 @@ public class LastLoginController implements Serializable {
                 editAccountEndpoint.blockAccount(accountDTO);
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.login.account.lock");
             } catch (AppBaseException e) {
-               log.warn(e.getClass().toString() + " " + e.getMessage());
+               log.warning(e.getClass().toString() + " " + e.getMessage());
             }
         }
     }
