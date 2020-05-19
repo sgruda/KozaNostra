@@ -27,4 +27,10 @@ public class ListReservationEndpoint implements Serializable, ListReservationEnd
     public List<ReservationDTO> getAllReservations() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    @RolesAllowed("filterReservations")
+    public List<ReservationDTO> filterReservations(String filter) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
 }

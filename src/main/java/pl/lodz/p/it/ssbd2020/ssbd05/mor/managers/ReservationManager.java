@@ -8,7 +8,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.EventTypesFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ExtraServiceFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReservationFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.StatusFacade;
 
@@ -68,8 +67,19 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     public Status getStatusCanceled() {
         throw new UnsupportedOperationException();
     }
+
     @RolesAllowed("cancelReservation")
     public void cancelReservation(Reservation reservation) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
+
+    @RolesAllowed("filterReservations")
+    public List<Reservation> filterReservations(String filter) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
+
+    @RolesAllowed("getUserReviewableReservations")
+    public List<Reservation> getUserReviewableReservations(String login) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 }
