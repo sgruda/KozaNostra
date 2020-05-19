@@ -4,7 +4,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <h:head>
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'/>
@@ -81,10 +80,12 @@
              </div>
         </div>
         <div class ="breadcrumb">
-            <p:breadCrumb>
-                <p:menuitem value="Home" outcome="/index.xhtml" />
-                <ui:insert name="breadcrumb-menuitems"/>
-            </p:breadCrumb>
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Home" outcome="/index.xhtml" />
+                    <ui:insert name="breadcrumb-menuitems"/>
+                </p:breadCrumb>
+            </h:form>
         </div>
         <div class = "main">
             <ui:insert name="content" >
