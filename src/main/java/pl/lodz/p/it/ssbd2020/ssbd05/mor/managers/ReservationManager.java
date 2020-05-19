@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
-
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
@@ -8,7 +7,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.EventTypesFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ExtraServiceFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReservationFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.StatusFacade;
 

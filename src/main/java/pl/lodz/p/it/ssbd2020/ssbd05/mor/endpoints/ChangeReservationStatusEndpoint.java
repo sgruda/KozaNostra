@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
-
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.StatusDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
