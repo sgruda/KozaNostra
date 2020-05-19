@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListUserReservationsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -23,5 +24,11 @@ public class ListUserReservationsEndpoint implements Serializable, ListUserReser
     @Override
     public List<ReservationDTO> getAllUsersReservations(String login) throws AppBaseException {
         return new ArrayList<>();
+    }
+
+    @Override
+    @RolesAllowed("addReview")
+    public List<ReservationDTO> getUserReviewableReservations(String login) throws AppBaseException {
+        throw new UnsupportedOperationException();
     }
 }

@@ -4,8 +4,8 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -80,5 +80,10 @@ public class ReviewFacade extends AbstractFacade<Review> {
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException();
         }
+    }
+
+    //    @RolesAllowed()
+    public List<Review> findByLogin() throws AppBaseException {
+            throw new UnsupportedOperationException();
     }
 }

@@ -28,4 +28,9 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
     public void removeReview(Review review) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
+
+    @RolesAllowed("addReview")
+    public void addReview(Review review) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
 
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
@@ -75,6 +76,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("filterReservations")
     public List<Reservation> filterReservations(String filter) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
+
+    @RolesAllowed("addReview")
+    public List<ReservationDTO> getUserReviewableReservations(String login) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 }

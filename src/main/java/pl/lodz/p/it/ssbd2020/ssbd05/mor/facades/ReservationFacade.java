@@ -88,4 +88,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     public List<Reservation> filterReservations(String filter) throws AppBaseException{
         throw new UnsupportedOperationException();
     }
+    public List<Reservation> findByLogin(String login) throws AppBaseException{
+        throw new UnsupportedOperationException();
+    }
 }
