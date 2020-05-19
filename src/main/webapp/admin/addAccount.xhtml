@@ -55,9 +55,9 @@
 
                         <h:outputLabel for="accessLevels" value="#{msg['page.accountdetails.account.accesslevel']}:" style="font-size: 14px; text-align: left;"/>
                         <p:selectManyCheckbox id="accessLevels" value="#{addAccountController.accessLevels}">
-                            <f:selectItem itemLabel="#{msg['page.changelevel.client']}" itemValue="CLIENT"/>
-                            <f:selectItem itemLabel="#{msg['page.changelevel.manager']}" itemValue="MANAGER"/>
-                            <f:selectItem itemLabel="#{msg['page.changelevel.admin']}" itemValue="ADMIN"/>
+                            <f:selectItem itemLabel="#{msg['page.changelevel.client']}" itemValue="#{roleController.getRoleClient()}"/>
+                            <f:selectItem itemLabel="#{msg['page.changelevel.manager']}" itemValue="#{roleController.getRoleManager()}"/>
+                            <f:selectItem itemLabel="#{msg['page.changelevel.admin']}" itemValue="#{roleController.getRoleAdmin()}"/>
                             <f:validator validatorId="atLeastOneCheckedValidator"/>
                         </p:selectManyCheckbox>
 
