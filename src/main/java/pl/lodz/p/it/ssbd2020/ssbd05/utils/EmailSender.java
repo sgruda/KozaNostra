@@ -1,7 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
 import com.sun.mail.smtp.SMTPTransport;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.faces.context.FacesContext;
@@ -13,13 +13,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Properties;
 
-@Slf4j
+@Log
 public class EmailSender {
 
     private final Properties emailProperties;
@@ -116,12 +114,12 @@ public class EmailSender {
             t.sendMessage(msg, msg.getAllRecipients());
 
             if(t.getLastReturnCode() != Integer.parseInt(emailProperties.getProperty("code")))
-                log.warn("An error occurred while sending email");
+                log.warning("An error occurred while sending email");
 
             t.close();
 
         } catch (MessagingException e) {
-            log.warn("An error occurred while sending email");
+            log.warning("An error occurred while sending email");
         }
     }
 }

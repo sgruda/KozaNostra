@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.managers;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.Collection;
 
-@Slf4j
+@Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
@@ -35,7 +35,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
         try {
             return accountFacade.findByLogin(login).get();
         } catch (AccountNotFoundException e) {
-            log.warn(e.getClass().getName() + " " + e.getMessage());
+            log.warning(e.getClass().getName() + " " + e.getMessage());
             throw new AccountNotFoundException(e);
         }
     }

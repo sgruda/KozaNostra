@@ -11,7 +11,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -25,7 +24,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Log
 @Named
@@ -114,7 +112,7 @@ public class LoginController implements Serializable {
             this.lastLoginEndpointLocal.edit(lastLoginController.endConversation());
         } catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
-            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+            log.log(Level.SEVERE, ex.getClass().toString(), ex);
         }
     }
     private void emitMessegesAfterLogin() {

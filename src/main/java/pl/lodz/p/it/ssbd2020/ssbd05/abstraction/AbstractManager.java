@@ -1,13 +1,13 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.abstraction;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 
 import javax.ejb.EJBException;
 import java.rmi.RemoteException;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Slf4j
+@Log
 abstract public class AbstractManager  {
 
     @Getter

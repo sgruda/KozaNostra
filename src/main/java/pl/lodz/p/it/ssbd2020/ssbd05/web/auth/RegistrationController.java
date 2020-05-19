@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Data;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
@@ -15,8 +16,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Log
 @Named
 @Data
 @RequestScoped
@@ -54,16 +55,16 @@ public class RegistrationController implements Serializable {
             }
         } catch (LoginAlreadyExistsException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Login", ex);
+            log.log(Level.SEVERE, "Login", ex);
         }catch (EmailAlreadyExistsException ex){
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, "Email", ex);
+            log.log(Level.SEVERE, "Email", ex);
         } catch (ExceededTransactionRetriesException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+            log.log(Level.SEVERE, ex.getClass().toString(), ex);
         } catch(PropertiesLoadingException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
-            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, ex.getClass().toString(), ex);
+            log.log(Level.SEVERE, ex.getClass().toString(), ex);
         }
         return "";
     }
