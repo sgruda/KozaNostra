@@ -20,7 +20,7 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
 
     @Override
     @RolesAllowed("removeHall")
-    public void removeHall(HallDTO hallDTO) {
+    public void removeHall(String name) {
 
     }
 }

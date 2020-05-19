@@ -13,6 +13,7 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Stateful
@@ -43,6 +44,18 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     public List<Reservation> getAllUsersReservations(String login){
         //TODO Implementacja
         return new ArrayList<>();
+    }
+
+    public Reservation getReservationByNumber(String number){
+        return null;
+    }
+
+    public List<Reservation> getReservationsByDate(Date date){
+        return null;
+    }
+
+    public void editReservation(Reservation reservation){
+        throw new UnsupportedOperationException();
     }
 
 }
