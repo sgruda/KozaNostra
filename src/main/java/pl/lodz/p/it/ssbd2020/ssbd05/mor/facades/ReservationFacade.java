@@ -84,4 +84,11 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
             throw new DatabaseConnectionException();
         }
     }
+
+    public List<Reservation> filterReservations(String filter) throws AppBaseException{
+        throw new UnsupportedOperationException();
+    }
+    public List<Reservation> findByLogin(String login) throws AppBaseException{
+        throw new UnsupportedOperationException();
+    }
 }

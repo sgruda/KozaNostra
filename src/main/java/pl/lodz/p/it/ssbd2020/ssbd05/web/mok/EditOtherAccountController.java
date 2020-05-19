@@ -12,9 +12,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRe
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -22,14 +21,42 @@ import java.time.LocalDateTime;
 
 @Log
 @Named
-@ViewScoped
-public class EditAccountController implements Serializable {
+@ConversationScoped
+public class EditOtherAccountController implements Serializable {
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
+
+    @Inject
+    private Conversation conversation;
 
     @Getter
     @Setter
     private AccountDTO accountDTO;
+
+    public String selectAccount(AccountDTO accountDTO) throws AppBaseException {
+        this.accountDTO = accountDTO;
+        try{
+            editAccountEndpointLocal.findByLogin(accountDTO.getLogin());
+        }
+        catch (AppOptimisticLockException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        } catch (ExceededTransactionRetriesException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        } catch (DatabaseQueryException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }catch (DatabaseConnectionException ex){
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        }
+        return "editAccount";
+    }
+
+    public String getEditAccountConversationID(){
+        return conversation.getId();
+    }
 
     public void editAccount() throws AppBaseException {
         try {
@@ -50,16 +77,4 @@ public class EditAccountController implements Serializable {
         }
 
     }
-
-    @PostConstruct
-    public void init() {
-        try {
-            accountDTO = editAccountEndpointLocal.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-        } catch (AppBaseException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
-        }
-    }
-
-
 }

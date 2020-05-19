@@ -9,4 +9,5 @@ import java.util.List;
 @Local
 public interface ListReservationEndpointLocal {
     List<ReservationDTO> getAllReservations() throws AppBaseException;
+    List<ReservationDTO> filterReservations(String filter) throws AppBaseException;
 }

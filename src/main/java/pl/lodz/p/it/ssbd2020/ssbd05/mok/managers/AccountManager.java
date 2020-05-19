@@ -4,12 +4,14 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.ForgotPasswordToken;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.ForgotPasswordTokenFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
@@ -25,11 +27,16 @@ import java.util.Collection;
 @LocalBean
 @Interceptors(TrackerInterceptor.class)
 public class AccountManager extends AbstractManager implements SessionSynchronization {
+
     @Inject
     private AccountFacade accountFacade;
 
     @Inject
+    private ForgotPasswordTokenFacade forgotPasswordTokenFacade;
+
+    @Inject
     private AccessLevelFacade accessLevelFacade;
+
     @PermitAll
     public Account findByLogin(String login) throws AccountNotFoundException {
         try {
@@ -45,6 +52,13 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
         if(accountFacade.findByToken(token).isPresent())
             return accountFacade.findByToken(token).get();
         else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+    }
+
+    @PermitAll
+    public Account findByMail(String mail) throws AppBaseException {
+        if(accountFacade.findByMail(mail).isPresent())
+            return accountFacade.findByMail(mail).get();
+        else throw new AccountNotFoundException();
     }
 
     @PermitAll
@@ -81,7 +95,6 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     @PermitAll
     public void blockAccount(Account account) throws AppBaseException {
         account.setActive(false);
-        log.info("Siema w managerze " + account.getLogin() + " " + account.isActive());
         accountFacade.edit(account);
     }
 
@@ -90,5 +103,32 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
         account.setActive(true);
         account.setFailedAuthCounter(0);
         accountFacade.edit(account);
+    }
+
+    @PermitAll
+    public void createForgotPasswordToken(ForgotPasswordToken forgotPasswordToken) throws AppBaseException {
+        forgotPasswordTokenFacade.create(forgotPasswordToken);
+    }
+
+    @PermitAll
+    public ForgotPasswordToken findTokenByHash(String hash) throws AppBaseException {
+        if (forgotPasswordTokenFacade.findByHash(hash).isPresent())
+            return forgotPasswordTokenFacade.findByHash(hash).get();
+        else throw new AppBaseException();
+    }
+
+    @PermitAll
+    public void setPasswordAfterReset(Account account) throws AppBaseException {
+        accountFacade.edit(account);
+    }
+
+    @PermitAll
+    public Collection<ForgotPasswordToken> getAllTokens() throws AppBaseException {
+        return forgotPasswordTokenFacade.findAll();
+    }
+
+    @PermitAll
+    public void deletePreviousToken(ForgotPasswordToken forgotPasswordToken) throws AppBaseException {
+        forgotPasswordTokenFacade.remove(forgotPasswordToken);
     }
 }

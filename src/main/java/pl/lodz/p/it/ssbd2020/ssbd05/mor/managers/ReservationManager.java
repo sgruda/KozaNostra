@@ -66,8 +66,19 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     public Status getStatusCanceled() {
         throw new UnsupportedOperationException();
     }
+
     @RolesAllowed("cancelReservation")
     public void cancelReservation(Reservation reservation) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
+
+    @RolesAllowed("filterReservations")
+    public List<Reservation> filterReservations(String filter) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
+
+    @RolesAllowed("getUserReviewableReservations")
+    public List<Reservation> getUserReviewableReservations(String login) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 }

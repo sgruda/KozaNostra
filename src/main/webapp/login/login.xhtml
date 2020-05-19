@@ -37,6 +37,9 @@
                                     value="#{loginController.password}" placeholder="#{msg['page.login.password']} *" />
                     </div>
                 </h:panelGrid>
+                <div style="text-align: center">
+                    <p:commandLink value="#{msg['page.login.forgotpassword']}" action="#{resetPasswordController.moveToResetPassword}" immediate="true"/>
+                </div>
                 <div style="display:flex;flex-direction: column;justify-content: center;">
                     <p:message for="password"/>
                     <p:message for="username"/>

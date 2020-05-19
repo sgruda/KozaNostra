@@ -80,6 +80,18 @@ public class AccountFacade extends AbstractFacade<Account> {
                 .setParameter("token", token).getSingleResult());
     }
 
+    @PermitAll
+    public Optional<Account> findByMail(String mail) throws AppBaseException {
+        try {
+            return Optional.ofNullable(this.em.createNamedQuery("Account.findByEmail", Account.class)
+                    .setParameter("email", mail).getSingleResult());
+        } catch (NoResultException e) {
+            throw new AccountNotFoundException();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
+    }
+
     //    @RolesAllowed()
     public Collection<Account> filterAccounts(String accountFilter) throws AppBaseException {
         try {
