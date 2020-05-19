@@ -87,6 +87,19 @@ public class EmailSender {
         }).start();
     }
 
+    public void sendPasswordResetEmail(String mail, String token) {
+        String subject = ResourceBundles.getTranslatedText("page.resetpassword.title");
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String link = request.getRequestURL()
+                .substring(0, (request.getRequestURL().length() - request.getServletPath().length())).concat("/changeResettedPassword.xhtml?token=");
+        String body = "<a href=\"" + link + token + "\">"+ ResourceBundles.getTranslatedText("mail.resetpassword.body") +"</a>";
+
+        new Thread(() -> {
+            sendEmail(mail, subject, body);
+            return;
+        }).start();
+    }
+
     private void sendEmail(String mail, String subject, String body) {
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", emailProperties.getProperty("host"));

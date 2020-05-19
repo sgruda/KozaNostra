@@ -7,9 +7,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 
-<ui:composition template = "templates/template.xhtml">
+<ui:composition template = "../templates/template.xhtml">
     <ui:define name="head">
-        <script src="https://www.google.com/recaptcha/api.js" type=""></script>
         <title>#{msg['page.edit.account.title']}</title>
     </ui:define>
     <ui:define name = "content">
@@ -20,31 +19,29 @@
                 </p:messages>
                 <p:panelGrid columns="1" id="editPnlGrid">
                 <h:outputLabel for="login" value="#{msg['page.edit.account.form.login']}" >
-                <p:inputText id="login" value="${editAccountController.accountDTO.login}" disabled="true"/>
+                <p:inputText id="login" value="${editOtherAccountController.accountDTO.login}" disabled="true"/>
                 </h:outputLabel>
                 <h:outputLabel for="firstName" value="#{msg['page.edit.account.form.firstname']}" >
                 <p:inputText id="firstName" required="true"
-                             value="${editAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.account.form.firstname.required']}"/>
+                             value="${editOtherAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.account.form.firstname.required']}"/>
                 </h:outputLabel>
                 <h:outputLabel for="lastName" value="#{msg['page.edit.account.form.lastname']}" >
                 <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.edit.account.form.lastname.required']}"
-                             value="${editAccountController.accountDTO.lastname}"/>
+                             value="${editOtherAccountController.accountDTO.lastname}"/>
                 </h:outputLabel>
                 <h:outputLabel for="emailAddress" value="#{msg['page.edit.account.form.email']}" >
                 <p:inputText id="emailAddress"
-                             value="${editAccountController.accountDTO.email}" disabled="true"/>
+                             value="${editOtherAccountController.accountDTO.email}" disabled="true"/>
                 </h:outputLabel>
                 </p:panelGrid>
                 <div style="display:flex; flex-direction: column;">
-                    <p:captcha id="Captcha" requiredMessage="#{msg['page.registration.account.captcha.required']}"
-                               required="true" language="#{msg['page.registration.account.captcha.language']}"/>
                     <p:message for="firstName"/>
                     <p:message for="lastName"/>
-                    <p:message for="Captcha"/>
                 </div>
                 <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:growl id="message" showDetail="true" />
-                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" icon="pi pi-check" actionListener="#{editAccountController.editAccount}" style="float: center;">
+                        <p:button value="#{msg['page.accountdetails.back']}" outcome="/admin/accountDetails.xhtml?cid=#{editOtherAccountController.editAccountConversationID}"/>
+                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" icon="pi pi-check" actionListener="#{editOtherAccountController.editAccount}" style="float: center;">
                             <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
@@ -56,8 +53,9 @@
         </h:form>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/accountDetails.xhtml" />
-        <p:menuitem value="#{msg['page.edit.breadcrumbs']}" outcome="/editAccount.xhtml" />
+        <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
+        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/admin/accountDetails.xhtml?cid=#{editOtherAccountController.editAccountConversationID}" />
+        <p:menuitem value="#{msg['page.edit.breadcrumbs']}" outcome="/admin/editAccount.xhtml?cid=#{editOtherAccountController.editAccountConversationID}" />
     </ui:define>
 </ui:composition>
 </html>
