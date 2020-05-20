@@ -27,16 +27,16 @@
             </f:facet>
 
             <h:outputText value="#{msg['page.accountdetails.account.login']}" />
-            <h:outputText value="#{ownAccountDetailsController.account.login}"/>
+            <h:outputText id="loginDetails" value="#{ownAccountDetailsController.account.login}"/>
             
             <h:outputText value="#{msg['page.accountdetails.account.firstname']}" />
-            <h:outputText value="#{ownAccountDetailsController.account.firstname}"/>
+            <h:outputText id="firstnameDetails" value="#{ownAccountDetailsController.account.firstname}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.lastname']}" />
-            <h:outputText value="#{ownAccountDetailsController.account.lastname}"/>
+            <h:outputText id="lastnameDetails" value="#{ownAccountDetailsController.account.lastname}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.email']}" />
-            <h:outputText value="#{ownAccountDetailsController.account.email}"/>
+            <h:outputText id="emailDetails" value="#{ownAccountDetailsController.account.email}"/>
 
             <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}" />
             <ui:fragment>
