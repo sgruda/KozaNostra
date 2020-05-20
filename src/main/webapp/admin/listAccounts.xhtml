@@ -10,12 +10,12 @@
         </ui:define>
         <ui:define name = "content">
                 <h:form id="form1" style="margin-bottom: auto">
-                    <p:inputText value="#{listAccountsController.accountFilter}"  style="width: 90%; border-radius: 0" placeholder="#{msg['page.listaccounts.watermark']}"/>
+                    <p:inputText id="accountfilter" value="#{listAccountsController.accountFilter}"  style="width: 90%; border-radius: 0" placeholder="#{msg['page.listaccounts.watermark']}"/>
                         <p:commandButton id="filterbutton" value="#{msg['page.listaccounts.filter']}" style="width: 9.92%; border-radius: 0"
                                          action="#{listAccountsController.filterAccounts()}"
                                          update="filterbutton, :form1"/>
-                    <p:dataTable var="account" value="#{listAccountsController.accounts}" emptyMessage="#{msg['page.listaccounts.list.empty']}" >
-                        <p:column headerText="#{msg['page.listaccounts.account.login']}">
+                    <p:dataTable id="list" var="account" value="#{listAccountsController.accounts}" emptyMessage="#{msg['page.listaccounts.list.empty']}" >
+                        <p:column id="listLogin" headerText="#{msg['page.listaccounts.account.login']}">
                             <h:outputText value="#{account.login}"/>
                         </p:column>
 
@@ -40,7 +40,7 @@
                         </p:column>
 
                         <p:column headerText="#{msg['page.listaccounts.account.details']}">
-                            <p:commandButton value="#{msg['page.listaccounts.account.details']}" action="#{accountDetailsController.selectAccount(account)}"/>
+                            <p:commandButton id="goDetailsButton" value="#{msg['page.listaccounts.account.details']}" action="#{accountDetailsController.selectAccount(account)}"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>
