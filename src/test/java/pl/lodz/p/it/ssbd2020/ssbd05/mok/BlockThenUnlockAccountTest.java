@@ -47,11 +47,11 @@ public class BlockThenUnlockAccountTest {
         driver.findElement(By.xpath("//*[contains(@id, 'accountfilter')]")).sendKeys("Szajmi2");
         driver.findElement(By.xpath("//*[contains(@id, 'filterbutton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'goDetailsButton')]")).click();
-        String aktywny = driver.findElement(By.xpath("//*[contains(@id, 'aktywny')]")).getText();
-        Assert.assertEquals("Tak",aktywny);
+        String active = driver.findElement(By.xpath("//*[contains(@id, 'active')]")).getText();
+        Assert.assertEquals("Tak",active);
         driver.findElement(By.xpath("//*[contains(@id, 'blockaccount')]")).click();
-        String nieaktywny = driver.findElement(By.xpath("//*[contains(@id, 'nieaktywny')]")).getText();
-        Assert.assertEquals("Nie",nieaktywny);
+        String inactive = driver.findElement(By.xpath("//*[contains(@id, 'inactive')]")).getText();
+        Assert.assertEquals("Nie",inactive);
         driver.findElement(By.xpath("//*[contains(@id, 'unlockaccount')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'logoutButton')]")).click();
