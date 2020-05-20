@@ -10,7 +10,7 @@
         </ui:define>
         <ui:define name = "content">
                 <h:form id="form1" style="margin-bottom: auto">
-                    <p:inputText value="#{listAccountsController.accountFilter}"  style="width: 90%; border-radius: 0" placeholder="#{msg['page.listaccounts.watermark']}"/>
+                    <p:inputText id="filterAccountsTextBox" value="#{listAccountsController.accountFilter}"  style="width: 90%; border-radius: 0" placeholder="#{msg['page.listaccounts.watermark']}"/>
                         <p:commandButton id="filterbutton" value="#{msg['page.listaccounts.filter']}" style="width: 9.92%; border-radius: 0"
                                          action="#{listAccountsController.filterAccounts()}"
                                          update="filterbutton, :form1"/>
