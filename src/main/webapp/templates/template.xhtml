@@ -49,7 +49,7 @@
                      <h:form>
                          <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" />
                          <p:slideMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:180px" backLabel="#{msg['page.template.menu.backbutton']}">
-                             <p:submenu label="#{msg['page.template.accountdetails']}" icon="pi pi-pencil" >
+                             <p:submenu id="accountDetailsMenu" label="#{msg['page.template.accountdetails']}" icon="pi pi-pencil" >
                                  <p:menuitem id="changePasswordButton" value="${msg['page.template.changepassword']}" outcome="/changePassword.xhtml"/>
                                  <p:menuitem id="accountDetailsButton" value="#{msg['page.template.accountdetails']}" action="#{ownAccountDetailsController.selectOwnAccount()}" />
                              </p:submenu>
@@ -73,7 +73,7 @@
                                      <p:menuitem value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole(roleController.getRoleAdmin())}" ajax="false"/>
                                  </c:if>
                              </p:submenu>
-                             <p:menuitem value="#{msg['page.template.logout']}" icon="pi pi-sign-out" action="#{logoutController.logout()}"/>
+                             <p:menuitem id="logoutButton" value="#{msg['page.template.logout']}" icon="pi pi-sign-out" action="#{logoutController.logout()}"/>
                          </p:slideMenu>
                      </h:form>
                  </ui:fragment>

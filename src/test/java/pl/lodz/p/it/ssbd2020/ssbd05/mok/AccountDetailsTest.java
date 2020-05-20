@@ -23,7 +23,8 @@ public class AccountDetailsTest {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
-        driver = new ChromeDriver();
+        options.setAcceptInsecureCerts(true);
+        driver = new ChromeDriver(options);
         js = (JavascriptExecutor) driver;
     }
 
@@ -35,21 +36,23 @@ public class AccountDetailsTest {
     @Test
     public void accountDetailsTest() {
         driver.get("https://localhost:8181/ssbd05/index.xhtml");
-//        driver.manage().window().setSize(new Dimension(1552, 840));
-//        driver.findElement(By.id("loginButton")).click();
-//        driver.findElement(By.id("login:username")).click();
-//        driver.findElement(By.id("login:username")).sendKeys("admin");
-//        driver.findElement(By.id("login:password")).sendKeys("admin123");
-//        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-//        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
-//        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
-//        driver.findElement(By.cssSelector(".ui-state-hover > .ui-menuitem-text")).click();
-//        driver.findElement(By.cssSelector("#j_idt26\\3A accountDetailsButton > .ui-menuitem-text")).click();
-//        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
-//
-//        String login = (String) js.executeScript("document.getElementById('loginDetails').value");
-//        assertEquals("admin", login);
-//
-//        driver.findElement(By.cssSelector(".ui-state-hover > .ui-menuitem-text")).click();
+        driver.manage().window().setSize(new Dimension(1552, 840));
+        driver.findElement(By.id("loginButton")).click();
+        driver.findElement(By.id("login:username")).click();
+        driver.findElement(By.id("login:username")).sendKeys("admin");
+        driver.findElement(By.id("login:password")).sendKeys("admin123");
+        driver.findElement(By.xpath("//*[contains(@id, 'submit')]")).click();
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
+        driver.findElement(By.xpath("//*[contains(@id, 'accountDetailsMenu')]")).click();
+        driver.findElement(By.xpath("//*[contains(@id, 'accountDetailsButton')]")).click();
+
+        String login = driver.findElement(By.xpath("//*[contains(@id, 'loginDetails')]")).getText();
+        String email = driver.findElement(By.xpath("//*[contains(@id, 'emailDetails')]")).getText();
+        assertEquals("admin", login);
+        assertEquals("sanah@example.com", email);
+
+        driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
+        driver.findElement(By.xpath("//*[contains(@id, 'logoutButton')]")).click();
     }
 }
