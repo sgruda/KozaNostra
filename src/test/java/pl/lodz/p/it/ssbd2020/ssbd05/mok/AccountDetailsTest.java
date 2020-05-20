@@ -34,7 +34,7 @@ public class AccountDetailsTest {
 
     @Test
     public void accountDetailsTest() {
-        driver.get("https://localhost:8181/ssbd05/index.xhtml");
+//        driver.get("https://localhost:8181/ssbd05/index.xhtml");
 //        driver.manage().window().setSize(new Dimension(1552, 840));
 //        driver.findElement(By.id("loginButton")).click();
 //        driver.findElement(By.id("login:username")).click();
