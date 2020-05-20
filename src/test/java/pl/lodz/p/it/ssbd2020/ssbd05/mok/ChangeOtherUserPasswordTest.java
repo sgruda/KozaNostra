@@ -60,9 +60,9 @@ public class ChangeOtherUserPasswordTest {
         }
         driver.findElement(By.cssSelector("#j_idt11 > .ui-button-text")).click();
         driver.findElement(By.id("form1:j_idt36")).click();
-        driver.findElement(By.id("form1:j_idt36")).sendKeys("szulc");
-        driver.findElement(By.cssSelector("#form1\\3A filterbutton > .ui-button-text")).click();
-        driver.findElement(By.cssSelector("#form1\\3Aj_idt37\\3A 0\\3Aj_idt51 > .ui-button-text")).click();
+        driver.findElement(By.id("form1:j_idt36")).sendKeys("nieUsuwacKrystian");
+        driver.findElement(By.xpath("//span[contains(.,\'Szukaj\')]")).click();
+        driver.findElement(By.xpath("//td[7]/button/span")).click();
         driver.findElement(By.cssSelector("#j_idt66 > .ui-button-text")).click();
         driver.findElement(By.id("changePassword:password")).click();
         driver.findElement(By.id("changePassword:password")).sendKeys("zaq1@WSX");
@@ -72,10 +72,10 @@ public class ChangeOtherUserPasswordTest {
         driver.findElement(By.xpath("//span[contains(.,\'Wyloguj\')]")).click();
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
-        driver.findElement(By.id("login:username")).sendKeys("client");
+        driver.findElement(By.id("login:username")).sendKeys("nieUsuwac1");
         driver.findElement(By.id("login:password")).sendKeys("zaq1@WSX");
         driver.findElement(By.xpath("//span[contains(.,\'Zaloguj\')]")).click();
-        driver.findElement(By.xpath("//span[contains(.,\'client\')]")).click();
+        driver.findElement(By.xpath("//span[contains(.,\'nieUsuwac1\')]")).click();
         driver.findElement(By.xpath("//span[contains(.,\'Wyloguj\')]")).click();
     }
 }
