@@ -14,6 +14,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,16 +34,17 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     public List<Reservation> getAllReservations(){
         //TODO Implementacja
-        return new ArrayList<>();
+        throw new UnsupportedOperationException();
     }
 
     public List<EventType> getAllEventTypes(){
         //TODO Implementacja
-        return new ArrayList<>();
+        throw new UnsupportedOperationException();
     }
 
     public void createReservation(Reservation reservation){
         //TODO Implementacja
+        throw new UnsupportedOperationException();
     }
 
     @RolesAllowed("getAllReservations")
@@ -69,6 +71,14 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("cancelReservation")
     public void cancelReservation(Reservation reservation) throws AppBaseException {
+        throw new UnsupportedOperationException();
+    }
+
+    public List<Reservation> getReservationsByDate(LocalDateTime localDateTime){
+        throw new UnsupportedOperationException();
+    }
+
+    public void editReservation(Reservation reservation){
         throw new UnsupportedOperationException();
     }
 

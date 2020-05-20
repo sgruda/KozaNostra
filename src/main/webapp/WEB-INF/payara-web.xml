@@ -166,4 +166,25 @@
         <role-name>editHall</role-name>
         <group-name>MANAGER</group-name>
     </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>removeHall</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>ActivateDeactivateHall</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>editReservation</role-name>
+        <group-name>CLIENT</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>showReservationDetails</role-name>
+        <group-name>MANAGER</group-name>
+        <group-name>CLIENT</group-name>
+    </security-role-mapping>
 </payara-web-app>

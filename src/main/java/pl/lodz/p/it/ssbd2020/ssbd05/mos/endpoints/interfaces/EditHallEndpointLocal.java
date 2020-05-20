@@ -13,4 +13,5 @@ public interface EditHallEndpointLocal {
     HallDTO getHallByName(String name) throws AppBaseException;
     void editHall(HallDTO hallDTO) throws AppBaseException;
     List<EventTypeDTO> getAllEventTypes() throws AppBaseException;
+    public void changeActivity(HallDTO hallDTO) throws AppBaseException;
 }

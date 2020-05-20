@@ -69,4 +69,13 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
     public List<Address> getAllAddresses() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
+
+    @RolesAllowed("removeHall")
+    public void removeHall(String name) throws AppBaseException{
+        throw new UnsupportedOperationException();
+    }
+
+    public void changeActivity(Hall hall) throws AppBaseException{
+        throw new UnsupportedOperationException();
+    }
 }
