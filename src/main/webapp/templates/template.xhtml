@@ -73,7 +73,7 @@
                                      <p:menuitem id="changeForAdmin" value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole(roleController.getRoleAdmin())}" ajax="false"/>
                                  </c:if>
                              </p:submenu>
-                             <p:menuitem  id="logout" value="#{msg['page.template.logout']}" icon="pi pi-sign-out" action="#{logoutController.logout()}"/>
+                             <p:menuitem  id="logoutButton" value="#{msg['page.template.logout']}" icon="pi pi-sign-out" action="#{logoutController.logout()}"/>
                          </p:slideMenu>
                      </h:form>
                  </ui:fragment>
