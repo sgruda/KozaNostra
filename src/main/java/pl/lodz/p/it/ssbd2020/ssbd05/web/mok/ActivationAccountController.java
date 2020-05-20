@@ -1,12 +1,10 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.extern.java.Log;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

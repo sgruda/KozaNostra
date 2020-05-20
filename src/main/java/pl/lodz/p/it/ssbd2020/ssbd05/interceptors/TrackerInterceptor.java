@@ -1,17 +1,18 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.interceptors;
 
+import lombok.extern.java.Log;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 import java.time.LocalDateTime;
-import java.util.logging.Logger;
 
+@Log
 public class TrackerInterceptor {
+
     @Resource
     private SessionContext sessionContext;
-    private Logger logger = Logger.getLogger(TrackerInterceptor.class.getName());
 
     @AroundInvoke
     public Object traceInvoke(InvocationContext invocationContext) throws Exception{
@@ -42,7 +43,7 @@ public class TrackerInterceptor {
             message.append("With exception: ");
             message.append(TrackerInterceptor.class.getName()).append(" ");
             message.append(e);
-            logger.severe(message.toString());
+            log.severe(message.toString());
             throw e;
         }
             message.append(" Returned value: ");
@@ -51,7 +52,7 @@ public class TrackerInterceptor {
             } else {
                 message.append(result.toString());
             }
-            logger.info(message.toString());
+            log.info(message.toString());
             return result;
     }
 }

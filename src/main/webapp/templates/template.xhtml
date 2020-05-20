@@ -4,7 +4,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <h:head>
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'/>
@@ -19,17 +18,24 @@
     <div class = "wrapper">		
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
-                <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole('Admin')}">
+                <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole(roleController.getRoleAdmin())}">
                     <h1 style="font-weight:normal">#{msg['page.template.admin.console']}</h1>
-                    <p:button value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
+                    <div>
+                        <p:button value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
+                    </div>
+                    <div>
+                        <p:button value="#{msg['page.template.admin.addAccount']}" outcome="/admin/addAccount.xhtml"/>
+                    </div>
                 </ui:fragment>
-                <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole('Manager')}">
+                <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
                     <h1 style="font-weight:normal">#{msg['page.template.manager.console']}</h1>
                 </ui:fragment>
-                <p:commandButton value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
+                <div>
+                    <p:commandButton value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
+                </div>
             </p:sidebar>
              <div class = "header-left">
-                 <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole('Admin') or roleController.isSelectedRole('Manager')}">
+                 <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole(roleController.getRoleAdmin()) or roleController.isSelectedRole(roleController.getRoleManager())}">
                      <i class="pi pi-bars" style="font-size: 3em;color: white" ></i>
                  </p:commandLink>
                  <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
@@ -58,13 +64,13 @@
                              </c:if>
                              <p:submenu label="#{msg['page.template.changerole']}" rendered="#{roleController.allUserRolesLength > 1}" icon="pi pi-user-edit">
                                  <c:if test="#{facesContext.externalContext.isUserInRole('CLIENT')}">
-                                     <p:menuitem value="#{msg['page.changelevel.client']}" action="#{roleController.setCurrentRole('Client')}"  ajax="false"/>
+                                     <p:menuitem value="#{msg['page.changelevel.client']}" action="#{roleController.setCurrentRole(roleController.getRoleClient())}"  ajax="false"/>
                                  </c:if>
                                  <c:if test="#{facesContext.externalContext.isUserInRole('MANAGER')}">
-                                     <p:menuitem value="#{msg['page.changelevel.manager']}" action="#{roleController.setCurrentRole('Manager')}" ajax="false"/>
+                                     <p:menuitem value="#{msg['page.changelevel.manager']}" action="#{roleController.setCurrentRole(roleController.getRoleManager())}" ajax="false"/>
                                  </c:if>
                                  <c:if test="#{facesContext.externalContext.isUserInRole('ADMIN')}">
-                                     <p:menuitem value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole('Admin')}" ajax="false"/>
+                                     <p:menuitem value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole(roleController.getRoleAdmin())}" ajax="false"/>
                                  </c:if>
                              </p:submenu>
                              <p:menuitem value="#{msg['page.template.logout']}" icon="pi pi-sign-out" action="#{logoutController.logout()}"/>
@@ -74,10 +80,12 @@
              </div>
         </div>
         <div class ="breadcrumb">
-            <p:breadCrumb>
-                <p:menuitem value="Home" outcome="/index.xhtml" />
-                <ui:insert name="breadcrumb-menuitems"/>
-            </p:breadCrumb>
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Home" outcome="/index.xhtml" />
+                    <ui:insert name="breadcrumb-menuitems"/>
+                </p:breadCrumb>
+            </h:form>
         </div>
         <div class = "main">
             <ui:insert name="content" >

@@ -64,13 +64,22 @@ public class RoleController implements Serializable {
     }
     
     public String getHeaderColorForRole() {
-    if(this.selectedRole.equalsIgnoreCase(userRolesProperties.getProperty("roleAdmin")))
-        return userRolesProperties.getProperty("roleAdminColor");
-    else if(this.selectedRole.equalsIgnoreCase(userRolesProperties.getProperty("roleManager")))
-        return userRolesProperties.getProperty("roleManagerColor");
-    else if(this.selectedRole.equalsIgnoreCase(userRolesProperties.getProperty("roleClient")))
-        return userRolesProperties.getProperty("roleClientColor");
-    else return userRolesProperties.getProperty("defaultColor");
+        if(this.selectedRole.equalsIgnoreCase(userRolesProperties.getProperty("roleAdmin")))
+            return userRolesProperties.getProperty("roleAdminColor");
+        else if(this.selectedRole.equalsIgnoreCase(userRolesProperties.getProperty("roleManager")))
+            return userRolesProperties.getProperty("roleManagerColor");
+        else if(this.selectedRole.equalsIgnoreCase(userRolesProperties.getProperty("roleClient")))
+            return userRolesProperties.getProperty("roleClientColor");
+        else return userRolesProperties.getProperty("defaultColor");
+    }
+    public String getRoleAdmin() {
+        return userRolesProperties.getProperty("roleAdmin");
+    }
+    public String getRoleManager() {
+        return userRolesProperties.getProperty("roleManager");
+    }
+    public String getRoleClient() {
+        return userRolesProperties.getProperty("roleClient");
     }
 
     @PostConstruct

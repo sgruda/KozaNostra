@@ -1,9 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok.facades;
 
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
@@ -13,7 +11,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -29,7 +26,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.*;
 import java.util.Collection;
 import java.sql.SQLNonTransientConnectionException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +78,18 @@ public class AccountFacade extends AbstractFacade<Account> {
     public Optional<Account> findByToken(String token) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByToken", Account.class)
                 .setParameter("token", token).getSingleResult());
+    }
+
+    @PermitAll
+    public Optional<Account> findByMail(String mail) throws AppBaseException {
+        try {
+            return Optional.ofNullable(this.em.createNamedQuery("Account.findByEmail", Account.class)
+                    .setParameter("email", mail).getSingleResult());
+        } catch (NoResultException e) {
+            throw new AccountNotFoundException();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException();
+        }
     }
 
     //    @RolesAllowed()

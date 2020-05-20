@@ -8,19 +8,20 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
-
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.*;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Properties;
@@ -90,8 +91,8 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
-    @RolesAllowed("editOwnAccount")
-    public void editOwnAccount(AccountDTO accountDTO) throws AppBaseException {
+    @RolesAllowed({"editOwnAccount","editOtherAccount"})
+    public void editAccount(AccountDTO accountDTO) throws AppBaseException {
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
         int callCounter = 0;
         boolean rollback;
@@ -111,6 +112,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             throw new ExceededTransactionRetriesException();
         }
     }
+
 
     @RolesAllowed("editOtherAccount")
     public void edit(AccountDTO accountDTO) throws AppBaseException {

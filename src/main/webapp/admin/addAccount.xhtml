@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition template = "../templates/template.xhtml">
+        <ui:define name="head">
+            <style type="text/css">
+                .main{
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-attachment: fixed;
+                    background-size: cover;
+                }
+            </style>
+            <title>#{msg['page.template.admin.addAccount']}</title>
+        </ui:define>
+
+        <ui:define name = "content">
+            <h:form id="register">
+                <p:panel id="registrationPanel" header="#{msg['page.template.admin.addAccount']}"
+                         style="font-size: 24px;">
+                    <p:messages globalOnly="true">
+                        <p:autoUpdate/>
+                    </p:messages>
+                    <div style="display:flex; flex-direction: column;text-align: center;margin: auto;">
+                        <p:inputText id="login" required="true" value="#{addAccountController.login}" requiredMessage="#{msg['page.registration.account.login.required']}" placeholder="#{msg['page.registration.account.login']} *"/>
+
+                        <p:password id="password" required="true" feedback="true" promptLabel="#{msg['password.prompt']}"
+                                    weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
+                                    inline="true" match="confirmPassword" requiredMessage="#{msg['page.registration.account.password.required']}"
+                                    value="#{addAccountController.password}" validatorMessage="#{msg['page.registration.account.password.validation']}" placeholder="#{msg['page.registration.account.password']} *">
+                            <f:validateRegex pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
+                        </p:password>
+
+                        <p:password id="confirmPassword" required="true" feedback="true" promptLabel="#{msg['confirmpassword.prompt']}"
+                                    weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
+                                    inline="true" requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
+                                    value="#{addAccountController.password}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
+
+                        <p:inputText id="firstName" required="true"
+                                     value="#{addAccountController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}" placeholder="#{msg['page.registration.account.firstname']} *"/>
+
+                        <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.registration.account.lastname.required']}"
+                                     value="#{addAccountController.lastname}" placeholder="#{msg['page.registration.account.lastname']} *"/>
+
+                        <p:inputText id="emailAddress" required="true"
+                                     value="#{addAccountController.emailAddress}" validatorMessage="#{msg['page.registration.account.email.validation']}" requiredMessage="#{msg['page.registration.account.email.required']}" placeholder="#{msg['page.registration.account.email']} *">
+                            <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+
+                        <h:outputLabel for="accessLevels" value="#{msg['page.accountdetails.account.accesslevel']}:" style="font-size: 14px; text-align: left;"/>
+                        <p:selectManyCheckbox id="accessLevels" value="#{addAccountController.accessLevels}">
+                            <f:selectItem itemLabel="#{msg['page.changelevel.client']}" itemValue="#{roleController.getRoleClient()}"/>
+                            <f:selectItem itemLabel="#{msg['page.changelevel.manager']}" itemValue="#{roleController.getRoleManager()}"/>
+                            <f:selectItem itemLabel="#{msg['page.changelevel.admin']}" itemValue="#{roleController.getRoleAdmin()}"/>
+                            <f:validator validatorId="atLeastOneCheckedValidator"/>
+                        </p:selectManyCheckbox>
+
+                        <h:outputLabel for="active" value="#{msg['page.addaccount.activelabel']}:" style="font-size: 14px; text-align: left;"/>
+                        <p:selectBooleanCheckbox id="active" value="#{addAccountController.active}" itemLabel="#{msg['page.accountdetails.account.active']}" style="text-align: left;"/>
+                    </div>
+
+                    <div style="display:flex; flex-direction: column;">
+                        <p:message for="login"/>
+                        <p:message for="password"/>
+                        <p:message for="confirmPassword"/>
+                        <p:message for="firstName"/>
+                        <p:message for="lastName"/>
+                        <p:message for="emailAddress"/>
+                        <p:message for="accessLevels"/>
+                    </div>
+
+                    <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
+                        <p:commandButton id="back" immediate="true" value="#{msg['page.accountdetails.back']}" style="margin-right:20px;" action="#{addAccountController.goBack()}"/>
+                        <p:commandButton value="#{msg['page.registration.account.reset']}" style="margin-right:20px;" icon="pi pi-undo">
+                            <p:ajax update="register" resetValues="true" />
+                        </p:commandButton>
+                        <p:commandButton id="submit" ajax="false" value="#{msg['page.registration.account.register']}" icon="pi pi-check" style="float: center;" action="#{addAccountController.addAccount()}"/>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="breadcrumb-menuitems">
+            <p:menuitem value="#{msg['page.template.admin.addAccount']}" outcome="/admin/addAccount.xhtml" />
+        </ui:define>
+    </ui:composition>
+</html>

@@ -102,6 +102,30 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Own Account Details</web-resource-name>
+            <url-pattern>/accountDetails.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ADMIN</role-name>
+            <role-name>MANAGER</role-name>
+            <role-name>CLIENT</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Edit Own Account</web-resource-name>
+            <url-pattern>/editAccount.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ADMIN</role-name>
+            <role-name>MANAGER</role-name>
+            <role-name>CLIENT</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <security-role>
         <role-name>ADMIN</role-name>
     </security-role>

@@ -28,22 +28,23 @@ public class ConfirmAccountController implements Serializable {
     private String url = "";
     private String token = "";
 
-    public String confirmAccount() throws AppBaseException {
+    public String confirmAccount() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().getFlash().setKeepMessages(true);
         if (url.contains("token="))
             token = url.substring(url.indexOf("token=") + 6);
-        account = confirmAccountEndpointLocal.getAccountByToken(token);
-        if (account.getVeryficationToken().equals(token)) {
-            try {
+
+        try {
+            account = confirmAccountEndpointLocal.getAccountByToken(token);
+            if (account.getVeryficationToken().equals(token)) {
                 confirmAccountEndpointLocal.confirmAccount();
                 ResourceBundles.emitMessage(null, "messages.account.confirmed");
-            } catch (AccountAlreadyConfirmedException e) {
-                ResourceBundles.emitErrorMessage(null, "error.account.confirmed");
-            } catch (AppBaseException e) {
-                ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
-            }
-        } else ResourceBundles.emitErrorMessage(null, "error.default");
+            } else ResourceBundles.emitErrorMessage(null, "error.default");
+        } catch (AccountAlreadyConfirmedException e) {
+            ResourceBundles.emitErrorMessage(null, "error.account.confirmed");
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+        }
         return "home";
     }
 }

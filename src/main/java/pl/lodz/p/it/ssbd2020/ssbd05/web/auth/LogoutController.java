@@ -1,6 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -8,12 +8,11 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
-import java.sql.Time;
 import java.time.LocalDateTime;
 
 @RequestScoped
 @Named
-@Slf4j
+@Log
 public class LogoutController {
 
     @Inject

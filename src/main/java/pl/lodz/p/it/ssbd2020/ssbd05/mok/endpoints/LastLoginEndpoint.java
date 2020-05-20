@@ -22,7 +22,6 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.Collection;
 
-
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

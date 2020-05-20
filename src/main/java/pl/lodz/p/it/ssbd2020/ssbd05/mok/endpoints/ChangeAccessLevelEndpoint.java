@@ -19,8 +19,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 

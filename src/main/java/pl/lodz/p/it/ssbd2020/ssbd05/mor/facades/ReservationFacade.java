@@ -5,10 +5,9 @@ import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -79,7 +78,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     // @ORolesAllowed()
-    public Optional<Reservation> findByLogin(String login) throws AppBaseException{
+    public Optional<Reservation> findByNumber(String number) throws AppBaseException{
         try{
            //TODO Implementacja
             return null;
@@ -88,7 +87,10 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         }
     }
 
-    public List<Reservation> findByDate( Date date){
-        return null;
+    public List<Reservation> filterReservations(String filter) throws AppBaseException{
+        throw new UnsupportedOperationException();
+    }
+    public List<Reservation> findByLogin(String login) throws AppBaseException{
+        throw new UnsupportedOperationException();
     }
 }
