@@ -55,7 +55,7 @@ public class AddAccountEndpoint implements AddAccountEndpointLocal {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < 5); //TODO po merge: ResourceBundles.getTransactionRepeatLimit()
+        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }

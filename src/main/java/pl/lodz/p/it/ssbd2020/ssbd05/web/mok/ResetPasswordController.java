@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 public class ResetPasswordController {
 
     @Inject
-    ResetPasswordEndpointLocal resetPasswordEndpoint;
+    private ResetPasswordEndpointLocal resetPasswordEndpoint;
 
     @Getter
     @Setter

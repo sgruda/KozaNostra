@@ -54,11 +54,10 @@
                         </p:inputText>
 
                         <h:outputLabel for="accessLevels" value="#{msg['page.accountdetails.account.accesslevel']}:" style="font-size: 14px; text-align: left;"/>
-                        <p:selectManyCheckbox id="accessLevels" value="#{addAccountController.accessLevels}">
+                        <p:selectManyCheckbox id="accessLevels"  required="true" requiredMessage="#{msg['page.addaccount.noaccesslevels']}" value="#{addAccountController.accessLevels}">
                             <f:selectItem itemLabel="#{msg['page.changelevel.client']}" itemValue="#{roleController.getRoleClient()}"/>
                             <f:selectItem itemLabel="#{msg['page.changelevel.manager']}" itemValue="#{roleController.getRoleManager()}"/>
                             <f:selectItem itemLabel="#{msg['page.changelevel.admin']}" itemValue="#{roleController.getRoleAdmin()}"/>
-                            <f:validator validatorId="atLeastOneCheckedValidator"/>
                         </p:selectManyCheckbox>
 
                         <h:outputLabel for="active" value="#{msg['page.addaccount.activelabel']}:" style="font-size: 14px; text-align: left;"/>
@@ -77,10 +76,18 @@
 
                     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:commandButton id="back" immediate="true" value="#{msg['page.accountdetails.back']}" style="margin-right:20px;" action="#{addAccountController.goBack()}"/>
+
                         <p:commandButton value="#{msg['page.registration.account.reset']}" style="margin-right:20px;" icon="pi pi-undo">
-                            <p:ajax update="register" resetValues="true" />
+                            <p:ajax update="register" resetValues="true"/>
                         </p:commandButton>
-                        <p:commandButton id="submit" ajax="false" value="#{msg['page.registration.account.register']}" icon="pi pi-check" style="float: center;" action="#{addAccountController.addAccount()}"/>
+
+                        <p:commandButton id="submit" ajax="false" validateClient="true" value="#{msg['page.template.admin.addAccount']}" icon="pi pi-check" style="float: center;" actionListener="#{addAccountController.addAccount()}">
+                            <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+                            <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                            <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog>
                     </h:panelGrid>
                 </p:panel>
             </h:form>
