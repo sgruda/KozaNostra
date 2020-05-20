@@ -53,23 +53,23 @@
                                  <p:menuitem id="changePasswordButton" value="${msg['page.template.changepassword']}" outcome="/changePassword.xhtml"/>
                                  <p:menuitem id="accountDetailsButton" value="#{msg['page.template.accountdetails']}" action="#{ownAccountDetailsController.selectOwnAccount()}" />
                              </p:submenu>
-                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase('CLIENT')}">
+                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
                                  <p:menuitem id="isClient" value="#{msg['page.changelevel.client']}" icon="pi pi-id-card" disabled="true"/>
                              </c:if>
-                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase('MANAGER')}">
+                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}">
                                  <p:menuitem id="isManager" value="#{msg['page.changelevel.manager']}" icon="pi pi-id-card" disabled="true"/>
                              </c:if>
-                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase('ADMIN')}">
+                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleAdmin())}">
                                  <p:menuitem id="isAdmin" value="#{msg['page.changelevel.admin']}" icon="pi pi-id-card" disabled="true"/>
                              </c:if>
                              <p:submenu id="changeRoleButton" label="#{msg['page.template.changerole']}" rendered="#{roleController.allUserRolesLength > 1}" icon="pi pi-user-edit">
-                                 <c:if test="#{facesContext.externalContext.isUserInRole('CLIENT')}">
+                                 <c:if test="#{facesContext.externalContext.isUserInRole(roleController.getRoleClient())}">
                                      <p:menuitem id="changeClient" value="#{msg['page.changelevel.client']}" action="#{roleController.setCurrentRole(roleController.getRoleClient())}"  ajax="false"/>
                                  </c:if>
-                                 <c:if test="#{facesContext.externalContext.isUserInRole('MANAGER')}">
+                                 <c:if test="#{facesContext.externalContext.isUserInRole(roleController.getRoleManager())}">
                                      <p:menuitem id="changeManager" value="#{msg['page.changelevel.manager']}" action="#{roleController.setCurrentRole(roleController.getRoleManager())}" ajax="false"/>
                                  </c:if>
-                                 <c:if test="#{facesContext.externalContext.isUserInRole('ADMIN')}">
+                                 <c:if test="#{facesContext.externalContext.isUserInRole(roleController.getRoleAdmin())}">
                                      <p:menuitem id="changeAdmin" value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole(roleController.getRoleAdmin())}" ajax="false"/>
                                  </c:if>
                              </p:submenu>
