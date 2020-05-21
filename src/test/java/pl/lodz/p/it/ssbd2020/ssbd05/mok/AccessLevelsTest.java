@@ -44,7 +44,7 @@ public class AccessLevelsTest {
         driver.findElement(By.id("login:username")).sendKeys("admin");
         driver.findElement(By.id("login:password")).sendKeys("admin123");
         driver.findElement(By.xpath("//*[contains(@id, 'submit')]")).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        Thread.sleep(1000);
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'changeRoleButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'changeAdmin')]")).click();

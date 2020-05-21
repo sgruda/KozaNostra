@@ -1,14 +1,15 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class BlockThenUnlockAccountTest {
     private WebDriver driver;
@@ -31,15 +32,14 @@ public class BlockThenUnlockAccountTest {
         driver.close();
     }
     @Test
-    public void blockThenUnlockAccount() {
+    public void blockThenUnlockAccount() throws InterruptedException {
         driver.get("https://localhost:8181/ssbd05/index.xhtml");
-        driver.manage().window().setSize(new Dimension(1552, 840));
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).sendKeys("admin");
         driver.findElement(By.id("login:password")).sendKeys("admin123");
         driver.findElement(By.xpath("//*[contains(@id, 'submit')]")).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        Thread.sleep(1000);
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'changeRoleButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'changeAdmin')]")).click();
@@ -47,6 +47,7 @@ public class BlockThenUnlockAccountTest {
         driver.findElement(By.xpath("//*[contains(@id, 'listAccountsButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'filterAccountsTextBox')]")).sendKeys("Szajmi2");
         driver.findElement(By.xpath("//*[contains(@id, 'filterbutton')]")).click();
+        Thread.sleep(1000);
         driver.findElement(By.xpath("//*[contains(@id, 'goDetailsButton')]")).click();
         String active = driver.findElement(By.xpath("//*[contains(@id, 'active')]")).getText();
         Assert.assertEquals("Tak",active);
