@@ -91,14 +91,14 @@
             </h:form>
             <p:commandButton value="#{msg['page.accountdetails.changePassword']}" action="#{changeOtherAccountPasswordController.redirectToChangePassword()}" actionListener="#{changeOtherAccountPasswordController.init(accountDetailsController.account.login,accountDetailsController.accountDetailsConversationID)}"/>
             <h:form id="addAccessLevel">
-                <p:commandButton value="#{msg['page.accountdetails.addAccessLevel']}" onclick="PF('addAccessLevelDialog').show();"/>
+                <p:commandButton id="addAccessLevelButton" value="#{msg['page.accountdetails.addAccessLevel']}" onclick="PF('addAccessLevelDialog').show();"/>
                 <p:dialog header="#{msg['page.accountdetails.addAccessLevel']}" widgetVar="addAccessLevelDialog" modal="true" height="100">
                     <h:form>
                         <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
                             <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleClientActive}"
                                                      value="#{accountDetailsController.roleClientActive}"
                                                      itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
-                            <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleManagerActive}"
+                            <p:selectBooleanCheckbox id="addManagerRole" rendered="#{!accountDetailsController.roleManagerActive}"
                                                      value="#{accountDetailsController.roleManagerActive}"
                                                      itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
                             <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleAdminActive}"
@@ -106,20 +106,20 @@
                                                      itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
 
                         </h:panelGrid>
-                        <p:commandButton value="#{msg['page.accountdetails.accessLevel.add']}" icon="pi pi-check"  style="float: center;" action="#{accountDetailsController.changeAccessLevels}"
+                        <p:commandButton id="addRole" value="#{msg['page.accountdetails.accessLevel.add']}" icon="pi pi-check"  style="float: center;" action="#{accountDetailsController.changeAccessLevels}"
                                          onclick="PF('dialog').close();"/>
                     </h:form>
                 </p:dialog>
             </h:form>
             <h:form id="removeAccessLevel">
-                <p:commandButton value="#{msg['page.accountdetails.removeAccessLevel']}" onclick="PF('removeAccessLevelDialog').show();"/>
+                <p:commandButton id="removeAccessLevelButton" value="#{msg['page.accountdetails.removeAccessLevel']}" onclick="PF('removeAccessLevelDialog').show();"/>
                 <p:dialog header="#{msg['page.accountdetails.removeAccessLevel']}" widgetVar="removeAccessLevelDialog" modal="true" height="100">
                     <h:form>
                         <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
                             <p:selectBooleanCheckbox rendered="#{accountDetailsController.roleClientActive}"
                                                      value="#{accountDetailsController.roleClientActive}"
                                                      itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
-                            <p:selectBooleanCheckbox rendered="#{accountDetailsController.roleManagerActive}"
+                            <p:selectBooleanCheckbox id="removeManagerRole" rendered="#{accountDetailsController.roleManagerActive}"
                                                      value="#{accountDetailsController.roleManagerActive}"
                                                      itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
                             <p:selectBooleanCheckbox rendered="#{accountDetailsController.roleAdminActive}"
@@ -127,7 +127,7 @@
                                                      itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
 
                         </h:panelGrid>
-                        <p:commandButton value="#{msg['page.accountdetails.accessLevel.remove']}" icon="pi pi-check"  style="float: center;" action="#{accountDetailsController.changeAccessLevels}"
+                        <p:commandButton id="removeRole" value="#{msg['page.accountdetails.accessLevel.remove']}" icon="pi pi-check"  style="float: center;" action="#{accountDetailsController.changeAccessLevels}"
                                          onclick="PF('dialog').close();"/>
                     </h:form>
                 </p:dialog>

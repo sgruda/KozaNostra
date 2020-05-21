@@ -14,8 +14,8 @@
                         <p:commandButton id="filterbutton" value="#{msg['page.listaccounts.filter']}" style="width: 9.92%; border-radius: 0"
                                          action="#{listAccountsController.filterAccounts()}"
                                          update="filterbutton, :form1"/>
-                    <p:dataTable var="account" value="#{listAccountsController.accounts}" emptyMessage="#{msg['page.listaccounts.list.empty']}" >
-                        <p:column headerText="#{msg['page.listaccounts.account.login']}">
+                    <p:dataTable id="list" var="account" value="#{listAccountsController.accounts}" emptyMessage="#{msg['page.listaccounts.list.empty']}" >
+                        <p:column id="listLogin" headerText="#{msg['page.listaccounts.account.login']}">
                             <h:outputText value="#{account.login}"/>
                         </p:column>
 
