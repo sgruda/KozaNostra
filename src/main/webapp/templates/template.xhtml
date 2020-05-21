@@ -70,7 +70,7 @@
                                      <p:menuitem value="#{msg['page.changelevel.manager']}" action="#{roleController.setCurrentRole(roleController.getRoleManager())}" ajax="false"/>
                                  </c:if>
                                  <c:if test="#{facesContext.externalContext.isUserInRole('ADMIN')}">
-                                     <p:menuitem id="changeForAdmin" value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole(roleController.getRoleAdmin())}" ajax="false"/>
+                                     <p:menuitem id="changeAdmin" value="#{msg['page.changelevel.admin']}" action="#{roleController.setCurrentRole(roleController.getRoleAdmin())}" ajax="false"/>
                                  </c:if>
                              </p:submenu>
                              <p:menuitem  id="logoutButton" value="#{msg['page.template.logout']}" icon="pi pi-sign-out" action="#{logoutController.logout()}"/>

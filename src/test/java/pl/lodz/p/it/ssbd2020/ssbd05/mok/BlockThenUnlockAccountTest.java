@@ -21,6 +21,7 @@ public class BlockThenUnlockAccountTest {
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
         options.setAcceptInsecureCerts(true);
+        options.addArguments("--lang=pl");
         driver = new ChromeDriver(options);
         js = (JavascriptExecutor) driver;
 
@@ -41,10 +42,10 @@ public class BlockThenUnlockAccountTest {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'changeRole')]")).click();
-        driver.findElement(By.xpath("//*[contains(@id, 'changeForAdmin')]")).click();
+        driver.findElement(By.xpath("//*[contains(@id, 'changeAdmin')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'menu-button')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'listAccountsButton')]")).click();
-        driver.findElement(By.xpath("//*[contains(@id, 'accountfilter')]")).sendKeys("Szajmi2");
+        driver.findElement(By.xpath("//*[contains(@id, 'filterAccountsTextBox')]")).sendKeys("Szajmi2");
         driver.findElement(By.xpath("//*[contains(@id, 'filterbutton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'goDetailsButton')]")).click();
         String active = driver.findElement(By.xpath("//*[contains(@id, 'active')]")).getText();
