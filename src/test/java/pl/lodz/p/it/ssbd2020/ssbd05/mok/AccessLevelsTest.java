@@ -49,7 +49,7 @@ public class AccessLevelsTest {
         driver.findElement(By.cssSelector(".pi-bars")).click();
         driver.findElement(By.cssSelector("#j_idt11 > .ui-button-text")).click();
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//*[contains(@id, 'accountfilter')]")).sendKeys("kontodotestowpoziomowdostepu");
+        driver.findElement(By.xpath("//*[contains(@id, 'filterAccountsTextBox')]")).sendKeys("kontodotestowpoziomowdostepu");
         driver.findElement(By.xpath("//*[contains(@id, 'filterbutton')]")).click();
         try {
             Thread.sleep(500);
