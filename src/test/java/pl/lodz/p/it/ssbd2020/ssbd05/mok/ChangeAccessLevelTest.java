@@ -21,6 +21,7 @@ public class ChangeAccessLevelTest {
         options.setAcceptInsecureCerts(true);
         options.addArguments("--lang=pl");
         driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
     }
 
     @After
@@ -40,26 +41,31 @@ public class ChangeAccessLevelTest {
         driver.findElement(By.id("login:password")).sendKeys("admin123");
         driver.findElement(By.xpath("//button[@id='login:submit']/span[2]")).click();
         driver.findElement(By.xpath("//button[@id='j_idt26:dynaButton']/span")).click();
-        assertEquals("Klient", driver.findElement(By.xpath("//div[@id='j_idt26:j_idt27']/div/div/ul/li[2]")).getText());
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        Thread.sleep(2000);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        Thread.sleep(2000);
         driver.findElement(By.xpath("//li[3]/a/span[2]")).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+//        assertEquals("Klient", driver.findElement(By.xpath("//li[2]")).getText());
+//        Thread.sleep(2000);
+        driver.findElement(By.xpath("//li[3]/a/span[2]")).click();
+//        assertEquals("Klient", driver.findElement(By.xpath("//li[2]")).getText());
+        Thread.sleep(2000);
         driver.findElement(By.xpath("//li[3]/ul/li[2]/a/span")).click();
         driver.findElement(By.xpath("//a[@id='menu-button']/i")).click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        assertEquals("Panel menadżera", driver.findElement(By.xpath("//div[@id='j_idt9']/h1")).getText());
-        driver.findElement(By.xpath("//button[@id='j_idt26:dynaButton']/span[2]")).click();
-        assertEquals("Menadżer", driver.findElement(By.xpath("//div[@id='j_idt26:j_idt27']/div/div/ul/li[2]")).getText());
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        Thread.sleep(2000);
+        assertEquals("Panel menadżera", driver.findElement(By.xpath("//h1")).getText());
+        driver.findElement(By.xpath("//span[2]")).click();
+        assertEquals("Menadżer", driver.findElement(By.xpath("//li[2]")).getText());
+        Thread.sleep(2000);
         driver.findElement(By.xpath("//li[3]/a/span[2]")).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        Thread.sleep(2000);
         driver.findElement(By.xpath("//li[3]/ul/li[3]/a/span")).click();
         driver.findElement(By.xpath("//a[@id='menu-button']/i")).click();
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-        assertEquals("Panel administratora", driver.findElement(By.xpath("//div[@id='j_idt9']/h1")).getText());
-        driver.findElement(By.xpath("//button[@id='j_idt26:dynaButton']/span[2]")).click();
-        assertEquals("Administrator", driver.findElement(By.xpath("//div[@id='j_idt26:j_idt27']/div/div/ul/li[2]")).getText());
-        driver.findElement(By.xpath("//div[@id='j_idt26:j_idt27']/div/div/ul/li[4]/a/span[2]")).click();
+        Thread.sleep(2000);
+        assertEquals("Panel administratora", driver.findElement(By.xpath("//h1")).getText());
+        driver.findElement(By.xpath("//span[2]")).click();
+        assertEquals("Administrator", driver.findElement(By.xpath("//li[2]")).getText());
+        driver.findElement(By.xpath("//li[4]/a/span[2]")).click();
     }
 
 }
