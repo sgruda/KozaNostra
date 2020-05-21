@@ -46,7 +46,7 @@ public class ChangeAccessLevelTest {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.findElement(By.xpath("//li[3]/ul/li[2]/a/span")).click();
         driver.findElement(By.xpath("//a[@id='menu-button']/i")).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         assertEquals("Panel menadżera", driver.findElement(By.xpath("//div[@id='j_idt9']/h1")).getText());
         driver.findElement(By.xpath("//button[@id='j_idt26:dynaButton']/span[2]")).click();
         assertEquals("Menadżer", driver.findElement(By.xpath("//div[@id='j_idt26:j_idt27']/div/div/ul/li[2]")).getText());
