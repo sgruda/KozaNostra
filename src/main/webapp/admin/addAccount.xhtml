@@ -81,7 +81,7 @@
                             <p:ajax update="register" resetValues="true"/>
                         </p:commandButton>
 
-                        <p:commandButton id="submit" ajax="false" validateClient="true" value="#{msg['page.template.admin.addAccount']}" icon="pi pi-check" style="float: center;" actionListener="#{addAccountController.addAccount()}">
+                        <p:commandButton id="submit" validateClient="true" value="#{msg['page.template.admin.addAccount']}" icon="pi pi-check" style="float: center;" actionListener="#{addAccountController.addAccount()}">
                             <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">

@@ -40,13 +40,13 @@
 
             <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}" />
             <ui:fragment>
-                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains('CLIENT')}">
+                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains(roleController.getRoleClient())}">
                     <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.client']}"/>
                 </c:if>
-                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains('MANAGER')}">
+                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains(roleController.getRoleManager())}">
                     <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.manager']}"/>
                 </c:if>
-                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains('ADMIN')}">
+                <c:if test="#{ownAccountDetailsController.account.accessLevelCollection.contains(roleController.getRoleAdmin())}">
                     <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.admin']}"/>
                 </c:if>
             </ui:fragment>

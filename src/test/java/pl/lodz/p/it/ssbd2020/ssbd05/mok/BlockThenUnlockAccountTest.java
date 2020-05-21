@@ -41,7 +41,7 @@ public class BlockThenUnlockAccountTest {
         driver.findElement(By.xpath("//*[contains(@id, 'submit')]")).click();
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
-        driver.findElement(By.xpath("//*[contains(@id, 'changeRole')]")).click();
+        driver.findElement(By.xpath("//*[contains(@id, 'changeRoleButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'changeAdmin')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'menu-button')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'listAccountsButton')]")).click();
