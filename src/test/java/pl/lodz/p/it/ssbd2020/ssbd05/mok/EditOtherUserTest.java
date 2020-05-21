@@ -22,6 +22,7 @@ public class EditOtherUserTest {
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
         options.setAcceptInsecureCerts(true);
+        options.addArguments("--lang=pl");
         driver = new ChromeDriver(options);
     }
 
@@ -32,7 +33,7 @@ public class EditOtherUserTest {
 
     @Test
     public void testMOK14() throws Exception {
-        driver.get("https://localhost:8181/ssbd05/index.xhtml");
+        driver.get("https://localhost:8181/ssbd05/");
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).clear();
@@ -40,43 +41,46 @@ public class EditOtherUserTest {
         driver.findElement(By.id("login:password")).click();
         driver.findElement(By.id("login:password")).clear();
         driver.findElement(By.id("login:password")).sendKeys("admin123");
-        driver.findElement(By.xpath("//button[@id='login:submit']/span[2]")).click();
-        driver.findElement(By.xpath("//button[@id='j_idt24:dynaButton']/span[2]")).click();
-        driver.findElement(By.xpath("//li[@id='j_idt24:changeRoleButton']/a/span[2]")).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//a[@id='j_idt24:changeAdmin']/span")).click();
+        driver.findElement(By.xpath("//button[@id='login:submit']/span")).click();
+        driver.findElement(By.xpath("//button[@id='j_idt26:dynaButton']/span")).click();
+        driver.findElement(By.xpath("//div[@id='j_idt26:j_idt27']/div/div/ul/li[3]/a/span[2]")).click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.findElement(By.xpath("//div[@id='j_idt26:j_idt27']/div/div/ul/li[3]/ul/li[3]/a/span")).click();
         driver.findElement(By.xpath("//a[@id='menu-button']/i")).click();
-        driver.findElement(By.xpath("//button[@id='listAccountsButton']/span")).click();
-        driver.findElement(By.id("form1:filterAccountsTextBox")).click();
-        driver.findElement(By.id("form1:filterAccountsTextBox")).clear();
-        driver.findElement(By.id("form1:filterAccountsTextBox")).sendKeys("szulc");
+        driver.findElement(By.xpath("//button[@id='j_idt11']/span")).click();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.findElement(By.id("form1:j_idt41")).click();
+        driver.findElement(By.id("form1:j_idt41")).click();
+        driver.findElement(By.id("form1:j_idt41")).clear();
+        driver.findElement(By.id("form1:j_idt41")).sendKeys("szulc");
         driver.findElement(By.xpath("//button[@id='form1:filterbutton']/span")).click();
-        driver.findElement(By.xpath("//button[@id='form1:j_idt33:0:j_idt47']/span")).click();
+        driver.findElement(By.xpath("//button[@id='form1:j_idt42:0:j_idt56']/span")).click();
+        driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
         assertEquals("Piotr", driver.findElement(By.xpath("//table[@id='panelGrid']/tbody/tr[2]/td[2]")).getText());
         assertEquals("Szulc", driver.findElement(By.xpath("//table[@id='panelGrid']/tbody/tr[3]/td[2]")).getText());
         assertEquals("steez83@example.com", driver.findElement(By.xpath("//table[@id='panelGrid']/tbody/tr[4]/td[2]")).getText());
-        driver.findElement(By.xpath("//button[@id='commandButtons:j_idt60']/span")).click();
+        driver.findElement(By.xpath("//button[@id='commandButtons:j_idt68']/span")).click();
         driver.findElement(By.id("editAccount:firstName")).click();
         driver.findElement(By.id("editAccount:firstName")).clear();
         driver.findElement(By.id("editAccount:firstName")).sendKeys("Piotr Jan");
-        driver.findElement(By.xpath("//button[@id='editAccount:submit']/span[2]")).click();
-        driver.findElement(By.xpath("//button[@id='editAccount:j_idt47']/span[2]")).click();
-        assertEquals("Edycja konta zakończona sukcesem!", driver.findElement(By.xpath("//div[@id='editAccount:j_idt35']/div/ul/li/span")).getText());
-        driver.findElement(By.xpath("//button[@id='editAccount:j_idt45']/span")).click();
+        driver.findElement(By.xpath("//button[@id='editAccount:submit']/span")).click();
+        driver.findElement(By.xpath("//button[@id='editAccount:j_idt55']/span[2]")).click();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        assertEquals("Edycja konta zakończona sukcesem!", driver.findElement(By.xpath("//div[@id='editAccount:j_idt43']/div/ul/li/span")).getText());
+        driver.findElement(By.xpath("//button[@id='editAccount:j_idt53']/span")).click();
         assertEquals("Piotr Jan", driver.findElement(By.xpath("//table[@id='panelGrid']/tbody/tr[2]/td[2]")).getText());
         assertEquals("Szulc", driver.findElement(By.xpath("//table[@id='panelGrid']/tbody/tr[3]/td[2]")).getText());
         assertEquals("steez83@example.com", driver.findElement(By.xpath("//table[@id='panelGrid']/tbody/tr[4]/td[2]")).getText());
-        driver.findElement(By.xpath("//button[@id='commandButtons:j_idt60']/span")).click();
-        driver.findElement(By.id("editAccount:firstName")).click();
+        driver.findElement(By.xpath("//button[@id='commandButtons:j_idt68']/span")).click();
         driver.findElement(By.id("editAccount:firstName")).click();
         driver.findElement(By.id("editAccount:firstName")).clear();
         driver.findElement(By.id("editAccount:firstName")).sendKeys("Piotr");
         driver.findElement(By.xpath("//button[@id='editAccount:submit']/span[2]")).click();
-        driver.findElement(By.xpath("//button[@id='editAccount:j_idt47']/span[2]")).click();
-        assertEquals("Edycja konta zakończona sukcesem!", driver.findElement(By.xpath("//div[@id='editAccount:j_idt35']/div/ul/li/span")).getText());
-        driver.findElement(By.xpath("//button[@id='editAccount:j_idt45']/span")).click();
-        driver.findElement(By.xpath("//button[@id='j_idt24:dynaButton']/span[2]")).click();
-        driver.findElement(By.xpath("//a[@id='j_idt24:logoutButton']/span[2]")).click();
+        driver.findElement(By.xpath("//button[@id='editAccount:j_idt55']/span")).click();
+        driver.findElement(By.xpath("//button[@id='j_idt26:dynaButton']/span[2]")).click();
+        assertEquals("Edytuj dane konta", driver.getTitle());
+        driver.findElement(By.xpath("//button[@id='j_idt26:dynaButton']/span[2]")).click();
+        driver.findElement(By.xpath("//div[@id='j_idt26:j_idt27']/div/div/ul/li[4]/a/span[2]")).click();
     }
 
 }
