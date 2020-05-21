@@ -11,7 +11,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class AddAccountTest {
   private WebDriver driver;
@@ -31,7 +30,7 @@ public class AddAccountTest {
     driver.quit();
   }
   @Test
-  public void addAccount() {
+  public void addAccount() throws InterruptedException {
     UUID random = UUID.randomUUID();
     String randomString = random.toString().replace("-","");
     randomString = randomString.substring(0,10);
@@ -45,9 +44,10 @@ public class AddAccountTest {
     driver.findElement(By.id("login:password")).sendKeys("admin123");
     driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
     driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
-    driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    Thread.sleep(1000);
     driver.findElement(By.xpath("//span[contains(.,\'Change role\')]")).click();
-    driver.findElement(By.id("j_idt24:changeAdmin")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.linkText("Admin")).click();
     driver.findElement(By.cssSelector(".pi-bars")).click();
     {
       WebElement element = driver.findElement(By.cssSelector(".pi-bars"));
@@ -60,7 +60,7 @@ public class AddAccountTest {
       builder.moveToElement(element, 0, 0).perform();
     }
     driver.findElement(By.cssSelector("#addAccountButton > .ui-button-text")).click();
-    driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    Thread.sleep(1000);
     driver.findElement(By.id("register:login")).click();
     driver.findElement(By.id("register:login")).sendKeys("AddAccountTest" + randomString);
     driver.findElement(By.id("register:password")).click();
@@ -77,8 +77,8 @@ public class AddAccountTest {
     driver.findElement(By.xpath("//table[@id=\'register:accessLevels\']/tbody/tr/td[2]/div/div[2]/span")).click();
     driver.findElement(By.xpath("//div[@id=\'register:active\']/div[2]/span")).click();
     driver.findElement(By.cssSelector("#register\\3Asubmit > .ui-button-text")).click();
-    driver.findElement(By.cssSelector("#register\\3Aj_idt52 > .ui-button-text")).click();
-    driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    driver.findElement(By.xpath("//div[3]/button/span[2]")).click();
+    Thread.sleep(3000);
     Assert.assertEquals(driver.findElement(By.cssSelector(".ui-messages-info-summary")).getText(),"Account created!");
   }
 }
