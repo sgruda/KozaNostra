@@ -11,7 +11,7 @@ public class LoginAlreadyExistsException extends AppBaseException {
     }
 
     public LoginAlreadyExistsException(String message) {
-        super(message);
+        super(KEY_ACCOUNT_LOGIN_PROBLEM);
     }
 
     public LoginAlreadyExistsException(Throwable cause) {

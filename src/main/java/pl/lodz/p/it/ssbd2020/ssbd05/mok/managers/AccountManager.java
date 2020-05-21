@@ -42,7 +42,6 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
         try {
             return accountFacade.findByLogin(login).get();
         } catch (AccountNotFoundException e) {
-            log.warning(e.getClass().getName() + " " + e.getMessage());
             throw new AccountNotFoundException(e);
         }
     }
@@ -58,7 +57,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     public Account findByMail(String mail) throws AppBaseException {
         if(accountFacade.findByMail(mail).isPresent())
             return accountFacade.findByMail(mail).get();
-        else throw new AccountNotFoundException();
+        else throw new AccountNotFoundException("");
     }
 
     @PermitAll
@@ -114,12 +113,14 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     public ForgotPasswordToken findTokenByHash(String hash) throws AppBaseException {
         if (forgotPasswordTokenFacade.findByHash(hash).isPresent())
             return forgotPasswordTokenFacade.findByHash(hash).get();
-        else throw new AppBaseException();
+        else throw new AppBaseException("");
     }
 
     @PermitAll
     public void setPasswordAfterReset(Account account) throws AppBaseException {
-        accountFacade.edit(account);
+        if(account.isConfirmed() && account.isActive())
+            accountFacade.edit(account);
+        else throw new AppBaseException("");
     }
 
     @PermitAll

@@ -11,7 +11,7 @@ public class AccountNotHaveActiveAccessLevelsException extends AppBaseException 
     }
 
     public AccountNotHaveActiveAccessLevelsException(String message) {
-        super(message);
+        super(KEY_ACCOUNT_NOT_HAVE_ACTIVE_ACCESS_LEVELS);
     }
 
     public AccountNotHaveActiveAccessLevelsException(Throwable cause) {
