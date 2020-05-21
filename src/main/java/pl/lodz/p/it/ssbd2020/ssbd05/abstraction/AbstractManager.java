@@ -12,6 +12,7 @@ abstract public class AbstractManager  {
 
     @Getter
     private boolean lastTransactionRollback;
+    @Getter
     private String transactionId;
 
     public void afterBegin() throws EJBException, RemoteException {

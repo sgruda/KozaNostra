@@ -72,9 +72,6 @@ public class ResetPasswordController {
                 resetPasswordEndpoint.changeResettedPassword(accountDTO);
                 ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.success");
             } else ResourceBundles.emitErrorMessageWithFlash(null, "messages.resetpassword.expired");
-        } catch (AccountPasswordAlreadyUsedException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-            return "";
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }

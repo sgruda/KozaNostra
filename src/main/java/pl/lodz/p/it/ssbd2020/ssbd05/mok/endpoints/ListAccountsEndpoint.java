@@ -41,7 +41,7 @@ public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointL
                 list = AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.getAllAccounts());
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -64,7 +64,7 @@ public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointL
                 list = AccountMapper.INSTANCE.toAccountDTOCollection(accountManager.filterAccounts(accountFilter));
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
