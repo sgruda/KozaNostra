@@ -42,10 +42,10 @@
             <h:outputText value="#{msg['page.accountdetails.account.active']}" />
             <c:choose>
                 <c:when test="#{accountDetailsController.account.active}">
-                    <h:outputText value="#{msg['page.common.yes']}"/>
+                    <h:outputText id="active" value="#{msg['page.common.yes']}"/>
                 </c:when>
                 <c:otherwise>
-                    <h:outputText value="#{msg['page.common.no']}"/>
+                    <h:outputText id="inactive" value="#{msg['page.common.no']}"/>
                 </c:otherwise>
             </c:choose>
 
@@ -84,9 +84,9 @@
             <h:form id="commandButtons">
                 <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
                 <p:commandButton value="#{msg['page.accountdetails.edit']}" action="#{editOtherAccountController.selectAccount(accountDetailsController.account)}"/>
-                <p:commandButton value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
+                <p:commandButton id="unlockaccount" value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
                                  rendered="#{!accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
-                <p:commandButton value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
+                <p:commandButton id="blockaccount" value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
                                  rendered="#{accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
             </h:form>
             <p:commandButton value="#{msg['page.accountdetails.changePassword']}" action="#{changeOtherAccountPasswordController.redirectToChangePassword()}" actionListener="#{changeOtherAccountPasswordController.init(accountDetailsController.account.login,accountDetailsController.accountDetailsConversationID)}"/>
