@@ -43,7 +43,7 @@
                             </p:password>
                             <p:password id="confirmPassword" required="true" feedback="false" promptLabel="#{msg['confirmpassword.prompt']}"
                                         requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
-                                        validator="#{registrationController.validatePasswordMatch}"
+                                        validator="#{passwordValidator.validatePasswordMatch}"
                                         value="#{registrationController.confirmPassword}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
                             <p:inputText id="firstName" required="true"
                                          value="#{registrationController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}" placeholder="#{msg['page.registration.account.firstname']} *"/>
