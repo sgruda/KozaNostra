@@ -12,7 +12,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.UUID;
 
-public class AddAccountTest {
+public class AddAccountTestUI {
   private WebDriver driver;
   JavascriptExecutor js;
   @Before
