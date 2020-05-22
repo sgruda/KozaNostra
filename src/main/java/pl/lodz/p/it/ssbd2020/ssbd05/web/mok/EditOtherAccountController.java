@@ -13,8 +13,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpoint
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -26,21 +24,18 @@ import java.time.LocalDateTime;
 @Named
 @ViewScoped
 public class EditOtherAccountController implements Serializable {
+
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
-
-//    @Inject
-//    private Conversation conversation;
 
     @Getter
     @Setter
     private AccountDTO accountDTO;
 
     @PostConstruct
-    public void selectAccount() {
-//        this.accountDTO = accountDTO;
+    public void init() {
         String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
-        try{
+        try {
             this.accountDTO = editAccountEndpointLocal.findByLogin(selectedLogin);
         }
         catch (AppOptimisticLockException ex) {
@@ -52,7 +47,7 @@ public class EditOtherAccountController implements Serializable {
         } catch (DatabaseQueryException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (DatabaseConnectionException ex){
+        }catch (DatabaseConnectionException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         } catch (AppBaseException ex) {
@@ -61,27 +56,23 @@ public class EditOtherAccountController implements Serializable {
         }
     }
 
-//    public String getEditAccountConversationID(){
-//        return conversation.getId();
-//    }
-
     public void editAccount() throws AppBaseException {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedLogin");
             ResourceBundles.emitMessage(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
         } catch (ExceededTransactionRetriesException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         } catch (DatabaseQueryException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (DatabaseConnectionException ex){
+        } catch (DatabaseConnectionException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
-
     }
 }

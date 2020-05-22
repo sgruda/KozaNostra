@@ -83,7 +83,7 @@
         <div style="margin: 5px;display:flex;justify-content: center">
             <h:form id="commandButtons">
                 <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
-                <p:commandButton value="#{msg['page.accountdetails.edit']}" action="#{accountDetailsController.goToEditForm(accountDetailsController.account.login)}"/>
+                <p:commandButton value="#{msg['page.accountdetails.edit']}" action="#{accountDetailsController.goToEditForm()}"/>
                 <p:commandButton id="unlockaccount" value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
                                  rendered="#{!accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
                 <p:commandButton id="blockaccount" value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
@@ -137,7 +137,7 @@
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
-        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/admin/accountDetails.xhtml?cid=#{accountDetailsController.accountDetailsConversationID}" />
+        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/admin/accountDetails.xhtml" />
     </ui:define>
 </ui:composition>
 </html>
