@@ -12,8 +12,11 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AccountDetailsEndpo
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ChangeAccessLevelEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -26,13 +29,13 @@ import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsI
 
 @Log
 @Named
-@ConversationScoped
+@ViewScoped
 public class AccountDetailsController implements Serializable {
 
     @Inject
     private AccountDetailsEndpointLocal accountDetailsEndpointLocal;
-    @Inject
-    private Conversation conversation;
+//    @Inject
+//    private Conversation conversation;
     @Getter
     private AccountDTO account;
     @Inject
@@ -50,25 +53,28 @@ public class AccountDetailsController implements Serializable {
     @Setter
     private boolean roleClientActive;
 
-    public String selectAccount(AccountDTO accountDTO) {
-        conversation.begin();
+    @PostConstruct
+    public void init() {
+//        conversation.begin();
+        String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
         try {
-            this.account = accountDetailsEndpointLocal.getAccount(accountDTO.getLogin());
+            this.account = accountDetailsEndpointLocal.getAccount(selectedLogin);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedLogin");
         } catch (AppBaseException e) {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
         this.setRolesInfo(this.account.getAccessLevelCollection());
-        return "accountDetails";
     }
 
     public String goBack() {
-        conversation.end();
+//        conversation.end();
         return "goBack";
     }
     
     public String getAccountDetailsConversationID(){
-        return conversation.getId();
+//        return conversation.getId();
+        return null;
     }
 
     public void unlockAccount()  {
@@ -148,5 +154,10 @@ public class AccountDetailsController implements Serializable {
         if(collectionContainsIgnoreCase(accessLevelStringCollection, roleProperties.getProperty("roleAdmin"))) {
             roleAdminActive = true;
         }
+    }
+
+    public String goToEditForm(String login) {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedLogin", login);
+        return "editAccount";
     }
 }

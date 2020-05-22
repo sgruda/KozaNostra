@@ -12,8 +12,11 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRe
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -21,22 +24,24 @@ import java.time.LocalDateTime;
 
 @Log
 @Named
-@ConversationScoped
+@ViewScoped
 public class EditOtherAccountController implements Serializable {
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
 
-    @Inject
-    private Conversation conversation;
+//    @Inject
+//    private Conversation conversation;
 
     @Getter
     @Setter
     private AccountDTO accountDTO;
 
-    public String selectAccount(AccountDTO accountDTO) throws AppBaseException {
-        this.accountDTO = accountDTO;
+    @PostConstruct
+    public void selectAccount() {
+//        this.accountDTO = accountDTO;
+        String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
         try{
-            editAccountEndpointLocal.findByLogin(accountDTO.getLogin());
+            this.accountDTO = editAccountEndpointLocal.findByLogin(selectedLogin);
         }
         catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
@@ -50,13 +55,15 @@ public class EditOtherAccountController implements Serializable {
         }catch (DatabaseConnectionException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        } catch (AppBaseException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
         }
-        return "editAccount";
     }
 
-    public String getEditAccountConversationID(){
-        return conversation.getId();
-    }
+//    public String getEditAccountConversationID(){
+//        return conversation.getId();
+//    }
 
     public void editAccount() throws AppBaseException {
         try {

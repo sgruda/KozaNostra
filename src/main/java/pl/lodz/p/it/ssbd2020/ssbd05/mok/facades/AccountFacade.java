@@ -137,7 +137,7 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw new DatabaseQueryException(ex);
             }
         } catch (OptimisticLockException e) {
-            throw new AppOptimisticLockException();
+            throw new AppOptimisticLockException(e);
         } catch (PersistenceException e) {
             throw new DatabaseQueryException(e);
             //TODO tutaj dodamy wiecej wyjatkow, gdy juz bedziemy mieli edycje wieksza niz blokowanie/odblokowywanie konta
