@@ -13,8 +13,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.util.concurrent.TimeUnit;
-
 @Log
 public class LogOutTest {
 
@@ -26,6 +24,7 @@ public class LogOutTest {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
+        options.addArguments("--lang=pl");
         options.setAcceptInsecureCerts(true);
         driver = new ChromeDriver(options);
         js = (JavascriptExecutor) driver;
