@@ -4,6 +4,7 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.ForgotPasswordToken;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
@@ -13,10 +14,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +42,7 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
         try {
             super.create(entity);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -53,8 +51,10 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
     public void edit(ForgotPasswordToken entity) throws AppBaseException {
         try {
             super.edit(entity);
+        } catch (OptimisticLockException e) {
+            throw new AppOptimisticLockException(e);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -63,8 +63,10 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
     public void remove(ForgotPasswordToken entity) throws AppBaseException {
         try {
             super.remove(entity);
+        } catch (OptimisticLockException e) {
+            throw new AppOptimisticLockException(e);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -79,7 +81,7 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -89,9 +91,9 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
             return Optional.ofNullable(this.em.createNamedQuery("ForgotPasswordToken.findByHash", ForgotPasswordToken.class)
                     .setParameter("hash", hash).getSingleResult());
         } catch (NoResultException e) {
-            throw new AppBaseException();
+            throw new AppBaseException(e.getMessage());
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 }
