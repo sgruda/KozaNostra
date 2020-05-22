@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class EditOtherUserTest {
+public class EditOtherUserTestUI {
     private WebDriver driver;
 
     @Before

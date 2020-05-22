@@ -13,7 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.Assert.assertEquals;
 
-public class LoginTest {
+public class LoginTestUI {
     private WebDriver driver;
     JavascriptExecutor js;
     @Before

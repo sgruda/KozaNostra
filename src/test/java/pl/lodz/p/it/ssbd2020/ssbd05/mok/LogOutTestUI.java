@@ -14,7 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 @Log
-public class LogOutTest {
+public class LogOutTestUI {
 
     private WebDriver driver;
     private JavascriptExecutor js;

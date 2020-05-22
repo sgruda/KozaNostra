@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class AccessLevelsTest {
+public class AccessLevelsTestUI {
 
     private WebDriver driver;
     JavascriptExecutor js;

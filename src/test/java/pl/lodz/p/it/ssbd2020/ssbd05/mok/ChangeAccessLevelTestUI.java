@@ -10,7 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 
-public class ChangeAccessLevelTest {
+public class ChangeAccessLevelTestUI {
     private WebDriver driver;
 
     @Before

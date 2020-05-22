@@ -13,7 +13,7 @@ import org.openqa.selenium.interactions.Actions;
 import java.util.concurrent.TimeUnit;
 
 @Log
-public class ChangeOtherUserPasswordTest {
+public class ChangeOtherUserPasswordTestUI {
 
     private WebDriver driver;
     private JavascriptExecutor js;
