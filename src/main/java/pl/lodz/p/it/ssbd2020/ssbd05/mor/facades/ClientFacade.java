@@ -48,7 +48,7 @@ public class ClientFacade extends AbstractFacade<Client> {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 }
