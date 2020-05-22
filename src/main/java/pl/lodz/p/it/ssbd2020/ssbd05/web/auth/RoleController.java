@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -13,6 +14,7 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -23,6 +25,8 @@ public class RoleController implements Serializable {
     @Getter @Setter
     private String selectedRole = "";
     private Properties userRolesProperties;
+    @Getter @Setter
+    private Collection<String> roleList = new ArrayList<>();
 
     public boolean isSelectedRole(String role) {
         return selectedRole.equalsIgnoreCase(role);
@@ -46,7 +50,38 @@ public class RoleController implements Serializable {
         if (context.isUserInRole(userRolesProperties.getProperty("roleAdmin"))) {
             roles.add(userRolesProperties.getProperty("roleAdmin"));
         }
+        this.roleList.addAll(roles);
         return roles.toArray(new String[0]);
+    }
+
+    public boolean isInClientRole(){
+        boolean inRole = false;
+        for (String role: roleList){
+                if(role.equals(userRolesProperties.getProperty("roleClient"))){
+                    inRole = true;
+                }
+        }
+        return inRole;
+    }
+
+    public boolean isInManagerRole(){
+        boolean inRole = false;
+        for (String role: roleList){
+            if(role.equals(userRolesProperties.getProperty("roleManager"))){
+                inRole = true;
+            }
+        }
+        return inRole;
+    }
+
+    public boolean isInAdminRole(){
+        boolean inRole = false;
+        for (String role: roleList){
+            if(role.equals(userRolesProperties.getProperty("roleAdmin"))){
+                inRole = true;
+            }
+        }
+        return inRole;
     }
 
     public int getAllUserRolesLength() {
