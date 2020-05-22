@@ -69,7 +69,7 @@ public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLeve
                 accountManager.edit(account);
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.log(Level.SEVERE, "EJBTransactionRolledBack");

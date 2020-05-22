@@ -40,7 +40,7 @@ public class AccountDetailsEndpoint implements Serializable, AccountDetailsEndpo
                 this.account = accountManager.findByLogin(login);
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -63,7 +63,7 @@ public class AccountDetailsEndpoint implements Serializable, AccountDetailsEndpo
                 this.account = accountManager.findByLogin(login);
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
             log.warning("EJBTransactionRolledBack");

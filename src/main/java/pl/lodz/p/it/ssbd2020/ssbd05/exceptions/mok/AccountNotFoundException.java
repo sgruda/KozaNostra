@@ -11,7 +11,7 @@ public class AccountNotFoundException extends AppBaseException {
     }
 
     public AccountNotFoundException(String message) {
-        super(message);
+        super(KEY_ACCOUNT_NOT_FOUND);
     }
 
     public AccountNotFoundException(Throwable cause) {

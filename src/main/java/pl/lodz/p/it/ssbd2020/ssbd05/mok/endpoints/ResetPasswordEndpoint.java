@@ -50,7 +50,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                 account = accountManager.findByMail(mail);
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.severe("EJBTransactionRolledBack");
@@ -72,7 +72,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                 account = accountManager.findByLogin(login);
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.severe("EJBTransactionRolledBack");
@@ -97,7 +97,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                 }
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -128,7 +128,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                 accountManager.createForgotPasswordToken(forgotPasswordToken);
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -154,7 +154,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                 forgotPasswordToken = accountManager.findTokenByHash(hash);
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -188,7 +188,7 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                 accountManager.setPasswordAfterReset(account);
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
+                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");

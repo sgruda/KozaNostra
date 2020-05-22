@@ -7,7 +7,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.ForgotPasswordTokenDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ResetPasswordEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -72,9 +71,6 @@ public class ResetPasswordController {
                 resetPasswordEndpoint.changeResettedPassword(accountDTO);
                 ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.success");
             } else ResourceBundles.emitErrorMessageWithFlash(null, "messages.resetpassword.expired");
-        } catch (AccountPasswordAlreadyUsedException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-            return "";
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
