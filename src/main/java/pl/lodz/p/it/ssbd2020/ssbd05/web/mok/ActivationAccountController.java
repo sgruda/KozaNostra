@@ -36,13 +36,11 @@ public class ActivationAccountController implements Serializable {
     }
 
     public void unlockAccount() throws AppBaseException {
-        log.severe("UNLOCK: " + account);
         editAccountEndpointLocal.unlockAccount(account);
         ResourceBundles.emitMessage(null,"page.accountdetails.unlock");
     }
 
     public void blockAccount() throws AppBaseException {
-        log.severe("BLOCK: " + account);
         editAccountEndpointLocal.blockAccount(account);
         ResourceBundles.emitMessage(null,"page.accountdetails.blocked");
     }
