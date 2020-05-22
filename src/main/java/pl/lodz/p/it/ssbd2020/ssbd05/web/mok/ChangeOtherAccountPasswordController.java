@@ -59,7 +59,7 @@ public class ChangeOtherAccountPasswordController implements Serializable {
     public void setPassword() throws AppBaseException {
         AccountDTO accountDTO = editAccountEndpointLocal.findByLogin(this.accountDTO.getLogin());
         try {
-            editAccountEndpointLocal.changePassword(newPassword, accountDTO);
+            editAccountEndpointLocal.changeOtherAccountPassword(newPassword, accountDTO);
             ResourceBundles.emitMessage(null, "page.changepassword.message");
         } catch (AppOptimisticLockException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());

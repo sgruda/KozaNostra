@@ -59,7 +59,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
-    @RolesAllowed({"changeOtherAccountPassword","changeOwnAccountPassword"})
+    @RolesAllowed({"changeOwnAccountPassword"})
     public void changePassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
         for (PreviousPassword psw: account.getPreviousPasswordCollection()){
             if(psw.getPassword().equals(HashGenerator.sha256(newPassword))){
@@ -80,6 +80,42 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
                 rollback = accountManager.isLastTransactionRollback();
                 if(callCounter > 0)
                     log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+                callCounter++;
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
+    }
+
+    @RolesAllowed({"changeOtherAccountPassword"})
+    public void changeOtherAccountPassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
+        boolean doesExists = false;
+        for (PreviousPassword psw: account.getPreviousPasswordCollection()){
+            if(psw.getPassword().equals(HashGenerator.sha256(newPassword))){
+                doesExists=true;
+            }
+        }
+        if(doesExists == false){
+            account.setPassword(HashGenerator.sha256(newPassword));
+            PreviousPassword previousPassword = new PreviousPassword();
+            previousPassword.setAccount(account);
+            previousPassword.setPassword(HashGenerator.sha256(newPassword));
+            account.getPreviousPasswordCollection().add(previousPassword);
+        }else {
+            account.setPassword(HashGenerator.sha256(newPassword));
+        }
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                accountManager.edit(account);
+                rollback = accountManager.isLastTransactionRollback();
+                if(callCounter > 0)
+                    log.info("Transaction is being repeated for " + callCounter + " time");
                 callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
