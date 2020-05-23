@@ -93,12 +93,14 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
+    @Pattern(regexp = "[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż]+")
     @Column(table = "account_personal_data", name = "firstname", nullable = false, length = 32)
     private String firstname;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
+    @Pattern(regexp = "[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż\\-]+")
     @Column(table = "account_personal_data", name = "lastname", nullable = false, length = 32)
     private String lastname;
 

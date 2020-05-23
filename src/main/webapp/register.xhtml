@@ -46,9 +46,15 @@
                                         inline="true" requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
                                         value="#{registrationController.confirmPassword}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
                             <p:inputText id="firstName" required="true"
-                                         value="#{registrationController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}" placeholder="#{msg['page.registration.account.firstname']} *"/>
+                                         value="#{registrationController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}" placeholder="#{msg['page.registration.account.firstname']} *">
+                                <f:validateRegex pattern="^[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż]+"/>
+                                <f:validateLength minimum="1" maximum="32" />
+                            </p:inputText>
                             <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.registration.account.lastname.required']}"
-                                         value="#{registrationController.lastname}" placeholder="#{msg['page.registration.account.lastname']} *"/>
+                                         value="#{registrationController.lastname}" placeholder="#{msg['page.registration.account.lastname']} *">
+                                <f:validateRegex pattern="^[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32" />
+                            </p:inputText>
                             <p:inputText id="emailAddress" required="true"
                                          value="#{registrationController.emailAddress}" validatorMessage="#{msg['page.registration.account.email.validation']}" requiredMessage="#{msg['page.registration.account.email.required']}" placeholder="#{msg['page.registration.account.email']} *">
                                 <f:validateRegex
