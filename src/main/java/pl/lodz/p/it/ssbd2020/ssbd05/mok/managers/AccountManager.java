@@ -73,7 +73,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
             account.setConfirmed(true);
             accountFacade.edit(account);
         }
-        else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
+        else throw new AccountAlreadyConfirmedException("");
     }
 
     @PermitAll
