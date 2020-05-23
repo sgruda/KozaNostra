@@ -47,14 +47,14 @@ public class LastLoginEndpoint implements Serializable, LastLoginEndpointLocal {
             try {
                 this.account = accountManager.findByLogin(username);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -74,14 +74,14 @@ public class LastLoginEndpoint implements Serializable, LastLoginEndpointLocal {
             try {
                 accountManager.edit(account);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }

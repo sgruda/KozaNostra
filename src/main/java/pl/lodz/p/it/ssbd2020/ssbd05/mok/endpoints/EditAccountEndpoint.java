@@ -45,14 +45,14 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             try {
                 account = accountManager.findByLogin(username);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -78,14 +78,14 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             try {
                 accountManager.edit(account);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -96,16 +96,16 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         boolean doesExists = false;
         for (PreviousPassword psw: account.getPreviousPasswordCollection()){
             if(psw.getPassword().equals(HashGenerator.sha256(newPassword))){
-                doesExists=true;
+                doesExists = true;
             }
         }
-        if(doesExists == false){
+        if(!doesExists){
             account.setPassword(HashGenerator.sha256(newPassword));
             PreviousPassword previousPassword = new PreviousPassword();
             previousPassword.setAccount(account);
             previousPassword.setPassword(HashGenerator.sha256(newPassword));
             account.getPreviousPasswordCollection().add(previousPassword);
-        }else {
+        } else {
             account.setPassword(HashGenerator.sha256(newPassword));
         }
         int callCounter = 0;
@@ -114,14 +114,14 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             try {
                 accountManager.edit(account);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -136,14 +136,14 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             try {
                 accountManager.edit(account);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -173,14 +173,14 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             try {
                 accountManager.edit(account);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -195,15 +195,15 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             try {
                 accountManager.blockAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             }
             catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendBlockedAccountEmail(account.getEmail());
@@ -221,15 +221,15 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             try {
                 accountManager.unlockAccount(account);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             }
             catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendUnlockedAccountEmail(account.getEmail());

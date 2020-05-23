@@ -49,14 +49,14 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
             try {
                 account = accountManager.findByMail(mail);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.severe("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -71,14 +71,14 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
             try {
                 account = accountManager.findByLogin(login);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.severe("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -96,14 +96,14 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
                         accountManager.deletePreviousToken(token);
                 }
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -127,14 +127,14 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
             try {
                 accountManager.createForgotPasswordToken(forgotPasswordToken);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendPasswordResetEmail(mail, hash);
@@ -153,14 +153,14 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
             try {
                 forgotPasswordToken = accountManager.findTokenByHash(hash);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -187,14 +187,14 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
             try {
                 accountManager.setPasswordAfterReset(account);
                 rollback = accountManager.isLastTransactionRollback();
-                if(callCounter > 0)
-                    log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-                callCounter++;
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+            if(callCounter > 0)
+                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
