@@ -60,7 +60,7 @@ public class EditOtherAccountController implements Serializable {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedLogin");
-            ResourceBundles.emitMessage(null,"page.edit.account.message");
+            ResourceBundles.emitMessageWithFlash(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
@@ -74,5 +74,16 @@ public class EditOtherAccountController implements Serializable {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
+    }
+
+    public String goHome() {
+        try {
+            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).equals(accountDTO))
+            return "home";
+        } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
+        return "";
     }
 }
