@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class ReservationDetailsEndpoint implements Serializable, ReservationDetailsEndpointLocal {
     @Override
     @RolesAllowed("showReservationDetails")
-    public ReservationDTO getReservationByNumber(String nubmer) {
+    public ReservationDTO getReservationByNumber(String number) {
         return null;
     }
 }

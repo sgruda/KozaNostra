@@ -15,7 +15,6 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Stateful
@@ -56,14 +55,17 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     public Status getStatusByName(String statusName) {
         throw new UnsupportedOperationException();
     }
+
     @RolesAllowed("getReservationByNumber")
     public Reservation getReservationByNumber(String reservationNumber) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
+
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(Reservation reservation) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
+
     @RolesAllowed("getStatusCanceled")
     public Status getStatusCanceled() {
         throw new UnsupportedOperationException();

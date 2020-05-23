@@ -9,7 +9,7 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateful
@@ -21,7 +21,7 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     }
 
     @Override
-    public List<ReservationDTO> getReservationsByDate(Date date) {
+    public List<ReservationDTO> getReservationsByDate(LocalDateTime date) {
         return null;
     }
 
