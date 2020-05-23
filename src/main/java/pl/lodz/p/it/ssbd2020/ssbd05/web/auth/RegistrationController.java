@@ -52,7 +52,6 @@ public class RegistrationController implements Serializable {
                 this.registerAccountEndpointLocal.addNewAccount(account);
 
                 ResourceBundles.emitMessageWithFlash(null,"page.registration.account.created");
-                clear();
                 return "home";
             }
         } catch (LoginAlreadyExistsException ex) {
@@ -68,15 +67,6 @@ public class RegistrationController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
             log.log(Level.SEVERE, ex.getClass().toString(), ex);
         }
-        return "";
-    }
-
-    public void clear() {
-        this.setLogin("");
-        this.setPassword("");
-        this.setConfirmPassword("");
-        this.setEmailAddress("");
-        this.setFirstname("");
-        this.setLastname("");
+        return "register";
     }
 }

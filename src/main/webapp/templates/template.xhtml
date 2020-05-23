@@ -15,6 +15,12 @@
     </ui:insert>
 </h:head>
 <h:body>
+    <p:ajaxStatus onstart="PF('loading').show()" onsuccess="PF('loading').hide()" />
+
+    <p:dialog widgetVar="loading" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+        <p:graphicImage library="library" name="loading.gif" style="max-height: 50px; max-width: 50px" />
+    </p:dialog>
+
     <div class = "wrapper">		
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">

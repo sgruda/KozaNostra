@@ -59,7 +59,7 @@ public class AccountFacade extends AbstractFacade<Account> {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -86,9 +86,9 @@ public class AccountFacade extends AbstractFacade<Account> {
             return Optional.ofNullable(this.em.createNamedQuery("Account.findByEmail", Account.class)
                     .setParameter("email", mail).getSingleResult());
         } catch (NoResultException e) {
-            throw new AccountNotFoundException();
+            throw new AccountNotFoundException(e);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -98,7 +98,7 @@ public class AccountFacade extends AbstractFacade<Account> {
             return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
                     .setParameter("filter", accountFilter).getResultList();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -137,7 +137,7 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw new DatabaseQueryException(ex);
             }
         } catch (OptimisticLockException e) {
-            throw new AppOptimisticLockException();
+            throw new AppOptimisticLockException(e);
         } catch (PersistenceException e) {
             throw new DatabaseQueryException(e);
             //TODO tutaj dodamy wiecej wyjatkow, gdy juz bedziemy mieli edycje wieksza niz blokowanie/odblokowywanie konta

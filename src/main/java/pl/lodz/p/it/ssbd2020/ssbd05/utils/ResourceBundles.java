@@ -19,35 +19,35 @@ public class ResourceBundles {
 
     public static void emitErrorMessage(final String id, final String key) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key),getTranslatedText(key));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(id, msg);
     }
     public static void emitErrorMessageWithDetails(final String id, final String titleKey, final String detailsKey) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(titleKey), getTranslatedText(detailsKey));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(id, msg);
     }
     public static void emitErrorMessageWithFlash(final String id, final String key) {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key),getTranslatedText(key));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(id, msg);
     }
     public static void emitDetailedErrorWithFlash(final String id, final String key, final String data) {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key), data);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(id, msg);
     }
     public static void emitMessage(final String id, final String key) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getTranslatedText(key),getTranslatedText(key));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(id, msg);
     }
     public static void emitMessageWithFlash(final String id, final String key) {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getTranslatedText(key),getTranslatedText(key));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(id, msg);
     }
     public static void emitDetailedMessageWithFlash(final String id, final String key, final String data) {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getTranslatedText(key), data);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(id, msg);
     }
     public static Properties loadProperties(String propertiesKey) throws AppBaseException {
         InputStream inputStream = ResourceBundles.class.getClassLoader().getResourceAsStream(propertiesKey);

@@ -48,7 +48,7 @@ public class AccountFacade extends AbstractFacade<Account> {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 

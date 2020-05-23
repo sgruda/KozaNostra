@@ -132,6 +132,11 @@
                     </h:form>
                 </p:dialog>
             </h:form>
+            <c:if test="#{!accountDetailsController.account.confirmed}">
+                <h:form>
+                    <p:commandButton value="#{msg['page.accountdetails.mail']}" action="#{resendActivationEmailController.resendEmail(accountDetailsController.account.login)}"/>
+                </h:form>
+            </c:if>
         </div>
         </div>
     </ui:define>
