@@ -64,7 +64,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         for (PreviousPassword psw: account.getPreviousPasswordCollection()){
             if(psw.getPassword().equals(HashGenerator.sha256(newPassword))){
                 throw new AccountPasswordAlreadyUsedException();
-            }
+        }
         }
         account.setPassword(HashGenerator.sha256(newPassword));
         PreviousPassword previousPassword = new PreviousPassword();
