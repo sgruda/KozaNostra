@@ -59,6 +59,23 @@ public class LoginController implements Serializable {
             }
         }
     }
+    private void logAuthentication(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("["+LocalDateTime.now()+"] User: ");
+        sb.append(FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal());
+        sb.append(" IP: ");
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String remoteAddr = request.getHeader("X-FORWARDED-FOR");
+        if(remoteAddr != null){
+            remoteAddr = remoteAddr.replaceFirst(",.*","");
+        }
+        else{
+            remoteAddr = request.getRemoteAddr();
+        }
+        sb.append(remoteAddr);
+        sb.append(", session started");
+        log.info(sb.toString());
+    }
 
     public void login()  {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -74,7 +91,7 @@ public class LoginController implements Serializable {
                      this.emitMessegesAfterLogin();
                      externalContext.redirect(originalUrl);
                      lastLoginController.updateLastSuccesfullAuthDate();
-                     log.info("["+LocalDateTime.now()+"] User: "+ externalContext.getUserPrincipal().getName() + " session created  ");
+                     logAuthentication();
                  } catch (ServletException e) {
                      log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
                      ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
