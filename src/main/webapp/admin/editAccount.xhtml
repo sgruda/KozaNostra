@@ -41,7 +41,7 @@
                 <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:growl id="message" showDetail="true" />
                         <p:button value="#{msg['page.accountdetails.back']}" outcome="/admin/accountDetails.xhtml"/>
-                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" icon="pi pi-check" actionListener="#{editOtherAccountController.editAccount}" action="#{editOtherAccountController.goHome}" style="float: center;">
+                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" icon="pi pi-check" actionListener="#{editOtherAccountController.editAccount}" action="#{editOtherAccountController.goBack}" style="float: center;">
                             <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
