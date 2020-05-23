@@ -58,6 +58,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
+    @Pattern(regexp = "[a-zA-Z0-9!@#$%^*]+")
     @Column(name = "login", nullable = false, length = 32, unique = true, updatable = false)
     private String login;
 
@@ -118,7 +119,7 @@ public class Account implements Serializable {
 
 
     @Pattern(regexp = "((([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))" +
-            "|(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4})", message = "Invalid IP")
+            "|(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4})")
     @Size(max = 255)
     @Column(table = "authentication_data", name = "last_auth_ip")
     private String lastAuthIp;
