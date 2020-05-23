@@ -74,6 +74,7 @@ public class LoginController implements Serializable {
                      this.emitMessegesAfterLogin();
                      externalContext.redirect(originalUrl);
                      lastLoginController.updateLastSuccesfullAuthDate();
+                     log.info("["+LocalDateTime.now()+"] User: "+ externalContext.getUserPrincipal().getName() + " session created  ");
                  } catch (ServletException e) {
                      log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
                      ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
