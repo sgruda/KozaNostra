@@ -13,10 +13,13 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ChangeAccessLevelEn
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -99,8 +102,10 @@ public class AccountDetailsController implements Serializable {
 
     public void refresh() {
         try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
             this.account = accountDetailsEndpointLocal.getAccount(account.getLogin());
-        } catch (AppBaseException e) {
+        } catch (AppBaseException | IOException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
     }
