@@ -52,7 +52,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -85,7 +85,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -121,7 +121,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -143,7 +143,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -180,7 +180,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -203,7 +203,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendBlockedAccountEmail(account.getEmail());
@@ -229,7 +229,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendUnlockedAccountEmail(account.getEmail());

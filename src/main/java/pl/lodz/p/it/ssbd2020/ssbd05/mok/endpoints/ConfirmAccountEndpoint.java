@@ -43,7 +43,7 @@ public class ConfirmAccountEndpoint implements Serializable, ConfirmAccountEndpo
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -65,7 +65,7 @@ public class ConfirmAccountEndpoint implements Serializable, ConfirmAccountEndpo
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (!rollback) {
             EmailSender emailSender = new EmailSender();
             emailSender.sendConfirmedAccountEmail(account.getEmail());

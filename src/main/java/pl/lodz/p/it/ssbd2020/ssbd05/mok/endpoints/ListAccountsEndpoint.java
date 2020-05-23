@@ -47,7 +47,7 @@ public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointL
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
@@ -70,7 +70,7 @@ public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointL
             if(callCounter > 0)
                 log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
-        } while (rollback && callCounter < ResourceBundles.getTransactionRepeatLimit());
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
