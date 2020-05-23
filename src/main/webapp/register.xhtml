@@ -47,12 +47,12 @@
                                         value="#{registrationController.confirmPassword}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
                             <p:inputText id="firstName" required="true"
                                          value="#{registrationController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}" placeholder="#{msg['page.registration.account.firstname']} *">
-                                <f:validateRegex pattern="^[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż]+"/>
+                                <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
                                 <f:validateLength minimum="1" maximum="32" />
                             </p:inputText>
                             <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.registration.account.lastname.required']}"
                                          value="#{registrationController.lastname}" placeholder="#{msg['page.registration.account.lastname']} *">
-                                <f:validateRegex pattern="^[a-zA-ZĄąĆćĘęŁłŃńÓóŚśŹźŻż\\-]+"/>
+                                <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
                                 <f:validateLength minimum="1" maximum="32" />
                             </p:inputText>
                             <p:inputText id="emailAddress" required="true"
@@ -72,7 +72,6 @@
                         <p:message for="emailAddress"/>
                         <p:message for="Captcha"/>
                     </div>
-                   
                     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:commandButton value="#{msg['page.registration.account.reset']}" style="margin-right:20px;" icon="pi pi-undo">
                             <p:ajax update="register" resetValues="true" />
