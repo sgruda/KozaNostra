@@ -146,6 +146,9 @@
     </login-config>
 
     <error-page>
+        <location>/errors/error.xhtml</location>
+    </error-page>
+    <error-page>
         <error-code>500</error-code>
         <location>/errors/error500.xhtml</location>
     </error-page>
