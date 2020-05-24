@@ -4,43 +4,45 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <ui:composition template = "/templates/template.xhtml">
-        <ui:define name="head">
-            <title>#{msg['page.listaccounts.title']}</title>
-        </ui:define>
-        <ui:define name = "content">
-                <h:form id="form1" style="margin-bottom: auto">
-                    <p:inputText id="filterAccountsTextBox" value="#{listAccountsController.accountFilter}"  style="width: 90%; border-radius: 0" placeholder="#{msg['page.listaccounts.watermark']}"/>
-                        <p:commandButton id="filterbutton" value="#{msg['page.listaccounts.filter']}" style="width: 9.92%; border-radius: 0"
-                                         action="#{listAccountsController.filterAccounts()}"
-                                         update="filterbutton, :form1"/>
-                    <p:dataTable id="list" var="account" value="#{listAccountsController.accounts}" emptyMessage="#{msg['page.listaccounts.list.empty']}" >
-                        <p:column id="listLogin" headerText="#{msg['page.listaccounts.account.login']}">
-                            <h:outputText value="#{account.login}"/>
-                        </p:column>
+<ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.listaccounts.title']}</title>
+    </ui:define>
+    <ui:define name = "content">
+        <h:form id="form1" style="margin-bottom: auto">
+            <div style="width: auto; background-color: #626163">
+                <p:inputText id="filterAccountsTextBox" value="#{listAccountsController.accountFilter}"  style="width: 87.8%; border-radius: 0" placeholder="#{msg['page.listaccounts.watermark']}"/>
+                <p:commandButton id="filterbutton" value="#{msg['page.listaccounts.filter']}" style="float: right; width: 12%; border-radius: 0"
+                                 action="#{listAccountsController.filterAccounts()}"
+                                 update="filterbutton, :form1"/>
+            </div>
+            <p:dataTable var="account" value="#{listAccountsController.accounts}" emptyMessage="#{msg['page.listaccounts.list.empty']}" >
+                <p:column headerText="#{msg['page.listaccounts.account.login']}">
+                    <h:outputText value="#{account.login}"/>
+                </p:column>
 
-                        <p:column headerText="#{msg['page.listaccounts.account.firstname']}">
-                            <h:outputText value="#{account.firstname}"/>
-                        </p:column>
+                <p:column headerText="#{msg['page.listaccounts.account.firstname']}">
+                    <h:outputText value="#{account.firstname}"/>
+                </p:column>
 
-                        <p:column headerText="#{msg['page.listaccounts.account.lastname']}">
-                            <h:outputText value="#{account.lastname}"/>
-                        </p:column>
+                <p:column headerText="#{msg['page.listaccounts.account.lastname']}">
+                    <h:outputText value="#{account.lastname}"/>
+                </p:column>
 
-                        <p:column headerText="#{msg['page.listaccounts.account.email']}">
-                            <h:outputText value="#{account.email}"/>
-                        </p:column>
+                <p:column headerText="#{msg['page.listaccounts.account.email']}">
+                    <h:outputText value="#{account.email}"/>
+                </p:column>
 
-                        <p:column headerText="#{msg['page.listaccounts.account.lastsuccauth']}">
-                            <h:outputText value="#{account.lastSuccessfulAuth}"/>
-                        </p:column>
+                <p:column headerText="#{msg['page.listaccounts.account.lastsuccauth']}">
+                    <h:outputText value="#{account.lastSuccessfulAuth}"/>
+                </p:column>
 
-                        <p:column headerText="#{msg['page.listaccounts.account.lastsauthip']}">
-                            <h:outputText value="#{account.lastAuthIp}"/>
-                        </p:column>
-
+                <p:column headerText="#{msg['page.listaccounts.account.lastsauthip']}">
+                    <h:outputText value="#{account.lastAuthIp}"/>
+                </p:column>
                         <p:column headerText="#{msg['page.listaccounts.account.details']}">
-                            <p:commandButton id="goDetailsButton" value="#{msg['page.listaccounts.account.details']}" action="#{listAccountsController.selectAccount(account.getLogin())}"/>
+                            <p:commandButton id="goDetailsButton" value="#{msg['page.listaccounts.account.details']}"
+                                             action="#{listAccountsController.selectAccount(account.getLogin())}"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>

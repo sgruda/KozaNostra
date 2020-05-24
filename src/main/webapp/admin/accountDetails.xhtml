@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
@@ -7,132 +8,148 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 
-<ui:composition template = "../templates/template.xhtml">
+<ui:composition template="../templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.accountdetails.title']}</title>
         <style type="text/css">
-            .acc-details-role {
-
-                margin: 0 5px;
-            }
         </style>
     </ui:define>
-    <ui:define name = "content">
+    <ui:define name="content">
         <div>
             <p:messages globalOnly="true" closable="true">
                 <p:autoUpdate/>
             </p:messages>
-        <p:panelGrid id="panelGrid" columns="2">
-            <f:facet name="header">
-                <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
-            </f:facet>
+            <p:panelGrid id="panelGrid" columns="2">
+                <f:facet name="header">
+                    <p:graphicImage value="../pictures/profile.png" style="width: 150px; height: 150px;"/>
+                </f:facet>
 
-            <h:outputText value="#{msg['page.accountdetails.account.login']}" />
-            <h:outputText value="#{accountDetailsController.account.login}"/>
-            
-            <h:outputText value="#{msg['page.accountdetails.account.firstname']}" />
-            <h:outputText value="#{accountDetailsController.account.firstname}"/>
+                <h:outputText value="#{msg['page.accountdetails.account.login']}"/>
+                <h:outputText value="#{accountDetailsController.account.login}"/>
 
-            <h:outputText value="#{msg['page.accountdetails.account.lastname']}" />
-            <h:outputText value="#{accountDetailsController.account.lastname}"/>
+                <h:outputText value="#{msg['page.accountdetails.account.firstname']}"/>
+                <h:outputText value="#{accountDetailsController.account.firstname}"/>
 
-            <h:outputText value="#{msg['page.accountdetails.account.email']}" />
-            <h:outputText value="#{accountDetailsController.account.email}"/>
+                <h:outputText value="#{msg['page.accountdetails.account.lastname']}"/>
+                <h:outputText value="#{accountDetailsController.account.lastname}"/>
 
-            <h:outputText value="#{msg['page.accountdetails.account.active']}" />
-            <c:choose>
-                <c:when test="#{accountDetailsController.account.active}">
-                    <h:outputText id="active" value="#{msg['page.common.yes']}"/>
-                </c:when>
-                <c:otherwise>
-                    <h:outputText id="inactive" value="#{msg['page.common.no']}"/>
-                </c:otherwise>
-            </c:choose>
+                <h:outputText value="#{msg['page.accountdetails.account.email']}"/>
+                <h:outputText value="#{accountDetailsController.account.email}"/>
 
-            <h:outputText value="#{msg['page.accountdetails.account.confirmed']}" />
-            <c:choose>
-                <c:when test="#{accountDetailsController.account.confirmed}">
-                    <h:outputText value="#{msg['page.common.yes']}"/>
-                </c:when>
-                <c:otherwise>
-                    <h:outputText value="#{msg['page.common.no']}"/>
-                </c:otherwise>
-            </c:choose>
-            <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}" />
-            <ui:fragment>
-                <c:if test="#{accountDetailsController.account.accessLevelCollection.contains(roleController.getRoleClient())}">
-                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.client']}"/>
-                </c:if>
-                <c:if test="#{accountDetailsController.account.accessLevelCollection.contains(roleController.getRoleManager())}">
-                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.manager']}"/>
-                </c:if>
-                <c:if test="#{accountDetailsController.account.accessLevelCollection.contains(roleController.getRoleAdmin())}">
-                    <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.admin']}"/>
-                </c:if>
-            </ui:fragment>
+                <h:outputText value="#{msg['page.accountdetails.account.active']}"/>
+                <c:choose>
+                    <c:when test="#{accountDetailsController.account.active}">
+                        <h:outputText id="active" value="#{msg['page.common.yes']}"/>
+                    </c:when>
+                    <c:otherwise>
+                        <h:outputText id="inactive" value="#{msg['page.common.no']}"/>
+                    </c:otherwise>
+                </c:choose>
 
-            <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}" />
-            <h:outputText value="#{accountDetailsController.account.lastSuccessfulAuth}"/>
+                <h:outputText value="#{msg['page.accountdetails.account.confirmed']}"/>
+                <c:choose>
+                    <c:when test="#{accountDetailsController.account.confirmed}">
+                        <h:outputText value="#{msg['page.common.yes']}"/>
+                    </c:when>
+                    <c:otherwise>
+                        <h:outputText value="#{msg['page.common.no']}"/>
+                    </c:otherwise>
+                </c:choose>
+                <h:outputText value="#{msg['page.accountdetails.account.accesslevel']}"/>
+                <ui:fragment>
+                    <c:if test="#{accountDetailsController.account.accessLevelCollection.contains(roleController.getRoleClient())}">
+                        <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.client']}"/>
+                    </c:if>
+                    <c:if test="#{accountDetailsController.account.accessLevelCollection.contains(roleController.getRoleManager())}">
+                        <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.manager']}"/>
+                    </c:if>
+                    <c:if test="#{accountDetailsController.account.accessLevelCollection.contains(roleController.getRoleAdmin())}">
+                        <h:outputText style="margin: 0 5px;" value="#{msg['page.changelevel.admin']}"/>
+                    </c:if>
+                </ui:fragment>
 
-            <h:outputText value="#{msg['page.accountdetails.account.lastsfailauth']}" />
-            <h:outputText value="#{accountDetailsController.account.lastFailedAuth}"/>
-
-            <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
-            <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
-        </p:panelGrid>
-        <div style="margin: 5px;display:flex;justify-content: center">
-            <h:form id="commandButtons">
-                <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
-                <p:commandButton value="#{msg['page.accountdetails.edit']}" action="#{accountDetailsController.goToEditForm()}"/>
-                <p:commandButton id="unlockaccount" value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
-                                 rendered="#{!accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
-                <p:commandButton id="blockaccount" value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
-                                 rendered="#{accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
-            </h:form>
-            <p:commandButton value="#{msg['page.accountdetails.changePassword']}" action="#{changeOtherAccountPasswordController.redirectToChangePassword()}" actionListener="#{accountDetailsController.goToPasswordChange}"/>
-            <h:form id="addAccessLevel">
-                <p:commandButton id="addAccessLevelButton" value="#{msg['page.accountdetails.addAccessLevel']}" onclick="PF('addAccessLevelDialog').show();"/>
-                <p:dialog header="#{msg['page.accountdetails.addAccessLevel']}" widgetVar="addAccessLevelDialog" modal="true" height="100">
-                    <h:form>
-                        <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
-                            <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleClientActive}"
-                                                     value="#{accountDetailsController.roleClientActive}"
-                                                     itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
-                            <p:selectBooleanCheckbox id="addManagerRole" rendered="#{!accountDetailsController.roleManagerActive}"
-                                                     value="#{accountDetailsController.roleManagerActive}"
-                                                     itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
-                            <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleAdminActive}"
-                                                     value="#{accountDetailsController.roleAdminActive}"
-                                                     itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
-
-                        </h:panelGrid>
-                        <p:commandButton id="addRole" value="#{msg['page.accountdetails.accessLevel.add']}" icon="pi pi-check"  style="float: center;" action="#{accountDetailsController.changeAccessLevels}"
-                                         onclick="PF('dialog').close();"/>
+                <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}"/>
+                <h:outputText value="#{accountDetailsController.account.lastSuccessfulAuth}"/>
+                <h:outputText value="#{msg['page.accountdetails.account.lastsfailauth']}"/>
+                <h:outputText value="#{accountDetailsController.account.lastFailedAuth}"/>
+                <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
+                <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
+            </p:panelGrid>
+            <div style="margin: 5px;display:flex;justify-content: center">
+                <h:form id="commandButtons">
+                    <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
+                    <p:commandButton value="#{msg['page.accountdetails.edit']}" action="#{accountDetailsController.goToEditForm()}"/>
+                    <p:commandButton id="unlockaccount" value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
+                                     rendered="#{!accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
+                    <p:commandButton id="blockaccount" value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
+                                     rendered="#{accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
+                </h:form>
+                <p:commandButton value="#{msg['page.accountdetails.changePassword']}" action="#{changeOtherAccountPasswordController.redirectToChangePassword()}" actionListener="#{accountDetailsController.goToPasswordChange}"/>
+            </div>
+            <div style="text-align: center; padding: 5px">
+                <div style="text-align: center; padding: 5px">
+                    <h:form id="addAccessLevel" style="padding-bottom: 2px">
+                        <p:commandButton id="addAccessLevelButton" value="#{msg['page.accountdetails.addAccessLevel']}"
+                                         onclick="PF('addAccessLevelDialog').show();"/>
+                        <p:dialog header="#{msg['page.accountdetails.addAccessLevel']}" widgetVar="addAccessLevelDialog"
+                                  modal="true" height="100">
+                            <h:form>
+                                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                                    <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleClientActive}"
+                                                             value="#{accountDetailsController.roleClientActive}"
+                                                             itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
+                                    <p:selectBooleanCheckbox id="addManagerRole" rendered="#{!accountDetailsController.roleManagerActive}"
+                                                             value="#{accountDetailsController.roleManagerActive}"
+                                                             itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
+                                    <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleAdminActive}"
+                                                             value="#{accountDetailsController.roleAdminActive}"
+                                                             itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
+                                </h:panelGrid>
+                                <p:commandButton id="addRole" value="#{msg['page.accountdetails.accessLevel.add']}"
+                                                 icon="pi pi-check" style="float: center;"
+                                                 action="#{accountDetailsController.changeAccessLevels}"
+                                                 onclick="PF('dialog').close();"/>
+                            </h:form>
+                        </p:dialog>
                     </h:form>
-                </p:dialog>
-            </h:form>
-            <h:form id="removeAccessLevel">
-                <p:commandButton id="removeAccessLevelButton" value="#{msg['page.accountdetails.removeAccessLevel']}" onclick="PF('removeAccessLevelDialog').show();"/>
-                <p:dialog header="#{msg['page.accountdetails.removeAccessLevel']}" widgetVar="removeAccessLevelDialog" modal="true" height="100">
-                    <h:form>
-                        <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
-                            <p:selectBooleanCheckbox rendered="#{accountDetailsController.roleClientActive}"
-                                                     value="#{accountDetailsController.roleClientActive}"
-                                                     itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
-                            <p:selectBooleanCheckbox id="removeManagerRole" rendered="#{accountDetailsController.roleManagerActive}"
-                                                     value="#{accountDetailsController.roleManagerActive}"
-                                                     itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
-                            <p:selectBooleanCheckbox rendered="#{accountDetailsController.roleAdminActive}"
-                                                     value="#{accountDetailsController.roleAdminActive}"
-                                                     itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
+                </div>
+                <h:form>
+                    <p:commandButton id="removeAccessLevelButton"
+                                     value="#{msg['page.accountdetails.removeAccessLevel']}"
+                                     onclick="PF('removeAccessLevelDialog').show();"/>
 
-                        </h:panelGrid>
-                        <p:commandButton id="removeRole" value="#{msg['page.accountdetails.accessLevel.remove']}" icon="pi pi-check"  style="float: center;" action="#{accountDetailsController.changeAccessLevels}"
-                                         onclick="PF('dialog').close();"/>
+                    <p:dialog header="#{msg['page.accountdetails.removeAccessLevel']}"
+                              widgetVar="removeAccessLevelDialog" modal="true" height="100">
+                        <h:form>
+                            <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                                <p:selectBooleanCheckbox rendered="#{accountDetailsController.roleClientActive}"
+                                                         value="#{accountDetailsController.roleClientActive}"
+                                                         itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
+                                <p:selectBooleanCheckbox id="removeManagerRole"
+                                                         rendered="#{accountDetailsController.roleManagerActive}"
+                                                         value="#{accountDetailsController.roleManagerActive}"
+                                                         itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
+                                <p:selectBooleanCheckbox rendered="#{accountDetailsController.roleAdminActive}"
+                                                         value="#{accountDetailsController.roleAdminActive}"
+                                                         itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
+
+                            </h:panelGrid>
+                            <p:commandButton id="removeRole" value="#{msg['page.accountdetails.accessLevel.remove']}"
+                                             icon="pi pi-check" style="float: center;"
+                                             action="#{accountDetailsController.changeAccessLevels}"
+                                             onclick="PF('dialog').close();"/>
+                        </h:form>
+                    </p:dialog>
+                </h:form>
+            </div>
+            <div style="text-align: center; padding: 5px">
+                <c:if test="#{!accountDetailsController.account.confirmed}">
+                    <h:form>
+                        <p:commandButton value="#{msg['page.accountdetails.mail']}"
+                                         action="#{resendActivationEmailController.resendEmail(accountDetailsController.account.login)}"/>
                     </h:form>
-                </p:dialog>
-            </h:form>
-        </div>
+                </c:if>
+            </div>
         </div>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">

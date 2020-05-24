@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
@@ -15,8 +16,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +49,8 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
             super.create(entity);
         } catch (DatabaseException | PersistenceException e) {
             if(e.getMessage().contains("reservation_number_uindex"))
-                throw new ReservationAlreadyExistsException();
-            throw new DatabaseConnectionException();
+                throw new ReservationAlreadyExistsException(e);
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -56,8 +59,10 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     public void edit(Reservation entity) throws AppBaseException {
         try {
             super.edit(entity);
+        } catch (OptimisticLockException e) {
+            throw new AppOptimisticLockException(e);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -73,7 +78,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -83,7 +88,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
            //TODO Implementacja
             return null;
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -91,6 +96,10 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         throw new UnsupportedOperationException();
     }
     public List<Reservation> findByLogin(String login) throws AppBaseException{
+        throw new UnsupportedOperationException();
+    }
+
+    public List<Reservation> findByDate(LocalDateTime localDateTime){
         throw new UnsupportedOperationException();
     }
 }

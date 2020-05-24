@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
 <ui:composition template = "../templates/template.xhtml">
@@ -23,11 +23,18 @@
                 </h:outputLabel>
                 <h:outputLabel for="firstName" value="#{msg['page.edit.account.form.firstname']} *" >
                 <p:inputText id="firstName" required="true"
-                             value="${editOtherAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.account.form.firstname.required']}"/>
+                             value="${editOtherAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.account.form.firstname.required']}"
+                             validatorMessage="#{msg['page.edit.firstname.validator']}">
+                    <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                    <f:validateLength minimum="1" maximum="32" />
+                </p:inputText>
                 </h:outputLabel>
                 <h:outputLabel for="lastName" value="#{msg['page.edit.account.form.lastname']} *" >
                 <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.edit.account.form.lastname.required']}"
-                             value="${editOtherAccountController.accountDTO.lastname}"/>
+                             value="${editOtherAccountController.accountDTO.lastname}" validatorMessage="#{msg['page.edit.lastname.validator']}">
+                    <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                    <f:validateLength minimum="1" maximum="32" />
+                </p:inputText>
                 </h:outputLabel>
                 <h:outputLabel for="emailAddress" value="#{msg['page.edit.account.form.email']}" >
                 <p:inputText id="emailAddress"
@@ -41,7 +48,9 @@
                 <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:growl id="message" showDetail="true" />
                         <p:button value="#{msg['page.accountdetails.back']}" outcome="/admin/accountDetails.xhtml"/>
-                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" icon="pi pi-check" actionListener="#{editOtherAccountController.editAccount}" action="#{editOtherAccountController.goBack}" style="float: center;">
+                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" icon="pi pi-check"
+                                         actionListener="#{editOtherAccountController.editAccount}"
+                                         action="#{editOtherAccountController.goBack}" style="float: center;">
                             <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">

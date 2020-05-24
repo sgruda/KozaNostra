@@ -4,6 +4,7 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
@@ -14,8 +15,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.ws.rs.NotSupportedException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,8 +48,12 @@ public class HallFacade extends AbstractFacade<Hall> {
         try {
             super.create(entity);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
+    }
+
+    public Hall findByName(String name){
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -54,8 +61,10 @@ public class HallFacade extends AbstractFacade<Hall> {
     public void edit(Hall entity) throws AppBaseException {
         try {
             super.edit(entity);
+        } catch (OptimisticLockException e) {
+            throw new AppOptimisticLockException(e);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -64,8 +73,10 @@ public class HallFacade extends AbstractFacade<Hall> {
     public void remove(Hall entity) throws AppBaseException {
         try {
             super.remove(entity);
+        } catch (OptimisticLockException e) {
+            throw new AppOptimisticLockException(e);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -81,7 +92,7 @@ public class HallFacade extends AbstractFacade<Hall> {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -90,7 +101,7 @@ public class HallFacade extends AbstractFacade<Hall> {
             // TODO implementacja
             return new ArrayList<>();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 }

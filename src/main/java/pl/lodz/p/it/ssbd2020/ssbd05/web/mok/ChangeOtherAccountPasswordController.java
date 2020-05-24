@@ -49,27 +49,26 @@ public class ChangeOtherAccountPasswordController implements Serializable {
     public void init(){
         String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
         try {
-            this.accountDTO=editAccountEndpointLocal.findByLogin(selectedLogin);
+            this.accountDTO = editAccountEndpointLocal.findByLogin(selectedLogin);
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage());
         }
     }
-
-    public String setPassword() {
+    public void setPassword() {
         try {
             this.accountDTO.setPassword(newPassword);
-            editAccountEndpointLocal.changePassword(newPassword, accountDTO);
+            editAccountEndpointLocal.changeOtherAccountPassword(newPassword, accountDTO);
             ResourceBundles.emitMessageWithFlash(null, "page.changepassword.message");
-            return "accountDetails";
+            goBack();
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.changeotherpassword.optimisticlock");
-            return "accountDetails";
+            goBack();
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
         }
-        return "";
+        return;
     }
 
 
@@ -77,8 +76,13 @@ public class ChangeOtherAccountPasswordController implements Serializable {
         return "changePassword";
     }
 
-    public String goBack(){
-        return "accountDetails";
+    public void goBack(){
+        try {
+            FacesContext.getCurrentInstance()
+                    .getExternalContext().redirect("/ssbd05/admin/accountDetails.xhtml");
+        } catch (IOException e) {
+            log.info(e.getMessage());
+        }
+        return;
     }
-
 }

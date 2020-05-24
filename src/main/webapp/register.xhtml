@@ -29,32 +29,43 @@
                         <p:autoUpdate/>
                     </p:messages>
                     <div style="display:flex; flex-direction: column;text-align: center;margin: auto;">
-
-
-<!--                        <p:messages id="messages" closable="true" globalOnly="true">
-                            <p:autoUpdate />
-                        </p:messages>-->
-                            <p:inputText id="login" required="true" value="#{registrationController.login}" requiredMessage="#{msg['page.registration.account.login.required']}" placeholder="#{msg['page.registration.account.login']} *"/>
-                            <p:password id="password" required="true" feedback="true" promptLabel="#{msg['password.prompt']}"
-                                        weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
-                                        inline="true" match="confirmPassword" requiredMessage="#{msg['page.registration.account.password.required']}"
-                                        value="#{registrationController.password}" validatorMessage="#{msg['page.registration.account.password.validation']}" placeholder="#{msg['page.registration.account.password']} *">
-                                <f:validateRegex pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
-                            </p:password>
-                            <p:password id="confirmPassword" required="true" feedback="true" promptLabel="#{msg['confirmpassword.prompt']}"
-                                        weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
-                                        inline="true" requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
-                                        value="#{registrationController.confirmPassword}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
-                            <p:inputText id="firstName" required="true"
-                                         value="#{registrationController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}" placeholder="#{msg['page.registration.account.firstname']} *"/>
-                            <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.registration.account.lastname.required']}"
-                                         value="#{registrationController.lastname}" placeholder="#{msg['page.registration.account.lastname']} *"/>
-                            <p:inputText id="emailAddress" required="true"
+                        <p:inputText id="login" required="true" value="#{registrationController.login}"
+                                     requiredMessage="#{msg['page.registration.account.login.required']}"
+                                     placeholder="#{msg['page.registration.account.login']} *"
+                                     validatorMessage="#{msg['page.registration.login.validator']}">
+                            <f:validateRegex pattern="[a-zA-Z0-9!@#$%^*]+"/>
+                            <f:validateLength minimum="1" maximum="32"/>
+                        </p:inputText>
+                        <p:password id="password" required="true" feedback="true" promptLabel="#{msg['password.prompt']}"
+                                    weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
+                                    inline="true"  requiredMessage="#{msg['page.registration.account.password.required']}"
+                                    value="#{registrationController.password}" validatorMessage="#{msg['page.registration.account.password.validation']}" placeholder="#{msg['page.registration.account.password']} *">
+                            <f:validateRegex pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
+                        </p:password>
+                        <p:password id="confirmPassword" required="true" feedback="false" promptLabel="#{msg['confirmpassword.prompt']}"
+                                    requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
+                                    validator="#{passwordValidator.validatePasswordMatch}"
+                                    value="#{registrationController.confirmPassword}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
+                        <p:inputText id="firstName" required="true"
+                                         value="#{registrationController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}"
+                                         placeholder="#{msg['page.registration.account.firstname']} *"
+                                         validatorMessage="#{msg['page.edit.firstname.validator']}">
+                                <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32" />
+                        </p:inputText>
+                        <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.registration.account.lastname.required']}"
+                                         value="#{registrationController.lastname}" placeholder="#{msg['page.registration.account.lastname']} *"
+                                         validatorMessage="#{msg['page.edit.lastname.validator']}">
+                                <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32" />
+                            </p:inputText>
+                        <p:inputText id="emailAddress" required="true"
                                          value="#{registrationController.emailAddress}" validatorMessage="#{msg['page.registration.account.email.validation']}" requiredMessage="#{msg['page.registration.account.email.required']}" placeholder="#{msg['page.registration.account.email']} *">
                                 <f:validateRegex
                                         pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                             </p:inputText>
-                        </div>
+                        <br/>
+                    </div>
                     <div style="display:flex; flex-direction: column;">
                         <p:captcha id="Captcha" requiredMessage="#{msg['page.registration.account.captcha.required']}" 
                                    required="true" language="#{msg['page.registration.account.captcha.language']}"/>
@@ -66,9 +77,9 @@
                         <p:message for="emailAddress"/>
                         <p:message for="Captcha"/>
                     </div>
-                   
                     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
-                        <p:commandButton value="#{msg['page.registration.account.reset']}" style="margin-right:20px;" icon="pi pi-undo">
+                        <p:commandButton value="#{msg['page.registration.account.reset']}" validateClient="true"
+                                         style="margin-right:20px;" icon="pi pi-undo">
                             <p:ajax update="register" resetValues="true" />
                         </p:commandButton>
                         <p:commandButton id="submit" ajax="false" value="#{msg['page.registration.account.register']}" icon="pi pi-check" style="float: center;" action="#{registrationController.register()}"/>

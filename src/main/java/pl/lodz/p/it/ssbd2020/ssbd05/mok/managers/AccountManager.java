@@ -38,7 +38,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     private AccessLevelFacade accessLevelFacade;
 
     @PermitAll
-    public Account findByLogin(String login) throws AccountNotFoundException {
+    public Account findByLogin(String login) throws AppBaseException {
         try {
             return accountFacade.findByLogin(login).get();
         } catch (AccountNotFoundException e) {
@@ -57,7 +57,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     public Account findByMail(String mail) throws AppBaseException {
         if(accountFacade.findByMail(mail).isPresent())
             return accountFacade.findByMail(mail).get();
-        else throw new AccountNotFoundException("");
+        else throw new AccountNotFoundException(ResourceBundles.getTranslatedText("error.account.not.found"));
     }
 
     @PermitAll
@@ -113,14 +113,14 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     public ForgotPasswordToken findTokenByHash(String hash) throws AppBaseException {
         if (forgotPasswordTokenFacade.findByHash(hash).isPresent())
             return forgotPasswordTokenFacade.findByHash(hash).get();
-        else throw new AppBaseException("");
+        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
     }
 
     @PermitAll
     public void setPasswordAfterReset(Account account) throws AppBaseException {
         if(account.isConfirmed() && account.isActive())
             accountFacade.edit(account);
-        else throw new AppBaseException("");
+        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
     }
 
     @PermitAll

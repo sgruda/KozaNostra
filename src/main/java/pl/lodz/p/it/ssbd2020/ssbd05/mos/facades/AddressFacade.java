@@ -42,7 +42,7 @@ public class AddressFacade extends AbstractFacade<Address> {
         try {
             super.create(entity);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -58,7 +58,7 @@ public class AddressFacade extends AbstractFacade<Address> {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 }

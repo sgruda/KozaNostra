@@ -36,4 +36,9 @@ public @Data class AccountDTO {
         this.veryficationToken = veryficationToken;
         this.failedAuthCounter = failedAuthCounter;
     }
+
+    @Override
+    public String toString(){
+        return "pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO[login= " + login + "]";
+    }
 }
