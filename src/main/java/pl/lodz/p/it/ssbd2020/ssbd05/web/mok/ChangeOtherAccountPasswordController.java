@@ -10,25 +10,26 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedExc
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Log
 @Named
-@ConversationScoped
+@ViewScoped
 public class ChangeOtherAccountPasswordController implements Serializable {
 
 
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
 
-    @Inject
-    private Conversation conversation;
 
     @Getter
     @Setter
@@ -42,30 +43,33 @@ public class ChangeOtherAccountPasswordController implements Serializable {
     @Getter
     @Setter
     private AccountDTO accountDTO;
-    @Getter
-    @Setter
-    private String previousCid;
 
 
-    public void init(String login, String cid) throws AppBaseException{
-        if(!conversation.isTransient()) {
-            conversation.end();
+    @PostConstruct
+    public void init(){
+        String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
+        try {
+            this.accountDTO=editAccountEndpointLocal.findByLogin(selectedLogin);
+        } catch (AppBaseException appBaseException) {
+            log.severe(appBaseException.getMessage());
         }
-        conversation.begin();
-        this.accountDTO=editAccountEndpointLocal.findByLogin(login);
-        this.previousCid=cid;
     }
 
-    public void setPassword() throws AppBaseException {
-        AccountDTO accountDTO = editAccountEndpointLocal.findByLogin(this.accountDTO.getLogin());
+    public String setPassword() {
         try {
+            this.accountDTO.setPassword(newPassword);
             editAccountEndpointLocal.changePassword(newPassword, accountDTO);
-            ResourceBundles.emitMessage(null, "page.changepassword.message");
+            ResourceBundles.emitMessageWithFlash(null, "page.changepassword.message");
+            return "accountDetails";
         } catch (AppOptimisticLockException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        } catch (AccountPasswordAlreadyUsedException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.changeotherpassword.optimisticlock");
+            return "accountDetails";
+        } catch (AppBaseException appBaseException) {
+            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
         }
+        return "";
     }
 
 
@@ -73,17 +77,8 @@ public class ChangeOtherAccountPasswordController implements Serializable {
         return "changePassword";
     }
 
-    public void goBack(){
-        try {
-            FacesContext.getCurrentInstance()
-                    .getExternalContext().redirect("/ssbd05/admin/accountDetails.xhtml?cid="+previousCid);
-        } catch (IOException e) {
-            log.info(e.getMessage());
-        }
-        return;
+    public String goBack(){
+        return "accountDetails";
     }
 
-    public String getChangeOtherPasswdConversationID(){
-        return conversation.getId();
-    }
 }
