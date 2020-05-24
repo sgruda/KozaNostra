@@ -149,43 +149,6 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
-
-    @RolesAllowed("editOtherAccount")
-    public void edit(AccountDTO accountDTO) throws AppBaseException {
-        Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
-        Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
-        AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
-        Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
-        for (AccessLevel accessLevel : accessLevelCollection) {
-            if (accessLevel instanceof Admin) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleAdmin")));
-            } else if (accessLevel instanceof Manager) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleManager")));
-            } else if (accessLevel instanceof Client) {
-                accessLevel.setActive(collectionContainsIgnoreCase(accessLevelStringCollection, properties.getProperty("roleClient")));
-            }
-        }
-        account.setAccessLevelCollection(accessLevelCollection);
-
-        int callCounter = 0;
-        boolean rollback;
-        do {
-            try {
-                accountManager.edit(account);
-                rollback = accountManager.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
-                log.warning("EJBTransactionRolledBack");
-                rollback = true;
-            }
-            if(callCounter > 0)
-                log.info("Transaction with ID " + accountManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-            callCounter++;
-        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
-        if (rollback) {
-            throw new ExceededTransactionRetriesException();
-        }
-    }
-
     @PermitAll
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         log.warning("Siema endpoint " + account.getLogin() + account.isActive());

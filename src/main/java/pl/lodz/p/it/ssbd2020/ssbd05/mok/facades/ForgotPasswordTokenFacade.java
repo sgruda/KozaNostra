@@ -5,9 +5,10 @@ import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.ForgotPasswordToken;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
-import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -47,7 +48,7 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public void edit(ForgotPasswordToken entity) throws AppBaseException {
         try {
             super.edit(entity);
@@ -71,12 +72,13 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<ForgotPasswordToken> find(Object id) {
         return super.find(id);
     }
 
     @Override
+    @PermitAll
     public List<ForgotPasswordToken> findAll() throws AppBaseException {
         try {
             return super.findAll();
