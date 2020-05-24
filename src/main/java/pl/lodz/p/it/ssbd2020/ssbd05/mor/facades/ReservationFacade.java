@@ -19,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -95,6 +96,10 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         throw new UnsupportedOperationException();
     }
     public List<Reservation> findByLogin(String login) throws AppBaseException{
+        throw new UnsupportedOperationException();
+    }
+
+    public List<Reservation> findByDate(LocalDateTime localDateTime){
         throw new UnsupportedOperationException();
     }
 }

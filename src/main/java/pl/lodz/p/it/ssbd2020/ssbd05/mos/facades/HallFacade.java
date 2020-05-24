@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.ws.rs.NotSupportedException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -49,6 +50,10 @@ public class HallFacade extends AbstractFacade<Hall> {
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
+    }
+
+    public Hall findByName(String name){
+        throw new UnsupportedOperationException();
     }
 
     @Override
