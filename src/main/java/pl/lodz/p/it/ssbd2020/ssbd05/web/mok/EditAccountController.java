@@ -24,12 +24,23 @@ import java.time.LocalDateTime;
 @Named
 @ViewScoped
 public class EditAccountController implements Serializable {
+
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
 
     @Getter
     @Setter
     private AccountDTO accountDTO;
+
+    @PostConstruct
+    public void init() {
+        try {
+            accountDTO = editAccountEndpointLocal.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+        } catch (AppBaseException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+        }
+    }
 
     public void editAccount() throws AppBaseException {
         try {
@@ -44,22 +55,9 @@ public class EditAccountController implements Serializable {
         } catch (DatabaseQueryException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (DatabaseConnectionException ex){
+        } catch (DatabaseConnectionException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
-
     }
-
-    @PostConstruct
-    public void init() {
-        try {
-            accountDTO = editAccountEndpointLocal.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-        } catch (AppBaseException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
-        }
-    }
-
-
 }

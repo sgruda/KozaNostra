@@ -67,14 +67,14 @@
                                     pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
 
-                        <h:outputLabel for="accessLevels" value="#{msg['page.accountdetails.account.accesslevel']}:" style="font-size: 14px; text-align: left;"/>
+                        <h:outputLabel for="accessLevels" value="#{msg['page.accountdetails.account.accesslevel']} *" style="font-size: 14px; text-align: left;"/>
                         <p:selectManyCheckbox id="accessLevels"  required="true" requiredMessage="#{msg['page.addaccount.noaccesslevels']}" value="#{addAccountController.accessLevels}">
                             <f:selectItem itemLabel="#{msg['page.changelevel.client']}" itemValue="#{roleController.getRoleClient()}"/>
                             <f:selectItem itemLabel="#{msg['page.changelevel.manager']}" itemValue="#{roleController.getRoleManager()}"/>
                             <f:selectItem itemLabel="#{msg['page.changelevel.admin']}" itemValue="#{roleController.getRoleAdmin()}"/>
                         </p:selectManyCheckbox>
 
-                        <h:outputLabel for="active" value="#{msg['page.addaccount.activelabel']}:" style="font-size: 14px; text-align: left;"/>
+                        <h:outputLabel for="active" value="#{msg['page.addaccount.activelabel']}" style="font-size: 14px; text-align: left;"/>
                         <p:selectBooleanCheckbox id="active" value="#{addAccountController.active}" itemLabel="#{msg['page.accountdetails.account.active']}" style="text-align: left;"/>
                     </div>
 

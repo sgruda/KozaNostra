@@ -47,8 +47,10 @@
                 </div>
                 <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:growl id="message" showDetail="true" />
-                        <p:button value="#{msg['page.accountdetails.back']}" outcome="/admin/accountDetails.xhtml?cid=#{editOtherAccountController.editAccountConversationID}"/>
-                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" validateClient="true" icon="pi pi-check" actionListener="#{editOtherAccountController.editAccount()}" style="float: center;">
+                        <p:button value="#{msg['page.accountdetails.back']}" outcome="/admin/accountDetails.xhtml"/>
+                        <p:commandButton id="submit" value="#{msg['page.edit.account.button.edit']}" icon="pi pi-check"
+                                         actionListener="#{editOtherAccountController.editAccount}"
+                                         action="#{editOtherAccountController.goBack}" style="float: center;">
                             <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
@@ -61,8 +63,8 @@
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
-        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/admin/accountDetails.xhtml?cid=#{editOtherAccountController.editAccountConversationID}" />
-        <p:menuitem value="#{msg['page.edit.breadcrumbs']}" outcome="/admin/editAccount.xhtml?cid=#{editOtherAccountController.editAccountConversationID}" />
+        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/admin/accountDetails.xhtml" />
+        <p:menuitem value="#{msg['page.edit.breadcrumbs']}" outcome="/admin/editAccount.xhtml" />
     </ui:define>
 </ui:composition>
 </html>

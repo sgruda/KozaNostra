@@ -12,8 +12,9 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRe
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
+import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -21,22 +22,21 @@ import java.time.LocalDateTime;
 
 @Log
 @Named
-@ConversationScoped
+@ViewScoped
 public class EditOtherAccountController implements Serializable {
-    @Inject
-    private EditAccountEndpointLocal editAccountEndpointLocal;
 
     @Inject
-    private Conversation conversation;
+    private EditAccountEndpointLocal editAccountEndpointLocal;
 
     @Getter
     @Setter
     private AccountDTO accountDTO;
 
-    public String selectAccount(AccountDTO accountDTO) throws AppBaseException {
-        this.accountDTO = accountDTO;
-        try{
-            editAccountEndpointLocal.findByLogin(accountDTO.getLogin());
+    @PostConstruct
+    public void init() {
+        String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
+        try {
+            this.accountDTO = editAccountEndpointLocal.findByLogin(selectedLogin);
         }
         catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
@@ -47,34 +47,43 @@ public class EditOtherAccountController implements Serializable {
         } catch (DatabaseQueryException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (DatabaseConnectionException ex){
+        }catch (DatabaseConnectionException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        } catch (AppBaseException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
         }
-        return "editAccount";
-    }
-
-    public String getEditAccountConversationID(){
-        return conversation.getId();
     }
 
     public void editAccount() throws AppBaseException {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
-            ResourceBundles.emitMessage(null,"page.edit.account.message");
+            ResourceBundles.emitMessageWithFlash(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
         } catch (ExceededTransactionRetriesException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         } catch (DatabaseQueryException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (DatabaseConnectionException ex){
+        } catch (DatabaseConnectionException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
+    }
 
+    public String goBack() {
+        try {
+            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).equals(accountDTO)) {
+                return "accountDetails";
+            }
+        } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
+        return "";
     }
 }

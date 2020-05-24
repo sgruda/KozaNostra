@@ -103,4 +103,41 @@
         </navigation-case>
     </navigation-rule>
 
+    <navigation-rule>
+        <from-view-id>/admin/listAccounts.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>accountDetails</from-outcome>
+            <to-view-id>/admin/accountDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/admin/accountDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>editAccount</from-outcome>
+            <to-view-id>/admin/editAccount.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/admin/editAccount.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>accountDetails</from-outcome>
+            <to-view-id>/admin/accountDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/admin/changeOtherPassword.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>accountDetails</from-outcome>
+            <to-view-id>/admin/accountDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+
 </faces-config>

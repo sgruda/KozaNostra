@@ -70,60 +70,49 @@
 
                 <h:outputText value="#{msg['page.accountdetails.account.lastsuccauth']}"/>
                 <h:outputText value="#{accountDetailsController.account.lastSuccessfulAuth}"/>
-
                 <h:outputText value="#{msg['page.accountdetails.account.lastsfailauth']}"/>
                 <h:outputText value="#{accountDetailsController.account.lastFailedAuth}"/>
-
-                <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}"/>
+                <h:outputText value="#{msg['page.accountdetails.account.lastsauthip']}" />
                 <h:outputText value="#{accountDetailsController.account.lastAuthIp}"/>
             </p:panelGrid>
-            <div style="text-align: center; padding: 5px">
+            <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
-                    <p:commandButton value="#{msg['page.accountdetails.back']}"
-                                     action="#{accountDetailsController.goBack()}"/>
-                    <p:commandButton value="#{msg['page.accountdetails.edit']}"
-                                     action="#{editOtherAccountController.selectAccount(accountDetailsController.account)}"/>
-                    <p:commandButton id="unlockaccount" value="#{msg['page.accountdetails.unlockAccount']}"
-                                     action="#{accountDetailsController.unlockAccount()}"
-                                     rendered="#{!accountDetailsController.account.active}"
-                                     update="commandButtons, :panelGrid"/>
-                    <p:commandButton id="blockaccount" value="#{msg['page.accountdetails.blockAccount']}"
-                                     action="#{accountDetailsController.blockAccount()}"
-                                     rendered="#{accountDetailsController.account.active}"
-                                     update="commandButtons, :panelGrid"/>
-                    <p:commandButton value="#{msg['page.accountdetails.changePassword']}"
-                                     action="#{changeOtherAccountPasswordController.redirectToChangePassword()}"
-                                     actionListener="#{changeOtherAccountPasswordController.init(accountDetailsController.account.login,accountDetailsController.accountDetailsConversationID)}"/>
+                    <p:commandButton value="#{msg['page.accountdetails.back']}" action="#{accountDetailsController.goBack()}"/>
+                    <p:commandButton value="#{msg['page.accountdetails.edit']}" action="#{accountDetailsController.goToEditForm()}"/>
+                    <p:commandButton id="unlockaccount" value="#{msg['page.accountdetails.unlockAccount']}" action="#{accountDetailsController.unlockAccount()}"
+                                     rendered="#{!accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
+                    <p:commandButton id="blockaccount" value="#{msg['page.accountdetails.blockAccount']}" action="#{accountDetailsController.blockAccount()}"
+                                     rendered="#{accountDetailsController.account.active}" update="commandButtons, :panelGrid"/>
                 </h:form>
+                <p:commandButton value="#{msg['page.accountdetails.changePassword']}" action="#{changeOtherAccountPasswordController.redirectToChangePassword()}" actionListener="#{accountDetailsController.goToPasswordChange}"/>
             </div>
             <div style="text-align: center; padding: 5px">
-                <h:form style="padding-bottom: 2px">
-                    <p:commandButton id="addAccessLevelButton" value="#{msg['page.accountdetails.addAccessLevel']}"
-                                     onclick="PF('addAccessLevelDialog').show();"/>
-
-                    <p:dialog header="#{msg['page.accountdetails.addAccessLevel']}" widgetVar="addAccessLevelDialog"
-                              modal="true" height="100">
-                        <h:form>
-                            <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
-                                <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleClientActive}"
-                                                         value="#{accountDetailsController.roleClientActive}"
-                                                         itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
-                                <p:selectBooleanCheckbox id="addManagerRole"
-                                                         rendered="#{!accountDetailsController.roleManagerActive}"
-                                                         value="#{accountDetailsController.roleManagerActive}"
-                                                         itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
-                                <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleAdminActive}"
-                                                         value="#{accountDetailsController.roleAdminActive}"
-                                                         itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
-
-                            </h:panelGrid>
-                            <p:commandButton id="addRole" value="#{msg['page.accountdetails.accessLevel.add']}"
-                                             icon="pi pi-check" style="float: center;"
-                                             action="#{accountDetailsController.changeAccessLevels}"
-                                             onclick="PF('dialog').close();"/>
-                        </h:form>
-                    </p:dialog>
-                </h:form>
+                <div style="text-align: center; padding: 5px">
+                    <h:form id="addAccessLevel" style="padding-bottom: 2px">
+                        <p:commandButton id="addAccessLevelButton" value="#{msg['page.accountdetails.addAccessLevel']}"
+                                         onclick="PF('addAccessLevelDialog').show();"/>
+                        <p:dialog header="#{msg['page.accountdetails.addAccessLevel']}" widgetVar="addAccessLevelDialog"
+                                  modal="true" height="100">
+                            <h:form>
+                                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                                    <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleClientActive}"
+                                                             value="#{accountDetailsController.roleClientActive}"
+                                                             itemLabel="#{msg['page.accountdetails.accessLevel.client']}"/>
+                                    <p:selectBooleanCheckbox id="addManagerRole" rendered="#{!accountDetailsController.roleManagerActive}"
+                                                             value="#{accountDetailsController.roleManagerActive}"
+                                                             itemLabel="#{msg['page.accountdetails.accessLevel.manager']}"/>
+                                    <p:selectBooleanCheckbox rendered="#{!accountDetailsController.roleAdminActive}"
+                                                             value="#{accountDetailsController.roleAdminActive}"
+                                                             itemLabel="#{msg['page.accountdetails.accessLevel.admin']}"/>
+                                </h:panelGrid>
+                                <p:commandButton id="addRole" value="#{msg['page.accountdetails.accessLevel.add']}"
+                                                 icon="pi pi-check" style="float: center;"
+                                                 action="#{accountDetailsController.changeAccessLevels}"
+                                                 onclick="PF('dialog').close();"/>
+                            </h:form>
+                        </p:dialog>
+                    </h:form>
+                </div>
                 <h:form>
                     <p:commandButton id="removeAccessLevelButton"
                                      value="#{msg['page.accountdetails.removeAccessLevel']}"
@@ -164,9 +153,8 @@
         </div>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml"/>
-        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}"
-                    outcome="/admin/accountDetails.xhtml?cid=#{accountDetailsController.accountDetailsConversationID}"/>
+        <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
+        <p:menuitem value="#{msg['page.accountdetails.breadcrumbs']}" outcome="/admin/accountDetails.xhtml" />
     </ui:define>
 </ui:composition>
 </html>

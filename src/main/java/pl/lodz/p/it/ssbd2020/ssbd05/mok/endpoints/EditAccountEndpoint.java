@@ -151,7 +151,6 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
 
     @PermitAll
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
-        log.warning("Siema endpoint " + account.getLogin() + account.isActive());
         boolean rollback;
         int callCounter = 0;
         do {

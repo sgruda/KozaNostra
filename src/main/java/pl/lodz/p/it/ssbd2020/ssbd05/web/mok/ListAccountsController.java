@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ListAccountsEndpointLocal;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -46,5 +47,10 @@ public class ListAccountsController implements Serializable {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
+    }
+
+    public String selectAccount(String login) {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedLogin", login);
+        return "accountDetails";
     }
 }

@@ -6,27 +6,42 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Log
 @Named
-@RequestScoped
+@ViewScoped
 public class ActivationAccountController implements Serializable {
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
 
-    public void unlockAccount(AccountDTO account) throws AppBaseException {
-        editAccountEndpointLocal.findByLogin(account.getLogin());
-        editAccountEndpointLocal.unlockAccount(account);
-        ResourceBundles.emitMessage(null,"page.accountdetails.unlock");
+    private AccountDTO account;
+
+    public AccountDTO getAccount() {
+        return account;
     }
 
-    public void blockAccount(AccountDTO account) throws AppBaseException {
-        editAccountEndpointLocal.findByLogin(account.getLogin());
+    public void setAccount(AccountDTO account) {
+        this.account = account;
+        try {
+            editAccountEndpointLocal.findByLogin(account.getLogin());
+        } catch (AppBaseException e) {
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+        }
+    }
+
+    public void unlockAccount() throws AppBaseException {
+        editAccountEndpointLocal.unlockAccount(account);
+        ResourceBundles.emitMessageWithFlash(null,"page.accountdetails.unlock");
+    }
+
+    public void blockAccount() throws AppBaseException {
         editAccountEndpointLocal.blockAccount(account);
-        ResourceBundles.emitMessage(null,"page.accountdetails.blocked");
+        ResourceBundles.emitMessageWithFlash(null,"page.accountdetails.blocked");
     }
 }

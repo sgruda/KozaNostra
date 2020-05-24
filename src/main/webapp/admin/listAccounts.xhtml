@@ -40,15 +40,15 @@
                 <p:column headerText="#{msg['page.listaccounts.account.lastsauthip']}">
                     <h:outputText value="#{account.lastAuthIp}"/>
                 </p:column>
-
-                <p:column headerText="#{msg['page.listaccounts.account.details']}">
-                    <p:commandButton id="goDetailsButton" value="#{msg['page.listaccounts.account.details']}" action="#{accountDetailsController.selectAccount(account)}"/>
-                </p:column>
-            </p:dataTable>
-        </h:form>
-    </ui:define>
-    <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
-    </ui:define>
-</ui:composition>
+                        <p:column headerText="#{msg['page.listaccounts.account.details']}">
+                            <p:commandButton id="goDetailsButton" value="#{msg['page.listaccounts.account.details']}"
+                                             action="#{listAccountsController.selectAccount(account.getLogin())}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+        </ui:define>
+        <ui:define name="breadcrumb-menuitems">
+            <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/admin/listAccounts.xhtml" />
+        </ui:define>
+    </ui:composition>
 </html>
