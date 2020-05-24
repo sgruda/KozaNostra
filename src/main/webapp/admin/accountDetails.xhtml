@@ -97,13 +97,9 @@
                 </h:form>
             </div>
             <div style="text-align: center; padding: 5px">
-                <h:form>
+                <h:form style="padding-bottom: 2px">
                     <p:commandButton id="addAccessLevelButton" value="#{msg['page.accountdetails.addAccessLevel']}"
                                      onclick="PF('addAccessLevelDialog').show();"/>
-
-                    <p:commandButton id="removeAccessLevelButton"
-                                     value="#{msg['page.accountdetails.removeAccessLevel']}"
-                                     onclick="PF('removeAccessLevelDialog').show();"/>
 
                     <p:dialog header="#{msg['page.accountdetails.addAccessLevel']}" widgetVar="addAccessLevelDialog"
                               modal="true" height="100">
@@ -127,6 +123,11 @@
                                              onclick="PF('dialog').close();"/>
                         </h:form>
                     </p:dialog>
+                </h:form>
+                <h:form>
+                    <p:commandButton id="removeAccessLevelButton"
+                                     value="#{msg['page.accountdetails.removeAccessLevel']}"
+                                     onclick="PF('removeAccessLevelDialog').show();"/>
 
                     <p:dialog header="#{msg['page.accountdetails.removeAccessLevel']}"
                               widgetVar="removeAccessLevelDialog" modal="true" height="100">
