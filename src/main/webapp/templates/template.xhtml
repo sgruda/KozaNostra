@@ -15,6 +15,12 @@
     </ui:insert>
 </h:head>
 <h:body>
+    <p:ajaxStatus onstart="PF('loading').show()" onsuccess="PF('loading').hide()" />
+
+    <p:dialog widgetVar="loading" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+        <p:graphicImage library="library" name="loading.gif" style="max-height: 50px; max-width: 50px" />
+    </p:dialog>
+
     <div class = "wrapper">		
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
@@ -23,7 +29,7 @@
                     <div>
                         <p:button id="listAccountsButton" value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
                     </div>
-                    <div>
+                    <div style="padding-top: 5px; padding-bottom: 5px">
                         <p:button id="addAccountButton" value="#{msg['page.template.admin.addAccount']}" outcome="/admin/addAccount.xhtml"/>
                     </div>
                 </ui:fragment>
@@ -36,7 +42,7 @@
             </p:sidebar>
              <div class = "header-left">
                  <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole(roleController.getRoleAdmin()) or roleController.isSelectedRole(roleController.getRoleManager())}">
-                     <i class="pi pi-bars" style="font-size: 3em;color: white" ></i>
+                     <i class="pi pi-bars" style="font-size: 3em;color: white" />
                  </p:commandLink>
                  <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
              </div>

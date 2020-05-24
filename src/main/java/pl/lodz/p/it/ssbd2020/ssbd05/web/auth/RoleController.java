@@ -11,6 +11,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Properties;
 
 @Named
+@Log
 @SessionScoped
 public class RoleController implements Serializable {
 
@@ -34,8 +36,28 @@ public class RoleController implements Serializable {
 
     public void setCurrentRole(String role) throws IOException {
         this.setSelectedRole(role);
+        logRoleChange(role);
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.redirect(externalContext.getRequestContextPath() + "/index.xhtml");
+    }
+
+    private void logRoleChange(String role){
+        StringBuilder sb = new StringBuilder();
+        sb.append("User: ");
+        sb.append(FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal());
+        sb.append(" IP: ");
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String remoteAddr = request.getHeader("X-FORWARDED-FOR");
+        if(remoteAddr != null){
+            remoteAddr = remoteAddr.replaceFirst(",.*","");
+        }
+        else{
+            remoteAddr = request.getRemoteAddr();
+        }
+        sb.append(remoteAddr);
+        sb.append(" changed role to: ");
+        sb.append(role);
+        log.info(sb.toString());
     }
 
     public String[] getAllUserRoles() {

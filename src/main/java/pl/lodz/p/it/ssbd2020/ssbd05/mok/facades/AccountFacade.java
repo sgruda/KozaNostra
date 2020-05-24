@@ -12,6 +12,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
@@ -19,13 +20,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.persistence.*;
-import java.util.Collection;
 import java.sql.SQLNonTransientConnectionException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +45,7 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<Account> find(Object id) {
         return super.find(id);
     }
@@ -59,25 +56,32 @@ public class AccountFacade extends AbstractFacade<Account> {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
     @PermitAll
-    public Optional<Account> findByLogin(String username) throws AccountNotFoundException {
-        try{
+    public Optional<Account> findByLogin(String username) throws AppBaseException {
+        try {
             return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
                     .setParameter("login", username).getSingleResult());
-        } catch(NoResultException noResultException) {
+        } catch (NoResultException noResultException) {
            throw new AccountNotFoundException(noResultException);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
         }
     }
 
-
     @PermitAll
-    public Optional<Account> findByToken(String token) {
-        return Optional.ofNullable(this.em.createNamedQuery("Account.findByToken", Account.class)
-                .setParameter("token", token).getSingleResult());
+    public Optional<Account> findByToken(String token) throws AppBaseException {
+        try {
+            return Optional.ofNullable(this.em.createNamedQuery("Account.findByToken", Account.class)
+                    .setParameter("token", token).getSingleResult());
+        } catch (NoResultException noResultException) {
+            throw new AccountNotFoundException(noResultException);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @PermitAll
@@ -86,19 +90,19 @@ public class AccountFacade extends AbstractFacade<Account> {
             return Optional.ofNullable(this.em.createNamedQuery("Account.findByEmail", Account.class)
                     .setParameter("email", mail).getSingleResult());
         } catch (NoResultException e) {
-            throw new AccountNotFoundException();
+            throw new AccountNotFoundException(e);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
-    //    @RolesAllowed()
+    @RolesAllowed("filterAccounts")
     public Collection<Account> filterAccounts(String accountFilter) throws AppBaseException {
         try {
             return em.createNamedQuery("Account.filterByNameAndSurname", Account.class)
                     .setParameter("filter", accountFilter).getResultList();
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException();
+            throw new DatabaseConnectionException(e);
         }
     }
 
@@ -137,10 +141,9 @@ public class AccountFacade extends AbstractFacade<Account> {
                 throw new DatabaseQueryException(ex);
             }
         } catch (OptimisticLockException e) {
-            throw new AppOptimisticLockException();
+            throw new AppOptimisticLockException(e);
         } catch (PersistenceException e) {
             throw new DatabaseQueryException(e);
-            //TODO tutaj dodamy wiecej wyjatkow, gdy juz bedziemy mieli edycje wieksza niz blokowanie/odblokowywanie konta
         }
     }
 
