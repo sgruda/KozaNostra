@@ -22,11 +22,11 @@
                 <h:outputLabel for="login" value="#{msg['page.edit.account.form.login']}" >
                 <p:inputText id="login" value="${editAccountController.accountDTO.login}" disabled="true"/>
                 </h:outputLabel>
-                <h:outputLabel for="firstName" value="#{msg['page.edit.account.form.firstname']}" >
+                <h:outputLabel for="firstName" value="#{msg['page.edit.account.form.firstname']} *" >
                 <p:inputText id="firstName" required="true"
                              value="${editAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.account.form.firstname.required']}"/>
                 </h:outputLabel>
-                <h:outputLabel for="lastName" value="#{msg['page.edit.account.form.lastname']}" >
+                <h:outputLabel for="lastName" value="#{msg['page.edit.account.form.lastname']} *" >
                 <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.edit.account.form.lastname.required']}"
                              value="${editAccountController.accountDTO.lastname}"/>
                 </h:outputLabel>
