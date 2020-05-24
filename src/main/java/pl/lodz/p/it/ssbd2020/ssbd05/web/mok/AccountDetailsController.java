@@ -69,6 +69,8 @@ public class AccountDetailsController implements Serializable {
         return "editAccount";
     }
 
+    public String goToPasswordChange(){return "passwordForm";}
+
     public String goBack() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedLogin");
         return "goBack";
