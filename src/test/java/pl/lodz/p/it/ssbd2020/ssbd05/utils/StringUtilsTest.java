@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
-@Log
+
 public class StringUtilsTest {
 
     @Test
