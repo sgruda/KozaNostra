@@ -34,7 +34,14 @@
 <!--                        <p:messages id="messages" closable="true" globalOnly="true">
                             <p:autoUpdate />
                         </p:messages>-->
-                            <p:inputText id="login" required="true" value="#{registrationController.login}" requiredMessage="#{msg['page.registration.account.login.required']}" placeholder="#{msg['page.registration.account.login']} *"/>
+
+                            <p:inputText id="login" required="true" value="#{registrationController.login}"
+                                         requiredMessage="#{msg['page.registration.account.login.required']}"
+                                         placeholder="#{msg['page.registration.account.login']} *"
+                                         validatorMessage="#{msg['page.registration.login.validator']}">
+                                <f:validateRegex pattern="[a-zA-Z0-9!@#$%^*]+"/>
+                                <f:validateLength minimum="1" maximum="32"/>
+                            </p:inputText>
                             <p:password id="password" required="true" feedback="true" promptLabel="#{msg['password.prompt']}"
                                         weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
                                         inline="true"  requiredMessage="#{msg['page.registration.account.password.required']}"
@@ -68,7 +75,8 @@
                     </div>
                    
                     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
-                        <p:commandButton value="#{msg['page.registration.account.reset']}" style="margin-right:20px;" icon="pi pi-undo">
+                        <p:commandButton value="#{msg['page.registration.account.reset']}" validateClient="true"
+                                         style="margin-right:20px;" icon="pi pi-undo">
                             <p:ajax update="register" resetValues="true" />
                         </p:commandButton>
                         <p:commandButton id="submit" ajax="false" value="#{msg['page.registration.account.register']}" icon="pi pi-check" style="float: center;" action="#{registrationController.register()}"/>
