@@ -50,7 +50,7 @@ public class ResendActivationEmailEndpoint implements ResendActivationEmailEndpo
             if(!account.isConfirmed()) {
                 EmailSender emailSender = new EmailSender();
                 emailSender.sendRegistrationEmail(account.getEmail(), account.getVeryficationToken());
-            } else throw new AccountAlreadyConfirmedException("");
+            } else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
         }
     }
 }
