@@ -56,29 +56,21 @@ public class ChangePasswordAccountController implements Serializable {
                 editAccountEndpointLocal.changePassword(newPassword,accountDTO);
                 ResourceBundles.emitMessageWithFlash(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
-                ResourceBundles.emitErrorMessage(null,"error.changeotherpassword.optimisticlock");
+                ResourceBundles.emitErrorMessageWithFlash(null,"error.account.optimisticlock");
                 log.warning(ex.getClass().toString() + " " + ex.getMessage());
             }catch(AccountPasswordAlreadyUsedException ex){
                 log.warning(ex.getClass().toString() + " " + ex.getMessage());
-                ResourceBundles.emitErrorMessage(null,ex.getMessage());
+                ResourceBundles.emitErrorMessageWithFlash(null,ex.getMessage());
             }catch(AppBaseException ex){
                 log.warning(ex.getClass().toString() + " " + ex.getMessage());
-                ResourceBundles.emitErrorMessage(null,ex.getMessage());
+                ResourceBundles.emitErrorMessageWithFlash(null,ex.getMessage());
             }
         }else{
-            ResourceBundles.emitErrorMessage(null,"page.changepassword.wrong.current.password");
+            ResourceBundles.emitErrorMessageWithFlash(null,"page.changepassword.wrong.current.password");
         }
     }
 
     public String goBack() {
-        try {
-            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).getPassword().equals(HashGenerator.sha256(newPassword))) {
-                return "accountDetails";
-            }
-        } catch (AppBaseException e) {
-            log.warning(e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-        }
-        return "";
+        return "accountDetails";
     }
 }

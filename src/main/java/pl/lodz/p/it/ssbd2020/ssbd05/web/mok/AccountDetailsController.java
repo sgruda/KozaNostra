@@ -84,7 +84,7 @@ public class AccountDetailsController implements Serializable {
         } catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessage(null, e.getMessage());
         } catch (AppOptimisticLockException ex) {
-            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
+            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock.refresh");
         } catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
@@ -97,7 +97,7 @@ public class AccountDetailsController implements Serializable {
         }catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessage(null, e.getMessage());
         } catch (AppOptimisticLockException ex) {
-            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
+            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock.refresh");
         } catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
@@ -131,7 +131,7 @@ public class AccountDetailsController implements Serializable {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.account.not.have.active.access.levels");
         } catch (AppOptimisticLockException e) {
-            ResourceBundles.emitErrorMessage(null, "error.changeotherpassword.optimisticlock");
+            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
         } catch (AppBaseException e) {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.simple");

@@ -7,7 +7,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
@@ -56,10 +55,10 @@ public class ChangeOtherAccountPasswordController implements Serializable {
             ResourceBundles.emitMessageWithFlash(null, "page.changepassword.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, "error.changeotherpassword.optimisticlock");
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.account.optimisticlock");
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());
         }
     }
 
@@ -68,14 +67,6 @@ public class ChangeOtherAccountPasswordController implements Serializable {
     }
 
     public String goBack() {
-        try {
-            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).getPassword().equals(HashGenerator.sha256(accountDTO.getPassword()))) {
-                return "accountDetails";
-            }
-        } catch (AppBaseException e) {
-            log.warning(e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-        }
-        return "";
+        return "accountDetails";
     }
 }
