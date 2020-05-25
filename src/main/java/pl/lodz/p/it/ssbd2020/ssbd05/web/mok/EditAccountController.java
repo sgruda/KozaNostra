@@ -45,10 +45,10 @@ public class EditAccountController implements Serializable {
     public void editAccount() throws AppBaseException {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
-            ResourceBundles.emitMessage(null,"page.edit.account.message");
+            ResourceBundles.emitMessageWithFlash(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
         } catch (ExceededTransactionRetriesException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
@@ -59,5 +59,17 @@ public class EditAccountController implements Serializable {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
+    }
+
+    public String goBack() {
+        try {
+            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).equals(accountDTO)) {
+                return "accountDetails";
+            }
+        } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
+        return "";
     }
 }
