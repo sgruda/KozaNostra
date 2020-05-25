@@ -1,12 +1,17 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.abstraction;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 public abstract class AbstractFacade<T> {
@@ -19,12 +24,29 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
+    private void validate(T entity) throws AppBaseException {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<T>> violations = validator.validate(entity);
+        if(!violations.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for(ConstraintViolation<T> violation : violations) {
+                if(!violation.getPropertyPath().toString().equals("id")) {
+                    stringBuilder.append(violation.getPropertyPath()).append(" ")
+                            .append(violation.getMessage()).append("\n");
+                }
+            }
+            throw new ValidationException(stringBuilder.toString());
+        }
+    }
+
     public void create(T entity) throws AppBaseException {
+        validate(entity);
         getEntityManager().persist(entity);
         getEntityManager().flush();
     }
 
     public void edit(T entity) throws AppBaseException {
+        validate(entity);
         getEntityManager().merge(entity);
         getEntityManager().flush();
     }

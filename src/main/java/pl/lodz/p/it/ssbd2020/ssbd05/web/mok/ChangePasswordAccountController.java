@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
@@ -48,6 +49,8 @@ public class ChangePasswordAccountController {
             }catch(AccountPasswordAlreadyUsedException ex){
                 log.warning(ex.getClass().toString() + " " + ex.getMessage());
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());
+            } catch (ValidationException e) {
+                ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
             }catch(AppBaseException ex){
                 log.warning(ex.getClass().toString() + " " + ex.getMessage());
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());
