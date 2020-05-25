@@ -20,6 +20,6 @@ public class ReservationDetailsEndpoint implements Serializable, ReservationDeta
     @Override
     @RolesAllowed("getReservationByNumber")
     public ReservationDTO getReservationByNumber(String number) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }
