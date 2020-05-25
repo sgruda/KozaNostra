@@ -40,7 +40,8 @@ public class ChangePasswordAccountController {
         AccountDTO accountDTO = editAccountEndpointLocal.findByLogin(context.getRemoteUser());
         if(HashGenerator.sha256(password).equals(accountDTO.getPassword())){
             try{
-                editAccountEndpointLocal.changePassword(newPassword,accountDTO);
+                accountDTO.setPassword(newPassword);
+                editAccountEndpointLocal.changePassword(accountDTO);
                 ResourceBundles.emitMessage(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
                 ResourceBundles.emitErrorMessage(null,ex.getMessage());
@@ -55,5 +56,6 @@ public class ChangePasswordAccountController {
         }else{
             ResourceBundles.emitErrorMessage(null,"page.changepassword.wrong.current.password");
         }
+        return;
     }
 }

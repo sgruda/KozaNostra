@@ -58,16 +58,16 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
 
     @Override
     @RolesAllowed({"changeOwnAccountPassword"})
-    public void changePassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
+    public void changePassword(AccountDTO accountDTO) throws AppBaseException {
         for (PreviousPassword psw: account.getPreviousPasswordCollection()){
-            if(psw.getPassword().equals(HashGenerator.sha256(newPassword))){
+            if(psw.getPassword().equals(HashGenerator.sha256(accountDTO.getPassword()))){
                 throw new AccountPasswordAlreadyUsedException();
         }
         }
-        account.setPassword(HashGenerator.sha256(newPassword));
+        account.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
         PreviousPassword previousPassword = new PreviousPassword();
         previousPassword.setAccount(account);
-        previousPassword.setPassword(HashGenerator.sha256(newPassword));
+        previousPassword.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
         account.getPreviousPasswordCollection().add(previousPassword);
 
         int callCounter = 0;
@@ -90,21 +90,21 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
     }
     @Override
     @RolesAllowed({"changeOtherAccountPassword"})
-    public void changeOtherAccountPassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
+    public void changeOtherAccountPassword(AccountDTO accountDTO) throws AppBaseException {
         boolean doesExists = false;
         for (PreviousPassword psw: account.getPreviousPasswordCollection()){
-            if(psw.getPassword().equals(HashGenerator.sha256(newPassword))){
+            if(psw.getPassword().equals(HashGenerator.sha256(accountDTO.getPassword()))){
                 doesExists = true;
             }
         }
         if(!doesExists){
-            account.setPassword(HashGenerator.sha256(newPassword));
+            account.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
             PreviousPassword previousPassword = new PreviousPassword();
             previousPassword.setAccount(account);
-            previousPassword.setPassword(HashGenerator.sha256(newPassword));
+            previousPassword.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
             account.getPreviousPasswordCollection().add(previousPassword);
         } else {
-            account.setPassword(HashGenerator.sha256(newPassword));
+            account.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
         }
         int callCounter = 0;
         boolean rollback;
