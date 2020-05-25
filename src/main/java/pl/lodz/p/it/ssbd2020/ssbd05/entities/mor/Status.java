@@ -28,13 +28,13 @@ public class Status implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "StatusIdGen")
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
     @Column(name = "status_name", nullable = false, length = 32, unique = true, updatable = false)
     private String statusName;
 
@@ -42,7 +42,7 @@ public class Status implements Serializable {
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Version
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
