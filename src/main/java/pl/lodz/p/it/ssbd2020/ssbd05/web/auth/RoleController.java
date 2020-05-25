@@ -77,33 +77,15 @@ public class RoleController implements Serializable {
     }
 
     public boolean isInClientRole(){
-        boolean inRole = false;
-        for (String role: roleList){
-                if(role.equals(userRolesProperties.getProperty("roleClient"))){
-                    inRole = true;
-                }
-        }
-        return inRole;
+        return roleList.contains(userRolesProperties.getProperty("roleClient"));
     }
 
     public boolean isInManagerRole(){
-        boolean inRole = false;
-        for (String role: roleList){
-            if(role.equals(userRolesProperties.getProperty("roleManager"))){
-                inRole = true;
-            }
-        }
-        return inRole;
+        return roleList.contains(userRolesProperties.getProperty("roleManager"));
     }
 
     public boolean isInAdminRole(){
-        boolean inRole = false;
-        for (String role: roleList){
-            if(role.equals(userRolesProperties.getProperty("roleAdmin"))){
-                inRole = true;
-            }
-        }
-        return inRole;
+        return roleList.contains(userRolesProperties.getProperty("roleAdmin"));
     }
 
     public int getAllUserRolesLength() {
