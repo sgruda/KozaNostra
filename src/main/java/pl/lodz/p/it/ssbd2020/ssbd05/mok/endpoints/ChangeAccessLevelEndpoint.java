@@ -55,7 +55,7 @@ public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLeve
         }
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
-    
+
     @Override
     @RolesAllowed("changeAccessLevel")
     public void changeAccessLevel(AccountDTO accountDTO) throws AppBaseException {
