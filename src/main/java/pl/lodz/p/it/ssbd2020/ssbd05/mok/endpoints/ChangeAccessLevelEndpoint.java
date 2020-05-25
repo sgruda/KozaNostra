@@ -28,6 +28,7 @@ import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsI
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLevelEndpointLocal {
+
     @Inject
     private AccountManager accountManager;
     private Account account;
@@ -54,10 +55,10 @@ public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLeve
         }
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
+    
     @Override
     @RolesAllowed("changeAccessLevel")
     public void changeAccessLevel(AccountDTO accountDTO) throws AppBaseException {
-        account = accountManager.findByLogin(accountDTO.getLogin());
         Collection<AccessLevel> accessLevelCollection = account.getAccessLevelCollection();
         Collection<String> accessLevelStringCollection = accountDTO.getAccessLevelCollection();
         Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");

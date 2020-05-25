@@ -21,8 +21,8 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -57,6 +57,7 @@ public class AccountDetailsController implements Serializable {
         String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
         try {
             this.account = accountDetailsEndpointLocal.getAccount(selectedLogin);
+            changeAccessLevelEndpointLocal.findByLogin(selectedLogin);
             activationAccountController.setAccount(this.account);
         } catch (AppBaseException e) {
             log.warning(e.getClass().toString() + " " + e.getMessage());
@@ -113,7 +114,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     public void changeAccessLevels() {
-        Collection<String> accessLevels = new LinkedList<>();
+        Collection<String> accessLevels = new ArrayList<>();
         Collection<String> accessLevelsBackup = account.getAccessLevelCollection();
         if(roleClientActive)
             accessLevels.add(roleProperties.getProperty("roleClient"));
@@ -129,10 +130,13 @@ public class AccountDetailsController implements Serializable {
             this.setRolesInfo(accessLevelsBackup);
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.account.not.have.active.access.levels");
+        } catch (AppOptimisticLockException e) {
+            ResourceBundles.emitErrorMessage(null, "error.changeotherpassword.optimisticlock");
         } catch (AppBaseException e) {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.simple");
         }
+        refresh();
     }
 
     private void setRolesInfo(Collection<String> accessLevelStringCollection) {
