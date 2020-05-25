@@ -11,16 +11,18 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpoint
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.ExternalContext;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Log
 @Named
-@RequestScoped
-public class ChangePasswordAccountController {
+@ViewScoped
+public class ChangePasswordAccountController implements Serializable {
 
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
@@ -34,16 +36,27 @@ public class ChangePasswordAccountController {
     @Getter
     @Setter
     private String newConfirmPassword;
+    @Getter
+    @Setter
+    private AccountDTO accountDTO;
 
-    public void setPassword() throws AppBaseException {
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        AccountDTO accountDTO = editAccountEndpointLocal.findByLogin(context.getRemoteUser());
+    @PostConstruct
+    public void init() {
+        try {
+            accountDTO = editAccountEndpointLocal.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+        } catch (AppBaseException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+        }
+    }
+
+    public void changePassword() {
         if(HashGenerator.sha256(password).equals(accountDTO.getPassword())){
             try{
                 editAccountEndpointLocal.changePassword(newPassword,accountDTO);
-                ResourceBundles.emitMessage(null,"page.changepassword.message");
+                ResourceBundles.emitMessageWithFlash(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
-                ResourceBundles.emitErrorMessage(null,ex.getMessage());
+                ResourceBundles.emitErrorMessage(null,"error.changeotherpassword.optimisticlock");
                 log.warning(ex.getClass().toString() + " " + ex.getMessage());
             }catch(AccountPasswordAlreadyUsedException ex){
                 log.warning(ex.getClass().toString() + " " + ex.getMessage());
@@ -55,5 +68,17 @@ public class ChangePasswordAccountController {
         }else{
             ResourceBundles.emitErrorMessage(null,"page.changepassword.wrong.current.password");
         }
+    }
+
+    public String goBack() {
+        try {
+            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).getPassword().equals(HashGenerator.sha256(accountDTO.getPassword()))) {
+                return "accountDetails";
+            }
+        } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
+        return "";
     }
 }
