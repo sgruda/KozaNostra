@@ -60,7 +60,7 @@ public class ResetPasswordController {
         return "home";
     }
 
-    public String changePassword() {
+    public void changePassword() {
         if(url.contains("token="))
             token = url.substring(url.indexOf("token=") + 6);
         try {
@@ -74,6 +74,8 @@ public class ResetPasswordController {
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
+    }
+    public String goHome() {
         return "home";
     }
 }
