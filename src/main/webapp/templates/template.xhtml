@@ -15,34 +15,24 @@
     </ui:insert>
 </h:head>
 <h:body>
-    <p:ajaxStatus onstart="PF('loading').show()" onsuccess="PF('loading').hide()" />
-
-    <p:dialog widgetVar="loading" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-        <p:graphicImage library="library" name="loading.gif" style="max-height: 50px; max-width: 50px" />
-    </p:dialog>
-
     <div class = "wrapper">		
         <div class = "header" style="background: #{roleController.headerColorForRole}">
             <p:sidebar  widgetVar="sb" baseZIndex="100000">
+                <div class="sidebar-container">
                 <ui:fragment id="admin-sidebar" rendered="#{roleController.isSelectedRole(roleController.getRoleAdmin())}">
-                    <h1 style="font-weight:normal">#{msg['page.template.admin.console']}</h1>
-                    <div>
-                        <p:button id="listAccountsButton" value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
-                    </div>
-                    <div style="padding-top: 5px; padding-bottom: 5px">
-                        <p:button id="addAccountButton" value="#{msg['page.template.admin.addAccount']}" outcome="/admin/addAccount.xhtml"/>
-                    </div>
+                    <h1>#{msg['page.template.admin.console']}</h1>
+                    <p:button styleClass="sidebar-button" id="listAccountsButton" value="#{msg['page.template.admin.listAccounts']}" outcome="/admin/listAccounts.xhtml"/>
+                    <p:button styleClass="sidebar-button" id="addAccountButton" value="#{msg['page.template.admin.addAccount']}" outcome="/admin/addAccount.xhtml"/>
                 </ui:fragment>
                 <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
-                    <h1 style="font-weight:normal">#{msg['page.template.manager.console']}</h1>
+                    <h1>#{msg['page.template.manager.console']}</h1>
                 </ui:fragment>
-                <div>
-                    <p:commandButton value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
+                <p:commandButton styleClass="sidebar-button" value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
                 </div>
             </p:sidebar>
              <div class = "header-left">
                  <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole(roleController.getRoleAdmin()) or roleController.isSelectedRole(roleController.getRoleManager())}">
-                     <i class="pi pi-bars" style="font-size: 3em;color: white" />
+                     <i id="menu-bars" class="pi pi-bars"/>
                  </p:commandLink>
                  <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
              </div>
@@ -54,7 +44,7 @@
                  <ui:fragment id="user-details" rendered="#{not empty request.remoteUser}">
                      <h:form>
                          <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" />
-                         <p:slideMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:180px" backLabel="#{msg['page.template.menu.backbutton']}">
+                         <p:slideMenu id="slidemenu-user" overlay="true" trigger="dynaButton" my="left top" at="left bottom" backLabel="#{msg['page.template.menu.backbutton']}">
                              <p:submenu id="accountDetailsMenu" label="#{msg['page.template.accountdetails']}" icon="pi pi-pencil" >
                                  <p:menuitem id="changePasswordButton" value="${msg['page.template.changepassword']}" outcome="/changePassword.xhtml"/>
                                  <p:menuitem id="accountDetailsButton" value="#{msg['page.template.accountdetails']}" action="#{ownAccountDetailsController.selectOwnAccount()}" />
@@ -88,14 +78,17 @@
         <div class ="breadcrumb">
             <h:form>
                 <p:breadCrumb>
-                    <p:menuitem value="Home" outcome="/index.xhtml" />
+                    <p:menuitem value="Home" outcome="/index.xhtml"/>
                     <ui:insert name="breadcrumb-menuitems"/>
                 </p:breadCrumb>
             </h:form>
         </div>
         <div class = "main">
-            <ui:insert name="content" >
-            </ui:insert>
+            <p:ajaxStatus onstart="PF('loading').show()" onsuccess="PF('loading').hide()" />
+            <p:dialog widgetVar="loading" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage id="loading-gif" library="library" name="loading.gif" />
+            </p:dialog>
+            <ui:insert name="content"/>
         </div>
 
         <div class = "footer">
@@ -103,7 +96,7 @@
         </div>
     </div>
     <h:form>
-        <p:growl id="informationBox" showDetail="true" life="3000"/>
+        <p:growl id="informationBox" showDetail="true" sticky="true"/>
     </h:form>
 </h:body>
 </html>
