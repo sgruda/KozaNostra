@@ -72,7 +72,7 @@ public class ChangePasswordAccountController implements Serializable {
 
     public String goBack() {
         try {
-            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).getPassword().equals(HashGenerator.sha256(accountDTO.getPassword()))) {
+            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).getPassword().equals(HashGenerator.sha256(newPassword))) {
                 return "accountDetails";
             }
         } catch (AppBaseException e) {
