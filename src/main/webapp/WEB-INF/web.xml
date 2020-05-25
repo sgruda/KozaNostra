@@ -146,6 +146,15 @@
     </login-config>
 
     <error-page>
+        <exception-type>java.lang.RuntimeException</exception-type>
+        <location>/errors/error.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.servlet.ServletException</exception-type>
+        <location>/errors/error.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.io.IOException</exception-type>
         <location>/errors/error.xhtml</location>
     </error-page>
     <error-page>
@@ -160,5 +169,4 @@
         <error-code>403</error-code>
         <location>/errors/error403.xhtml</location>
     </error-page>
-
 </web-app>
