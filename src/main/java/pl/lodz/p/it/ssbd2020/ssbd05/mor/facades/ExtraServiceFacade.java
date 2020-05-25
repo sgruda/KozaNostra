@@ -9,6 +9,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionExc
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -40,7 +42,7 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("addExtraService")
     public void create(ExtraService entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -52,7 +54,7 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("editExtraService")
     public void edit(ExtraService entity) throws AppBaseException {
         try {
             super.edit(entity);
@@ -65,13 +67,13 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<ExtraService> find(Object id) {
         return super.find(id);
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed({"getAllExtraServices", "changeActivity"})
     public List<ExtraService> findAll() throws AppBaseException {
         try {
             return super.findAll();
@@ -80,7 +82,7 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         }
     }
 
-    //    @RolesAllowed()
+    @RolesAllowed("getExtraServiceByName")
     public Optional<ExtraService> findByName(String name) throws AppBaseException {
         try {
             // TODO implementacja

@@ -10,6 +10,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionExc
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -43,7 +45,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("createReservation")
     public void create(Reservation entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -55,7 +57,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed({"changeReservationStatus", "cancelReservation", "editReservation"})
     public void edit(Reservation entity) throws AppBaseException {
         try {
             super.edit(entity);
@@ -67,13 +69,13 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<Reservation> find(Object id) {
         return super.find(id);
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed({"getAllReservations", "getAllEventTypes"})
     public List<Reservation> findAll() throws AppBaseException {
         try {
             return super.findAll();
@@ -82,7 +84,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         }
     }
 
-    // @ORolesAllowed()
+    @RolesAllowed("getReservationByNumber")
     public Optional<Reservation> findByNumber(String number) throws AppBaseException{
         try{
            //TODO Implementacja
@@ -92,13 +94,16 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         }
     }
 
+    @RolesAllowed("filterReservations")
     public List<Reservation> filterReservations(String filter) throws AppBaseException{
         throw new UnsupportedOperationException();
     }
+    @RolesAllowed({"getAllUsersReservations", "getUserReviewableReservations"})
     public List<Reservation> findByLogin(String login) throws AppBaseException{
         throw new UnsupportedOperationException();
     }
 
+    @RolesAllowed("getReservationsByDate")
     public List<Reservation> findByDate(LocalDateTime localDateTime){
         throw new UnsupportedOperationException();
     }

@@ -7,6 +7,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -37,7 +39,7 @@ public class AddressFacade extends AbstractFacade<Address> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("addHall")
     public void create(Address entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -47,13 +49,13 @@ public class AddressFacade extends AbstractFacade<Address> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<Address> find(Object id) {
         return super.find(id);
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("getAllEventTypes")
     public List<Address> findAll() throws AppBaseException {
         try {
             return super.findAll();

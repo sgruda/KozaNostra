@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.managers;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
@@ -12,18 +13,17 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.AddressFacade;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.SessionSynchronization;
-import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Stateful
+@Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@Stateful
+@LocalBean
 @Interceptors(TrackerInterceptor.class)
 public class HallManager extends AbstractManager implements SessionSynchronization {
 
@@ -75,6 +75,7 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         throw new UnsupportedOperationException();
     }
 
+    @RolesAllowed("changeActivity")
     public void changeActivity(Hall hall) throws AppBaseException{
         throw new UnsupportedOperationException();
     }

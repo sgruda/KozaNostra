@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -15,6 +16,7 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.List;
 
+@Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Interceptors(TrackerInterceptor.class)
@@ -39,7 +41,7 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
     }
 
     @Override
-    @RolesAllowed("ActivateDeactivateHall")
+    @RolesAllowed("changeActivity")
     public void changeActivity(HallDTO hallDTO) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
