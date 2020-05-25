@@ -7,6 +7,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -37,18 +39,22 @@ public class StatusFacade extends AbstractFacade<Status> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<Status> find(Object id) {
         return super.find(id);
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public List<Status> findAll() throws AppBaseException {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
+    }
+    @RolesAllowed({"getStatusByName", "getStatusCanceled"})
+    public Optional<Status> findByStatusName(String statusName) {
+        throw new UnsupportedOperationException();
     }
 }

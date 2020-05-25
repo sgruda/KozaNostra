@@ -16,16 +16,19 @@ import java.util.List;
 @TransactionAttribute(value = TransactionAttributeType.NEVER)
 public class EditReservationEndpoint implements Serializable, EditReservationEndpointLocal {
     @Override
+    @RolesAllowed("getReservationByNumber")
     public ReservationDTO getReservationByNumber(String number) {
         return null;
     }
 
     @Override
+    @RolesAllowed("getReservationsByDate")
     public List<ReservationDTO> getReservationsByDate(LocalDateTime date) {
         return null;
     }
 
     @Override
+    @RolesAllowed("getAllEventTypes")
     public List<EventTypeDTO> getAllEventTypes() {
         return null;
     }

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -13,8 +14,9 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
 
-@Stateful
+@Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@Stateful
 @LocalBean
 @Interceptors(TrackerInterceptor.class)
 public class ReviewManager extends AbstractManager implements SessionSynchronization  {

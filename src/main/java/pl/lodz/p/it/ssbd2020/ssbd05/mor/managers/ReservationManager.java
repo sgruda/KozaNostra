@@ -1,6 +1,8 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
@@ -17,8 +19,9 @@ import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Stateful
+@Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@Stateful
 @LocalBean
 @Interceptors(TrackerInterceptor.class)
 public class ReservationManager extends AbstractManager implements SessionSynchronization {
@@ -31,6 +34,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @Inject
     private StatusFacade statusFacade;
 
+    @RolesAllowed("getAllReservations")
     public List<Reservation> getAllReservations(){
         //TODO Implementacja
         throw new UnsupportedOperationException();
@@ -41,12 +45,13 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         throw new UnsupportedOperationException();
     }
 
+    @RolesAllowed("createReservation")
     public void createReservation(Reservation reservation){
         //TODO Implementacja
         throw new UnsupportedOperationException();
     }
 
-    @RolesAllowed("getAllReservations")
+    @RolesAllowed("getAllUsersReservations")
     public List<Reservation> getAllUsersReservations(String login){
         //TODO Implementacja
         throw new UnsupportedOperationException();
@@ -76,10 +81,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         throw new UnsupportedOperationException();
     }
 
+    @RolesAllowed("getReservationsByDate")
     public List<Reservation> getReservationsByDate(LocalDateTime localDateTime){
         throw new UnsupportedOperationException();
     }
 
+    @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation){
         throw new UnsupportedOperationException();
     }

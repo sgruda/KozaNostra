@@ -8,6 +8,9 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockExce
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -39,7 +42,7 @@ public class ReviewFacade extends AbstractFacade<Review> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("addReview")
     public void create(Review entity) throws AppBaseException {
         try {
             super.create(entity);
@@ -49,7 +52,7 @@ public class ReviewFacade extends AbstractFacade<Review> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("editReview")
     public void edit(Review entity) throws AppBaseException {
         try {
             super.edit(entity);
@@ -61,7 +64,7 @@ public class ReviewFacade extends AbstractFacade<Review> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("removeReview")
     public void remove(Review entity) throws AppBaseException {
         try {
             super.remove(entity);
@@ -73,13 +76,13 @@ public class ReviewFacade extends AbstractFacade<Review> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<Review> find(Object id) {
         return super.find(id);
     }
 
     @Override
-    //    @RolesAllowed()
+    @PermitAll
     public List<Review> findAll() throws AppBaseException {
         try {
             return super.findAll();
@@ -88,8 +91,13 @@ public class ReviewFacade extends AbstractFacade<Review> {
         }
     }
 
-    //    @RolesAllowed()
+    @RolesAllowed("getUserReviewableReservations")
     public List<Review> findByLogin() throws AppBaseException {
             throw new UnsupportedOperationException();
+    }
+
+    @RolesAllowed({"getReviewByReviewNumber", "editReview"})
+    public Optional<Review> findByNumber(String reviewNumber) {
+        throw new UnsupportedOperationException();
     }
 }

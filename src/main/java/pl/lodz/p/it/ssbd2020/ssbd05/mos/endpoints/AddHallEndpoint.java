@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.AddressDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
@@ -15,6 +16,7 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.List;
 
+@Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Interceptors(TrackerInterceptor.class)

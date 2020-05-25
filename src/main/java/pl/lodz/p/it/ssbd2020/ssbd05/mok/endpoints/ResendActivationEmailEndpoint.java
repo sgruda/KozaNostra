@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mok.managers.AccountManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -29,6 +30,7 @@ public class ResendActivationEmailEndpoint implements ResendActivationEmailEndpo
     private Account account;
 
     @Override
+    @RolesAllowed("resendEmail")
     public void resendEmail(String login) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;

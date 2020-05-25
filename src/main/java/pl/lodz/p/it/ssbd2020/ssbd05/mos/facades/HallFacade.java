@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockExce
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -52,12 +53,13 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    @PermitAll
     public Hall findByName(String name){
         throw new UnsupportedOperationException();
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed({"editHall", "changeActivity"})
     public void edit(Hall entity) throws AppBaseException {
         try {
             super.edit(entity);
@@ -69,7 +71,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("removeHall")
     public void remove(Hall entity) throws AppBaseException {
         try {
             super.remove(entity);
@@ -87,7 +89,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @PermitAll
     public List<Hall> findAll() throws AppBaseException {
         try {
             return super.findAll();
@@ -96,6 +98,7 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    @PermitAll
     public Collection<Hall> filter(String hallFilter) throws AppBaseException {
         try {
             // TODO implementacja
