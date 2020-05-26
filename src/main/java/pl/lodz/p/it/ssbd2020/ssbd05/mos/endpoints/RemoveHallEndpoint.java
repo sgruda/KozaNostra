@@ -1,19 +1,25 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+@Log
 @Stateful
-@TransactionAttribute(value = TransactionAttributeType.NEVER)
+@TransactionAttribute(TransactionAttributeType.NEVER)
+@Interceptors(TrackerInterceptor.class)
 public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal {
 
     @Override
+    @RolesAllowed("getHallByName")
     public HallDTO getHallByName(String name) {
         return null;
     }

@@ -28,6 +28,7 @@ public class ConfirmAccountEndpoint implements Serializable, ConfirmAccountEndpo
     private AccountManager accountManager;
     private Account account;
 
+    @Override
     @PermitAll
     public AccountDTO getAccountByToken(String token) throws AppBaseException {
         int callCounter = 0;
@@ -50,6 +51,7 @@ public class ConfirmAccountEndpoint implements Serializable, ConfirmAccountEndpo
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    @Override
     @PermitAll
     public void confirmAccount() throws AppBaseException {
         int callCounter = 0;

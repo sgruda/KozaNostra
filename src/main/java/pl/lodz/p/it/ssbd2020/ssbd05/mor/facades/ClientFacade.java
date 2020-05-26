@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.DenyAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -37,13 +38,13 @@ public class ClientFacade extends AbstractFacade<Client> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<Client> find(Object id) {
         return super.find(id);
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public List<Client> findAll() throws AppBaseException {
         try {
             return super.findAll();

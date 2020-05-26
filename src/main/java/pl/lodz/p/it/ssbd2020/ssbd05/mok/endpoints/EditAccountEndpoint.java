@@ -23,10 +23,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Properties;
-
-import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
 @Log
 @Stateful
@@ -37,6 +33,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
     private AccountManager accountManager;
     private Account account;
 
+    @Override
     @RolesAllowed("findByLogin")
     public AccountDTO findByLogin(String username) throws AppBaseException {
         int callCounter = 0;
@@ -59,6 +56,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    @Override
     @RolesAllowed({"changeOwnAccountPassword"})
     public void changePassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
         for (PreviousPassword psw: account.getPreviousPasswordCollection()){
@@ -90,7 +88,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             throw new ExceededTransactionRetriesException();
         }
     }
-
+    @Override
     @RolesAllowed({"changeOtherAccountPassword"})
     public void changeOtherAccountPassword(String newPassword, AccountDTO accountDTO) throws AppBaseException {
         boolean doesExists = false;
@@ -127,6 +125,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
+    @Override
     @RolesAllowed({"editOwnAccount","editOtherAccount"})
     public void editAccount(AccountDTO accountDTO) throws AppBaseException {
         AccountMapper.INSTANCE.updateAccountFromDTO(accountDTO, account);
@@ -149,6 +148,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
+    @Override
     @PermitAll
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         boolean rollback;
@@ -175,6 +175,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
+    @Override
     @RolesAllowed("unlockAccount")
     public void unlockAccount(AccountDTO accountDTO) throws AppBaseException {
         boolean rollback;

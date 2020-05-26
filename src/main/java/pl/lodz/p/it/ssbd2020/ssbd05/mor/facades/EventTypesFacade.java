@@ -7,6 +7,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -37,13 +39,13 @@ public class EventTypesFacade extends AbstractFacade<EventType> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<EventType> find(Object id) {
         return super.find(id);
     }
 
     @Override
-    //    @RolesAllowed()
+    @RolesAllowed("getAllEventTypes")
     public List<EventType> findAll() throws AppBaseException {
         try {
             return super.findAll();
