@@ -68,7 +68,7 @@ public class ChangePasswordAccountController implements Serializable {
                 ResourceBundles.emitErrorMessageByPlainText(null, "page.registration.data.error");
             }catch(AppBaseException ex){
                 log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-                ResourceBundles.emitErrorMessageWithFlash(null,ex.getMessage());
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             }
         }else{
             ResourceBundles.emitErrorMessageWithFlash(null,"page.changepassword.wrong.current.password");
