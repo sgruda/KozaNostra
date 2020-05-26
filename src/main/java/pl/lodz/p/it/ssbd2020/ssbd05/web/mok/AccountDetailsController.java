@@ -133,6 +133,7 @@ public class AccountDetailsController implements Serializable {
         account.setAccessLevelCollection(accessLevels);
         try {
             changeAccessLevelEndpointLocal.changeAccessLevel(account);
+            ResourceBundles.emitMessageWithFlash(null, "page.accountdetails.accessLevel.success");
         } catch(AccountNotHaveActiveAccessLevelsException e) {
             account.setAccessLevelCollection(accessLevelsBackup);
             this.setRolesInfo(accessLevelsBackup);
