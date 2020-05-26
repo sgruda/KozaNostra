@@ -1,13 +1,17 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mok;
 
-import java.util.concurrent.TimeUnit;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.*;
-import static org.junit.Assert.*;
-import org.openqa.selenium.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class ChangeAccessLevelTestUI {
@@ -19,7 +23,7 @@ public class ChangeAccessLevelTestUI {
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
         options.setAcceptInsecureCerts(true);
-        options.addArguments("--lang=pl");
+        options.addArguments("--lang=en");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
     }
@@ -31,41 +35,33 @@ public class ChangeAccessLevelTestUI {
 
     @Test
     public void testMOK3() throws Exception {
-        driver.get("https://localhost:8181/ssbd05/index.xhtml");
+        driver.get("https://localhost:8181/ssbd05/");
+        driver.manage().window().setSize(new Dimension(1800, 1020));
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
-        driver.findElement(By.id("login:username")).clear();
         driver.findElement(By.id("login:username")).sendKeys("admin");
         driver.findElement(By.id("login:password")).click();
-        driver.findElement(By.id("login:password")).clear();
         driver.findElement(By.id("login:password")).sendKeys("admin123");
-        driver.findElement(By.xpath("//button[@id='login:submit']/span[2]")).click();
-        driver.findElement(By.xpath("//button[@id='j_idt26:dynaButton']/span")).click();
-        Thread.sleep(2000);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//li[3]/a/span[2]")).click();
-//        assertEquals("Klient", driver.findElement(By.xpath("//li[2]")).getText());
-//        Thread.sleep(2000);
-        driver.findElement(By.xpath("//li[3]/a/span[2]")).click();
-//        assertEquals("Klient", driver.findElement(By.xpath("//li[2]")).getText());
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//li[3]/ul/li[2]/a/span")).click();
-        driver.findElement(By.xpath("//a[@id='menu-button']/i")).click();
-        Thread.sleep(2000);
-        assertEquals("Panel menadżera", driver.findElement(By.xpath("//h1")).getText());
-        driver.findElement(By.xpath("//span[2]")).click();
-        assertEquals("Menadżer", driver.findElement(By.xpath("//li[2]")).getText());
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//li[3]/a/span[2]")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//li[3]/ul/li[3]/a/span")).click();
-        driver.findElement(By.xpath("//a[@id='menu-button']/i")).click();
-        Thread.sleep(2000);
-        assertEquals("Panel administratora", driver.findElement(By.xpath("//h1")).getText());
-        driver.findElement(By.xpath("//span[2]")).click();
-        assertEquals("Administrator", driver.findElement(By.xpath("//li[2]")).getText());
-        driver.findElement(By.xpath("//li[4]/a/span[2]")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
+        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
+        Thread.sleep(200);
+        Assert.assertEquals(driver.findElement(By.cssSelector(".ui-helper-reset > .ui-menuitem:nth-child(2)")).getText(),"Client");
+        driver.findElement(By.xpath("//*[contains(@id, \'changeRoleButton\')]")).click();
+        Thread.sleep(200);
+        driver.findElement(By.xpath("//*[contains(@id, \'changeManager\')]")).click();
+        Thread.sleep(200);
+        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
+        Thread.sleep(200);
+        Assert.assertEquals(driver.findElement(By.cssSelector(".ui-helper-reset > .ui-menuitem:nth-child(2)")).getText(),"Manager");
+        driver.findElement(By.xpath("//*[contains(@id, \'changeRoleButton\')]")).click();
+        Thread.sleep(200);
+        driver.findElement(By.xpath("//*[contains(@id, \'changeAdmin\')]")).click();
+        Thread.sleep(200);
+        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
+        Thread.sleep(200);
+        Assert.assertEquals(driver.findElement(By.cssSelector(".ui-helper-reset > .ui-menuitem:nth-child(2)")).getText(),"Admin");
+        driver.findElement(By.xpath("//span[contains(.,\'Log out\')]")).click();
     }
 
 }
