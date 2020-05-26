@@ -66,7 +66,6 @@ public class AddAccountController {
         }
     }
 
-
     public String goBack() {
         return "home";
     }
