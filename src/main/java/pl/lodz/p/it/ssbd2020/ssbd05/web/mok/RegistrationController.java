@@ -1,9 +1,10 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
+package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Data;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
@@ -35,7 +36,7 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
-    public String register() throws AppBaseException {
+    public String register() {
         try {
             if (password.equals(confirmPassword)) {
                 AccountDTO account = new AccountDTO();
@@ -66,6 +67,12 @@ public class RegistrationController implements Serializable {
         } catch(PropertiesLoadingException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
             log.log(Level.SEVERE, ex.getClass().toString(), ex);
+        } catch (ValidationException e) {
+            log.log(Level.SEVERE, e.getClass().toString(), e);
+            ResourceBundles.emitErrorMessageByPlainText(null, ResourceBundles.getTranslatedText("page.registration.data.error"));
+        } catch (AppBaseException e) {
+            log.log(Level.SEVERE, e.getClass().toString(), e);
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
         return "register";
     }

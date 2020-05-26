@@ -6,6 +6,7 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.ForgotPasswordTokenDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ResetPasswordEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -60,7 +61,7 @@ public class ResetPasswordController {
         return "home";
     }
 
-    public String changePassword() {
+    public void changePassword() {
         if(url.contains("token="))
             token = url.substring(url.indexOf("token=") + 6);
         try {
@@ -71,9 +72,13 @@ public class ResetPasswordController {
                 resetPasswordEndpoint.changeResettedPassword(accountDTO);
                 ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.success");
             } else ResourceBundles.emitErrorMessageWithFlash(null, "messages.resetpassword.expired");
+        } catch (ValidationException e) {
+            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
+    }
+    public String goHome() {
         return "home";
     }
 }

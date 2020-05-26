@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
@@ -42,22 +43,32 @@ public class EditAccountController implements Serializable {
         }
     }
 
-    public void editAccount() throws AppBaseException {
+    public void editAccount() {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
-            ResourceBundles.emitMessage(null,"page.edit.account.message");
+            ResourceBundles.emitMessageWithFlash(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.account.optimisticlock");
         } catch (ExceededTransactionRetriesException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (DatabaseQueryException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (DatabaseConnectionException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+        } catch (ValidationException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageByPlainText(null, ex.getMessage());
+        } catch (AppBaseException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         }
+    }
+
+    public String goBack() {
+        return "accountDetails";
     }
 }

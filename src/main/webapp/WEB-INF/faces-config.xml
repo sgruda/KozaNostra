@@ -139,5 +139,22 @@
         </navigation-case>
     </navigation-rule>
 
+    <navigation-rule>
+        <from-view-id>/editAccount.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>accountDetails</from-outcome>
+            <to-view-id>/accountDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/changePassword.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>accountDetails</from-outcome>
+            <to-view-id>/accountDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 
 </faces-config>

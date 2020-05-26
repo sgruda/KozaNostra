@@ -31,25 +31,25 @@ public class ExtraService implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "ExtraServiceIdGen")
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 512)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 512, message = "{validation.size}")
     @Column(name = "description", nullable = false, length = 512)
     private String description;
 
-    @Digits(integer = 7, fraction = 2)
+    @Digits(integer = 7, fraction = 2, message = "{validation.digits}")
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "price", nullable = false)
     private double price;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
     @Column(name = "service_name", nullable = false, length = 32, unique = true)
     private String serviceName;
 
@@ -57,12 +57,12 @@ public class ExtraService implements Serializable {
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Version
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
     private boolean active;
 

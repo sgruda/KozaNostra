@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
-import lombok.extern.java.Log;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,7 +10,7 @@ public class StringUtilsTest {
 
     @Test
     public void StringUtilsTest1(){
-        Collection<String> strCollection = new ArrayList<String>();
+        Collection<String> strCollection = new ArrayList<>();
         strCollection.add("TestowyElement");
         String filter = "testowyelement";
         boolean containsTest = StringUtils.collectionContainsIgnoreCase(strCollection,filter);

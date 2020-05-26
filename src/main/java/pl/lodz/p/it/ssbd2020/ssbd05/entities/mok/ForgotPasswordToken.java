@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -25,20 +26,21 @@ public class ForgotPasswordToken implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "ForgotPasswordTokenIdGen")
     @Column(name = "id", nullable = false)
     @Setter(lombok.AccessLevel.NONE)
     private Long id;
 
+    @Future(message = "{validation.date.future}")
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "expire_date", nullable = false, updatable = false)
     private LocalDateTime expireDate;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 64, max = 64)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 64, max = 64, message = "{validation.size}")
     @Column(name = "hash", nullable = false, unique = true, updatable = false)
     private String hash;
 
@@ -50,7 +52,7 @@ public class ForgotPasswordToken implements Serializable {
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Version
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
