@@ -10,8 +10,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.util.concurrent.TimeUnit;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -24,7 +22,7 @@ public class AccessLevelsTestUI {
     public void setUp() {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         ChromeOptions options = new ChromeOptions();
-        options.setHeadless(true);
+     //   options.setHeadless(true);
         options.setAcceptInsecureCerts(true);
         options.addArguments("--lang=en");
         driver = new ChromeDriver(options);
@@ -37,21 +35,26 @@ public class AccessLevelsTestUI {
     }
 
     @Test
-    public void accountDetailsTest() throws InterruptedException {
+    public void accessLevelTest() throws InterruptedException {
         driver.get("https://localhost:8181/ssbd05/index.xhtml");
+        driver.manage().window().fullscreen();
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).sendKeys("admin");
         driver.findElement(By.id("login:password")).sendKeys("admin123");
         driver.findElement(By.xpath("//*[contains(@id, 'submit')]")).click();
-        Thread.sleep(1000);
+        Thread.sleep(500);
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
+        Thread.sleep(500);
         driver.findElement(By.xpath("//*[contains(@id, 'changeRoleButton')]")).click();
+        Thread.sleep(500);
         driver.findElement(By.xpath("//*[contains(@id, 'changeAdmin')]")).click();
+        Thread.sleep(500);
         driver.findElement(By.cssSelector(".pi-bars")).click();
+        Thread.sleep(500);
         driver.findElement(By.cssSelector("#listAccountsButton > .ui-button-text")).click();
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//*[contains(@id, 'filterAccountsTextBox')]")).sendKeys("kontodotestowpoziomowdostepu");
+        Thread.sleep(500);
+        driver.findElement(By.xpath("//*[contains(@id, 'filterAccountsTextBox')]")).sendKeys("Poziomydostepu");
         driver.findElement(By.xpath("//*[contains(@id, 'filterbutton')]")).click();
         Thread.sleep(500);
         driver.findElement(By.xpath("//*[contains(@id, 'goDetailsButton')]")).click();
