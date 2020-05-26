@@ -75,10 +75,10 @@ public class EditOtherAccountController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (ValidationException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+            ResourceBundles.emitErrorMessageByPlainText(null, "page.registration.data.error");
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
         }
     }
 

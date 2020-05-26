@@ -59,15 +59,15 @@ public class ChangePasswordAccountController implements Serializable {
                 ResourceBundles.emitMessageWithFlash(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
                 ResourceBundles.emitErrorMessageWithFlash(null,"error.account.optimisticlock");
-                log.warning(ex.getClass().toString() + " " + ex.getMessage());
+                log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             }catch(AccountPasswordAlreadyUsedException ex){
-                log.warning(ex.getClass().toString() + " " + ex.getMessage());
+                log.severe(ex.getMessage() + ", " + LocalDateTime.now());
                 ResourceBundles.emitErrorMessageWithFlash(null,ex.getMessage());
             }catch (ValidationException e) {
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
-                ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+                ResourceBundles.emitErrorMessageByPlainText(null, "page.registration.data.error");
             }catch(AppBaseException ex){
-                log.warning(ex.getClass().toString() + " " + ex.getMessage());
+                log.severe(ex.getMessage() + ", " + LocalDateTime.now());
                 ResourceBundles.emitErrorMessageWithFlash(null,ex.getMessage());
             }
         }else{
@@ -75,7 +75,6 @@ public class ChangePasswordAccountController implements Serializable {
         }
         return;
     }
-
     public String goBack() {
         return "accountDetails";
     }

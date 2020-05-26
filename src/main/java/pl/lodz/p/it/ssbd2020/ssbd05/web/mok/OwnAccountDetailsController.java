@@ -24,7 +24,7 @@ public class OwnAccountDetailsController implements Serializable {
     @Getter
     private AccountDTO account;
 
-    public String selectOwnAccount() throws AppBaseException {
+    public String selectOwnAccount() {
         return "ownAccountDetails";
     }
 
@@ -38,7 +38,7 @@ public class OwnAccountDetailsController implements Serializable {
             this.account = accountDetailsEndpointLocal.getOwnAccount();
         } catch (AppBaseException e) {
             log.log(Level.SEVERE, e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessage(null, "error.simple");
+            ResourceBundles.emitErrorMessage(null, "error.default");
         }
     }
 }

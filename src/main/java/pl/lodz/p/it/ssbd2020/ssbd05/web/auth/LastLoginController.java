@@ -55,7 +55,8 @@ public class LastLoginController implements Serializable {
                 editAccountEndpoint.blockAccount(accountDTO);
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.login.account.lock");
             } catch (AppBaseException e) {
-               log.warning(e.getClass().toString() + " " + e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
+                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             }
         }
     }

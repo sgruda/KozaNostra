@@ -45,7 +45,7 @@ public class ListAccountsController implements Serializable {
             accounts = (List<AccountDTO>) listAccountsEndpointLocal.filterAccounts(accountFilter);
         } catch (AppBaseException e) {
             log.warning(e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
         }
     }
 

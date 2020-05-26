@@ -45,7 +45,8 @@ public class ChangeOtherAccountPasswordController implements Serializable {
         try {
             this.accountDTO = editAccountEndpointLocal.findByLogin(selectedLogin);
         } catch (AppBaseException appBaseException) {
-            log.severe(appBaseException.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
         }
     }
 
@@ -63,7 +64,7 @@ public class ChangeOtherAccountPasswordController implements Serializable {
             ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
         }
     }
 

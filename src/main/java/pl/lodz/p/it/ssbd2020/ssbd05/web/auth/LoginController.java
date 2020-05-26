@@ -93,7 +93,7 @@ public class LoginController implements Serializable {
                      lastLoginController.updateLastSuccesfullAuthDate();
                      logAuthentication();
                  } catch (ServletException e) {
-                     log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
+                     log.severe(e.getMessage() + ", " + LocalDateTime.now());
                      ResourceBundles.emitErrorMessage(null,"page.login.incorrectcredentials");
                      lastLoginController.updateLastFailedAuthDate();
                      lastLoginController.checkFailedAuthCounter();
@@ -111,11 +111,11 @@ public class LoginController implements Serializable {
                  ResourceBundles.emitErrorMessageWithDetails(null,"page.login.account.notconfirmed.or.notactive", "page.login.contactadmin");
             }
         } catch (AccountNotFoundException  e) {
-            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, "page.login.incorrectcredentials");
         } catch (AppBaseException e) {
-            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessage(null, "error.simple");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
         } catch (IOException e) {
             log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessage(null, "page.login.redirect");
@@ -129,8 +129,8 @@ public class LoginController implements Serializable {
             lastLoginController.updateLastAuthIP();
             this.lastLoginEndpointLocal.edit(lastLoginController.endConversation());
         } catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
-            log.log(Level.SEVERE, ex.getClass().toString(), ex);
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         }
     }
     private void emitMessegesAfterLogin() {

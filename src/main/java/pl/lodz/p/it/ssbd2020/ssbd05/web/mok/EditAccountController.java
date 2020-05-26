@@ -61,13 +61,12 @@ public class EditAccountController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (ValidationException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageByPlainText(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageByPlainText(null, "page.registration.data.error");
         } catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         }
     }
-
     public String goBack() {
         return "accountDetails";
     }

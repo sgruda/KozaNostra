@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountAlreadyConfirmedException;
@@ -13,7 +14,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
+@Log
 @Named
 @RequestScoped
 public class ConfirmAccountController implements Serializable {
@@ -42,8 +45,10 @@ public class ConfirmAccountController implements Serializable {
             } else ResourceBundles.emitErrorMessage(null, "error.default");
         } catch (AccountAlreadyConfirmedException e) {
             ResourceBundles.emitErrorMessage(null, "error.account.confirmed");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         return "home";
     }
