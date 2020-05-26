@@ -20,7 +20,7 @@ public class EditOtherUserTestUI {
     public void setUp() {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         ChromeOptions options = new ChromeOptions();
-    //    options.setHeadless(true);
+        options.setHeadless(true);
         options.setAcceptInsecureCerts(true);
         options.addArguments("--lang=pl");
         driver = new ChromeDriver(options);
@@ -35,7 +35,6 @@ public class EditOtherUserTestUI {
     @Test
     public void testMOK14() throws Exception {
         driver.get("https://localhost:8181/ssbd05/");
-        driver.manage().window().fullscreen();
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).clear();

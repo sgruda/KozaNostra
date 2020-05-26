@@ -22,7 +22,7 @@ public class AccessLevelsTestUI {
     public void setUp() {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         ChromeOptions options = new ChromeOptions();
-     //   options.setHeadless(true);
+        options.setHeadless(true);
         options.setAcceptInsecureCerts(true);
         options.addArguments("--lang=en");
         driver = new ChromeDriver(options);
@@ -37,7 +37,6 @@ public class AccessLevelsTestUI {
     @Test
     public void accessLevelTest() throws InterruptedException {
         driver.get("https://localhost:8181/ssbd05/index.xhtml");
-        driver.manage().window().fullscreen();
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).sendKeys("admin");

@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -36,7 +35,6 @@ public class ChangeAccessLevelTestUI {
     @Test
     public void testMOK3() throws Exception {
         driver.get("https://localhost:8181/ssbd05/");
-        driver.manage().window().setSize(new Dimension(1800, 1020));
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).sendKeys("admin");

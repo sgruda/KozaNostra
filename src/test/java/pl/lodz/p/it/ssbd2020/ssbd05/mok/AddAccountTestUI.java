@@ -38,7 +38,6 @@ public class AddAccountTestUI {
     String randomString = random.toString().replace("-","");
     randomString = randomString.substring(0,10);
     driver.get("https://localhost:8181/ssbd05/login/login.xhtml");
- //   driver.manage().window().setSize(new Dimension(1936, 1056));
     driver.findElement(By.id("loginButton")).click();
     driver.findElement(By.id("login:loginPnl_content")).click();
     driver.findElement(By.id("login:username")).click();
