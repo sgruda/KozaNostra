@@ -53,8 +53,9 @@ public class ChangePasswordAccountController implements Serializable {
 
     public void changePassword() {
         if(HashGenerator.sha256(password).equals(accountDTO.getPassword())){
-            try{
-                editAccountEndpointLocal.changePassword(newPassword,accountDTO);
+            try {
+                accountDTO.setPassword(newPassword);
+                editAccountEndpointLocal.changePassword(accountDTO);
                 ResourceBundles.emitMessageWithFlash(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
                 ResourceBundles.emitErrorMessageWithFlash(null,"error.account.optimisticlock");
@@ -72,6 +73,7 @@ public class ChangePasswordAccountController implements Serializable {
         }else{
             ResourceBundles.emitErrorMessageWithFlash(null,"page.changepassword.wrong.current.password");
         }
+        return;
     }
 
     public String goBack() {

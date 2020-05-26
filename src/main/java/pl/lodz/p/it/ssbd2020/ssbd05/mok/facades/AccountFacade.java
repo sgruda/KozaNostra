@@ -25,7 +25,6 @@ import java.sql.SQLNonTransientConnectionException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "AccountFacadeMOK")
 @LocalBean

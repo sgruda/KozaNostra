@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
+package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
 import lombok.Data;
 import lombok.extern.java.Log;
@@ -68,8 +68,10 @@ public class RegistrationController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
             log.log(Level.SEVERE, ex.getClass().toString(), ex);
         } catch (ValidationException e) {
-            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+            log.log(Level.SEVERE, e.getClass().toString(), e);
+            ResourceBundles.emitErrorMessageByPlainText(null, ResourceBundles.getTranslatedText("page.registration.data.error"));
         } catch (AppBaseException e) {
+            log.log(Level.SEVERE, e.getClass().toString(), e);
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
         return "register";
