@@ -28,7 +28,6 @@ public class Status implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "StatusIdGen")
-    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 

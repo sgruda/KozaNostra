@@ -25,7 +25,6 @@ public class AverageGuestNumber {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "AverageGuestNumberIdGen")
-    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
