@@ -63,32 +63,26 @@ public class EditOtherAccountController implements Serializable {
             ResourceBundles.emitMessageWithFlash(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.account.optimisticlock");
         } catch (ExceededTransactionRetriesException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (DatabaseQueryException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (DatabaseConnectionException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (ValidationException e) {
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
         } catch (AppBaseException e) {
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
     }
 
     public String goBack() {
-        try {
-            if (editAccountEndpointLocal.findByLogin(accountDTO.getLogin()).equals(accountDTO)) {
-                return "accountDetails";
-            }
-        } catch (AppBaseException e) {
-            log.warning(e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-        }
-        return "";
+        return "accountDetails";
     }
 }

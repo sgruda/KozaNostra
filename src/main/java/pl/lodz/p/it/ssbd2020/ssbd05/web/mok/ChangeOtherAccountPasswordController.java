@@ -7,18 +7,14 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountPasswordAlreadyUsedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -27,10 +23,8 @@ import java.time.LocalDateTime;
 @ViewScoped
 public class ChangeOtherAccountPasswordController implements Serializable {
 
-
     @Inject
     private EditAccountEndpointLocal editAccountEndpointLocal;
-
 
     @Getter
     @Setter
@@ -45,7 +39,6 @@ public class ChangeOtherAccountPasswordController implements Serializable {
     @Setter
     private AccountDTO accountDTO;
 
-
     @PostConstruct
     public void init(){
         String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
@@ -55,37 +48,30 @@ public class ChangeOtherAccountPasswordController implements Serializable {
             log.severe(appBaseException.getMessage());
         }
     }
+
     public void setPassword() {
         try {
             this.accountDTO.setPassword(newPassword);
             editAccountEndpointLocal.changeOtherAccountPassword(newPassword, accountDTO);
             ResourceBundles.emitMessageWithFlash(null, "page.changepassword.message");
-            goBack();
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.changeotherpassword.optimisticlock");
             goBack();
         } catch (ValidationException e) {
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());
         }
-        return;
     }
-
 
     public String redirectToChangePassword() {
         return "changePassword";
     }
 
-    public void goBack(){
-        try {
-            FacesContext.getCurrentInstance()
-                    .getExternalContext().redirect("/ssbd05/admin/accountDetails.xhtml");
-        } catch (IOException e) {
-            log.info(e.getMessage());
-        }
-        return;
+    public String goBack() {
+        return "accountDetails";
     }
 }

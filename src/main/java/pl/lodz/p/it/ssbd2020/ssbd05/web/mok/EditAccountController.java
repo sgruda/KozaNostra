@@ -46,23 +46,29 @@ public class EditAccountController implements Serializable {
     public void editAccount() {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
-            ResourceBundles.emitMessage(null,"page.edit.account.message");
+            ResourceBundles.emitMessageWithFlash(null,"page.edit.account.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.account.optimisticlock");
         } catch (ExceededTransactionRetriesException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (DatabaseQueryException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (DatabaseConnectionException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        } catch (ValidationException e) {
-            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
-        } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+        } catch (ValidationException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageByPlainText(null, ex.getMessage());
+        } catch (AppBaseException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         }
+    }
+
+    public String goBack() {
+        return "accountDetails";
     }
 }
