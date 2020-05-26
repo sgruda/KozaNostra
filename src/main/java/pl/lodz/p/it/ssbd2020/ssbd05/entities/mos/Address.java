@@ -30,24 +30,24 @@ public class Address implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "AddressIdGen")
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
     @Column(name = "street", nullable = false, length = 32, updatable = false)
     private String street;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "street_no", nullable = false, updatable = false)
     private int streetNo;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
     @Column(name = "city", nullable = false, length = 32, updatable = false)
     private String city;
 
@@ -55,7 +55,7 @@ public class Address implements Serializable {
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Version
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 

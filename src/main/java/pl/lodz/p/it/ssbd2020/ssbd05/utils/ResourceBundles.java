@@ -17,6 +17,12 @@ public class ResourceBundles {
         return ResourceBundle.getBundle("i18n.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString(key);
     }
 
+    public static void emitErrorMessageByPlainText(final String id, final String message) {
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null);
+        FacesContext.getCurrentInstance().addMessage(id, msg);
+    }
+
     public static void emitErrorMessage(final String id, final String key) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getTranslatedText(key),getTranslatedText(key));
         FacesContext.getCurrentInstance().addMessage(id, msg);

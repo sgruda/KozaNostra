@@ -40,25 +40,25 @@ public class Reservation implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "ReservationIdGen")
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Future
+    @Future(message = "{validation.date.future}")
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
-    @Future
+    @Future(message = "{validation.date.future}")
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    @Digits(integer = 8, fraction = 2)
+    @Digits(integer = 8, fraction = 2, message = "{validation.digits")
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "total_price", nullable = false)
     private double totalPrice;
 
@@ -66,11 +66,11 @@ public class Reservation implements Serializable {
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Version
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Status status;
@@ -81,29 +81,29 @@ public class Reservation implements Serializable {
     )
     private Collection<ExtraService> extraServiceCollection = new ArrayList<>();
 
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "hall_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Hall hall;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Client client;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 32, max = 32)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 32, max = 32, message = "{validation.size}")
     @Column(name = "reservation_number", nullable = false, length = 32)
     private String reservationNumber;
-    
-    @NotNull
+
+    @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "event_type_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private EventType eventType;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "guests_number", nullable = false)
     private Long guestsNumber;
 
