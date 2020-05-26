@@ -39,25 +39,21 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
 
     @PermitAll
     public Account findByLogin(String login) throws AppBaseException {
-        try {
-            return accountFacade.findByLogin(login).get();
-        } catch (AccountNotFoundException e) {
-            throw new AccountNotFoundException(e);
-        }
+        return accountFacade.findByLogin(login).get();
     }
 
     @PermitAll
     public Account findByToken(String token) throws AppBaseException {
         if(accountFacade.findByToken(token).isPresent())
             return accountFacade.findByToken(token).get();
-        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+        else throw new AppBaseException();
     }
 
     @PermitAll
     public Account findByMail(String mail) throws AppBaseException {
         if(accountFacade.findByMail(mail).isPresent())
             return accountFacade.findByMail(mail).get();
-        else throw new AccountNotFoundException(ResourceBundles.getTranslatedText("error.account.not.found"));
+        else throw new AccountNotFoundException();
     }
 
     @PermitAll
@@ -73,7 +69,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
             account.setConfirmed(true);
             accountFacade.edit(account);
         }
-        else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
+        else throw new AccountAlreadyConfirmedException();
     }
 
     @PermitAll
@@ -113,14 +109,14 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     public ForgotPasswordToken findTokenByHash(String hash) throws AppBaseException {
         if (forgotPasswordTokenFacade.findByHash(hash).isPresent())
             return forgotPasswordTokenFacade.findByHash(hash).get();
-        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+        else throw new AppBaseException();
     }
 
     @PermitAll
     public void setPasswordAfterReset(Account account) throws AppBaseException {
         if(account.isConfirmed() && account.isActive())
             accountFacade.edit(account);
-        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+        else throw new AppBaseException();
     }
 
     @PermitAll
