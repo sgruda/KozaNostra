@@ -146,11 +146,6 @@
         <group-name>CLIENT</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>getReviewByReviewNumber</role-name>
-        <group-name>CLIENT</group-name>
-        <group-name>MANAGER</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
         <role-name>getUserReviewableReservations</role-name>
         <group-name>CLIENT</group-name>
     </security-role-mapping>
@@ -188,7 +183,12 @@
     </security-role-mapping>
 
     <security-role-mapping>
-        <role-name>changeActivity</role-name>
+        <role-name>changeExtraServiceActivity</role-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>changeHallActivity</role-name>
         <group-name>MANAGER</group-name>
     </security-role-mapping>
 

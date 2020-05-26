@@ -73,7 +73,7 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
     }
 
     @Override
-    @RolesAllowed({"getAllExtraServices", "changeActivity"})
+    @RolesAllowed({"getAllExtraServices", "changeExtraServiceActivity"})
     public List<ExtraService> findAll() throws AppBaseException {
         try {
             return super.findAll();
@@ -90,5 +90,17 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
+    }
+
+    @Override
+    @DenyAll
+    public void remove(ExtraService entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
     }
 }

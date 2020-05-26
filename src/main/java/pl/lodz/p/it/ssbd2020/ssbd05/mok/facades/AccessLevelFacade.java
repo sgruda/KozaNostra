@@ -77,4 +77,16 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
             throw new DatabaseConnectionException(e);
         }
     }
+
+    @Override
+    @DenyAll
+    public void remove(AccessLevel entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }

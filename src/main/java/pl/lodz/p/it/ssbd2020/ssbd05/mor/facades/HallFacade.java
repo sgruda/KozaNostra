@@ -52,4 +52,28 @@ public class HallFacade extends AbstractFacade<Hall> {
             throw new DatabaseConnectionException(e);
         }
     }
+
+    @Override
+    @DenyAll
+    public void create(Hall entity) throws AppBaseException {
+        super.create(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void edit(Hall entity) throws AppBaseException {
+        super.edit(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void remove(Hall entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }

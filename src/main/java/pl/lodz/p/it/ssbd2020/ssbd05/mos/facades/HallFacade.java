@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockExce
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
@@ -59,7 +60,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     }
 
     @Override
-    @RolesAllowed({"editHall", "changeActivity"})
+    @RolesAllowed({"editHall", "changeHallActivity"})
     public void edit(Hall entity) throws AppBaseException {
         try {
             super.edit(entity);
@@ -83,7 +84,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<Hall> find(Object id) {
         return super.find(id);
     }
@@ -106,5 +107,11 @@ public class HallFacade extends AbstractFacade<Hall> {
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
     }
 }

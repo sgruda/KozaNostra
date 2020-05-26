@@ -146,4 +146,15 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    @Override
+    @DenyAll
+    public void remove(Account entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }

@@ -100,4 +100,10 @@ public class ReviewFacade extends AbstractFacade<Review> {
     public Optional<Review> findByNumber(String reviewNumber) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }

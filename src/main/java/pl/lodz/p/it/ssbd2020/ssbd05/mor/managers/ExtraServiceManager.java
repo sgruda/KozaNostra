@@ -43,7 +43,7 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
         throw new UnsupportedOperationException();
     }
 
-    @RolesAllowed("changeActivity")
+    @RolesAllowed("changeExtraServiceActivity")
     void changeActivity(ExtraService extraService) throws AppBaseException {
         // TODO implementacja
         throw new UnsupportedOperationException();

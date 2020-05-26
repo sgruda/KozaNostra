@@ -41,7 +41,7 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
     }
 
     @Override
-    @RolesAllowed("changeActivity")
+    @RolesAllowed("changeHallActivity")
     public void changeActivity(HallDTO hallDTO) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

@@ -8,6 +8,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockExce
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -39,7 +41,7 @@ public class AverageGuestNumberFacade extends AbstractFacade<AverageGuestNumber>
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public void edit(AverageGuestNumber entity) throws AppBaseException {
         try {
             super.edit(entity);
@@ -51,18 +53,36 @@ public class AverageGuestNumberFacade extends AbstractFacade<AverageGuestNumber>
     }
 
     @Override
-    //    @RolesAllowed()
+    @DenyAll
     public Optional<AverageGuestNumber> find(Object id) {
         return super.find(id);
     }
 
     @Override
-    //    @RolesAllowed()
+    @PermitAll
     public List<AverageGuestNumber> findAll() throws AppBaseException {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
+    }
+
+    @Override
+    @DenyAll
+    public void create(AverageGuestNumber entity) throws AppBaseException {
+        super.create(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void remove(AverageGuestNumber entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
     }
 }

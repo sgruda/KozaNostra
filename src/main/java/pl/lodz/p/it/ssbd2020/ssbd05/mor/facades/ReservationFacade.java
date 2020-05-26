@@ -107,4 +107,16 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     public List<Reservation> findByDate(LocalDateTime localDateTime){
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    @DenyAll
+    public void remove(Reservation entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }
