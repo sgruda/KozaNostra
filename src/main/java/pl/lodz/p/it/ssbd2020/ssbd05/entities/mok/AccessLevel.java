@@ -30,13 +30,13 @@ public class AccessLevel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccessLevelIdGen")
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
     @Column(name = "access_level", nullable = false, length = 32)
     private String accessLevel;
 
@@ -44,16 +44,16 @@ public class AccessLevel implements Serializable {
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Version
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "active", nullable = false, columnDefinition = "boolean default false")
     private Boolean active;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Account account;

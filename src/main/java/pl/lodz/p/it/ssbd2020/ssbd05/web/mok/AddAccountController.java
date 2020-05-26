@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.AddAccountEndpointLocal;
@@ -57,6 +58,8 @@ public class AddAccountController {
         } catch (EmailAlreadyExistsException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.log(Level.SEVERE, "Email", ex);
+        } catch (ValidationException e) {
+            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
         } catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.log(Level.SEVERE, ex.getClass().toString(), ex);

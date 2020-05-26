@@ -32,18 +32,18 @@ public class Review implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "ReviewIdGen")
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 512)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 512, message = "{validation.size}")
     @Column(name = "content", nullable = false, length = 512)
     private String content;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
 
@@ -51,18 +51,18 @@ public class Review implements Serializable {
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Version
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Client client;
     
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 32, max = 32)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 32, max = 32, message = "{validation.size}")
     @Column(name = "review_number", nullable = false, length = 32)
     private String reviewNumber;
 

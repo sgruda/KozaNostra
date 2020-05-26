@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
@@ -56,7 +57,7 @@ public class EditOtherAccountController implements Serializable {
         }
     }
 
-    public void editAccount() throws AppBaseException {
+    public void editAccount() {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
             ResourceBundles.emitMessageWithFlash(null,"page.edit.account.message");
@@ -72,6 +73,12 @@ public class EditOtherAccountController implements Serializable {
         } catch (DatabaseConnectionException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+        } catch (ValidationException e) {
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+        } catch (AppBaseException e) {
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
     }
 

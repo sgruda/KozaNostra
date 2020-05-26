@@ -51,30 +51,30 @@ public class Account implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccountIdGen")
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
-    @Pattern(regexp = "[a-zA-Z0-9!@#$%^*]+")
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
+    @Pattern(regexp = "[a-zA-Z0-9!@#$%^*]+", message = "{validation.pattern}")
     @Column(name = "login", nullable = false, length = 32, unique = true, updatable = false)
     private String login;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 64, max = 64)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 64, max = 64, message = "{validation.size}")
     @Column(name = "password", nullable = false, length = 64)
     private String password;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
     private boolean active;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "confirmed", nullable = false, columnDefinition = "boolean default false")
     private boolean confirmed;
 
@@ -82,7 +82,7 @@ public class Account implements Serializable {
     @Setter(lombok.AccessLevel.NONE)
     @Basic(optional = false)
     @Version
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
@@ -93,23 +93,23 @@ public class Account implements Serializable {
     private Collection<PreviousPassword> previousPasswordCollection = new ArrayList<>();
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
-    @Pattern(regexp = "^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\\\-]+")
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
+    @Pattern(regexp = "^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\\\-]+", message = "{validation.pattern}")
     @Column(table = "account_personal_data", name = "firstname", nullable = false, length = 32)
     private String firstname;
 
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
-    @Pattern(regexp = "[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+")
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
+    @Pattern(regexp = "[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+", message = "{validation.pattern}")
     @Column(table = "account_personal_data", name = "lastname", nullable = false, length = 32)
     private String lastname;
 
     @Email
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
+    @NotNull(message = "{validation.notnull}")
+    @Size(min = 1, max = 32, message = "{validation.size}")
     @Column(table = "account_personal_data", name = "email", nullable = false, length = 32, unique = true, updatable = false)
     private String email;
 
@@ -121,18 +121,18 @@ public class Account implements Serializable {
 
 
     @Pattern(regexp = "((([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))" +
-            "|(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4})")
-    @Size(max = 255)
+            "|(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4})", message = "{validation.pattern}")
+    @Size(max = 255, message = "{validation.size}")
     @Column(table = "authentication_data", name = "last_auth_ip")
     private String lastAuthIp;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(table = "authentication_data", name = "failed_auth_counter", nullable = false, columnDefinition = "integer default 0")
     private int failedAuthCounter;
 
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "{validation.notnull}")
     @Column(table = "authentication_data", name = "force_password_change", nullable = false, columnDefinition = "boolean default true")
     private boolean forcePasswordChange;
 
