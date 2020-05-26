@@ -44,10 +44,10 @@ public class ConfirmAccountController implements Serializable {
                 ResourceBundles.emitMessage(null, "messages.account.confirmed");
             } else ResourceBundles.emitErrorMessage(null, "error.default");
         } catch (AccountAlreadyConfirmedException e) {
-            ResourceBundles.emitErrorMessage(null, "error.account.confirmed");
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         return "home";

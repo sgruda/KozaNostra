@@ -61,7 +61,7 @@ public class AccountDetailsController implements Serializable {
             changeAccessLevelEndpointLocal.findByLogin(selectedLogin);
             activationAccountController.setAccount(this.account);
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         this.setRolesInfo(this.account.getAccessLevelCollection());
@@ -89,7 +89,7 @@ public class AccountDetailsController implements Serializable {
             ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock.refresh");
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         }
     }
@@ -139,10 +139,10 @@ public class AccountDetailsController implements Serializable {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.account.not.have.active.access.levels");
         } catch (AppOptimisticLockException e) {
-            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         refresh();
@@ -153,7 +153,7 @@ public class AccountDetailsController implements Serializable {
         try {
             roleProperties = ResourceBundles.loadProperties("config.user_roles.properties");
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessage(null, "error.default");
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         roleManagerActive = false;

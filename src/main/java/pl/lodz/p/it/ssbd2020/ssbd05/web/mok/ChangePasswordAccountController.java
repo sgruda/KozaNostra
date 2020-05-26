@@ -47,7 +47,7 @@ public class ChangePasswordAccountController implements Serializable {
             accountDTO = editAccountEndpointLocal.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         } catch (AppBaseException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
     }
 
@@ -65,10 +65,10 @@ public class ChangePasswordAccountController implements Serializable {
                 ResourceBundles.emitErrorMessageWithFlash(null,ex.getMessage());
             }catch (ValidationException e) {
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
-                ResourceBundles.emitErrorMessageByPlainText(null, "page.registration.data.error");
+                ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
             }catch(AppBaseException ex){
                 log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-                ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+                ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             }
         }else{
             ResourceBundles.emitErrorMessageWithFlash(null,"page.changepassword.wrong.current.password");

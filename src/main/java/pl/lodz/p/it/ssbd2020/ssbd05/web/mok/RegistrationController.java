@@ -69,7 +69,7 @@ public class RegistrationController implements Serializable {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         } catch (ValidationException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageByPlainText(null, "page.registration.data.error");
+            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());

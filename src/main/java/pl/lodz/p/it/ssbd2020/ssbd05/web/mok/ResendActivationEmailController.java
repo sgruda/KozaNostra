@@ -22,7 +22,7 @@ public class ResendActivationEmailController {
             resendActivationEmailEndpoint.resendEmail(login);
             ResourceBundles.emitMessageWithFlash(null, "page.accountdetails.mail.sent");
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
     }

@@ -74,10 +74,10 @@ public class ResetPasswordController {
                 ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.success");
             } else ResourceBundles.emitErrorMessageWithFlash(null, "messages.resetpassword.expired");
         } catch (ValidationException e) {
-            ResourceBundles.emitErrorMessageByPlainText(null, "page.registration.data.error");
+            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
     }

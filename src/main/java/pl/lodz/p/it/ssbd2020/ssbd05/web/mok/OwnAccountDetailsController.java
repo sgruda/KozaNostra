@@ -38,7 +38,7 @@ public class OwnAccountDetailsController implements Serializable {
             this.account = accountDetailsEndpointLocal.getOwnAccount();
         } catch (AppBaseException e) {
             log.log(Level.SEVERE, e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessage(null, "error.default");
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
         }
     }
 }

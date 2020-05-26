@@ -60,10 +60,10 @@ public class AddAccountController {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.log(Level.SEVERE, "Email, " + LocalDateTime.now(), ex);
         } catch (ValidationException e) {
-            ResourceBundles.emitErrorMessageByPlainText(null, "page.registration.data.error");
+            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         }
     }

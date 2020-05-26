@@ -31,7 +31,7 @@ public class ActivationAccountController implements Serializable {
             editAccountEndpointLocal.findByLogin(account.getLogin());
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+            ResourceBundles.emitErrorMessage(null,"error.changeotherpassword.optimisticlock");
         }
     }
 
