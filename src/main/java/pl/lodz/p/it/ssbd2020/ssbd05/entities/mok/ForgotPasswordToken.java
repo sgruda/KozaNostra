@@ -26,7 +26,6 @@ public class ForgotPasswordToken implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @NotNull(message = "{validation.notnull}")
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "ForgotPasswordTokenIdGen")
     @Column(name = "id", nullable = false)
     @Setter(lombok.AccessLevel.NONE)

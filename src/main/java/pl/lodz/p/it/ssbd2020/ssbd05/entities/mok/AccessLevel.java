@@ -30,7 +30,6 @@ public class AccessLevel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccessLevelIdGen")
     @Basic(optional = false)
-    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 

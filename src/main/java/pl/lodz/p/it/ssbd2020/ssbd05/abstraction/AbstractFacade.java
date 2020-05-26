@@ -30,10 +30,8 @@ public abstract class AbstractFacade<T> {
         if(!violations.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             for(ConstraintViolation<T> violation : violations) {
-                if(!violation.getPropertyPath().toString().equals("id")) {
-                    stringBuilder.append(violation.getPropertyPath()).append(" ")
-                            .append(violation.getMessage()).append("\n");
-                }
+                stringBuilder.append(violation.getPropertyPath()).append(" ")
+                        .append(violation.getMessage()).append("\n");
             }
             throw new ValidationException(stringBuilder.toString());
         }

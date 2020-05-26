@@ -51,7 +51,6 @@ public class Account implements Serializable {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "AccountIdGen")
-    @NotNull(message = "{validation.notnull}")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -106,7 +105,7 @@ public class Account implements Serializable {
     @Column(table = "account_personal_data", name = "lastname", nullable = false, length = 32)
     private String lastname;
 
-    @Email
+    @Email(message = "{validation.email}")
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Size(min = 1, max = 32, message = "{validation.size}")
