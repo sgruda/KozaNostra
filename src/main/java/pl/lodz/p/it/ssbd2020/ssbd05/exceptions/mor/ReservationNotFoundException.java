@@ -4,6 +4,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 public class ReservationNotFoundException extends AppBaseException {
 
+    public static final String RESERVATION_NOT_FOUND = "error.reservation.not.found";
+
     public ReservationNotFoundException() {
         super();
     }
@@ -13,6 +15,6 @@ public class ReservationNotFoundException extends AppBaseException {
     }
 
     public ReservationNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+        super(RESERVATION_NOT_FOUND, cause);
     }
 }

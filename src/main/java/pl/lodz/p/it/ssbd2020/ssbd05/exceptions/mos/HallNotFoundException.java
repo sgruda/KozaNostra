@@ -4,6 +4,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 public class HallNotFoundException extends AppBaseException {
 
+    public static final String HALL_NOT_FOUND = "error.hall.not.found";
+
     public HallNotFoundException() {
         super();
     }
@@ -13,6 +15,6 @@ public class HallNotFoundException extends AppBaseException {
     }
 
     public HallNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+        super(HALL_NOT_FOUND, cause);
     }
 }
