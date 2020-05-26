@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -29,9 +30,12 @@ public class ActivationAccountController implements Serializable {
         this.account = account;
         try {
             editAccountEndpointLocal.findByLogin(account.getLogin());
-        } catch (AppBaseException e) {
+        } catch(AppOptimisticLockException e ) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null,"error.changeotherpassword.optimisticlock");
+        } catch (AppBaseException e) {
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null,e.getMessage());
         }
     }
 
