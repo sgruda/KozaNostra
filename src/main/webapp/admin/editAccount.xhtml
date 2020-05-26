@@ -25,7 +25,7 @@
                 <p:inputText id="firstName" required="true"
                              value="${editOtherAccountController.accountDTO.firstname}" requiredMessage="#{msg['page.edit.account.form.firstname.required']}"
                              validatorMessage="#{msg['page.edit.firstname.validator']}">
-                    <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                    <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+"/>
                     <f:validateLength minimum="1" maximum="32" />
                 </p:inputText>
                 </h:outputLabel>

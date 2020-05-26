@@ -95,7 +95,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Size(min = 1, max = 32, message = "{validation.size}")
-    @Pattern(regexp = "^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\\\-]+", message = "{validation.pattern}")
+    @Pattern(regexp = "^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+", message = "{validation.pattern}")
     @Column(table = "account_personal_data", name = "firstname", nullable = false, length = 32)
     private String firstname;
 
