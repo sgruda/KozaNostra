@@ -77,9 +77,8 @@ public class RegisterAccountEndpoint implements Serializable, RegisterAccountEnd
             throw new ExceededTransactionRetriesException();
         }
     }
-    @Override
-    @PermitAll
-    public Collection<AccessLevel> generateAccessLevels() throws AppBaseException {
+
+    private Collection<AccessLevel> generateAccessLevels() throws AppBaseException {
         Collection<AccessLevel> accessLevels = new ArrayList<>();
         Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
 

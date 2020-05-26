@@ -7,9 +7,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -50,15 +47,6 @@ public class EditAccountController implements Serializable {
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.account.optimisticlock");
-        } catch (ExceededTransactionRetriesException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-        } catch (DatabaseQueryException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-        } catch (DatabaseConnectionException ex){
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
         } catch (ValidationException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageByPlainText(null, ex.getMessage());

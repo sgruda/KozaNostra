@@ -12,8 +12,6 @@ import java.util.Collection;
 public interface RegisterAccountEndpointLocal {
     void addNewAccount (AccountDTO accountDTO) throws AppBaseException;
 
-    Collection<AccessLevel> generateAccessLevels() throws AppBaseException;
-
     Account getAccount();
 
     Collection<AccessLevel> getAccessLevels();
