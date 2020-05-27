@@ -54,7 +54,7 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
     }
 
     @Override
-    @RolesAllowed("editExtraService")
+    @RolesAllowed({"editExtraService", "changeExtraServiceActivity"})
     public void edit(ExtraService entity) throws AppBaseException {
         try {
             super.edit(entity);
