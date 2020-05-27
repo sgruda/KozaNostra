@@ -39,6 +39,7 @@ public class ActivationAccountController implements Serializable {
         }
     }
 
+    //throws, bo wywołujemy w innym kontrolerze i obsługa jest tam
     public void unlockAccount() throws AppBaseException {
         editAccountEndpointLocal.unlockAccount(account);
         ResourceBundles.emitMessageWithFlash(null,"page.accountdetails.unlock");
