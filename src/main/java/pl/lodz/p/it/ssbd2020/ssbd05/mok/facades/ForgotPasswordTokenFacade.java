@@ -93,7 +93,7 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
             return Optional.ofNullable(this.em.createNamedQuery("ForgotPasswordToken.findByHash", ForgotPasswordToken.class)
                     .setParameter("hash", hash).getSingleResult());
         } catch (NoResultException e) {
-            throw new AppBaseException(e.getMessage());
+            throw new AppBaseException("error.default");
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }

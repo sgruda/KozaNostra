@@ -140,7 +140,7 @@ public class AccountDetailsController implements Serializable {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.account.not.have.active.access.levels");
         } catch (AppOptimisticLockException e) {
-            ResourceBundles.emitErrorMessage(null, e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.account.optimisticlock");
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());

@@ -12,7 +12,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccessLevelFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.AccountFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.facades.ForgotPasswordTokenFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -50,14 +49,14 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     public Account findByToken(String token) throws AppBaseException {
         if(accountFacade.findByToken(token).isPresent())
             return accountFacade.findByToken(token).get();
-        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+        else throw new AppBaseException("error.default");
     }
 
     @PermitAll
     public Account findByMail(String mail) throws AppBaseException {
         if(accountFacade.findByMail(mail).isPresent())
             return accountFacade.findByMail(mail).get();
-        else throw new AccountNotFoundException(ResourceBundles.getTranslatedText("error.account.not.found"));
+        else throw new AccountNotFoundException("error.account.not.found");
     }
 
     @PermitAll
@@ -73,7 +72,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
             account.setConfirmed(true);
             accountFacade.edit(account);
         }
-        else throw new AccountAlreadyConfirmedException(ResourceBundles.getTranslatedText("error.account.confirmed"));
+        else throw new AccountAlreadyConfirmedException("error.account.confirmed");
     }
 
     @PermitAll
@@ -113,14 +112,14 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     public ForgotPasswordToken findTokenByHash(String hash) throws AppBaseException {
         if (forgotPasswordTokenFacade.findByHash(hash).isPresent())
             return forgotPasswordTokenFacade.findByHash(hash).get();
-        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+        else throw new AppBaseException("error.default");
     }
 
     @PermitAll
     public void setPasswordAfterReset(Account account) throws AppBaseException {
         if(account.isConfirmed() && account.isActive())
             accountFacade.edit(account);
-        else throw new AppBaseException(ResourceBundles.getTranslatedText("error.default"));
+        else throw new AppBaseException("error.default");
     }
 
     @PermitAll
