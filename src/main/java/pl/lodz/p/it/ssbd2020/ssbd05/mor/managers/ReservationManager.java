@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
