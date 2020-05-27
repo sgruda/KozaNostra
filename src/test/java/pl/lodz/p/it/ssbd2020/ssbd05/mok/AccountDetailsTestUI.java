@@ -42,9 +42,11 @@ public class AccountDetailsTestUI {
         driver.findElement(By.xpath("//*[contains(@id, 'submit')]")).click();
         Thread.sleep(1000);
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
+        Thread.sleep(200);
         driver.findElement(By.xpath("//*[contains(@id, 'accountDetailsMenu')]")).click();
+        Thread.sleep(200);
         driver.findElement(By.xpath("//*[contains(@id, 'accountDetailsButton')]")).click();
-
+        Thread.sleep(500);
         String login = driver.findElement(By.xpath("//*[contains(@id, 'loginDetails')]")).getText();
         String email = driver.findElement(By.xpath("//*[contains(@id, 'emailDetails')]")).getText();
         assertEquals("admin", login);
