@@ -149,7 +149,7 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
     }
 
     @Override
-    @PermitAll
+    @RolesAllowed("blockAccount")
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
         boolean rollback;
         int callCounter = 0;

@@ -51,13 +51,7 @@ public class LastLoginController implements Serializable {
     public void checkFailedAuthCounter() {
         if(accountDTO.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
             accountDTO.setActive(false);
-            try {
-                editAccountEndpoint.blockAccount(accountDTO);
-                ResourceBundles.emitErrorMessageWithFlash(null, "page.login.account.lock");
-            } catch (AppBaseException e) {
-                log.severe(e.getMessage() + ", " + LocalDateTime.now());
-                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-            }
+            ResourceBundles.emitErrorMessageWithFlash(null, "page.login.account.lock");
         }
     }
 

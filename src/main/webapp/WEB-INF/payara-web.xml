@@ -23,6 +23,10 @@
         <role-name>unlockAccount</role-name>
         <group-name>ADMIN</group-name>
       </security-role-mapping>
+    <security-role-mapping>
+        <role-name>blockAccount</role-name>
+        <group-name>ADMIN</group-name>
+    </security-role-mapping>
       <security-role-mapping>
         <role-name>addAccessLevel</role-name>
         <group-name>ADMIN</group-name>
