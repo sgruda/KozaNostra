@@ -53,4 +53,28 @@ public class EventTypesFacade extends AbstractFacade<EventType> {
             throw new DatabaseConnectionException(e);
         }
     }
+
+    @Override
+    @DenyAll
+    public void create(EventType entity) throws AppBaseException {
+        super.create(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void edit(EventType entity) throws AppBaseException {
+        super.edit(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void remove(EventType entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }

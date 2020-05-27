@@ -52,4 +52,28 @@ public class ClientFacade extends AbstractFacade<Client> {
             throw new DatabaseConnectionException(e);
         }
     }
+
+    @Override
+    @DenyAll
+    public void create(Client entity) throws AppBaseException {
+        super.create(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void edit(Client entity) throws AppBaseException {
+        super.edit(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void remove(Client entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }

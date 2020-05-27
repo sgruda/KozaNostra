@@ -27,7 +27,7 @@ public class EditExtraServiceEndpoint implements Serializable, EditExtraServiceE
     }
 
     @Override
-    @RolesAllowed("changeActivity")
+    @RolesAllowed("changeExtraServiceActivity")
     public void changeActivity(ExtraServiceDTO extraServiceDTO) throws AppBaseException {
         // TODO implementacja
         throw new UnsupportedOperationException();

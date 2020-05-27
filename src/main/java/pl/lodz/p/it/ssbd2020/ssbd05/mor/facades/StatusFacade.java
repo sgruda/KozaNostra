@@ -57,4 +57,28 @@ public class StatusFacade extends AbstractFacade<Status> {
     public Optional<Status> findByStatusName(String statusName) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    @DenyAll
+    public void create(Status entity) throws AppBaseException {
+        super.create(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void edit(Status entity) throws AppBaseException {
+        super.edit(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void remove(Status entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }

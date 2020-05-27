@@ -98,4 +98,10 @@ public class ForgotPasswordTokenFacade extends AbstractFacade<ForgotPasswordToke
             throw new DatabaseConnectionException(e);
         }
     }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
 }

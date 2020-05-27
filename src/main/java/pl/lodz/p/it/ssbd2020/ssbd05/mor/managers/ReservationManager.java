@@ -40,6 +40,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         throw new UnsupportedOperationException();
     }
 
+    @RolesAllowed("getAllEventTypes")
     public List<EventType> getAllEventTypes(){
         //TODO Implementacja
         throw new UnsupportedOperationException();

@@ -23,7 +23,7 @@ import java.util.List;
 public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
 
     @Override
-    @PermitAll
+    @RolesAllowed("getHallByName")
     public HallDTO getHallByName(String name) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
@@ -41,7 +41,7 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
     }
 
     @Override
-    @RolesAllowed("changeActivity")
+    @RolesAllowed("changeHallActivity")
     public void changeActivity(HallDTO hallDTO) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

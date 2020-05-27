@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class EditReviewEndpoint implements EditReviewEndpointLocal, Serializable {
 
     @Override
-    @RolesAllowed("editReview")
+    @RolesAllowed("getReviewByReviewNumber")
     public ReviewDTO getReviewByReviewNumber(String number) throws AppBaseException {
         throw new UnsupportedOperationException();
     }

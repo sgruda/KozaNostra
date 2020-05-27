@@ -55,12 +55,30 @@ public class AddressFacade extends AbstractFacade<Address> {
     }
 
     @Override
-    @RolesAllowed("getAllEventTypes")
+    @RolesAllowed("getAllAddresses")
     public List<Address> findAll() throws AppBaseException {
         try {
             return super.findAll();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
+    }
+
+    @Override
+    @DenyAll
+    public void edit(Address entity) throws AppBaseException {
+        super.edit(entity);
+    }
+
+    @Override
+    @DenyAll
+    public void remove(Address entity) throws AppBaseException {
+        super.remove(entity);
+    }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
     }
 }
