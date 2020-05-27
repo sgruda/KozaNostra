@@ -14,9 +14,7 @@
     <ui:define name = "content">
         <h:form id="editAccount">
             <p:panel id="editPnl" header="#{msg['page.edit.account.title']}" style="font-size: 24px;">
-                <p:messages globalOnly="true">
-                    <p:autoUpdate/>
-                </p:messages>
+
                 <p:panelGrid columns="1" id="editPnlGrid">
                 <h:outputLabel for="login" value="#{msg['page.edit.account.form.login']}" >
                 <p:inputText id="login" value="${editOtherAccountController.accountDTO.login}" disabled="true"/>
@@ -42,8 +40,9 @@
                 </h:outputLabel>
                 </p:panelGrid>
                 <div style="display:flex; flex-direction: column;">
-                    <p:message for="firstName"/>
-                    <p:message for="lastName"/>
+                    <p:messages>
+                        <p:autoUpdate/>
+                    </p:messages>
                 </div>
                 <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:growl id="message" showDetail="true" />
