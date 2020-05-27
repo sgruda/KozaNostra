@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.AddressDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.AddHallEndpointLocal;
@@ -25,6 +26,7 @@ import java.util.List;
 public class AddHallEndpoint implements Serializable, AddHallEndpointLocal {
     @Inject
     private HallManager hallManager;
+    private Hall hall;
 
     @Override
     @RolesAllowed("addHall")
