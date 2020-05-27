@@ -23,9 +23,7 @@
             <h:form id="register">
                 <p:panel id="registrationPanel" header="#{msg['page.template.admin.addAccount']}"
                          style="font-size: 24px;">
-                    <p:messages globalOnly="true">
-                        <p:autoUpdate/>
-                    </p:messages>
+
                     <div style="display:flex; flex-direction: column;text-align: center;margin: auto;">
                         <p:inputText id="login" required="true" value="#{addAccountController.login}"
                                      requiredMessage="#{msg['page.registration.account.login.required']}"
@@ -79,13 +77,9 @@
                     </div>
 
                     <div style="display:flex; flex-direction: column;">
-                        <p:message for="login"/>
-                        <p:message for="password"/>
-                        <p:message for="confirmPassword"/>
-                        <p:message for="firstName"/>
-                        <p:message for="lastName"/>
-                        <p:message for="emailAddress"/>
-                        <p:message for="accessLevels"/>
+                        <p:messages>
+                            <p:autoUpdate/>
+                        </p:messages>
                     </div>
 
                     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">

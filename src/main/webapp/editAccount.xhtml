@@ -45,9 +45,9 @@
                 <div style="display:flex; flex-direction: column;">
                     <p:captcha id="Captcha" requiredMessage="#{msg['page.registration.account.captcha.required']}"
                                required="true" language="#{msg['page.registration.account.captcha.language']}"/>
-                    <p:message for="firstName"/>
-                    <p:message for="lastName"/>
-                    <p:message for="Captcha"/>
+                    <p:messages>
+                        <p:autoUpdate/>
+                    </p:messages>
                 </div>
                 <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
                         <p:growl id="message" showDetail="true" />
