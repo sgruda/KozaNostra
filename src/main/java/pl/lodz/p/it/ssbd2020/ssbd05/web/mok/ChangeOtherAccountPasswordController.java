@@ -57,7 +57,7 @@ public class ChangeOtherAccountPasswordController implements Serializable {
             ResourceBundles.emitMessageWithFlash(null, "page.changepassword.message");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.changeotherpassword.optimisticlock");
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.account.optimisticlock");
             goBack();
         } catch (ValidationException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
