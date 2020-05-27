@@ -7,8 +7,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.EventTypesFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.HallFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.EventTypesFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.HallFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.AddressFacade;
 
 import javax.annotation.security.PermitAll;

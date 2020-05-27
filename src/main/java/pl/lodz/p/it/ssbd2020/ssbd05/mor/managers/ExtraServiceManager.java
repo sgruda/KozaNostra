@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
 import lombok.extern.java.Log;
-import org.eclipse.persistence.annotations.ReadOnly;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -12,7 +11,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.util.ArrayList;
 import java.util.List;
 
 @Log
