@@ -5,11 +5,13 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.managers.HallManager;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
@@ -18,6 +20,8 @@ import java.io.Serializable;
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Interceptors(TrackerInterceptor.class)
 public class HallDetailsEndpoint implements Serializable, HallDetailsEndpointLocal {
+    @Inject
+    private HallManager hallManager;
 
     @Override
     @PermitAll
