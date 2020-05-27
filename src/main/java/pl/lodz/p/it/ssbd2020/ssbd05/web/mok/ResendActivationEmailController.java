@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mok;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.ResendActivationEmailEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -7,7 +8,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
+import java.time.LocalDateTime;
+@Log
 @Named
 @RequestScoped
 public class ResendActivationEmailController {
@@ -21,6 +23,7 @@ public class ResendActivationEmailController {
             ResourceBundles.emitMessageWithFlash(null, "page.accountdetails.mail.sent");
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
     }
 }

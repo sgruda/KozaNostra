@@ -48,14 +48,15 @@ public class LastLoginController implements Serializable {
         accountDTO.setLastFailedAuth(formatDate(LocalDateTime.now()));
         accountDTO.setFailedAuthCounter(accountDTO.getFailedAuthCounter() + 1);
     }
-    public void checkFailedAuthCounter() throws AppBaseException {
+    public void checkFailedAuthCounter() {
         if(accountDTO.getFailedAuthCounter() >= this.blockingAccountAfterFailedAttemptNumber ) {
             accountDTO.setActive(false);
             try {
                 editAccountEndpoint.blockAccount(accountDTO);
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.login.account.lock");
             } catch (AppBaseException e) {
-               log.warning(e.getClass().toString() + " " + e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
+                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             }
         }
     }

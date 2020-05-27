@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -127,7 +128,8 @@ public class RoleController implements Serializable {
         try {
             this.userRolesProperties = ResourceBundles.loadProperties("config.user_roles.properties");
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessage(null, "error.simple");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
     }
 }

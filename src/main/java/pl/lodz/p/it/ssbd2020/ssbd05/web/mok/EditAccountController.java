@@ -36,7 +36,7 @@ public class EditAccountController implements Serializable {
             accountDTO = editAccountEndpointLocal.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         } catch (AppBaseException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText(ex.getMessage()));
         }
     }
 
@@ -51,11 +51,10 @@ public class EditAccountController implements Serializable {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageByPlainText(null, ex.getMessage());
         } catch (AppBaseException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         }
     }
-
     public String goBack() {
         return "accountDetails";
     }

@@ -132,7 +132,7 @@ public class EmailSender {
             t.close();
 
         } catch (MessagingException e) {
-            log.warning("An error occurred while sending email");
+            log.warning("An error occurred while sending email " + e.getMessage() + " " + LocalDateTime.now());
         }
     }
 }

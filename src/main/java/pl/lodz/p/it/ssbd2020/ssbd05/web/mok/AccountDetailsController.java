@@ -21,6 +21,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
@@ -60,8 +61,8 @@ public class AccountDetailsController implements Serializable {
             changeAccessLevelEndpointLocal.findByLogin(selectedLogin);
             activationAccountController.setAccount(this.account);
         } catch (AppBaseException e) {
-            log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         this.setRolesInfo(this.account.getAccessLevelCollection());
     }
@@ -83,10 +84,13 @@ public class AccountDetailsController implements Serializable {
             refresh();
         } catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppOptimisticLockException ex) {
             ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock.refresh");
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         }
     }
 
@@ -96,10 +100,13 @@ public class AccountDetailsController implements Serializable {
             refresh();
         }catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppOptimisticLockException ex) {
             ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock.refresh");
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+            ResourceBundles.emitErrorMessage(null, "error.default");
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         }
     }
 
@@ -109,7 +116,8 @@ public class AccountDetailsController implements Serializable {
             ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
             this.account = accountDetailsEndpointLocal.getAccount(account.getLogin());
         } catch (AppBaseException | IOException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
     }
 
@@ -125,16 +133,18 @@ public class AccountDetailsController implements Serializable {
         account.setAccessLevelCollection(accessLevels);
         try {
             changeAccessLevelEndpointLocal.changeAccessLevel(account);
+            ResourceBundles.emitMessageWithFlash(null, "page.accountdetails.accessLevel.success");
         } catch(AccountNotHaveActiveAccessLevelsException e) {
             account.setAccessLevelCollection(accessLevelsBackup);
             this.setRolesInfo(accessLevelsBackup);
-            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.account.not.have.active.access.levels");
         } catch (AppOptimisticLockException e) {
-            ResourceBundles.emitErrorMessage(null, "error.account.optimisticlock");
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException e) {
-            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.simple");
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         refresh();
     }
@@ -144,8 +154,8 @@ public class AccountDetailsController implements Serializable {
         try {
             roleProperties = ResourceBundles.loadProperties("config.user_roles.properties");
         } catch (AppBaseException e) {
-            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
-            ResourceBundles.emitErrorMessage(null, "error.simple");
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         roleManagerActive = false;
         roleAdminActive = false;

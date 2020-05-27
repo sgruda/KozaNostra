@@ -53,7 +53,7 @@ public class EditOtherAccountController implements Serializable {
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         } catch (AppBaseException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
     }
 

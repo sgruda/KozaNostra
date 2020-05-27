@@ -47,7 +47,7 @@ public class ChangePasswordAccountController implements Serializable {
             accountDTO = editAccountEndpointLocal.findByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         } catch (AppBaseException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ResourceBundles.getTranslatedText("error.default"));
+            ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
     }
 
@@ -59,23 +59,22 @@ public class ChangePasswordAccountController implements Serializable {
                 ResourceBundles.emitMessageWithFlash(null,"page.changepassword.message");
             }catch(AppOptimisticLockException ex){
                 ResourceBundles.emitErrorMessageWithFlash(null,"error.account.optimisticlock");
-                log.warning(ex.getClass().toString() + " " + ex.getMessage());
+                log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             }catch(AccountPasswordAlreadyUsedException ex){
-                log.warning(ex.getClass().toString() + " " + ex.getMessage());
+                log.severe(ex.getMessage() + ", " + LocalDateTime.now());
                 ResourceBundles.emitErrorMessageWithFlash(null,ex.getMessage());
             }catch (ValidationException e) {
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
                 ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
             }catch(AppBaseException ex){
-                log.warning(ex.getClass().toString() + " " + ex.getMessage());
-                ResourceBundles.emitErrorMessageWithFlash(null,ex.getMessage());
+                log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+                ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             }
         }else{
             ResourceBundles.emitErrorMessageWithFlash(null,"page.changepassword.wrong.current.password");
         }
         return;
     }
-
     public String goBack() {
         return "accountDetails";
     }

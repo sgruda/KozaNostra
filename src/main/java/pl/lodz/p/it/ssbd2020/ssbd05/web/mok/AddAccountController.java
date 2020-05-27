@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,15 +55,16 @@ public class AddAccountController {
             clear();
         } catch (LoginAlreadyExistsException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            log.log(Level.SEVERE, "Login", ex);
+            log.log(Level.SEVERE, "Login, "+ LocalDateTime.now(), ex);
         } catch (EmailAlreadyExistsException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            log.log(Level.SEVERE, "Email", ex);
+            log.log(Level.SEVERE, "Email, " + LocalDateTime.now(), ex);
         } catch (ValidationException e) {
             ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            log.log(Level.SEVERE, ex.getClass().toString(), ex);
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         }
     }
 

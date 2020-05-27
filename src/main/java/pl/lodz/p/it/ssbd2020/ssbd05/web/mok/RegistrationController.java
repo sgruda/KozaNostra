@@ -16,8 +16,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Properties;
-import java.util.logging.Level;
 
 @Log
 @Named
@@ -57,21 +57,21 @@ public class RegistrationController implements Serializable {
             }
         } catch (LoginAlreadyExistsException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            log.log(Level.SEVERE, "Login", ex);
+            log.severe(ex.getMessage() + " Login, " + LocalDateTime.now());
         }catch (EmailAlreadyExistsException ex){
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            log.log(Level.SEVERE, "Email", ex);
+            log.severe(ex.getMessage() + " Email, " + LocalDateTime.now());
         } catch (ExceededTransactionRetriesException ex) {
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            log.log(Level.SEVERE, ex.getClass().toString(), ex);
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         } catch(PropertiesLoadingException ex) {
-            ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.simple"));
-            log.log(Level.SEVERE, ex.getClass().toString(), ex);
+            ResourceBundles.emitErrorMessageWithFlash(null, ResourceBundles.getTranslatedText("error.default"));
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         } catch (ValidationException e) {
-            log.log(Level.SEVERE, e.getClass().toString(), e);
-            ResourceBundles.emitErrorMessageByPlainText(null, ResourceBundles.getTranslatedText("page.registration.data.error"));
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
         } catch (AppBaseException e) {
-            log.log(Level.SEVERE, e.getClass().toString(), e);
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
         return "register";

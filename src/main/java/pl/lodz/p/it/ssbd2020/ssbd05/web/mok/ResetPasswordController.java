@@ -53,10 +53,11 @@ public class ResetPasswordController {
             resetPasswordEndpoint.resetPassword(mail);
             ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.mail");
         } catch (AccountNotFoundException e) {
-            log.warning(e.getMessage() + "Wrong email provided during resetting password");
+            log.warning(e.getMessage() + "Wrong email provided during resetting password, " + LocalDateTime.now());
             ResourceBundles.emitMessageWithFlash(null, "messages.resetpassword.mail");
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
         return "home";
     }
@@ -74,8 +75,10 @@ public class ResetPasswordController {
             } else ResourceBundles.emitErrorMessageWithFlash(null, "messages.resetpassword.expired");
         } catch (ValidationException e) {
             ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
     }
     public String goHome() {
