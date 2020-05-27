@@ -10,8 +10,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.util.concurrent.TimeUnit;
-
 import static org.junit.Assert.assertEquals;
 
 public class AccountDetailsTestUI {
@@ -35,18 +33,20 @@ public class AccountDetailsTestUI {
     }
 
     @Test
-    public void accountDetailsTest() {
+    public void accountDetailsTest() throws InterruptedException {
         driver.get("https://localhost:8181/ssbd05/index.xhtml");
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).sendKeys("admin");
         driver.findElement(By.id("login:password")).sendKeys("admin123");
         driver.findElement(By.xpath("//*[contains(@id, 'submit')]")).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        Thread.sleep(1000);
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
+        Thread.sleep(200);
         driver.findElement(By.xpath("//*[contains(@id, 'accountDetailsMenu')]")).click();
+        Thread.sleep(200);
         driver.findElement(By.xpath("//*[contains(@id, 'accountDetailsButton')]")).click();
-
+        Thread.sleep(500);
         String login = driver.findElement(By.xpath("//*[contains(@id, 'loginDetails')]")).getText();
         String email = driver.findElement(By.xpath("//*[contains(@id, 'emailDetails')]")).getText();
         assertEquals("admin", login);

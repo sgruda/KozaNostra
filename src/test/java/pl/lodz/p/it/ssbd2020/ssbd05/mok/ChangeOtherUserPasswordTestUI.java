@@ -3,14 +3,16 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mok;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.java.Log;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-
-import java.util.concurrent.TimeUnit;
 
 @Log
 public class ChangeOtherUserPasswordTestUI {
@@ -24,6 +26,7 @@ public class ChangeOtherUserPasswordTestUI {
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
         options.setAcceptInsecureCerts(true);
+        options.addArguments("--lang=en");
         driver = new ChromeDriver(options);
         js = (JavascriptExecutor) driver;
     }
@@ -34,22 +37,30 @@ public class ChangeOtherUserPasswordTestUI {
     }
 
     @Test
-    public void changeOtherUsersPassword(){
-        driver.get("https://localhost:8181/ssbd05/");
-        driver.manage().window().setSize(new Dimension(1187, 1020));
+    public void changeOtherUsersPassword() throws InterruptedException {
+        driver.get("https://localhost:8181/ssbd05/index.xhtml");
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).sendKeys("admin");
-        driver.findElement(By.id("login:password")).sendKeys("admin123");
-        driver.findElement(By.xpath("//*[contains(@id,'submit')]")).click();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-
-        driver.findElement(By.xpath("//*[contains(@id,'dynaButton')]")).click();
-        driver.findElement(By.xpath("//*[contains(@id,'changeRoleButton')]")).click();
-        driver.findElement(By.xpath("//*[contains(@id,'changeAdmin')]")).click();
-        driver.findElement(By.cssSelector(".pi-bars")).click();
+        driver.findElement(By.id("login:password")).click();
+        driver.findElement(By.id("login:password")).click();
         {
-            WebElement element = driver.findElement(By.cssSelector(".pi-bars"));
+            WebElement element = driver.findElement(By.id("login:password"));
+            Actions builder = new Actions(driver);
+            builder.doubleClick(element).perform();
+        }
+        driver.findElement(By.id("login:password")).sendKeys("admin123");
+        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
+        Thread.sleep(200);
+        driver.findElement(By.linkText("Change role")).click();
+        Thread.sleep(200);
+        driver.findElement(By.xpath("//a[contains(.,\'Admin\')]")).click();
+        Thread.sleep(200);
+        driver.findElement(By.id("menu-bars")).click();
+        {
+            WebElement element = driver.findElement(By.id("menu-bars"));
             Actions builder = new Actions(driver);
             builder.moveToElement(element).perform();
         }
@@ -58,24 +69,28 @@ public class ChangeOtherUserPasswordTestUI {
             Actions builder = new Actions(driver);
             builder.moveToElement(element, 0, 0).perform();
         }
-        driver.findElement(By.cssSelector("#j_idt11 > .ui-button-text")).click();
-        driver.findElement(By.id("form1:j_idt36")).click();
-        driver.findElement(By.id("form1:j_idt36")).sendKeys("nieUsuwacKrystian");
-        driver.findElement(By.xpath("//span[contains(.,\'Szukaj\')]")).click();
+        driver.findElement(By.cssSelector("#listAccountsButton > .ui-button-text")).click();
+        driver.findElement(By.id("form1:filterAccountsTextBox")).click();
+        driver.findElement(By.id("form1:filterAccountsTextBox")).sendKeys("NieUsuwacKrystian");
+        driver.findElement(By.cssSelector("#form1\\3A filterbutton > .ui-button-text")).click();
+        {
+            WebElement element = driver.findElement(By.cssSelector("#form1\\3A filterbutton > .ui-button-text"));
+            Actions builder = new Actions(driver);
+            builder.moveToElement(element).perform();
+        }
         driver.findElement(By.xpath("//td[7]/button/span")).click();
-        driver.findElement(By.cssSelector("#j_idt66 > .ui-button-text")).click();
-        driver.findElement(By.id("changePassword:password")).click();
-        driver.findElement(By.id("changePassword:password")).sendKeys("zaq1@WSX");
-        driver.findElement(By.id("changePassword:confirmPassword")).sendKeys("zaq1@WSX");
-        driver.findElement(By.xpath("//span[contains(.,\'Zmień hasło\')]")).click();
-        driver.findElement(By.xpath("//span[contains(.,\'admin\')]")).click();
-        driver.findElement(By.xpath("//span[contains(.,\'Wyloguj\')]")).click();
-        driver.findElement(By.id("loginButton")).click();
-        driver.findElement(By.id("login:username")).click();
-        driver.findElement(By.id("login:username")).sendKeys("nieUsuwac1");
-        driver.findElement(By.id("login:password")).sendKeys("zaq1@WSX");
-        driver.findElement(By.xpath("//span[contains(.,\'Zaloguj\')]")).click();
-        driver.findElement(By.xpath("//span[contains(.,\'nieUsuwac1\')]")).click();
-        driver.findElement(By.xpath("//span[contains(.,\'Wyloguj\')]")).click();
+        Thread.sleep(200);
+        driver.findElement(By.xpath("//div[2]/button/span")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.cssSelector("#changePassword\\3Apassword")).click();
+        driver.findElement(By.cssSelector("#changePassword\\3Apassword")).sendKeys("Hasło123!");
+        driver.findElement(By.cssSelector("#changePassword\\3A confirmPassword")).click();
+        driver.findElement(By.cssSelector("#changePassword\\3A confirmPassword")).sendKeys("Hasło123!");
+        Thread.sleep(500);
+        driver.findElement(By.cssSelector("#changePassword\\3Asubmit > .ui-button-text")).click();
+        Thread.sleep(300);
+        driver.findElement(By.xpath("//span[contains(.,\'Yes\')]")).click();
+        Thread.sleep(1000);
+        Assert.assertEquals(driver.findElement(By.cssSelector(".ui-messages-info-summary")).getText(),"Password has been changed");
     }
 }

@@ -5,7 +5,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -35,7 +38,6 @@ public class AddAccountTestUI {
     String randomString = random.toString().replace("-","");
     randomString = randomString.substring(0,10);
     driver.get("https://localhost:8181/ssbd05/login/login.xhtml");
-    driver.manage().window().setSize(new Dimension(1936, 1056));
     driver.findElement(By.id("loginButton")).click();
     driver.findElement(By.id("login:loginPnl_content")).click();
     driver.findElement(By.id("login:username")).click();
@@ -68,9 +70,9 @@ public class AddAccountTestUI {
     driver.findElement(By.id("register:confirmPassword")).click();
     driver.findElement(By.id("register:confirmPassword")).sendKeys("AddAccountTest!@1");
     driver.findElement(By.id("register:firstName")).click();
-    driver.findElement(By.id("register:firstName")).sendKeys("AddTest");
+    driver.findElement(By.id("register:firstName")).sendKeys("Addtest");
     driver.findElement(By.id("register:lastName")).click();
-    driver.findElement(By.id("register:lastName")).sendKeys("AddTest");
+    driver.findElement(By.id("register:lastName")).sendKeys("Addtest");
     driver.findElement(By.id("register:emailAddress")).click();
     driver.findElement(By.id("register:emailAddress")).sendKeys(randomString +"@eoopy.com");
     driver.findElement(By.xpath("//table[@id=\'register:accessLevels\']/tbody/tr/td/div/div[2]/span")).click();
@@ -78,7 +80,7 @@ public class AddAccountTestUI {
     driver.findElement(By.xpath("//div[@id=\'register:active\']/div[2]/span")).click();
     driver.findElement(By.cssSelector("#register\\3Asubmit > .ui-button-text")).click();
     driver.findElement(By.xpath("//div[3]/button/span[2]")).click();
-    Thread.sleep(3000);
-    Assert.assertEquals(driver.findElement(By.cssSelector(".ui-messages-info-summary")).getText(),"Account created!");
+    Thread.sleep(1000);
+    Assert.assertEquals(driver.findElement(By.cssSelector(".ui-growl-title")).getText(),"Account created!");
   }
 }

@@ -43,18 +43,21 @@ public class BlockThenUnlockAccountTestUI {
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'changeRoleButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'changeAdmin')]")).click();
-        driver.findElement(By.xpath("//*[contains(@id, 'menu-button')]")).click();
+        driver.findElement(By.cssSelector(".pi-bars")).click();
+        Thread.sleep(500);
         driver.findElement(By.xpath("//*[contains(@id, 'listAccountsButton')]")).click();
-        driver.findElement(By.xpath("//*[contains(@id, 'filterAccountsTextBox')]")).sendKeys("Szajmi2");
+        driver.findElement(By.xpath("//*[contains(@id, 'filterAccountsTextBox')]")).sendKeys("Testujeblokowanie");
         driver.findElement(By.xpath("//*[contains(@id, 'filterbutton')]")).click();
         Thread.sleep(1000);
         driver.findElement(By.xpath("//*[contains(@id, 'goDetailsButton')]")).click();
         String active = driver.findElement(By.xpath("//*[contains(@id, 'active')]")).getText();
         Assert.assertEquals("Tak",active);
         driver.findElement(By.xpath("//*[contains(@id, 'blockaccount')]")).click();
+        Thread.sleep(500);
         String inactive = driver.findElement(By.xpath("//*[contains(@id, 'inactive')]")).getText();
         Assert.assertEquals("Nie",inactive);
         driver.findElement(By.xpath("//*[contains(@id, 'unlockaccount')]")).click();
+        Thread.sleep(500);
         driver.findElement(By.xpath("//*[contains(@id, 'dynaButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id, 'logoutButton')]")).click();
     }
