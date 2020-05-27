@@ -19,7 +19,7 @@ public class ResetPasswordTestUI {
     public void setUp() {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         ChromeOptions options = new ChromeOptions();
- //       options.setHeadless(true);
+        options.setHeadless(true);
         options.addArguments("--lang=en");
         options.setAcceptInsecureCerts(true);
         driver = new ChromeDriver(options);
