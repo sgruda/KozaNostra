@@ -116,7 +116,8 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
 
         ForgotPasswordToken forgotPasswordToken = new ForgotPasswordToken();
         forgotPasswordToken.setAccount(account);
-        forgotPasswordToken.setExpireDate(LocalDateTime.now().plusMinutes(15));
+        forgotPasswordToken.setExpireDate(LocalDateTime.now()
+                .plusMinutes(Integer.parseInt(ResourceBundles.loadProperties("config.email.properties").getProperty("email.lifetime"))));
 
         String hash = HashGenerator.sha256(UUID.randomUUID().toString() + forgotPasswordToken.getExpireDate().toString());
         forgotPasswordToken.setHash(hash);
