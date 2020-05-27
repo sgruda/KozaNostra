@@ -12,172 +12,172 @@
         <param-value>true</param-value>
     </context-param>
     <!--    Klucze reCaptcha-->
-    <context-param>
-        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
-        <param-value>6Lde2ucUAAAAADpAUC6GFluUj5ngVG9tzjCPJlCp</param-value>
-    </context-param>
-    <context-param>
-        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
-        <param-value>6Lde2ucUAAAAABo2d2eehKupJ62B0c7avPKl0HoC</param-value>
-    </context-param>
-    <!--    Klucze reCaptcha wykorzystywane przy testach funkcjonalnych Selenium-->
-    <!--    <context-param>-->
-    <!--        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>-->
-    <!--        <param-value>6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI</param-value>-->
-    <!--    </context-param>-->
-    <!--    <context-param>-->
-    <!--        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>-->
-    <!--        <param-value>6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe</param-value>-->
-    <!--    </context-param>-->
+<!--    <context-param>-->
+<!--        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>-->
+<!--        <param-value>6Lde2ucUAAAAADpAUC6GFluUj5ngVG9tzjCPJlCp</param-value>-->
+<!--    </context-param>-->
+<!--    <context-param>-->
+<!--        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>-->
+<!--        <param-value>6Lde2ucUAAAAABo2d2eehKupJ62B0c7avPKl0HoC</param-value>-->
+<!--    </context-param>-->
+    <!--  Klucze reCaptcha wykorzystywane przy testach funkcjonalnych Selenium -->
+      <context-param>
+          <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+          <param-value>6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI</param-value>
+      </context-param>
+      <context-param>
+          <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+          <param-value>6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe</param-value>
+      </context-param>
 
-    <context-param>
-        <param-name>numberOfTransactionRepeat</param-name>
-        <param-value>5</param-value>
-    </context-param>
+  <context-param>
+      <param-name>numberOfTransactionRepeat</param-name>
+      <param-value>5</param-value>
+  </context-param>
 
-    <context-param>
-        <param-name>primefaces.THEME</param-name>
-        <param-value>#{roleController.getThemeForRole()}</param-value>
-    </context-param>
-    <context-param>
-        <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    <servlet>
-        <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.xhtml</url-pattern>
-    </servlet-mapping>
+  <context-param>
+      <param-name>primefaces.THEME</param-name>
+      <param-value>#{roleController.getThemeForRole()}</param-value>
+  </context-param>
+  <context-param>
+      <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
+      <param-value>true</param-value>
+  </context-param>
+  <servlet>
+      <servlet-name>Faces Servlet</servlet-name>
+      <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>Faces Servlet</servlet-name>
+      <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
 
-    <session-config>
-        <session-timeout>10</session-timeout>
-    </session-config>
-    <welcome-file-list>
-        <welcome-file>index.xhtml</welcome-file>
-    </welcome-file-list>
+  <session-config>
+      <session-timeout>10</session-timeout>
+  </session-config>
+  <welcome-file-list>
+      <welcome-file>index.xhtml</welcome-file>
+  </welcome-file-list>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>All pages</web-resource-name>
-            <url-pattern>/*</url-pattern>
-        </web-resource-collection>
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>All pages</web-resource-name>
+          <url-pattern>/*</url-pattern>
+      </web-resource-collection>
+      <user-data-constraint>
+          <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+  </security-constraint>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Admin resources</web-resource-name>
-            <url-pattern>/admin/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>ADMIN</role-name>
-        </auth-constraint>
-    </security-constraint>
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>Admin resources</web-resource-name>
+          <url-pattern>/admin/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>ADMIN</role-name>
+      </auth-constraint>
+  </security-constraint>
 
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Manager resources</web-resource-name>
-            <url-pattern>/manager/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>MANAGER</role-name>
-        </auth-constraint>
-    </security-constraint>
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>Manager resources</web-resource-name>
+          <url-pattern>/manager/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>MANAGER</role-name>
+      </auth-constraint>
+  </security-constraint>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Client resources</web-resource-name>
-            <url-pattern>/client/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>CLIENT</role-name>
-        </auth-constraint>
-    </security-constraint>
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>Client resources</web-resource-name>
+          <url-pattern>/client/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>CLIENT</role-name>
+      </auth-constraint>
+  </security-constraint>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Changing password</web-resource-name>
-            <url-pattern>/changePassword.xhtml</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>ADMIN</role-name>
-            <role-name>MANAGER</role-name>
-            <role-name>CLIENT</role-name>
-        </auth-constraint>
-    </security-constraint>
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>Changing password</web-resource-name>
+          <url-pattern>/changePassword.xhtml</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>ADMIN</role-name>
+          <role-name>MANAGER</role-name>
+          <role-name>CLIENT</role-name>
+      </auth-constraint>
+  </security-constraint>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Own Account Details</web-resource-name>
-            <url-pattern>/accountDetails.xhtml</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>ADMIN</role-name>
-            <role-name>MANAGER</role-name>
-            <role-name>CLIENT</role-name>
-        </auth-constraint>
-    </security-constraint>
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>Own Account Details</web-resource-name>
+          <url-pattern>/accountDetails.xhtml</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>ADMIN</role-name>
+          <role-name>MANAGER</role-name>
+          <role-name>CLIENT</role-name>
+      </auth-constraint>
+  </security-constraint>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Edit Own Account</web-resource-name>
-            <url-pattern>/editAccount.xhtml</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>ADMIN</role-name>
-            <role-name>MANAGER</role-name>
-            <role-name>CLIENT</role-name>
-        </auth-constraint>
-    </security-constraint>
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>Edit Own Account</web-resource-name>
+          <url-pattern>/editAccount.xhtml</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>ADMIN</role-name>
+          <role-name>MANAGER</role-name>
+          <role-name>CLIENT</role-name>
+      </auth-constraint>
+  </security-constraint>
 
-    <security-role>
-        <role-name>ADMIN</role-name>
-    </security-role>
-    <security-role>
-        <role-name>MANAGER</role-name>
-    </security-role>
-    <security-role>
-        <role-name>CLIENT</role-name>
-    </security-role>
+  <security-role>
+      <role-name>ADMIN</role-name>
+  </security-role>
+  <security-role>
+      <role-name>MANAGER</role-name>
+  </security-role>
+  <security-role>
+      <role-name>CLIENT</role-name>
+  </security-role>
 
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <realm-name>ssbd05realm</realm-name>
-        <form-login-config>
-            <form-login-page>/login/login.xhtml</form-login-page>
-            <form-error-page>/login/error.xhtml</form-error-page>
-        </form-login-config>
-    </login-config>
+  <login-config>
+      <auth-method>FORM</auth-method>
+      <realm-name>ssbd05realm</realm-name>
+      <form-login-config>
+          <form-login-page>/login/login.xhtml</form-login-page>
+          <form-error-page>/login/error.xhtml</form-error-page>
+      </form-login-config>
+  </login-config>
 
-    <error-page>
-        <exception-type>java.lang.RuntimeException</exception-type>
-        <location>/errors/error.xhtml</location>
-    </error-page>
-    <error-page>
-        <exception-type>javax.servlet.ServletException</exception-type>
-        <location>/errors/error.xhtml</location>
-    </error-page>
-    <error-page>
-        <exception-type>java.io.IOException</exception-type>
-        <location>/errors/error.xhtml</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/errors/error500.xhtml</location>
-    </error-page>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/errors/error404.xhtml</location>
-    </error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/errors/error403.xhtml</location>
-    </error-page>
+  <error-page>
+      <exception-type>java.lang.RuntimeException</exception-type>
+      <location>/errors/error.xhtml</location>
+  </error-page>
+  <error-page>
+      <exception-type>javax.servlet.ServletException</exception-type>
+      <location>/errors/error.xhtml</location>
+  </error-page>
+  <error-page>
+      <exception-type>java.io.IOException</exception-type>
+      <location>/errors/error.xhtml</location>
+  </error-page>
+  <error-page>
+      <error-code>500</error-code>
+      <location>/errors/error500.xhtml</location>
+  </error-page>
+  <error-page>
+      <error-code>404</error-code>
+      <location>/errors/error404.xhtml</location>
+  </error-page>
+  <error-page>
+      <error-code>403</error-code>
+      <location>/errors/error403.xhtml</location>
+  </error-page>
 </web-app>
