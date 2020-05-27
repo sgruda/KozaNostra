@@ -11,24 +11,24 @@
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
     </context-param>
-    <!--    Klucze reCaptcha-->
-<!--    <context-param>-->
-<!--        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>-->
-<!--        <param-value>6Lde2ucUAAAAADpAUC6GFluUj5ngVG9tzjCPJlCp</param-value>-->
-<!--    </context-param>-->
-<!--    <context-param>-->
-<!--        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>-->
-<!--        <param-value>6Lde2ucUAAAAABo2d2eehKupJ62B0c7avPKl0HoC</param-value>-->
-<!--    </context-param>-->
-    <!--  Klucze reCaptcha wykorzystywane przy testach funkcjonalnych Selenium -->
-      <context-param>
-          <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
-          <param-value>6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI</param-value>
-      </context-param>
-      <context-param>
-          <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
-          <param-value>6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe</param-value>
-      </context-param>
+<!--        Klucze reCaptcha-->
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6Lde2ucUAAAAADpAUC6GFluUj5ngVG9tzjCPJlCp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6Lde2ucUAAAAABo2d2eehKupJ62B0c7avPKl0HoC</param-value>
+    </context-param>
+<!--      Klucze reCaptcha wykorzystywane przy testach funkcjonalnych Selenium -->
+<!--      <context-param>-->
+<!--          <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>-->
+<!--          <param-value>6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI</param-value>-->
+<!--      </context-param>-->
+<!--      <context-param>-->
+<!--          <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>-->
+<!--          <param-value>6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe</param-value>-->
+<!--      </context-param>-->
 
   <context-param>
       <param-name>numberOfTransactionRepeat</param-name>
