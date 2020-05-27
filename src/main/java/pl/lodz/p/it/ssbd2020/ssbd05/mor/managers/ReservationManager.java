@@ -7,9 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.EventTypesFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReservationFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.StatusFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
@@ -32,32 +30,38 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private StatusFacade statusFacade;
+    @Inject
+    private HallFacade hallFacade;
+    @Inject
+    private AccountFacade accountFacade;
+    @Inject
+    private ClientFacade clientFacade;
 
     @RolesAllowed("getAllReservations")
-    public List<Reservation> getAllReservations(){
+    public List<Reservation> getAllReservations() throws AppBaseException {
         //TODO Implementacja
         throw new UnsupportedOperationException();
     }
 
     @RolesAllowed("getAllEventTypes")
-    public List<EventType> getAllEventTypes(){
+    public List<EventType> getAllEventTypes() throws AppBaseException {
         //TODO Implementacja
         throw new UnsupportedOperationException();
     }
 
     @RolesAllowed("createReservation")
-    public void createReservation(Reservation reservation){
+    public void createReservation(Reservation reservation) throws AppBaseException {
         //TODO Implementacja
         throw new UnsupportedOperationException();
     }
 
     @RolesAllowed("getAllUsersReservations")
-    public List<Reservation> getAllUsersReservations(String login){
+    public List<Reservation> getAllUsersReservations(String login) throws AppBaseException {
         //TODO Implementacja
         throw new UnsupportedOperationException();
     }
     @RolesAllowed("getStatusByName")
-    public Status getStatusByName(String statusName) {
+    public Status getStatusByName(String statusName) throws AppBaseException  {
         throw new UnsupportedOperationException();
     }
 
@@ -72,7 +76,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     @RolesAllowed("getStatusCanceled")
-    public Status getStatusCanceled() {
+    public Status getStatusCanceled() throws AppBaseException  {
         throw new UnsupportedOperationException();
     }
 
@@ -82,12 +86,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     @RolesAllowed("getReservationsByDate")
-    public List<Reservation> getReservationsByDate(LocalDateTime localDateTime){
+    public List<Reservation> getReservationsByDate(LocalDateTime localDateTime) throws AppBaseException  {
         throw new UnsupportedOperationException();
     }
 
     @RolesAllowed("editReservation")
-    public void editReservation(Reservation reservation){
+    public void editReservation(Reservation reservation) throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
