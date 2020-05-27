@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 
 @Named
 @Log
@@ -35,11 +36,16 @@ public class RoleController implements Serializable {
         return selectedRole.equalsIgnoreCase(role);
     }
 
-    public void setCurrentRole(String role) throws IOException {
+    public void setCurrentRole(String role) {
         this.setSelectedRole(role);
         logRoleChange(role);
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        externalContext.redirect(externalContext.getRequestContextPath() + "/index.xhtml");
+        try {
+            externalContext.redirect(externalContext.getRequestContextPath() + "/index.xhtml");
+        } catch (IOException e) {
+            log.log(Level.WARNING, e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessage(null, "error.default");
+        }
     }
 
     private void logRoleChange(String role){
