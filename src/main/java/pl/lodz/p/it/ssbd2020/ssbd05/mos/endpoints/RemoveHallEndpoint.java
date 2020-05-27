@@ -21,12 +21,12 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
     @Override
     @RolesAllowed("getHallByName")
     public HallDTO getHallByName(String name) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @RolesAllowed("removeHall")
     public void removeHall(HallDTO hallDTO) {
-
+        throw new UnsupportedOperationException();
     }
 }
