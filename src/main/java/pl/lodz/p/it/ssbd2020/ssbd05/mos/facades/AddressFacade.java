@@ -55,7 +55,7 @@ public class AddressFacade extends AbstractFacade<Address> {
     }
 
     @Override
-    @RolesAllowed("getAllEventTypes")
+    @RolesAllowed("getAllAddresses")
     public List<Address> findAll() throws AppBaseException {
         try {
             return super.findAll();
