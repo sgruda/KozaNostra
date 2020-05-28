@@ -37,6 +37,7 @@ public class AccessLevelsTestUI {
     @Test
     public void accessLevelTest() throws InterruptedException {
         driver.get("https://localhost:8181/ssbd05/index.xhtml");
+        driver.manage().window().fullscreen();
         driver.findElement(By.id("loginButton")).click();
         driver.findElement(By.id("login:username")).click();
         driver.findElement(By.id("login:username")).sendKeys("admin");
@@ -56,7 +57,7 @@ public class AccessLevelsTestUI {
         driver.findElement(By.xpath("//*[contains(@id, 'filterAccountsTextBox')]")).sendKeys("Poziomydostepu");
         driver.findElement(By.xpath("//*[contains(@id, 'filterbutton')]")).click();
         Thread.sleep(500);
-        driver.findElement(By.xpath("//*[contains(@id, 'goDetailsButton')]")).click();
+        driver.findElement(By.xpath("//td[7]/button/span")).click();
         Thread.sleep(500);
 
         String first = driver.findElements(By.tagName("tr")).get(7).getText();

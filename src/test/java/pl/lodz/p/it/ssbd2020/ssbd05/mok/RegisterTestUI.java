@@ -40,6 +40,9 @@ public class RegisterTestUI {
         driver.manage().window().setSize(new Dimension(1936, 1056));
         driver.findElement(By.id("registerButton")).click();
         Thread.sleep(200);
+        driver.switchTo().frame(0);
+        driver.findElement(By.cssSelector(".recaptcha-checkbox-border")).click();
+        driver.switchTo().defaultContent();
         driver.findElement(By.id("register:login")).click();
         driver.findElement(By.id("register:login")).sendKeys("RegisterTest" +randomString);
         driver.findElement(By.id("register:password")).click();
@@ -56,10 +59,7 @@ public class RegisterTestUI {
         driver.findElement(By.id("register:emailAddress")).click();
         driver.findElement(By.id("register:emailAddress")).sendKeys(randomString + "s@eoopy.com");
         driver.findElement(By.cssSelector("#register\\3AregistrationPanel_content > div:nth-child(2)")).click();
-        driver.switchTo().frame(0);
-        driver.findElement(By.cssSelector(".recaptcha-checkbox-border")).click();
         Thread.sleep(2000);
-        driver.switchTo().defaultContent();
         driver.findElement(By.cssSelector("#register\\3Asubmit > .ui-button-text")).click();
         Thread.sleep(1000);
         Assert.assertEquals("Account created!", driver.findElement(By.cssSelector(".ui-growl-title")).getText());

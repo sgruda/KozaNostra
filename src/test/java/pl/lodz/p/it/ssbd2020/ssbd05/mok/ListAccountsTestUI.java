@@ -94,7 +94,7 @@ public class ListAccountsTestUI {
         WebDriverWait wait = new WebDriverWait(driver,30);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[1]/div[3]/form/div/div/table/tbody/tr[3]")));
         List<WebElement> rows = driver.findElements(By.tagName("tr"));
-        assertEquals(3, rows.size());
+        assertEquals(2, rows.size());
 
         driver.findElement(By.xpath("//*[contains(@id,'dynaButton')]")).click();
         driver.findElement(By.xpath("//*[contains(@id,'logoutButton')]")).click();
