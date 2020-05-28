@@ -37,8 +37,8 @@ public class ResetPasswordTestUI {
         Thread.sleep(1000);
         driver.findElement(By.linkText("I forgot password")).click();
         Thread.sleep(1000);
-        driver.findElement(By.xpath("//form[@id=\'changePassword\']/div[2]/div[2]/input")).click();
-        driver.findElement(By.xpath("//form[@id=\'changePassword\']/div[2]/div[2]/input")).sendKeys("ekg45asddee331@eoopy.com");
+        driver.findElement(By.xpath("//form[@id='changePassword']/div/div[2]/input")).click();
+        driver.findElement(By.xpath("//form[@id='changePassword']/div/div[2]/input")).sendKeys("ekg45asddee331@eoopy.com");
         driver.findElement(By.xpath("//span[contains(.,\'Confirm\')]")).click();
         Thread.sleep(2000);
         Assert.assertEquals(driver.findElement(By.cssSelector(".ui-growl-title")).getText(),"An email has been sent to the address provided");

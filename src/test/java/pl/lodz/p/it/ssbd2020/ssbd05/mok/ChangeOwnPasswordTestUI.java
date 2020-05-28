@@ -58,11 +58,11 @@ public class ChangeOwnPasswordTestUI {
         driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
         Thread.sleep(1000);
         driver.findElement(By.cssSelector(".ui-button-text:nth-child(2)")).click();
-        Thread.sleep(200);
+        Thread.sleep(500);
         driver.findElement(By.linkText("Change role")).click();
-        Thread.sleep(200);
+        Thread.sleep(500);
         driver.findElement(By.xpath("//a[contains(.,\'Admin\')]")).click();
-        Thread.sleep(200);
+        Thread.sleep(500);
         driver.findElement(By.id("menu-bars")).click();
         {
             WebElement element = driver.findElement(By.id("menu-bars"));
@@ -125,7 +125,7 @@ public class ChangeOwnPasswordTestUI {
         driver.switchTo().defaultContent();
         driver.findElement(By.cssSelector("#changePassword\\3Asubmit > .ui-button-text")).click();
         Thread.sleep(1000);
-        driver.findElement(By.cssSelector("#changePassword\\3Aj_idt45 > .ui-button-text")).click();
+        driver.findElement(By.xpath("//div[3]/button/span[2]")).click();
         Thread.sleep(1000);
         Assert.assertEquals(driver.findElement(By.xpath("//li/span")).getText(),"Password has been changed");
     }
