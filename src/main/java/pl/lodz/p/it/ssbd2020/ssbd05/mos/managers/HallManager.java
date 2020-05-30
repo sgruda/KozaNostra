@@ -62,12 +62,12 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @RolesAllowed("getAllEventTypes")
     public List<EventType> getAllEventTypes() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return eventTypesFacade.findAll();
     }
 
     @RolesAllowed("getAllAddresses")
     public List<Address> getAllAddresses() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return addressFacade.findAll();
     }
 
     @RolesAllowed("removeHall")
