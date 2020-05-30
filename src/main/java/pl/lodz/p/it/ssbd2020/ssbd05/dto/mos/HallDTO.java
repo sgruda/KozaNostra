@@ -19,6 +19,6 @@ public @Data class HallDTO {
     private String description;
     private double price;
     private Collection<String> eventTypeCollection = new ArrayList<>();
-    private Long addressId;
-    private Collection<Long> reservationCollection = new ArrayList<>();
+    private AddressDTO address;
+    private Collection<String> reservationCollection = new ArrayList<>();
 }
