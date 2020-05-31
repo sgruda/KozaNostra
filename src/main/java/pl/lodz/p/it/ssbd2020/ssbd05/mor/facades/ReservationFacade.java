@@ -2,12 +2,15 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.annotation.security.DenyAll;
@@ -17,10 +20,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -99,8 +99,16 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         throw new UnsupportedOperationException();
     }
     @RolesAllowed({"getAllUsersReservations", "getUserReviewableReservations"})
-    public List<Reservation> findByLogin(String login) throws AppBaseException{
-        throw new UnsupportedOperationException();
+    public List<Reservation> findByLogin(String login) throws AppBaseException {
+        try {
+            Optional<Account> account = Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)
+                    .setParameter("login", login).getSingleResult());
+                return (List<Reservation>) this.em.createNamedQuery("Reservation.findByClientId", Reservation.class).setParameter("id", account.get().getId());
+        }catch (NoResultException noResultException) {
+            throw new ReservationNotFoundException(noResultException);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @RolesAllowed("getReservationsByDate")

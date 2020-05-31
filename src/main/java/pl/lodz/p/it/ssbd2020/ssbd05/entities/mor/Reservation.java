@@ -29,6 +29,7 @@ import java.util.UUID;
     @NamedQuery(name = "Reservation.findById", query = "SELECT r FROM Reservation r WHERE r.id = :id"),
     @NamedQuery(name = "Reservation.findByStartDate", query = "SELECT r FROM Reservation r WHERE r.startDate = :startDate"),
     @NamedQuery(name = "Reservation.findByEndDate", query = "SELECT r FROM Reservation r WHERE r.endDate = :endDate"),
+    @NamedQuery(name = "Reservation.findByClientId", query = "SELECT r from Reservation r WHERE r.client.account.id = :id"),
     @NamedQuery(name = "Reservation.findByTotalPrice", query = "SELECT r FROM Reservation r WHERE r.totalPrice = :totalPrice"),
     @NamedQuery(name = "Reservation.findByReservationNumber", query = "SELECT r FROM Reservation r WHERE r.reservationNumber = :reservationNumber"),
     @NamedQuery(name = "Reservation.findByGuestsNumber", query = "SELECT r FROM Reservation r WHERE r.guestsNumber = :guestsNumber")})
