@@ -7,8 +7,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.AddressDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.AddHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -18,7 +16,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.logging.Level;
 
 @Log
 @Getter
@@ -33,12 +30,12 @@ public class AddHallController {
     private HallDTO hall;
     private List<String> eventTypes;
     private List<AddressDTO> addresses;
-    private boolean shouldAddNewAddress;
-    private AddressDTO newAddress;
+    private AddressDTO address;
+    private boolean newAddress;
 
     @PostConstruct
     public void init() {
-        shouldAddNewAddress = false;
+        newAddress = false;
         try {
             eventTypes = addHallEndpoint.getAllEventTypes();
             addresses = addHallEndpoint.getAllAddresses();
@@ -51,7 +48,7 @@ public class AddHallController {
     public void addHall() {
         try {
             addHallEndpoint.addHall(hall);
-            ResourceBundles.emitMessageWithFlash(null,"page.registration.account.created");
+            ResourceBundles.emitMessageWithFlash(null,"page.addhall.created");
         } catch (ValidationException e) {
             ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());

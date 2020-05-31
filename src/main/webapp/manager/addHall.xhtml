@@ -16,64 +16,55 @@
                 background-size: cover;
             }
         </style>
-        <title>#{msg['page.template.admin.addAccount']}</title>
+        <title>#{msg['page.template.manager.addhall']}</title>
     </ui:define>
 
     <ui:define name = "content">
         <h:form id="register">
-            <p:panel id="registrationPanel" header="#{msg['page.template.admin.addAccount']}"
+            <p:panel id="addHallPanel" header="#{msg['page.template.manager.addhall']}"
                      style="font-size: 24px;">
 
                 <div style="display:flex; flex-direction: column;text-align: center;margin: auto;">
-                    <p:inputText id="login" required="true" value="#{addAccountController.login}"
-                                 requiredMessage="#{msg['page.registration.account.login.required']}"
-                                 placeholder="#{msg['page.registration.account.login']} *"
-                                 validatorMessage="#{msg['page.addaccount.login.validator']}">
-                        <f:validateRegex pattern="[a-zA-Z0-9!@#$%^*]+"/>
+                    <p:inputText id="name" required="true"
+                                 value="#{addHallController.hall.name}"
+                                 requiredMessage="#{msg['page.addhall.name.required']}"
+                                 placeholder="#{msg['page.addhall.name']} *">
+                        <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
                         <f:validateLength minimum="1" maximum="32"/>
                     </p:inputText>
-                    <p:password id="password" required="true" feedback="true" promptLabel="#{msg['password.prompt']}"
-                                weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
-                                inline="true" requiredMessage="#{msg['page.registration.account.password.required']}"
-                                value="#{addAccountController.password}" validatorMessage="#{msg['page.registration.account.password.validation']}" placeholder="#{msg['page.registration.account.password']} *">
-                        <f:validateRegex pattern="((?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])(?=.*[A-Z]).{8,64})" />
-                    </p:password>
 
-                    <p:password id="confirmPassword" required="true" feedback="true" promptLabel="#{msg['confirmpassword.prompt']}"
-                                weakLabel="#{msg['password.weak']}" goodLabel="#{msg['password.good']}" strongLabel="#{msg['password.strong']}"
-                                inline="true" requiredMessage="#{msg['page.registration.account.confirmPassword.required']}"
-                                validator="#{passwordValidator.validatePasswordMatch}"
-                                value="#{addAccountController.password}" placeholder="#{msg['page.registration.account.confirmPassword']} *"/>
-
-                    <p:inputText id="firstName" required="true"
-                                 value="#{addAccountController.firstname}" requiredMessage="#{msg['page.registration.account.firstname.required']}" placeholder="#{msg['page.registration.account.firstname']} *"
-                                 validatorMessage="#{msg['page.edit.firstname.validator']}">
-                        <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+"/>
-                        <f:validateLength minimum="1" maximum="32" />
+                    <p:inputText id="description" required="true"
+                                 value="#{addHallController.hall.description}"
+                                 requiredMessage="#{msg['page.addhall.description.required']}"
+                                 placeholder="#{msg['page.addhall.description']} *">
+                        <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                        <f:validateLength minimum="1" maximum="512"/>
                     </p:inputText>
 
-                    <p:inputText id="lastName" required="true" requiredMessage="#{msg['page.registration.account.lastname.required']}"
-                                 value="#{addAccountController.lastname}" placeholder="#{msg['page.registration.account.lastname']} *"
-                                 validatorMessage="#{msg['page.edit.firstname.validator']}">
-                        <f:validateRegex pattern="^[A-ZĄĆĘŁŃÓŚŹŻ]{1}[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                        <f:validateLength minimum="1" maximum="32" />
-                    </p:inputText>
+                    <p:inputNumber id="capacity" required="true"
+                                   value="#{addHallController.hall.capacity}"
+                                   requiredMessage="#{msg['page.addhall.capacity.required']}"
+                                   placeholder="#{msg['page.addhall.capacity']} *">
+                    </p:inputNumber>
 
-                    <p:inputText id="emailAddress" required="true"
-                                 value="#{addAccountController.emailAddress}" validatorMessage="#{msg['page.registration.account.email.validation']}" requiredMessage="#{msg['page.registration.account.email.required']}" placeholder="#{msg['page.registration.account.email']} *">
-                        <f:validateRegex
-                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                    </p:inputText>
+                    <p:inputNumber id="area" required="true"
+                                   value="#{addHallController.hall.area}"
+                                   requiredMessage="#{msg['page.addhall.area.required']}"
+                                   validatorMessage="#{msg['page.addhall.area.validator']}"
+                                   placeholder="#{msg['page.addhall.area']}"
+                                   decimalPlaces="2" decimalSeparator=",">
+                    </p:inputNumber>
 
-                    <h:outputLabel for="accessLevels" value="#{msg['page.accountdetails.account.accesslevel']} *" style="font-size: 14px; text-align: left;"/>
-                    <p:selectManyCheckbox id="accessLevels"  required="true" requiredMessage="#{msg['page.addaccount.noaccesslevels']}" value="#{addAccountController.accessLevels}">
-                        <f:selectItem itemLabel="#{msg['page.changelevel.client']}" itemValue="#{roleController.getRoleClient()}"/>
-                        <f:selectItem itemLabel="#{msg['page.changelevel.manager']}" itemValue="#{roleController.getRoleManager()}"/>
-                        <f:selectItem itemLabel="#{msg['page.changelevel.admin']}" itemValue="#{roleController.getRoleAdmin()}"/>
-                    </p:selectManyCheckbox>
+                    <p:inputNumber id="price" required="true"
+                                   value="#{addHallController.hall.price}"
+                                   requiredMessage="#{msg['page.addhall.price.required']}"
+                                   validatorMessage="#{msg['page.addhall.price.validator']}"
+                                   placeholder="#{msg['page.addhall.price']}"
+                                   symbol=" PLN" symbolPosition="s" decimalPlaces="2" decimalSeparator=",">
+                    </p:inputNumber>
 
-                    <h:outputLabel for="active" value="#{msg['page.addaccount.activelabel']}" style="font-size: 14px; text-align: left;"/>
-                    <p:selectBooleanCheckbox id="active" value="#{addAccountController.active}" itemLabel="#{msg['page.accountdetails.account.active']}" style="text-align: left;"/>
+                    <h:outputLabel for="active" value="#{msg['page.addhall.activelabel']}" style="font-size: 14px; text-align: left;"/>
+                    <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}" itemLabel="#{msg['page.addhall.active']}" style="text-align: left;"/>
                 </div>
 
                 <div style="display:flex; flex-direction: column;">
@@ -83,13 +74,9 @@
                 </div>
 
                 <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
-                    <p:commandButton id="back" immediate="true" value="#{msg['page.accountdetails.back']}" style="margin-right:20px;" action="#{addAccountController.goBack()}"/>
+                    <p:commandButton id="back" immediate="true" value="#{msg['page.template.menu.backbutton']}" style="margin-right:20px;" action="#{addHallController.goBack()}"/>
 
-                    <p:commandButton value="#{msg['page.registration.account.reset']}" style="margin-right:20px;" icon="pi pi-undo">
-                        <p:ajax update="register" resetValues="true"/>
-                    </p:commandButton>
-
-                    <p:commandButton id="submit" validateClient="true" value="#{msg['page.template.admin.addAccount']}"  icon="pi pi-check" style="float: center;" actionListener="#{addAccountController.addAccount()}" action="#{addAccountController.goBack()}">
+                    <p:commandButton id="submit" validateClient="true" value="#{msg['page.template.manager.addhall']}"  icon="pi pi-check" style="float: center;" actionListener="#{addHallController.addHall()}" action="#{addHallController.goBack()}">
                         <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
                     </p:commandButton>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
@@ -102,7 +89,7 @@
     </ui:define>
 
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.template.admin.addAccount']}" outcome="/admin/addAccount.xhtml" />
+        <p:menuitem value="#{msg['page.template.manager.addhall']}" outcome="/manager/addHall.xhtml" />
     </ui:define>
 </ui:composition>
 </html>

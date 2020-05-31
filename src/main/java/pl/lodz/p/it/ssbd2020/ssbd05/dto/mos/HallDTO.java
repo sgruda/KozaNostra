@@ -11,7 +11,6 @@ import java.util.Collection;
 @AllArgsConstructor
 public @Data class HallDTO {
 
-    private Long id;
     private String name;
     private int capacity;
     private boolean active;
