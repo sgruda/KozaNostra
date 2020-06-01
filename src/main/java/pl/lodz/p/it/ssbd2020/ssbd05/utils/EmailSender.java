@@ -101,7 +101,7 @@ public class EmailSender {
     }
 
     /**
-     * Send authorized admin email.
+     * Wysyła maila po zalogowaniu na konto posiadające poziom dostępu - Admin
      *
      * @param mail the mail
      * @param date the date
