@@ -29,30 +29,60 @@ import java.util.logging.Level;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
+/**
+ * Kontroler odpowiedzialny za operacje na końcie
+ */
 @Log
 @Named
 @ViewScoped
 public class AccountDetailsController implements Serializable {
 
+    /**
+     * Konto odpowiadające za pobranie konta
+     */
     @Inject
     private AccountDetailsEndpointLocal accountDetailsEndpointLocal;
+    /**
+     * Konto
+     */
     @Getter
     private AccountDTO account;
+    /**
+     * Kontroler odpowiadający za aktywację kont
+     */
     @Inject
     private ActivationAccountController activationAccountController;
+    /**
+     * Endpoint służący do zmiany poziomu dostępu
+     */
     @Inject
     private ChangeAccessLevelEndpointLocal changeAccessLevelEndpointLocal;
+    /**
+     * obiekt typu Properties
+     */
     private Properties roleProperties;
+    /**
+     * boolean roleAdminActive
+     */
     @Getter
     @Setter
     private boolean roleAdminActive;
+    /**
+     * boolean roleManagerActive
+     */
     @Getter
     @Setter
     private boolean roleManagerActive;
+    /**
+     * boolean roleClientActive
+     */
     @Getter
     @Setter
     private boolean roleClientActive;
 
+    /**
+     * Zainicjuj kontroler
+     */
     @PostConstruct
     public void init() {
         String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
@@ -67,17 +97,35 @@ public class AccountDetailsController implements Serializable {
         this.setRolesInfo(this.account.getAccessLevelCollection());
     }
 
+    /**
+     * Przejdź do formularza edycji konta
+     *
+     * @return the string
+     */
     public String goToEditForm() {
         return "editAccount";
     }
 
+    /**
+     * Przejdź do formularza zmiany hasła
+     *
+     * @return string
+     */
     public String goToPasswordChange(){return "passwordForm";}
 
+    /**
+     * Wróć na poprzednią stronę
+     *
+     * @return string
+     */
     public String goBack() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedLogin");
         return "goBack";
     }
 
+    /**
+     * Odblokuj konto
+     */
     public void unlockAccount()  {
         try {
             activationAccountController.unlockAccount();
@@ -94,6 +142,9 @@ public class AccountDetailsController implements Serializable {
         }
     }
 
+    /**
+     * Zablokuj konto.
+     */
     public void blockAccount() {
         try{
             activationAccountController.blockAccount();
@@ -110,6 +161,9 @@ public class AccountDetailsController implements Serializable {
         }
     }
 
+    /**
+     * Odśwież stronę
+     */
     public void refresh() {
         try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -121,6 +175,9 @@ public class AccountDetailsController implements Serializable {
         }
     }
 
+    /**
+     * Zmień poziom dostępu
+     */
     public void changeAccessLevels() {
         Collection<String> accessLevels = new ArrayList<>();
         Collection<String> accessLevelsBackup = account.getAccessLevelCollection();
@@ -149,6 +206,11 @@ public class AccountDetailsController implements Serializable {
         refresh();
     }
 
+    /**
+     * Ustaw role konta
+     *
+     * @param accessLevelStringCollection kolekcja obiektów typu AccessLevel
+     */
     private void setRolesInfo(Collection<String> accessLevelStringCollection) {
         roleProperties = null;
         try {

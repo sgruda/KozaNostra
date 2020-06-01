@@ -17,15 +17,32 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * Klasa odpowiedzialna za wysyłanie maili z naszego systemu do użytkowników
+ */
 @Log
 public class EmailSender {
 
+    /**
+     * obiekt typu Properties
+     */
     private final Properties emailProperties;
 
+    /**
+     * Konstruktor bezparametrowy klasy EmailSender
+     *
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     public EmailSender() throws AppBaseException {
         emailProperties = ResourceBundles.loadProperties("config.email.properties");
     }
 
+    /**
+     * Wyślij mail do potwierdzenia konta. Wysyłany po zarejestrowaniu.
+     *
+     * @param mail  mail
+     * @param token token
+     */
     public void sendRegistrationEmail(String mail, String token)  {
         String subject = ResourceBundles.getTranslatedText("mail.account.confirm.subject");
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -38,6 +55,11 @@ public class EmailSender {
         }).start();
     }
 
+    /**
+     * Wyślij email informujący o zablokowaniu konta użytkownika
+     *
+     * @param mail mail
+     */
     public void sendBlockedAccountEmail(String mail) {
         String subject = ResourceBundles.getTranslatedText("mail.account.blocked.subject");
         String body = ResourceBundles.getTranslatedText("mail.account.blocked");
@@ -48,6 +70,11 @@ public class EmailSender {
         }).start();
     }
 
+    /**
+     * Wyślij email informujący o odblokowaniu konta użytkownika
+     *
+     * @param mail mail
+     */
     public void sendUnlockedAccountEmail(String mail) {
         String subject = ResourceBundles.getTranslatedText("mail.account.unlocked");
         String body = ResourceBundles.getTranslatedText("mail.account.unlocked");
@@ -58,6 +85,11 @@ public class EmailSender {
         }).start();
     }
 
+    /**
+     * Wyślij email informujący o potwierdzeniu konta użytkownika
+     *
+     * @param mail mail
+     */
     public void sendConfirmedAccountEmail(String mail) {
         String subject = ResourceBundles.getTranslatedText("messages.account.confirmed");
         String body = ResourceBundles.getTranslatedText("messages.account.confirmed");
@@ -68,6 +100,13 @@ public class EmailSender {
         }).start();
     }
 
+    /**
+     * Send authorized admin email.
+     *
+     * @param mail the mail
+     * @param date the date
+     * @param ip   the ip
+     */
     public void sendAuthorizedAdminEmail(String mail, LocalDateTime date, String ip) {
         String subject = ResourceBundles.getTranslatedText("mail.admin.login.subject");
         StringBuilder body = new StringBuilder();
@@ -85,6 +124,12 @@ public class EmailSender {
         }).start();
     }
 
+    /**
+     * Wyślij email do zresetowania hasła konta użytkownika
+     *
+     * @param mail  mail
+     * @param token token
+     */
     public void sendPasswordResetEmail(String mail, String token) {
         String subject = ResourceBundles.getTranslatedText("page.resetpassword.title");
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -98,6 +143,13 @@ public class EmailSender {
         }).start();
     }
 
+    /**
+     * Metoda odpowiadająca bezpośrednio za wysłanie maila
+     *
+     * @param mail    mail
+     * @param subject subject
+     * @param body    body
+     */
     private void sendEmail(String mail, String subject, String body) {
         Properties prop = System.getProperties();
         prop.put("mail.smtp.host", emailProperties.getProperty("host"));

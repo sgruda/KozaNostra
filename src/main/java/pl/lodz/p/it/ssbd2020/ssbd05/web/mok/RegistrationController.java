@@ -19,6 +19,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Properties;
 
+/**
+ * The type Registration controller.
+ */
 @Log
 @Named
 @Data
@@ -36,6 +39,11 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
+    /**
+     * Register string.
+     *
+     * @return the string
+     */
     public String register() {
         try {
             if (password.equals(confirmPassword)) {
