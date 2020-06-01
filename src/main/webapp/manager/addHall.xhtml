@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 <ui:composition template = "../templates/template.xhtml">
     <ui:define name="head">
@@ -28,6 +29,7 @@
                     <p:inputText id="name" required="true"
                                  value="#{addHallController.hall.name}"
                                  requiredMessage="#{msg['page.addhall.name.required']}"
+                                 validatorMessage="#{msg['page.addhall.name.validator']}"
                                  placeholder="#{msg['page.addhall.name']} *">
                         <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
                         <f:validateLength minimum="1" maximum="32"/>
@@ -36,6 +38,7 @@
                     <p:inputText id="description" required="true"
                                  value="#{addHallController.hall.description}"
                                  requiredMessage="#{msg['page.addhall.description.required']}"
+                                 validatorMessage="#{msg['page.addhall.description.validator']}"
                                  placeholder="#{msg['page.addhall.description']} *">
                         <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
                         <f:validateLength minimum="1" maximum="512"/>
@@ -51,7 +54,7 @@
                                    value="#{addHallController.hall.area}"
                                    requiredMessage="#{msg['page.addhall.area.required']}"
                                    validatorMessage="#{msg['page.addhall.area.validator']}"
-                                   placeholder="#{msg['page.addhall.area']}"
+                                   placeholder="#{msg['page.addhall.area']} *"
                                    decimalPlaces="2" decimalSeparator=",">
                     </p:inputNumber>
 
@@ -59,12 +62,60 @@
                                    value="#{addHallController.hall.price}"
                                    requiredMessage="#{msg['page.addhall.price.required']}"
                                    validatorMessage="#{msg['page.addhall.price.validator']}"
-                                   placeholder="#{msg['page.addhall.price']}"
+                                   placeholder="#{msg['page.addhall.price']} *"
                                    symbol=" PLN" symbolPosition="s" decimalPlaces="2" decimalSeparator=",">
                     </p:inputNumber>
 
                     <h:outputLabel for="active" value="#{msg['page.addhall.activelabel']}" style="font-size: 14px; text-align: left;"/>
                     <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}" itemLabel="#{msg['page.addhall.active']}" style="text-align: left;"/>
+
+                    <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']}" style="font-size: 14px; text-align: left;"/>
+                    <p:selectBooleanCheckbox id="newAddress" value="#{addHallController.newAddress}" itemLabel="#{msg['page.addhall.newaddress']}" style="text-align: left;"/>
+
+                    <c:choose>
+                        <c:when test="${addHallController.newAddress}">
+                            <p:inputText id="street" required="true"
+                                         value="#{addHallController.address.street}"
+                                         requiredMessage="#{msg['page.addhall.name.required']}"
+                                         validatorMessage="#{msg['page.addhall.name.validator']}"
+                                         placeholder="#{msg['page.addhall.name']} *">
+                                <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32"/>
+                            </p:inputText>
+
+                            <p:inputText id="streetNo" required="true"
+                                         value="#{addHallController.address.streetNo}"
+                                         requiredMessage="#{msg['page.addhall.description.required']}"
+                                         validatorMessage="#{msg['page.addhall.description.validator']}"
+                                         placeholder="#{msg['page.addhall.description']} *">
+                                <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32"/>
+                            </p:inputText>
+
+                            <p:inputText id="city" required="true"
+                                         value="#{addHallController.address.city}"
+                                         requiredMessage="#{msg['page.addhall.description.required']}"
+                                         validatorMessage="#{msg['page.addhall.description.validator']}"
+                                         placeholder="#{msg['page.addhall.description']} *">
+                                <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32"/>
+                            </p:inputText>
+                        </c:when>
+                        <c:otherwise>
+                            <p:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']}"/>
+                            <p:selectOneMenu id="addresses" value="#{msg['page.addhall.addresses']}">
+                                <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true" />
+                                <f:selectItems itemLabel="" itemValue="#{a.cities}" />
+                            </p:selectOneMenu>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <h:outputLabel for="eventTypes" value="#{msg['page.addhall.eventtypes']} *" style="font-size: 14px; text-align: left;"/>
+                    <p:selectManyCheckbox id="eventTypes" required="true" requiredMessage="#{msg['page.addhall.eventtypes.required']}" value="#{addHallController.eventTypes}">
+                        <ui:repeat value="#{addHallController.eventTypes}" var="eventType">
+                            <f:selectItem itemLabel="#{resourceBundles.getTranslatedText(eventType)}" itemValue="#{eventType}"/>
+                        </ui:repeat>
+                    </p:selectManyCheckbox>
                 </div>
 
                 <div style="display:flex; flex-direction: column;">

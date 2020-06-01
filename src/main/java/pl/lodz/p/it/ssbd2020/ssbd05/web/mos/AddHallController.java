@@ -35,6 +35,9 @@ public class AddHallController {
 
     @PostConstruct
     public void init() {
+        hall = new HallDTO();
+        hall.setActive(false);
+        address = new AddressDTO();
         newAddress = false;
         try {
             eventTypes = addHallEndpoint.getAllEventTypes();

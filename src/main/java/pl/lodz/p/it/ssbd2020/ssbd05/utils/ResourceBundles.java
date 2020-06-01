@@ -6,12 +6,14 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.PropertiesLoadingException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
 @Log
+@Named
 public class ResourceBundles {
     public static String getTranslatedText(String key) {
         return ResourceBundle.getBundle("i18n.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString(key);

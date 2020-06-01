@@ -11,4 +11,8 @@ public @Data class AddressDTO {
     private String street;
     private int streetNo;
     private String city;
+
+    public String show() {
+        return street + " " + streetNo + ", " + city;
+    }
 }
