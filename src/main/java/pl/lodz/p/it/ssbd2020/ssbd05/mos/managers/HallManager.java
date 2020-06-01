@@ -6,10 +6,11 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.AddressNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.AddressFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.EventTypesFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.HallFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.AddressFacade;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -36,7 +37,7 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @RolesAllowed("addHall")
     public void addHall(Hall hall) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hallFacade.create(hall);
     }
 
     @PermitAll
@@ -63,6 +64,15 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
     @RolesAllowed("getAllEventTypes")
     public List<EventType> getAllEventTypes() throws AppBaseException {
         return eventTypesFacade.findAll();
+    }
+
+    @RolesAllowed("addHall")
+    public Address getAddress(String street, int number, String city) throws AppBaseException {
+        if (addressFacade.findByStreetAndNumberAndCity(street, number, city).isPresent())
+            return addressFacade.findByStreetAndNumberAndCity(street, number, city).get();
+        else {
+            throw new AddressNotFoundException();
+        }
     }
 
     @RolesAllowed("getAllAddresses")

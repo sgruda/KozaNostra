@@ -70,42 +70,41 @@
                     <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}" itemLabel="#{msg['page.addhall.active']}" style="text-align: left;"/>
 
                     <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']}" style="font-size: 14px; text-align: left;"/>
-                    <p:selectBooleanCheckbox id="newAddress" value="#{addHallController.newAddress}" itemLabel="#{msg['page.addhall.newaddress']}" style="text-align: left;"/>
+                    <p:selectBooleanCheckbox id="newAddress" value="#{addHallController.hall.newAddress}" itemLabel="#{msg['page.addhall.newaddress']}" style="text-align: left;"/>
 
                     <c:choose>
-                        <c:when test="${addHallController.newAddress}">
+                        <c:when test="${addHallController.hall.newAddress}">
                             <p:inputText id="street" required="true"
                                          value="#{addHallController.address.street}"
-                                         requiredMessage="#{msg['page.addhall.name.required']}"
-                                         validatorMessage="#{msg['page.addhall.name.validator']}"
-                                         placeholder="#{msg['page.addhall.name']} *">
+                                         requiredMessage="#{msg['page.addhall.street.required']}"
+                                         validatorMessage="#{msg['page.addhall.street.validator']}"
+                                         placeholder="#{msg['page.addhall.street']} *">
                                 <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
                                 <f:validateLength minimum="1" maximum="32"/>
                             </p:inputText>
 
-                            <p:inputText id="streetNo" required="true"
+                            <p:inputNumber id="streetNo" required="true"
                                          value="#{addHallController.address.streetNo}"
-                                         requiredMessage="#{msg['page.addhall.description.required']}"
-                                         validatorMessage="#{msg['page.addhall.description.validator']}"
-                                         placeholder="#{msg['page.addhall.description']} *">
-                                <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                                <f:validateLength minimum="1" maximum="32"/>
-                            </p:inputText>
+                                         requiredMessage="#{msg['page.addhall.streetNo.required']}"
+                                         placeholder="#{msg['page.addhall.streetNo']} *">
+                            </p:inputNumber>
 
                             <p:inputText id="city" required="true"
                                          value="#{addHallController.address.city}"
-                                         requiredMessage="#{msg['page.addhall.description.required']}"
-                                         validatorMessage="#{msg['page.addhall.description.validator']}"
-                                         placeholder="#{msg['page.addhall.description']} *">
+                                         requiredMessage="#{msg['page.addhall.city.required']}"
+                                         validatorMessage="#{msg['page.addhall.city.validator']}"
+                                         placeholder="#{msg['page.addhall.city']} *">
                                 <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
                                 <f:validateLength minimum="1" maximum="32"/>
                             </p:inputText>
                         </c:when>
                         <c:otherwise>
                             <p:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']}"/>
-                            <p:selectOneMenu id="addresses" value="#{msg['page.addhall.addresses']}">
-                                <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true" />
-                                <f:selectItems itemLabel="" itemValue="#{a.cities}" />
+                            <p:selectOneMenu id="addresses" value="#{addHallController.address}">
+                                <f:selectItem itemLabel="#{msg['page.addhall.selectaddress']}" itemValue="" noSelectionOption="true"/>
+                                <ui:repeat value="#{addHallController.addresses}" var="address">
+                                    <f:selectItem itemLabel="#{address.show()}" itemValue="#{address}"/>
+                                </ui:repeat>
                             </p:selectOneMenu>
                         </c:otherwise>
                     </c:choose>

@@ -20,7 +20,8 @@ import java.io.Serializable;
     @NamedQuery(name = "Address.findById", query = "SELECT a FROM Address a WHERE a.id = :id"),
     @NamedQuery(name = "Address.findByStreet", query = "SELECT a FROM Address a WHERE a.street = :street"),
     @NamedQuery(name = "Address.findByStreetNo", query = "SELECT a FROM Address a WHERE a.streetNo = :streetNo"),
-    @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city")
+    @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city"),
+    @NamedQuery(name = "Address.findByStreetAndNumberAndCity", query = "SELECT a FROM Address a WHERE a.street = :street AND a.streetNo = :number AND a.city = :city")
 })
 public class Address implements Serializable {
 

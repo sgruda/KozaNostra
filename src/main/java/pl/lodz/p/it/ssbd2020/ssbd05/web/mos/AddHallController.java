@@ -31,14 +31,13 @@ public class AddHallController {
     private List<String> eventTypes;
     private List<AddressDTO> addresses;
     private AddressDTO address;
-    private boolean newAddress;
 
     @PostConstruct
     public void init() {
         hall = new HallDTO();
         hall.setActive(false);
+        hall.setNewAddress(false);
         address = new AddressDTO();
-        newAddress = false;
         try {
             eventTypes = addHallEndpoint.getAllEventTypes();
             addresses = addHallEndpoint.getAllAddresses();
