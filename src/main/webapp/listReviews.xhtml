@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <title>Reviews</title>
+    </ui:define>
+    <ui:define name = "content">
+        <p:repeat value="#{listReviewsController.reviews}" var="review">
+            <p:fieldset legend="#{review.clientLogin}" styleClass="review-fieldset">
+                <div class="review-div">
+                    <h:outputText value="#{review.content}" styleClass="review-content"/>
+                    <h:outputText value="#{review.date}" styleClass="review-date"/>
+                </div>
+            </p:fieldset>
+        </p:repeat>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/listReviews.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>

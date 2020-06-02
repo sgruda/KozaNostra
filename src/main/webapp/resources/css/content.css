@@ -130,3 +130,29 @@ h1{
     min-width: 12em;
 }
 
+.review-div{
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    word-break: break-word;
+
+}
+
+.review-fieldset{
+    display: flex;
+    flex-direction: column;
+}
+
+.review-date{
+    align-self: end;
+    margin-top: 1em;
+}
+
+.review-content{
+
+}
+
+legend{
+    font-weight: bolder;
+}
+
