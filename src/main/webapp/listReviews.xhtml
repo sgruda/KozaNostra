@@ -3,26 +3,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.reviews.title']}</title>
     </ui:define>
     <ui:define name = "content">
-        <h:form id="reviews-form">
-            <div id="pagination">
-                <p:commandButton type="submit" ajax="false" id="prevpage" action="#{listReviewsController.previousPage}" disabled="#{!listReviewsController.displayPreviousPage()}" value="&#60;"/>
-                <p:commandButton type="submit" ajax="false" id="nextpage" action="#{listReviewsController.nextPage}" disabled="#{!listReviewsController.displayNextPage()}" value="&#62;"/>
+        <div id="pagination">
+            <h:form id="reviews-form-nav">
+                <p:commandButton styleClass="reviews-nav-button" type="submit" ajax="false" id="prevpage" action="#{listReviewsController.previousPage}" disabled="#{!listReviewsController.displayPreviousPage()}" value="&#60;"/>
+                <h:outputText styleClass="reviews-nav-text" value="#{msg['page.reviews.page']}"/>
+                <p:inputNumber styleClass="reviews-nav" id="review-page-number" value="#{listReviewsController.currentPage}" size="#{listReviewsController.pagesDigits + 1}" onchange="this.form.submit();" immediate="true"/>
+                <h:outputText styleClass="reviews-nav-text" value="#{msg['page.reviews.pageof']}"/>
+                <h:outputText styleClass="reviews-nav-text" value="#{listReviewsController.pages}"/>
+                <p:commandButton styleClass="reviews-nav-button"  type="submit" ajax="false" id="nextpage" action="#{listReviewsController.nextPage}" disabled="#{!listReviewsController.displayNextPage()}" value="&#62;"/>
+            </h:form>
+            <div id="reviews-div-perpage">
+                <h:outputText styleClass="reviews-nav" value="#{msg['page.reviews.perpage']}"/>
+                <h:form id="reviews-form-perpage">
+                    <p:selectOneMenu id="reviewPerPage" value="#{listReviewsController.reviewsPerPage}" valueChangeListener="#{listReviewsController.updatePageReviews}" onchange="this.form.submit();" immediate="true">
+                        <f:selectItem itemLabel="2" itemValue="2"/>
+                        <f:selectItem itemLabel="5" itemValue="5"/>
+                        <f:selectItem itemLabel="10" itemValue="10"/>
+                    </p:selectOneMenu>
+                </h:form>
             </div>
-        <ui:repeat id="repeat" value="#{listReviewsController.pageReviews}" var="review">
-            <p:fieldset legend="#{review.clientLogin}" styleClass="review-fieldset">
-                <div class="review-div">
-                    <h:outputText value="#{review.content}" styleClass="review-content"/>
-                    <h:outputText value="#{review.date}" styleClass="review-date"/>
-                </div>
-            </p:fieldset>
-        </ui:repeat>
-        </h:form>
+        </div>
+        <div id="reviews-repeat">
+            <ui:repeat id="repeat" value="#{listReviewsController.pageReviews}" var="review">
+                <p:fieldset legend="#{review.clientLogin}" styleClass="review-fieldset">
+                    <div class="review-div">
+                        <h:outputText value="#{review.content}" styleClass="review-content"/>
+                        <h:outputText value="#{review.date}" styleClass="review-date"/>
+                    </div>
+                </p:fieldset>
+            </ui:repeat>
+        </div>
+
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.reviews.breadcrumb']}" outcome="/listReviews.xhtml" />

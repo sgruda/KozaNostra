@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -22,27 +21,20 @@ public class ListReviewsController implements Serializable {
     @Inject
     private ListReviewsEndpointLocal listReviewsEndpoint;
     @Getter
-    @Setter
     private List<ReviewDTO> reviews;
     @Getter
-    @Setter
     private int pages;
     @Getter
-    @Setter
     private int currentPage = 1;
-    private final int reviewsPerPage = 2;
     @Getter
-    @Setter
+    private int reviewsPerPage = 2;
+    @Getter
     private List<ReviewDTO> pageReviews;
 
     @PostConstruct
     public void init(){
         try {
             reviews = listReviewsEndpoint.getAllReviews();
-            pages = reviews.size() / reviewsPerPage;
-            if(reviews.size() % reviewsPerPage > 0){
-                pages++;
-            }
             updatePageReviews();
         } catch (AppBaseException e) {
             log.warning(e.getClass().toString() + " " + e.getMessage());
@@ -51,6 +43,10 @@ public class ListReviewsController implements Serializable {
     }
 
     public void updatePageReviews(){
+        pages = reviews.size() / reviewsPerPage;
+        if(reviews.size() % reviewsPerPage > 0){
+            pages++;
+        }
         final int firstReview = (currentPage - 1) * reviewsPerPage;
         final int lastReview = Math.min(((currentPage - 1) * reviewsPerPage) + reviewsPerPage, reviews.size());
 
@@ -62,6 +58,7 @@ public class ListReviewsController implements Serializable {
             currentPage++;
         }
         updatePageReviews();
+
     }
 
     public boolean displayNextPage(){
@@ -83,5 +80,26 @@ public class ListReviewsController implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public void setReviewsPerPage(int reviewsPerPage){
+        this.reviewsPerPage = reviewsPerPage;
+        currentPage = 1;
+        updatePageReviews();
+    }
+
+    public void setCurrentPage(int currentPage){
+        if(currentPage > pages){
+            currentPage = pages;
+        }
+        else if(currentPage < 1){
+            currentPage = 1;
+        }
+        this.currentPage = currentPage;
+        updatePageReviews();
+    }
+
+    public int getPagesDigits(){
+        return String.valueOf(pages).length();
     }
 }
