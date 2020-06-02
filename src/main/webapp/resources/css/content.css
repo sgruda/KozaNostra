@@ -139,20 +139,20 @@ h1{
 }
 
 .review-fieldset{
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 1em;
 }
 
 .review-date{
     align-self: end;
     margin-top: 1em;
+    font-style: italic;
 }
 
 .review-content{
-
+    font-size: 15px;
 }
 
-legend{
-    font-weight: bolder;
+fieldset > legend{
+    font-weight: bolder !important;
 }
 

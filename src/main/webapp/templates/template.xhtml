@@ -41,6 +41,7 @@
                     <h:link id="loginButton" class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
                     <h:link id="registerButton" class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
                 </ui:fragment>
+                <h:link id="reviewButton" class="link" outcome="/listReviews.xhtml">#{msg['page.template.reviews']}</h:link>
                  <ui:fragment id="user-details" rendered="#{not empty request.remoteUser}">
                      <h:form>
                          <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" />

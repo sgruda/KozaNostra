@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name="head">
-        <title>Reviews</title>
+        <title>#{msg['page.reviews.title']}</title>
     </ui:define>
     <ui:define name = "content">
         <p:repeat value="#{listReviewsController.reviews}" var="review">
@@ -19,7 +19,7 @@
         </p:repeat>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.listaccounts.breadcrumbs']}" outcome="/listReviews.xhtml" />
+        <p:menuitem value="#{msg['page.reviews.breadcrumb']}" outcome="/listReviews.xhtml" />
     </ui:define>
 </ui:composition>
 </html>
