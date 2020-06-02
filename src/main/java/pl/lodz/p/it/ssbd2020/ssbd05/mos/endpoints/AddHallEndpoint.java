@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.EventTypeMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.AddressDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Log
@@ -34,22 +36,18 @@ public class AddHallEndpoint implements Serializable, AddHallEndpointLocal {
     @Inject
     private HallManager hallManager;
     private Hall hall;
+    private Collection<EventType> eventTypes;
 
     @Override
     @RolesAllowed("addHall")
     public void addHall(HallDTO hallDTO) throws AppBaseException {
         hall = HallMapper.INSTANCE.createNewHall(hallDTO);
+        eventTypes.removeIf(eventType -> !hallDTO.getEventTypeCollection().contains(eventType.getTypeName()));
+        hall.setEventTypeCollection(eventTypes);
         int callCounter = 0;
         boolean rollback;
         do {
             try {
-                if (!hallDTO.isNewAddress()) {
-                    hall.setAddress(hallManager.getAddress(
-                            hallDTO.getAddress().getStreet(),
-                            hallDTO.getAddress().getStreetNo(),
-                            hallDTO.getAddress().getCity()
-                    ));
-                }
                 hallManager.addHall(hall);
                 rollback = hallManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
@@ -73,7 +71,8 @@ public class AddHallEndpoint implements Serializable, AddHallEndpointLocal {
         boolean rollback;
         do {
             try {
-                list.addAll(EventTypeMapper.toEventTypeStringCollection(hallManager.getAllEventTypes()));
+                eventTypes = hallManager.getAllEventTypes();
+                list.addAll(EventTypeMapper.toEventTypeStringCollection(eventTypes));
                 rollback = hallManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");

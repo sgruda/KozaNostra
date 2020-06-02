@@ -11,18 +11,20 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.AddHallEndpointLoca
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Log
 @Getter
 @Setter
 @Named
-@RequestScoped
-public class AddHallController {
+@ViewScoped
+public class AddHallController implements Serializable {
 
     @Inject
     private AddHallEndpointLocal addHallEndpoint;
@@ -30,13 +32,14 @@ public class AddHallController {
     private HallDTO hall;
     private List<String> eventTypes;
     private List<AddressDTO> addresses;
+    private boolean newAddress;
     private AddressDTO address;
 
     @PostConstruct
     public void init() {
         hall = new HallDTO();
         hall.setActive(false);
-        hall.setNewAddress(false);
+        newAddress = false;
         address = new AddressDTO();
         try {
             eventTypes = addHallEndpoint.getAllEventTypes();
@@ -45,6 +48,8 @@ public class AddHallController {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
+        log.info(Arrays.toString(eventTypes.toArray()));
+        log.info(Arrays.toString(addresses.toArray()));
     }
 
     public void addHall() {

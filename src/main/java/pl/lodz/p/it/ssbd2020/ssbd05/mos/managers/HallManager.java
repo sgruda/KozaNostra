@@ -20,6 +20,7 @@ import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -37,6 +38,20 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @RolesAllowed("addHall")
     public void addHall(Hall hall) throws AppBaseException {
+        Optional<Address> address = addressFacade.findByStreetAndNumberAndCity(
+                hall.getAddress().getStreet(),
+                hall.getAddress().getStreetNo(),
+                hall.getAddress().getCity());
+        if (address.isPresent()) {
+            hall.setAddress(address.get());
+        } else {
+            Address newAddress = new Address();
+            newAddress.setStreet(hall.getAddress().getStreet());
+            newAddress.setStreetNo(hall.getAddress().getStreetNo());
+            newAddress.setCity(hall.getAddress().getCity());
+            addressFacade.create(newAddress);
+            hall.setAddress(newAddress);
+        }
         hallFacade.create(hall);
     }
 
@@ -64,15 +79,6 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
     @RolesAllowed("getAllEventTypes")
     public List<EventType> getAllEventTypes() throws AppBaseException {
         return eventTypesFacade.findAll();
-    }
-
-    @RolesAllowed("addHall")
-    public Address getAddress(String street, int number, String city) throws AppBaseException {
-        if (addressFacade.findByStreetAndNumberAndCity(street, number, city).isPresent())
-            return addressFacade.findByStreetAndNumberAndCity(street, number, city).get();
-        else {
-            throw new AddressNotFoundException();
-        }
     }
 
     @RolesAllowed("getAllAddresses")

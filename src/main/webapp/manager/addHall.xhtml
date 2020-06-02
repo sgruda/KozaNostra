@@ -70,10 +70,10 @@
                     <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}" itemLabel="#{msg['page.addhall.active']}" style="text-align: left;"/>
 
                     <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']}" style="font-size: 14px; text-align: left;"/>
-                    <p:selectBooleanCheckbox id="newAddress" value="#{addHallController.hall.newAddress}" itemLabel="#{msg['page.addhall.newaddress']}" style="text-align: left;"/>
+                    <p:selectBooleanCheckbox id="newAddress" value="#{addHallController.newAddress}" itemLabel="#{msg['page.addhall.newaddress']}" style="text-align: left;"/>
 
                     <c:choose>
-                        <c:when test="${addHallController.hall.newAddress}">
+                        <c:when test="${!addHallController.newAddress}">
                             <p:inputText id="street" required="true"
                                          value="#{addHallController.address.street}"
                                          requiredMessage="#{msg['page.addhall.street.required']}"
