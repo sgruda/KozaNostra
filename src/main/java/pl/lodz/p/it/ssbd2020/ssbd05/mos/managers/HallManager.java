@@ -52,6 +52,7 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
             addressFacade.create(newAddress);
             hall.setAddress(newAddress);
         }
+        log.info("MANAGER: " + hall);
         hallFacade.create(hall);
     }
 

@@ -39,7 +39,7 @@ public class AddHallController implements Serializable {
     public void init() {
         hall = new HallDTO();
         hall.setActive(false);
-        newAddress = false;
+        newAddress = true;
         address = new AddressDTO();
         try {
             eventTypes = addHallEndpoint.getAllEventTypes();
@@ -52,7 +52,13 @@ public class AddHallController implements Serializable {
         log.info(Arrays.toString(addresses.toArray()));
     }
 
+    public void toggleNewAddress() {
+        newAddress = !newAddress;
+    }
+
     public void addHall() {
+        hall.setAddress(address);
+        log.info("CONTROLLER: " + hall);
         try {
             addHallEndpoint.addHall(hall);
             ResourceBundles.emitMessageWithFlash(null,"page.addhall.created");

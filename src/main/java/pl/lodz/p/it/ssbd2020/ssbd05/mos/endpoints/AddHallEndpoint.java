@@ -48,6 +48,7 @@ public class AddHallEndpoint implements Serializable, AddHallEndpointLocal {
         boolean rollback;
         do {
             try {
+                log.info("ENDPOINT: " + hall);
                 hallManager.addHall(hall);
                 rollback = hallManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {

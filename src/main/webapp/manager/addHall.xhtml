@@ -73,49 +73,52 @@
                         <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}"/>
                     </h:outputLabel>
 
-                    <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']} ">
-                        <p:selectBooleanCheckbox id="newAddress" value="#{addHallController.newAddress}"/>
-                    </h:outputLabel>
+                    <h:form id="newAddressForm">
+                        <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']} ">
+                            <h:commandButton id="newAddress" action="#{addHallController.toggleNewAddress}" immediate="true" style="background-color: #585858;">
+                                <f:ajax render=":newAddressGroup"/>
+                            </h:commandButton>
+                        </h:outputLabel>
+                    </h:form>
 
-                    <c:choose>
-                        <c:when test="${addHallController.newAddress}">
-                            <h:outputLabel for="street" value="#{msg['page.addhall.street']} * ">
-                                <p:inputText id="street" required="true"
-                                             value="#{addHallController.address.street}"
-                                             requiredMessage="#{msg['page.addhall.street.required']}"
-                                             validatorMessage="#{msg['page.addhall.street.validator']}">
-                                    <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                                    <f:validateLength minimum="1" maximum="32"/>
-                                </p:inputText>
-                            </h:outputLabel>
+                    <h:panelGroup id="newAddressGroup">
+                        <h:outputLabel for="street" value="#{msg['page.addhall.street']} * " rendered="#{addHallController.newAddress}">
+                            <p:inputText id="street" required="true"
+                                         value="#{addHallController.address.street}"
+                                         requiredMessage="#{msg['page.addhall.street.required']}"
+                                         validatorMessage="#{msg['page.addhall.street.validator']}">
+                                <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32"/>
+                            </p:inputText>
+                        </h:outputLabel>
+                        <br/>
 
-                            <h:outputLabel for="streetNo" value="#{msg['page.addhall.streetNo']} * ">
-                                <p:inputNumber id="streetNo" required="true"
-                                             value="#{addHallController.address.streetNo}"
-                                             requiredMessage="#{msg['page.addhall.streetNo.required']}">
-                                </p:inputNumber>
-                            </h:outputLabel>
+                        <h:outputLabel for="streetNo" value="#{msg['page.addhall.streetNo']} * " rendered="#{addHallController.newAddress}">
+                            <p:inputNumber id="streetNo" required="true"
+                                           value="#{addHallController.address.streetNo}"
+                                           requiredMessage="#{msg['page.addhall.streetNo.required']}">
+                            </p:inputNumber>
+                        </h:outputLabel>
+                        <br/>
 
-                            <h:outputLabel for="city" value="#{msg['page.addhall.city']} * ">
-                                <p:inputText id="city" required="true"
-                                             value="#{addHallController.address.city}"
-                                             requiredMessage="#{msg['page.addhall.city.required']}"
-                                             validatorMessage="#{msg['page.addhall.city.validator']}">
-                                    <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                                    <f:validateLength minimum="1" maximum="32"/>
-                                </p:inputText>
-                            </h:outputLabel>
-                        </c:when>
-                        <c:otherwise>
-                            <h:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']} ">
-                                <p:selectOneMenu id="addresses" value="#{addHallController.address}">
-                                    <c:forEach items="#{addHallController.addresses}" var="address">
-                                        <f:selectItem itemLabel="#{address.show()}" itemValue="#{address}"/>
-                                    </c:forEach>
-                                </p:selectOneMenu>
-                            </h:outputLabel>
-                        </c:otherwise>
-                    </c:choose>
+                        <h:outputLabel for="city" value="#{msg['page.addhall.city']} * " rendered="#{addHallController.newAddress}">
+                            <p:inputText id="city" required="true"
+                                         value="#{addHallController.address.city}"
+                                         requiredMessage="#{msg['page.addhall.city.required']}"
+                                         validatorMessage="#{msg['page.addhall.city.validator']}">
+                                <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                <f:validateLength minimum="1" maximum="32"/>
+                            </p:inputText>
+                        </h:outputLabel>
+
+                        <h:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']} " rendered="#{!addHallController.newAddress}">
+                            <p:selectOneMenu id="addresses" value="#{addHallController.address}">
+                                <c:forEach items="#{addHallController.addresses}" var="address">
+                                    <f:selectItem itemLabel="#{address.show()}" itemValue="#{address}"/>
+                                </c:forEach>
+                            </p:selectOneMenu>
+                        </h:outputLabel>
+                    </h:panelGroup>
 
                     <h:outputLabel for="eventTypes" value="#{msg['page.addhall.eventtypes']} * ">
                         <p:selectManyCheckbox id="eventTypes" required="true" requiredMessage="#{msg['page.addhall.eventtypes.required']}" value="#{addHallController.eventTypes}">
