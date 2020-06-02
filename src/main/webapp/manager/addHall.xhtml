@@ -21,101 +21,110 @@
     </ui:define>
 
     <ui:define name = "content">
-        <h:form id="register">
-            <p:panel id="addHallPanel" header="#{msg['page.template.manager.addhall']}"
-                     style="font-size: 24px;">
+        <h:form id="addHallForm">
+            <p:panel id="addHallPanel" header="#{msg['page.template.manager.addhall']}" style="font-size: 24px;">
+                <p:panelGrid id="addHallPanelGrid" columns="1">
+                    <h:outputLabel for="name" value="#{msg['page.addhall.name']} * ">
+                        <p:inputText id="name" required="true"
+                                     value="#{addHallController.hall.name}"
+                                     requiredMessage="#{msg['page.addhall.name.required']}"
+                                     validatorMessage="#{msg['page.addhall.name.validator']}">
+                            <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                            <f:validateLength minimum="1" maximum="32"/>
+                        </p:inputText>
+                    </h:outputLabel>
 
-                <div style="display:flex; flex-direction: column;text-align: center;margin: auto;">
-                    <p:inputText id="name" required="true"
-                                 value="#{addHallController.hall.name}"
-                                 requiredMessage="#{msg['page.addhall.name.required']}"
-                                 validatorMessage="#{msg['page.addhall.name.validator']}"
-                                 placeholder="#{msg['page.addhall.name']} *">
-                        <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                        <f:validateLength minimum="1" maximum="32"/>
-                    </p:inputText>
+                    <h:outputLabel for="description" value="#{msg['page.addhall.description']} * ">
+                        <p:inputText id="description" required="true"
+                                     value="#{addHallController.hall.description}"
+                                     requiredMessage="#{msg['page.addhall.description.required']}"
+                                     validatorMessage="#{msg['page.addhall.description.validator']}">
+                            <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                            <f:validateLength minimum="1" maximum="512"/>
+                        </p:inputText>
+                    </h:outputLabel>
 
-                    <p:inputText id="description" required="true"
-                                 value="#{addHallController.hall.description}"
-                                 requiredMessage="#{msg['page.addhall.description.required']}"
-                                 validatorMessage="#{msg['page.addhall.description.validator']}"
-                                 placeholder="#{msg['page.addhall.description']} *">
-                        <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                        <f:validateLength minimum="1" maximum="512"/>
-                    </p:inputText>
+                    <h:outputLabel for="capacity" value="#{msg['page.addhall.capacity']} * ">
+                        <p:inputNumber id="capacity" required="true"
+                                       value="#{addHallController.hall.capacity}"
+                                       requiredMessage="#{msg['page.addhall.capacity.required']}">
+                        </p:inputNumber>
+                    </h:outputLabel>
 
-                    <p:inputNumber id="capacity" required="true"
-                                   value="#{addHallController.hall.capacity}"
-                                   requiredMessage="#{msg['page.addhall.capacity.required']}"
-                                   placeholder="#{msg['page.addhall.capacity']} *">
-                    </p:inputNumber>
+                    <h:outputLabel for="area" value="#{msg['page.addhall.area']} * ">
+                        <p:inputNumber id="area" required="true"
+                                       value="#{addHallController.hall.area}"
+                                       requiredMessage="#{msg['page.addhall.area.required']}"
+                                       validatorMessage="#{msg['page.addhall.area.validator']}"
+                                       symbol=" m&#178;" symbolPosition="s" decimalPlaces="2" decimalSeparator=",">
+                        </p:inputNumber>
+                    </h:outputLabel>
 
-                    <p:inputNumber id="area" required="true"
-                                   value="#{addHallController.hall.area}"
-                                   requiredMessage="#{msg['page.addhall.area.required']}"
-                                   validatorMessage="#{msg['page.addhall.area.validator']}"
-                                   placeholder="#{msg['page.addhall.area']} *"
-                                   decimalPlaces="2" decimalSeparator=",">
-                    </p:inputNumber>
+                    <h:outputLabel for="price" value="#{msg['page.addhall.price']} * ">
+                        <p:inputNumber id="price" required="true"
+                                       value="#{addHallController.hall.price}"
+                                       requiredMessage="#{msg['page.addhall.price.required']}"
+                                       validatorMessage="#{msg['page.addhall.price.validator']}"
+                                       symbol=" PLN" symbolPosition="s" decimalPlaces="2" decimalSeparator=",">
+                        </p:inputNumber>
+                    </h:outputLabel>
 
-                    <p:inputNumber id="price" required="true"
-                                   value="#{addHallController.hall.price}"
-                                   requiredMessage="#{msg['page.addhall.price.required']}"
-                                   validatorMessage="#{msg['page.addhall.price.validator']}"
-                                   placeholder="#{msg['page.addhall.price']} *"
-                                   symbol=" PLN" symbolPosition="s" decimalPlaces="2" decimalSeparator=",">
-                    </p:inputNumber>
+                    <h:outputLabel for="active" value="#{msg['page.addhall.activelabel']} ">
+                        <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}"/>
+                    </h:outputLabel>
 
-                    <h:outputLabel for="active" value="#{msg['page.addhall.activelabel']}" style="font-size: 14px; text-align: left;"/>
-                    <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}" itemLabel="#{msg['page.addhall.active']}" style="text-align: left;"/>
-
-                    <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']}" style="font-size: 14px; text-align: left;"/>
-                    <p:selectBooleanCheckbox id="newAddress" value="#{addHallController.newAddress}" itemLabel="#{msg['page.addhall.newaddress']}" style="text-align: left;"/>
+                    <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']} ">
+                        <p:selectBooleanCheckbox id="newAddress" value="#{addHallController.newAddress}"/>
+                    </h:outputLabel>
 
                     <c:choose>
-                        <c:when test="${!addHallController.newAddress}">
-                            <p:inputText id="street" required="true"
-                                         value="#{addHallController.address.street}"
-                                         requiredMessage="#{msg['page.addhall.street.required']}"
-                                         validatorMessage="#{msg['page.addhall.street.validator']}"
-                                         placeholder="#{msg['page.addhall.street']} *">
-                                <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                                <f:validateLength minimum="1" maximum="32"/>
-                            </p:inputText>
+                        <c:when test="${addHallController.newAddress}">
+                            <h:outputLabel for="street" value="#{msg['page.addhall.street']} * ">
+                                <p:inputText id="street" required="true"
+                                             value="#{addHallController.address.street}"
+                                             requiredMessage="#{msg['page.addhall.street.required']}"
+                                             validatorMessage="#{msg['page.addhall.street.validator']}">
+                                    <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                    <f:validateLength minimum="1" maximum="32"/>
+                                </p:inputText>
+                            </h:outputLabel>
 
-                            <p:inputNumber id="streetNo" required="true"
-                                         value="#{addHallController.address.streetNo}"
-                                         requiredMessage="#{msg['page.addhall.streetNo.required']}"
-                                         placeholder="#{msg['page.addhall.streetNo']} *">
-                            </p:inputNumber>
+                            <h:outputLabel for="streetNo" value="#{msg['page.addhall.streetNo']} * ">
+                                <p:inputNumber id="streetNo" required="true"
+                                             value="#{addHallController.address.streetNo}"
+                                             requiredMessage="#{msg['page.addhall.streetNo.required']}">
+                                </p:inputNumber>
+                            </h:outputLabel>
 
-                            <p:inputText id="city" required="true"
-                                         value="#{addHallController.address.city}"
-                                         requiredMessage="#{msg['page.addhall.city.required']}"
-                                         validatorMessage="#{msg['page.addhall.city.validator']}"
-                                         placeholder="#{msg['page.addhall.city']} *">
-                                <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                                <f:validateLength minimum="1" maximum="32"/>
-                            </p:inputText>
+                            <h:outputLabel for="city" value="#{msg['page.addhall.city']} * ">
+                                <p:inputText id="city" required="true"
+                                             value="#{addHallController.address.city}"
+                                             requiredMessage="#{msg['page.addhall.city.required']}"
+                                             validatorMessage="#{msg['page.addhall.city.validator']}">
+                                    <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                                    <f:validateLength minimum="1" maximum="32"/>
+                                </p:inputText>
+                            </h:outputLabel>
                         </c:when>
                         <c:otherwise>
-                            <p:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']}"/>
-                            <p:selectOneMenu id="addresses" value="#{addHallController.address}">
-                                <f:selectItem itemLabel="#{msg['page.addhall.selectaddress']}" itemValue="" noSelectionOption="true"/>
-                                <ui:repeat value="#{addHallController.addresses}" var="address">
-                                    <f:selectItem itemLabel="#{address.show()}" itemValue="#{address}"/>
-                                </ui:repeat>
-                            </p:selectOneMenu>
+                            <h:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']} ">
+                                <p:selectOneMenu id="addresses" value="#{addHallController.address}">
+                                    <c:forEach items="#{addHallController.addresses}" var="address">
+                                        <f:selectItem itemLabel="#{address.show()}" itemValue="#{address}"/>
+                                    </c:forEach>
+                                </p:selectOneMenu>
+                            </h:outputLabel>
                         </c:otherwise>
                     </c:choose>
 
-                    <h:outputLabel for="eventTypes" value="#{msg['page.addhall.eventtypes']} *" style="font-size: 14px; text-align: left;"/>
-                    <p:selectManyCheckbox id="eventTypes" required="true" requiredMessage="#{msg['page.addhall.eventtypes.required']}" value="#{addHallController.eventTypes}">
-                        <ui:repeat value="#{addHallController.eventTypes}" var="eventType">
-                            <f:selectItem itemLabel="#{resourceBundles.getTranslatedText(eventType)}" itemValue="#{eventType}"/>
-                        </ui:repeat>
-                    </p:selectManyCheckbox>
-                </div>
+                    <h:outputLabel for="eventTypes" value="#{msg['page.addhall.eventtypes']} * ">
+                        <p:selectManyCheckbox id="eventTypes" required="true" requiredMessage="#{msg['page.addhall.eventtypes.required']}" value="#{addHallController.eventTypes}">
+                            <c:forEach items="#{addHallController.eventTypes}" var="eventType">
+                                <f:selectItem itemLabel="#{resourceBundles.getTranslatedText(eventType)}" itemValue="#{eventType}"/>
+                            </c:forEach>
+                        </p:selectManyCheckbox>
+                    </h:outputLabel>
+                </p:panelGrid>
 
                 <div style="display:flex; flex-direction: column;">
                     <p:messages>
