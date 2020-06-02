@@ -156,3 +156,12 @@ fieldset > legend{
     font-weight: bolder !important;
 }
 
+#pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+#reviews-form{
+    margin-bottom: auto;
+}
