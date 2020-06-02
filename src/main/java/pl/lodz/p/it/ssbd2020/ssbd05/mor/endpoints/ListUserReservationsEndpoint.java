@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReservationMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
@@ -43,24 +44,7 @@ public class ListUserReservationsEndpoint implements Serializable, ListUserReser
         boolean rollback;
         do {
             try {
-                for (Reservation res:reservationManager.getAllUsersReservations(login)) {
-                    ReservationDTO dto = new ReservationDTO();
-                    dto.setClientLogin(res.getClient().getAccount().getLogin());
-                    dto.setEndDate(res.getEndDate().toString());
-                    dto.setStartDate(res.getStartDate().toString());
-                    dto.setReservationNumber(res.getReservationNumber());
-                    dto.setEventTypeName(res.getEventType().getTypeName());
-                    dto.setTotalPrice(res.getTotalPrice());
-                    dto.setReviewNumber("1");
-                    dto.setHallName(res.getHall().getName());
-                    dto.setStatusName(res.getStatus().getStatusName());
-                    Collection<String> extraService = new ArrayList<>();
-                    for (ExtraService extra:res.getExtraServiceCollection()){
-                        extraService.add(extra.getServiceName());
-                    }
-                    dto.setExtraServiceCollection(extraService);
-                    list.add(dto);
-                }
+                list = ReservationMapper.INSTANCE.toReservationDTOCollection(reservationManager.getAllUsersReservations(login));
                 rollback = reservationManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");

@@ -1,45 +1,74 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<ui:composition template = "/templates/template.xhtml">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition template="/templates/template.xhtml">
     <ui:define name="head">
-        <title>Lista rezerwacji użytkownika</title>
+        <title>#{msg['page.client.reservations.title']}</title>
     </ui:define>
-    <ui:define name = "content">
+    <ui:define name="content">
         <h:form id="form1" style="margin-bottom: auto">
-            <p:dataTable var="reservation" value="#{listUsersReservationController.usersReservations}" emptyMessage="Nie znaleziono wyników" >
-                <p:column headerText="Numer rezerwacji">
+            <p:dataTable var="reservation" value="#{listUsersReservationController.usersReservations}"
+                         emptyMessage="#{msg['page.client.reservations.notfound']}">
+                <p:column headerText="#{msg['page.client.reservations.reservation.number']}">
                     <h:outputText value="#{reservation.reservationNumber}"/>
                 </p:column>
 
-                <p:column headerText="Rodzaj imprezy">
-                    <h:outputText value="#{reservation.eventTypeName}"/>
+                <p:column headerText="#{msg['page.client.reservations.reservation.event.type']}">
+                    <c:if test="#{reservationUtils.isEventTypeConference(reservation.eventTypeName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.conference']}"/>
+                    </c:if>
+                    <c:if test="#{reservationUtils.isEventTypeOther(reservation.eventTypeName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.other']}"/>
+                    </c:if>
+                    <c:if test="#{reservationUtils.isEventTypeParty(reservation.eventTypeName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.party']}"/>
+                    </c:if>
+                    <c:if test="#{reservationUtils.isEventTypeWedding(reservation.eventTypeName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.wedding']}"/>
+
+                    </c:if>
+
                 </p:column>
 
-                <p:column headerText="Status rezerwacji">
-                    <h:outputText value="#{reservation.statusName}"/>
+                <p:column headerText="#{msg['page.client.reservations.reservation.status']}">
+                    <c:if test="#{reservationUtils.isStatusPaid(reservation.statusName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.paid']}"/>
+                    </c:if>
+                    <c:if test="#{reservationUtils.isStatusCancelled(reservation.statusName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.cancelled']}"/>
+
+                    </c:if>
+                    <c:if test="#{reservationUtils.isStatusConfirmed(reservation.statusName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.confirmed']}"/>
+                    </c:if>
+                    <c:if test="#{reservationUtils.isStatusFinished(reservation.statusName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.finished']}"/>
+                    </c:if>
+                    <c:if test="#{reservationUtils.isStatusSubmitted(reservation.statusName.toString)}">
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.submitted']}"/>
+                    </c:if>
                 </p:column>
 
-                <p:column headerText="Data rozpoczęcia">
+                <p:column headerText="#{msg['page.client.reservations.reservation.start.date']}">
                     <h:outputText value="#{reservation.startDate}"/>
                 </p:column>
 
-                <p:column headerText="Data zakończenia">
+                <p:column headerText="#{msg['page.client.reservations.reservation.end.date']}">
                     <h:outputText value="#{reservation.endDate}"/>
                 </p:column>
 
-
-                <p:column headerText="Szczegóły">
-                    <p:commandButton id="goDetailsButton" value="Szczegóły rezerwacij"/>
+                <p:column headerText="#{msg['page.client.reservations.reservation.details']}">
+                    <p:commandButton id="goDetailsButton" value="#{msg['page.client.reservations.reservation.button.details']}"/>
                 </p:column>
             </p:dataTable>
         </h:form>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="Lista rezerwacji użytkownika" outcome="/client/clientReservationsPage.xhtml" />
+        <p:menuitem value="#{msg['page.client.reservations.breadcrumbs']}" outcome="/client/clientReservationsPage.xhtml"/>
     </ui:define>
 </ui:composition>
 </html>
