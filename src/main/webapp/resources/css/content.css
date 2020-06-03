@@ -130,3 +130,54 @@ h1{
     min-width: 12em;
 }
 
+.review-div{
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    word-break: break-word;
+
+}
+
+.review-fieldset{
+    margin-bottom: 1em;
+}
+
+.review-date{
+    align-self: end;
+    margin-top: 1em;
+    font-style: italic;
+}
+
+.review-content{
+    font-size: 15px;
+}
+
+fieldset > legend{
+    font-weight: bolder !important;
+}
+
+#pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    align-items: baseline;
+}
+
+#reviews-repeat{
+    margin-bottom: auto;
+}
+
+.reviews-nav-text{
+    margin: 0 0.5em;
+}
+
+#reviews-div-perpage{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 1em;
+}
+
+#reviews-form-perpage{
+    margin-top: 0.3em
+}

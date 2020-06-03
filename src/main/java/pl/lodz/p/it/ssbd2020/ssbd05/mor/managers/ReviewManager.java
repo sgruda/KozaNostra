@@ -45,6 +45,6 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
 
     @PermitAll
     public List<Review> getAllReviews() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return reviewFacade.findAll();
     }
 }

@@ -20,7 +20,7 @@
         <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
         <param-value>6Lde2ucUAAAAABo2d2eehKupJ62B0c7avPKl0HoC</param-value>
     </context-param>
-<!--      Klucze reCaptcha wykorzystywane przy testach funkcjonalnych Selenium -->
+<!--&lt;!&ndash;      Klucze reCaptcha wykorzystywane przy testach funkcjonalnych Selenium &ndash;&gt;-->
 <!--      <context-param>-->
 <!--          <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>-->
 <!--          <param-value>6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI</param-value>-->
