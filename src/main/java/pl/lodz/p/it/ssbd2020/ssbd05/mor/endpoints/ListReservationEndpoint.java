@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReservationMapper;
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.StatusMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.EventTypeMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
@@ -34,7 +33,6 @@ public class ListReservationEndpoint implements Serializable, ListReservationEnd
     @Inject
     private ReservationManager reservationManager;
     private List<EventType> eventTypes;
-    private List<Status> statuses;
 
     @Override
     @RolesAllowed("getAllReservations")
@@ -76,30 +74,6 @@ public class ListReservationEndpoint implements Serializable, ListReservationEnd
             try {
                 eventTypes = reservationManager.getAllEventTypes();
                 list.addAll(EventTypeMapper.toEventTypeStringCollection(eventTypes));
-                rollback = reservationManager.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
-                log.warning("EJBTransactionRolledBack");
-                rollback = true;
-            }
-            if(callCounter > 0)
-                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-            callCounter++;
-        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
-        if (rollback) {
-            throw new ExceededTransactionRetriesException();
-        }
-        return list;
-    }
-    @Override
-    @RolesAllowed("getAllReservations")
-    public List<String> getAllStatuses() throws AppBaseException {
-        List<String> list = new ArrayList<>();
-        int callCounter = 0;
-        boolean rollback;
-        do {
-            try {
-                statuses = reservationManager.getAllStatuses();
-                list.addAll(StatusMapper.toStatusStringCollection(statuses));
                 rollback = reservationManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");

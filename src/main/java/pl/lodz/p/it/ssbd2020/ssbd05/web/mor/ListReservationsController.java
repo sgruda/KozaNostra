@@ -29,8 +29,7 @@ public class ListReservationsController implements Serializable {
     private ResourceBundles resourceBundles;
     @Getter
     private List<String> eventTypes;
-    @Getter
-    private List<String> statuses;
+
 
     @PostConstruct
     public void init() {
@@ -38,7 +37,6 @@ public class ListReservationsController implements Serializable {
             reservations = listReservationEndpointLocal.getAllReservations();
             resourceBundles = new ResourceBundles();
             eventTypes = listReservationEndpointLocal.getAllEventTypes();
-            statuses = listReservationEndpointLocal.getAllStatuses();
         } catch (AppBaseException e) {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
