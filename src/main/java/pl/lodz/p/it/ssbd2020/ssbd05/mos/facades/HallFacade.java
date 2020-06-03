@@ -5,6 +5,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
@@ -49,8 +51,14 @@ public class HallFacade extends AbstractFacade<Hall> {
     public void create(Hall entity) throws AppBaseException {
         try {
             super.create(entity);
-        } catch (DatabaseException | PersistenceException e) {
+        } catch (DatabaseException e) {
             throw new DatabaseConnectionException(e);
+        } catch (PersistenceException e) {
+            if (e.getMessage().contains("hall_name_uindex")) {
+                throw new HallAlreadyExistsException(e);
+            } else {
+                throw new DatabaseQueryException(e);
+            }
         }
     }
 

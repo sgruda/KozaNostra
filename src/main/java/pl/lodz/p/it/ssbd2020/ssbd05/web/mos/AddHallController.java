@@ -49,10 +49,6 @@ public class AddHallController implements Serializable {
         }
     }
 
-    public void toggleNewAddress() {
-        newAddress = !newAddress;
-    }
-
     public void addHall() {
         hall.setEvent_type(eventTypes);
         hall.setAddress(address);
@@ -62,10 +58,14 @@ public class AddHallController implements Serializable {
         } catch (ValidationException e) {
             ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
-        } catch (AppBaseException ex) {
-            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
+    }
+
+    public void toggleNewAddress() {
+        newAddress = !newAddress;
     }
 
     public String goBack() {
