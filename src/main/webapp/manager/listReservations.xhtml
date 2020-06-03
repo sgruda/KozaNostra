@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name="head">
@@ -18,10 +19,7 @@
                     <h:outputText value="#{reservation.clientLogin}"/>
                 </p:column>
                 <p:column headerText="#{msg['page.listreservations.reservation.event.type']}">
-                    <h:outputText value="#{msg['page.listreservations.reservation.event.type.conference']}" rendered="#{listReservationsController.reservationUtils.isEventTypeConference(reservation.eventTypeName)}"/>
-                    <h:outputText value="#{msg['page.listreservations.reservation.event.type.other']}" rendered="#{listReservationsController.reservationUtils.isEventTypeOther(reservation.eventTypeName)}"/>
-                    <h:outputText value="#{msg['page.listreservations.reservation.event.type.party']}" rendered="#{listReservationsController.reservationUtils.isEventTypeParty(reservation.eventTypeName)}"/>
-                    <h:outputText value="#{msg['page.listreservations.reservation.event.type.wedding']}" rendered="#{listReservationsController.reservationUtils.isEventTypeWedding(reservation.eventTypeName)}"/>
+                    <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.eventTypeName)}"/>
                 </p:column>
                 <p:column headerText="#{msg['page.listreservations.reservation.status']}">
                     <h:outputText value="#{msg['page.listreservations.reservation.status.paid']}"

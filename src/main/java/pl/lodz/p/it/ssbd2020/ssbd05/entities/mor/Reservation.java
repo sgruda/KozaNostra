@@ -81,7 +81,6 @@ public class Reservation implements Serializable {
     )
 
     private List<ExtraService> extra_service = new ArrayList<>();
-    public Collection<ExtraService> getExtraService() {return extra_service;}
 
     @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "hall_id", referencedColumnName = "id", nullable = false)

@@ -45,7 +45,7 @@ public class StatusFacade extends AbstractFacade<Status> {
     }
 
     @Override
-    @DenyAll
+    @RolesAllowed("getAllReservations")
     public List<Status> findAll() throws AppBaseException {
         try {
             return super.findAll();

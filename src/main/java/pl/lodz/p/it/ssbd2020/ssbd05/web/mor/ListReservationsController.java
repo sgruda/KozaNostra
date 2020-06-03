@@ -27,13 +27,22 @@ public class ListReservationsController implements Serializable {
     @Setter
     private List<ReservationDTO> reservations;
     @Getter
+    private ResourceBundles resourceBundles;
+    @Getter
     private ReservationUtils reservationUtils;
+    @Getter
+    private List<String> eventTypes;
+    @Getter
+    private List<String> statuses;
 
     @PostConstruct
     public void init() {
         try {
             reservations = listReservationEndpointLocal.getAllReservations();
+            resourceBundles = new ResourceBundles();
             reservationUtils = new ReservationUtils();
+            eventTypes = listReservationEndpointLocal.getAllEventTypes();
+            statuses = listReservationEndpointLocal.getAllStatuses();
         } catch (AppBaseException e) {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());

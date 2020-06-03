@@ -44,8 +44,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("getAllEventTypes")
     public List<EventType> getAllEventTypes() throws AppBaseException {
-        //TODO Implementacja
-        throw new UnsupportedOperationException();
+        return eventTypesFacade.findAll();
     }
 
     @RolesAllowed("createReservation")
@@ -77,6 +76,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @RolesAllowed("getStatusCanceled")
     public Status getStatusCanceled() throws AppBaseException  {
         throw new UnsupportedOperationException();
+    }
+
+    @RolesAllowed("getAllReservations")
+    public List<Status> getAllStatuses() throws AppBaseException {
+        return statusFacade.findAll();
     }
 
     @RolesAllowed("cancelReservation")
