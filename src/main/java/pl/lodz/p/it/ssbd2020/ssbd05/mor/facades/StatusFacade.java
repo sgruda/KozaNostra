@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
 import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -45,7 +46,7 @@ public class StatusFacade extends AbstractFacade<Status> {
     }
 
     @Override
-    @DenyAll
+    @PermitAll
     public List<Status> findAll() throws AppBaseException {
         try {
             return super.findAll();

@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -34,6 +35,7 @@ public class ExtraService implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Pattern(regexp = "[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\-]+", message = "{validation.pattern}")
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Size(min = 1, max = 512, message = "{validation.size}")
@@ -46,6 +48,7 @@ public class ExtraService implements Serializable {
     @Column(name = "price", nullable = false)
     private double price;
 
+    @Pattern(regexp = "[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+", message = "{validation.pattern}")
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Size(min = 1, max = 32, message = "{validation.size}")

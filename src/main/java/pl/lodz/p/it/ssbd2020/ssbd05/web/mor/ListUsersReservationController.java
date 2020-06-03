@@ -5,38 +5,46 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListReservationEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListUserReservationsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 @Log
 @Named
 @ViewScoped
-public class ListReservationsController implements Serializable {
+public class ListUsersReservationController implements Serializable {
+
+
     @Inject
-    private ListReservationEndpointLocal listReservationEndpointLocal;
+    ListUserReservationsEndpointLocal userReservationsEndpointLocal;
+
     @Getter
     @Setter
-    private List<ReservationDTO> reservations;
+    List<ReservationDTO> usersReservations;
+
     @Getter
     private ResourceBundles resourceBundles;
 
-
     @PostConstruct
-    public void init() {
+    private void init() {
         try {
-            reservations = listReservationEndpointLocal.getAllReservations();
             resourceBundles = new ResourceBundles();
+            usersReservations = userReservationsEndpointLocal.getAllUsersReservations(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         } catch (AppBaseException e) {
-            log.warning(e.getClass().toString() + " " + e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
     }
+
+
+
 }

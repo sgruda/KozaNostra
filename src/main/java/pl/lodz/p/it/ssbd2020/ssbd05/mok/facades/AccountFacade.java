@@ -25,30 +25,57 @@ import java.sql.SQLNonTransientConnectionException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+/**
+ * Fasada konta - typ Account.
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "AccountFacadeMOK")
 @LocalBean
 @Interceptors(TrackerInterceptor.class)
 public class AccountFacade extends AbstractFacade<Account> {
 
+    /**
+     * EntityManager służy do tworzenia zapytań
+     */
     @PersistenceContext(unitName = "ssbd05mokPU")
     private EntityManager em;
 
+    /**
+     * Pobiera managera encji
+     *
+     * @return obiekt typu EntityManager
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy fasady konta
+     */
     public AccountFacade() {
         super(Account.class);
     }
 
+    /**
+     * Znajdź konto
+     *
+     * @param id id konta
+     * @return optional Account
+     */
     @Override
     @DenyAll
     public Optional<Account> find(Object id) {
         return super.find(id);
     }
 
+    /**
+     * Znajdź wszystkie konta
+     *
+     * @return lista kont
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("listAccounts")
     public List<Account> findAll() throws AppBaseException {
@@ -59,6 +86,13 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Znajdź po loginie
+     *
+     * @param username nazwa użytkownika
+     * @return optional Account
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @PermitAll
     public Optional<Account> findByLogin(String username) throws AppBaseException {
         try {
@@ -71,6 +105,13 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Znajdź po tokenie
+     *
+     * @param token token
+     * @return optional Account
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @PermitAll
     public Optional<Account> findByToken(String token) throws AppBaseException {
         try {
@@ -83,6 +124,13 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Znajdź po mailu
+     *
+     * @param mail mail
+     * @return optional Account
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @PermitAll
     public Optional<Account> findByMail(String mail) throws AppBaseException {
         try {
@@ -95,6 +143,13 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Filtruj kolekcję kont
+     *
+     * @param accountFilter filtr
+     * @return Collection<Account>
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @RolesAllowed("filterAccounts")
     public Collection<Account> filterAccounts(String accountFilter) throws AppBaseException {
         try {
@@ -105,6 +160,12 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Stwórz konto
+     *
+     * @param entity encja
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @PermitAll
     public void create(Account entity) throws AppBaseException {
@@ -128,6 +189,12 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Edytuj.
+     *
+     * @param entity encja
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @PermitAll
     public void edit(Account entity) throws AppBaseException {
@@ -146,12 +213,23 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Usuń
+     *
+     * @param entity encja
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @DenyAll
     public void remove(Account entity) throws AppBaseException {
         super.remove(entity);
     }
 
+    /**
+     * Zlicz.
+     *
+     * @return Obiekt typu int
+     */
     @Override
     @DenyAll
     public int count() {

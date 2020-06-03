@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.listreservations.title']}</title>
+    </ui:define>
+    <ui:define name = "content">
+        <h:form id="form1" style="margin-bottom: auto">
+            <p:dataTable var="reservation" value="#{listReservationsController.reservations}" emptyMessage="#{msg['page.listreservations.list.empty']}" >
+                <p:column headerText="#{msg['page.listreservations.reservation.reservation.number']}">
+                    <h:outputText value="#{reservation.reservationNumber}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.client.login']}">
+                    <h:outputText value="#{reservation.clientLogin}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.event.type']}">
+                    <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.eventTypeName)}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.status']}">
+                    <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.statusName)}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.start.date']}">
+                    <h:outputText value="#{reservation.startDate}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.end.date']}">
+                    <h:outputText value="#{reservation.endDate}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listreservations.reservation.details']}">
+                    <p:commandButton id="goDetailsButton" value="#{msg['page.listreservations.reservation.details']}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.listreservations.breadcrumbs']}" outcome="/manager/listReservations.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>

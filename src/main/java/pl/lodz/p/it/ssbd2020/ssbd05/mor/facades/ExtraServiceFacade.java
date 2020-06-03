@@ -48,7 +48,7 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
             super.create(entity);
         } catch (DatabaseException | PersistenceException e) {
             if(e.getMessage().contains("extra_service_service_name_uindex"))
-                throw new ExtraServiceAlreadyExistsException(e);
+                throw new ExtraServiceAlreadyExistsException("error.extraservice.exists");
             throw new DatabaseConnectionException(e);
         }
     }
