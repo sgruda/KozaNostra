@@ -42,11 +42,6 @@ public class ListReservationEndpoint implements Serializable, ListReservationEnd
             try {
                 list = ReservationMapper.INSTANCE.toReservationDTOCollection(reservationManager.getAllReservations());
                 rollback = reservationManager.isLastTransactionRollback();
-                for(Reservation reservation : reservationManager.getAllReservations()) {
-                    for(ExtraService extraService : reservation.getExtraService()) {
-                        log.warning("WTF " + extraService.getServiceName());
-                    }
-                }
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;

@@ -11,24 +11,30 @@
     <ui:define name = "content">
         <h:form id="form1" style="margin-bottom: auto">
             <p:dataTable var="reservation" value="#{listReservationsController.reservations}" emptyMessage="#{msg['page.listreservations.list.empty']}" >
-                <p:column headerText="#{msg['page.listreservations.reservation.clientlogin']}">
-                    <h:outputText value="#{reservation.clientLogin}"/>
-                </p:column>
-                <p:column headerText="#{msg['page.listreservations.reservation.reservationnumber']}">
+                <p:column headerText="#{msg['page.listreservations.reservation.reservation.number']}">
                     <h:outputText value="#{reservation.reservationNumber}"/>
                 </p:column>
-
-                <p:column headerText="#{msg['page.listreservations.reservation.status']}">
-                    <h:outputText value="#{reservation.statusName}"/>
+                <p:column headerText="#{msg['page.listreservations.reservation.client.login']}">
+                    <h:outputText value="#{reservation.clientLogin}"/>
                 </p:column>
-                <p:column headerText="#{msg['page.listreservations.reservation.startdate']}">
+                <p:column headerText="#{msg['page.listreservations.reservation.event.type']}">
+                    <h:outputText value="#{msg['page.listreservations.reservation.event.type.conference']}" rendered="#{listReservationsController.reservationUtils.isEventTypeConference(reservation.eventTypeName)}"/>
+                    <h:outputText value="#{msg['page.listreservations.reservation.event.type.other']}" rendered="#{listReservationsController.reservationUtils.isEventTypeOther(reservation.eventTypeName)}"/>
+                    <h:outputText value="#{msg['page.listreservations.reservation.event.type.party']}" rendered="#{listReservationsController.reservationUtils.isEventTypeParty(reservation.eventTypeName)}"/>
+                    <h:outputText value="#{msg['page.listreservations.reservation.event.type.wedding']}" rendered="#{listReservationsController.reservationUtils.isEventTypeWedding(reservation.eventTypeName)}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.status']}">
+                    <h:outputText value="#{msg['page.listreservations.reservation.status.paid']}" rendered="#{listReservationsController.reservationUtils.isStatusPaid(reservation.statusName)}" style="color:#0d9e11"/>
+                    <h:outputText value="#{msg['page.listreservations.reservation.status.cancelled']}" rendered="#{listReservationsController.reservationUtils.isStatusCancelled(reservation.statusName)}" style="color:#e60e0e"/>
+                    <h:outputText value="#{msg['page.listreservations.reservation.status.confirmed']}" rendered="#{listReservationsController.reservationUtils.isStatusConfirmed(reservation.statusName)}" style="color:#14d111"/>
+                    <h:outputText value="#{msg['page.listreservations.reservation.status.submitted']}" rendered="#{listReservationsController.reservationUtils.isStatusSubmitted(reservation.statusName)}" style="color:#e69719"/>
+                    <h:outputText value="#{msg['page.listreservations.reservation.status.finished']}" rendered="#{listReservationsController.reservationUtils.isStatusFinished(reservation.statusName)}" style="color:#909c8f"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.start.date']}">
                     <h:outputText value="#{reservation.startDate}"/>
                 </p:column>
-                <p:column headerText="#{msg['page.listreservations.reservation.enddate']}">
+                <p:column headerText="#{msg['page.listreservations.reservation.end.date']}">
                     <h:outputText value="#{reservation.endDate}"/>
-                </p:column>
-                <p:column headerText="#{msg['page.listreservations.reservation.eventtype']}">
-                    <h:outputText value="#{reservation.eventTypeName}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['page.listreservations.reservation.details']}">
