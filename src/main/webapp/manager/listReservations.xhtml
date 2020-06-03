@@ -22,16 +22,7 @@
                     <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.eventTypeName)}"/>
                 </p:column>
                 <p:column headerText="#{msg['page.listreservations.reservation.status']}">
-                    <h:outputText value="#{msg['page.listreservations.reservation.status.paid']}"
-                                  rendered="#{listReservationsController.reservationUtils.isStatusPaid(reservation.statusName)}" style="color:#14d111"/>
-                    <h:outputText value="#{msg['page.listreservations.reservation.status.cancelled']}"
-                                  rendered="#{listReservationsController.reservationUtils.isStatusCancelled(reservation.statusName)}" style="color:#e60e0e"/>
-                    <h:outputText value="#{msg['page.listreservations.reservation.status.confirmed']}"
-                                  rendered="#{listReservationsController.reservationUtils.isStatusConfirmed(reservation.statusName)}" style="color:#0d9e11"/>
-                    <h:outputText value="#{msg['page.listreservations.reservation.status.submitted']}"
-                                  rendered="#{listReservationsController.reservationUtils.isStatusSubmitted(reservation.statusName)}" style="color:#e69719"/>
-                    <h:outputText value="#{msg['page.listreservations.reservation.status.finished']}"
-                                  rendered="#{listReservationsController.reservationUtils.isStatusFinished(reservation.statusName)}"/>
+                    <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.statusName)}"/>
                 </p:column>
                 <p:column headerText="#{msg['page.listreservations.reservation.start.date']}">
                     <h:outputText value="#{reservation.startDate}"/>

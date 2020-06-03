@@ -6,7 +6,6 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListReservationEndpointLocal;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.ReservationUtils;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 
@@ -29,8 +28,6 @@ public class ListReservationsController implements Serializable {
     @Getter
     private ResourceBundles resourceBundles;
     @Getter
-    private ReservationUtils reservationUtils;
-    @Getter
     private List<String> eventTypes;
     @Getter
     private List<String> statuses;
@@ -40,7 +37,6 @@ public class ListReservationsController implements Serializable {
         try {
             reservations = listReservationEndpointLocal.getAllReservations();
             resourceBundles = new ResourceBundles();
-            reservationUtils = new ReservationUtils();
             eventTypes = listReservationEndpointLocal.getAllEventTypes();
             statuses = listReservationEndpointLocal.getAllStatuses();
         } catch (AppBaseException e) {
