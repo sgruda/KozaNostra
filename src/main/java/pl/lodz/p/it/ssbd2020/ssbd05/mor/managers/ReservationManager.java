@@ -39,8 +39,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("getAllReservations")
     public List<Reservation> getAllReservations() throws AppBaseException {
-        //TODO Implementacja
-        throw new UnsupportedOperationException();
+        return reservationFacade.findAll();
     }
 
     @RolesAllowed("getAllEventTypes")

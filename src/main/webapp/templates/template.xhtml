@@ -26,6 +26,7 @@
                 </ui:fragment>
                 <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
                     <h1>#{msg['page.template.manager.console']}</h1>
+                    <p:button styleClass="sidebar-button" id="listReservationsButton" value="#{msg['page.template.manager.listReservations']}" outcome="/manager/listReservations.xhtml"/>
                 </ui:fragment>
                 <p:commandButton styleClass="sidebar-button" value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
                 </div>

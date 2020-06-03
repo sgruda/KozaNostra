@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -78,7 +79,9 @@ public class Reservation implements Serializable {
     @JoinTable(name = "extra_service_mapping", schema = "ssbd05schema",
             uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id", "extra_service_id"})
     )
-    private Collection<ExtraService> extraServiceCollection = new ArrayList<>();
+
+    private List<ExtraService> extra_service = new ArrayList<>();
+    public Collection<ExtraService> getExtraService() {return extra_service;}
 
     @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "hall_id", referencedColumnName = "id", nullable = false)
