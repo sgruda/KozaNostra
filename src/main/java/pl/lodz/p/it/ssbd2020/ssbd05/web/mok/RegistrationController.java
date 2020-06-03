@@ -19,6 +19,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Properties;
 
+/**
+ * Kontroler odpowiedzialny za rejestrację konta w systemie
+ */
 @Log
 @Named
 @Data
@@ -36,6 +39,11 @@ public class RegistrationController implements Serializable {
     private String emailAddress;
 
 
+    /**
+     * Metoda odpowiadająca za rejestrację
+     *
+     * @return ciąg znaków przekierowujący na stronę domową
+     */
     public String register() {
         try {
             if (password.equals(confirmPassword)) {
