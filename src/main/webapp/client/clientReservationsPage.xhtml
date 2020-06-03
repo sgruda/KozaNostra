@@ -18,18 +18,11 @@
                 </p:column>
 
                 <p:column headerText="#{msg['page.client.reservations.reservation.event.type']}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.conference']}" rendered="#{listUsersReservationController.reservationUtils.isEventTypeConference(reservation.eventTypeName)}"/>
-                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.other']}" rendered="#{listUsersReservationController.reservationUtils.isEventTypeOther(reservation.eventTypeName)}"/>
-                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.party']}" rendered="#{listUsersReservationController.reservationUtils.isEventTypeParty(reservation.eventTypeName)}"/>
-                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.wedding']}" rendered="#{listUsersReservationController.reservationUtils.isEventTypeWedding(reservation.eventTypeName)}"/>
+                        <h:outputText value="#{listUsersReservationController.resourceBundles.getTranslatedText(reservation.eventTypeName)}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['page.client.reservations.reservation.status']}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.paid']}" rendered="#{listUsersReservationController.reservationUtils.isStatusPaid(reservation.statusName)}"/>
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.cancelled']}" rendered="#{listUsersReservationController.reservationUtils.isStatusCancelled(reservation.statusName)}"/>
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.confirmed']}" rendered="#{listUsersReservationController.reservationUtils.isStatusConfirmed(reservation.statusName)}"/>
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.submitted']}" rendered="#{listUsersReservationController.reservationUtils.isStatusSubmitted(reservation.statusName)}"/>
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.finished']}" rendered="#{listUsersReservationController.reservationUtils.isStatusFinished(reservation.statusName)}"/>
+                        <h:outputText value="#{listUsersReservationController.resourceBundles.getTranslatedText(reservation.statusName)}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['page.client.reservations.reservation.start.date']}">
