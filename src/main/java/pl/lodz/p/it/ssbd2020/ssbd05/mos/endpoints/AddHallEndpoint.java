@@ -42,13 +42,13 @@ public class AddHallEndpoint implements Serializable, AddHallEndpointLocal {
     @RolesAllowed("addHall")
     public void addHall(HallDTO hallDTO) throws AppBaseException {
         hall = HallMapper.INSTANCE.createNewHall(hallDTO);
-        eventTypes.removeIf(eventType -> !hallDTO.getEventTypeCollection().contains(eventType.getTypeName()));
-        hall.setEventTypeCollection(eventTypes);
+        eventTypes.removeIf(eventType -> !hallDTO.getEvent_type().contains(eventType.getTypeName()));
+        hall.setEvent_type(eventTypes);
+        hall.setAddress(AddressMapper.INSTANCE.createNewAddress(hallDTO.getAddress()));
         int callCounter = 0;
         boolean rollback;
         do {
             try {
-                log.info("ENDPOINT: " + hall);
                 hallManager.addHall(hall);
                 rollback = hallManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {

@@ -67,7 +67,7 @@ public class AddressFacade extends AbstractFacade<Address> {
                     .setParameter("city", city)
                     .getSingleResult());
         } catch (NoResultException noResultException) {
-            throw new AddressNotFoundException(noResultException);
+            return Optional.empty();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }

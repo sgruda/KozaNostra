@@ -1,4 +1,4 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.web.validators;
+package pl.lodz.p.it.ssbd2020.ssbd05.web.utils;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 

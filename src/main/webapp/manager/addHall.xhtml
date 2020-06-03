@@ -92,6 +92,7 @@
                             </p:inputText>
                         </h:outputLabel>
                         <br/>
+                        <br/>
 
                         <h:outputLabel for="streetNo" value="#{msg['page.addhall.streetNo']} * " rendered="#{addHallController.newAddress}">
                             <p:inputNumber id="streetNo" required="true"
@@ -99,6 +100,7 @@
                                            requiredMessage="#{msg['page.addhall.streetNo.required']}">
                             </p:inputNumber>
                         </h:outputLabel>
+                        <br/>
                         <br/>
 
                         <h:outputLabel for="city" value="#{msg['page.addhall.city']} * " rendered="#{addHallController.newAddress}">
@@ -111,11 +113,10 @@
                             </p:inputText>
                         </h:outputLabel>
 
-                        <h:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']} " rendered="#{!addHallController.newAddress}">
-                            <p:selectOneMenu id="addresses" value="#{addHallController.address}">
-                                <c:forEach items="#{addHallController.addresses}" var="address">
-                                    <f:selectItem itemLabel="#{address.show()}" itemValue="#{address}"/>
-                                </c:forEach>
+                        <h:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']} * " rendered="#{!addHallController.newAddress}">
+                            <br/>
+                            <p:selectOneMenu id="addresses" value="#{addHallController.address}" converter="addressConverter">
+                                <f:selectItems value="#{addHallController.addresses}" var="address" itemLabel="#{address.show()}" itemValue="#{address}"/>
                             </p:selectOneMenu>
                         </h:outputLabel>
                     </h:panelGroup>

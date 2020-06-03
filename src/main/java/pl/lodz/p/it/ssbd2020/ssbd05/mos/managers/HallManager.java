@@ -6,7 +6,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.AddressNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.AddressFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.EventTypesFacade;
@@ -52,7 +51,6 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
             addressFacade.create(newAddress);
             hall.setAddress(newAddress);
         }
-        log.info("MANAGER: " + hall);
         hallFacade.create(hall);
     }
 

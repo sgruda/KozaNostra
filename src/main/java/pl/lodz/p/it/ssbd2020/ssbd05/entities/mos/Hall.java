@@ -83,7 +83,7 @@ public class Hall implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "event_types_mapping", schema = "ssbd05schema")
-    private Collection<EventType> eventTypeCollection = new ArrayList<>();
+    private Collection<EventType> event_type = new ArrayList<>();
 
     @NotNull
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)

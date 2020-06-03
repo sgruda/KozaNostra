@@ -16,7 +16,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 @Log
@@ -39,7 +38,7 @@ public class AddHallController implements Serializable {
     public void init() {
         hall = new HallDTO();
         hall.setActive(false);
-        newAddress = true;
+        newAddress = false;
         address = new AddressDTO();
         try {
             eventTypes = addHallEndpoint.getAllEventTypes();
@@ -48,8 +47,6 @@ public class AddHallController implements Serializable {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
-        log.info(Arrays.toString(eventTypes.toArray()));
-        log.info(Arrays.toString(addresses.toArray()));
     }
 
     public void toggleNewAddress() {
@@ -57,8 +54,8 @@ public class AddHallController implements Serializable {
     }
 
     public void addHall() {
+        hall.setEvent_type(eventTypes);
         hall.setAddress(address);
-        log.info("CONTROLLER: " + hall);
         try {
             addHallEndpoint.addHall(hall);
             ResourceBundles.emitMessageWithFlash(null,"page.addhall.created");
