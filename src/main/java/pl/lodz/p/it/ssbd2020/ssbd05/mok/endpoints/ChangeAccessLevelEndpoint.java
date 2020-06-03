@@ -26,16 +26,32 @@ import java.util.logging.Level;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
+/**
+ * Endpoint odpowiadający za zmianę poziomów dostępu
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Interceptors(TrackerInterceptor.class)
 public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLevelEndpointLocal {
 
+    /**
+     * Manager konta
+     */
     @Inject
     private AccountManager accountManager;
+    /**
+     * Konto
+     */
     private Account account;
 
+    /**
+     * Znajdż konto po loginie
+     *
+     * @param username nazwa użytkownika
+     * @return AccountDTO - konto
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("findByLogin")
     public AccountDTO findByLogin(String username) throws AppBaseException {
@@ -59,6 +75,12 @@ public class ChangeAccessLevelEndpoint implements Serializable, ChangeAccessLeve
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    /**
+     * Zmień poziom dostępu danego konta
+     *
+     * @param accountDTO konto
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("changeAccessLevel")
     public void changeAccessLevel(AccountDTO accountDTO) throws AppBaseException {

@@ -8,9 +8,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public @Data class ExtraServiceDTO {
 
-    private Long id;
     private String description;
     private double price;
     private String serviceName;
     private boolean active;
+
+    @Override
+    public String toString() {
+        return "pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO[name= " + serviceName;
+    }
 }
