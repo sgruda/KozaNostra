@@ -6,6 +6,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
 
@@ -57,8 +59,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("getAllUsersReservations")
     public List<Reservation> getAllUsersReservations(String login) throws AppBaseException {
-        //TODO Implementacja
-        throw new UnsupportedOperationException();
+        try {
+            return reservationFacade.findByLogin(login);
+        } catch (ReservationNotFoundException e) {
+            throw new ReservationNotFoundException(e);
+        }
     }
     @RolesAllowed("getStatusByName")
     public Status getStatusByName(String statusName) throws AppBaseException  {

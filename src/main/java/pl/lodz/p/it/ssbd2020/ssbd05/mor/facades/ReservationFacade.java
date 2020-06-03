@@ -1,13 +1,19 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.annotation.security.DenyAll;
@@ -17,11 +23,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +33,7 @@ import java.util.Optional;
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
+@Log
 @Interceptors(TrackerInterceptor.class)
 public class ReservationFacade extends AbstractFacade<Reservation> {
 
@@ -99,8 +104,16 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         throw new UnsupportedOperationException();
     }
     @RolesAllowed({"getAllUsersReservations", "getUserReviewableReservations"})
-    public List<Reservation> findByLogin(String login) throws AppBaseException{
-        throw new UnsupportedOperationException();
+    public List<Reservation> findByLogin(String login) throws AppBaseException {
+        try {
+          Account account = this.em.createNamedQuery("Account.findByLogin", Account.class)
+                    .setParameter("login", login).getSingleResult();
+                return this.em.createNamedQuery("Reservation.findByClientId", Reservation.class).setParameter("id", account.getId()).getResultList();
+        }catch (NoResultException noResultException) {
+            throw new ReservationNotFoundException(noResultException);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @RolesAllowed("getReservationsByDate")
