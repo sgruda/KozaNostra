@@ -2,8 +2,11 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mos.facades;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.AddressNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
@@ -15,6 +18,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -52,6 +56,21 @@ public class AddressFacade extends AbstractFacade<Address> {
     @DenyAll
     public Optional<Address> find(Object id) {
         return super.find(id);
+    }
+
+    @RolesAllowed("addHall")
+    public Optional<Address> findByStreetAndNumberAndCity(String street, int number, String city) throws AppBaseException {
+        try {
+            return Optional.ofNullable(this.em.createNamedQuery("Address.findByStreetAndNumberAndCity", Address.class)
+                    .setParameter("street", street)
+                    .setParameter("number", number)
+                    .setParameter("city", city)
+                    .getSingleResult());
+        } catch (NoResultException noResultException) {
+            return Optional.empty();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @Override

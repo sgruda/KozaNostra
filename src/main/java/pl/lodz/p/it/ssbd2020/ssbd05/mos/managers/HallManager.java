@@ -7,9 +7,9 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.AddressFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.EventTypesFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.HallFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mos.facades.AddressFacade;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -19,6 +19,7 @@ import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -36,7 +37,21 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @RolesAllowed("addHall")
     public void addHall(Hall hall) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Optional<Address> address = addressFacade.findByStreetAndNumberAndCity(
+                hall.getAddress().getStreet(),
+                hall.getAddress().getStreetNo(),
+                hall.getAddress().getCity());
+        if (address.isPresent()) {
+            hall.setAddress(address.get());
+        } else {
+            Address newAddress = new Address();
+            newAddress.setStreet(hall.getAddress().getStreet());
+            newAddress.setStreetNo(hall.getAddress().getStreetNo());
+            newAddress.setCity(hall.getAddress().getCity());
+            addressFacade.create(newAddress);
+            hall.setAddress(newAddress);
+        }
+        hallFacade.create(hall);
     }
 
     @PermitAll
@@ -62,12 +77,12 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @RolesAllowed("getAllEventTypes")
     public List<EventType> getAllEventTypes() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return eventTypesFacade.findAll();
     }
 
     @RolesAllowed("getAllAddresses")
     public List<Address> getAllAddresses() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return addressFacade.findAll();
     }
 
     @RolesAllowed("removeHall")

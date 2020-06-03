@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces;
 
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.AddressDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
@@ -12,6 +11,6 @@ import java.util.List;
 public interface AddHallEndpointLocal {
 
     void addHall(HallDTO hallDTO) throws AppBaseException;
-    List<EventTypeDTO> getAllEventTypes() throws AppBaseException;
+    List<String> getAllEventTypes() throws AppBaseException;
     List<AddressDTO> getAllAddresses() throws AppBaseException;
 }

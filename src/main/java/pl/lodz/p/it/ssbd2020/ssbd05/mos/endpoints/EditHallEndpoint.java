@@ -41,7 +41,7 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
 
     @Override
     @RolesAllowed("getAllEventTypes")
-    public List<EventTypeDTO> getAllEventTypes() throws AppBaseException {
+    public List<String> getAllEventTypes() throws AppBaseException {
         throw new UnsupportedOperationException();
     }
 
