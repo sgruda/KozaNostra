@@ -1,10 +1,13 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.facades;
 
+import lombok.extern.java.Log;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
@@ -26,6 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Log
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -50,7 +54,11 @@ public class HallFacade extends AbstractFacade<Hall> {
         try {
             super.create(entity);
         } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException(e);
+            if (e.getMessage().contains("hall_name_uindex")) {
+                throw new HallAlreadyExistsException(e);
+            } else {
+                throw new DatabaseConnectionException(e);
+            }
         }
     }
 

@@ -26,6 +26,8 @@
                 </ui:fragment>
                 <ui:fragment id="manager-sidebar" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
                     <h1>#{msg['page.template.manager.console']}</h1>
+                    <p:button styleClass="sidebar-button" id="addHallButton" value="#{msg['page.template.manager.addhall']}" outcome="/manager/addHall.xhtml"/>
+                    <p:button styleClass="sidebar-button" id="addExtraServiceButton" value="#{msg['page.template.manager.addextraservice']}" outcome="/manager/addExtraService.xhtml" />
                 </ui:fragment>
                 <p:commandButton styleClass="sidebar-button" value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
                 </div>
