@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 
 /**
- * The type Registration controller.
+ * Kontroler odpowiedzialny za rejestrację konta w systemie
  */
 @Log
 @Named
@@ -40,9 +40,9 @@ public class RegistrationController implements Serializable {
 
 
     /**
-     * Register string.
+     * Metoda odpowiadająca za rejestrację
      *
-     * @return the string
+     * @return ciąg znaków przekierowujący na stronę domową
      */
     public String register() {
         try {
