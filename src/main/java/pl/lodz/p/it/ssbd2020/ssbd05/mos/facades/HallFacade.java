@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.facades;
 
+import lombok.extern.java.Log;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
@@ -28,6 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Log
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -51,13 +53,11 @@ public class HallFacade extends AbstractFacade<Hall> {
     public void create(Hall entity) throws AppBaseException {
         try {
             super.create(entity);
-        } catch (DatabaseException e) {
-            throw new DatabaseConnectionException(e);
-        } catch (PersistenceException e) {
+        } catch (DatabaseException | PersistenceException e) {
             if (e.getMessage().contains("hall_name_uindex")) {
                 throw new HallAlreadyExistsException(e);
             } else {
-                throw new DatabaseQueryException(e);
+                throw new DatabaseConnectionException(e);
             }
         }
     }

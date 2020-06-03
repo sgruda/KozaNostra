@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.AddressDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.AddHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -54,7 +55,10 @@ public class AddHallController implements Serializable {
         hall.setAddress(address);
         try {
             addHallEndpoint.addHall(hall);
-            ResourceBundles.emitMessageWithFlash(null,"page.addhall.created");
+            ResourceBundles.emitMessageWithFlash(null, "page.addhall.created");
+        } catch (HallAlreadyExistsException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.hall.exists");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (ValidationException e) {
             ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
@@ -62,6 +66,10 @@ public class AddHallController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
+    }
+
+    public String translateEventType(String eventTypeName) {
+        return ResourceBundles.getTranslatedText(eventTypeName);
     }
 
     public void toggleNewAddress() {

@@ -5,9 +5,7 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,6 +47,7 @@ public class Hall implements Serializable {
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Column(name = "capacity", nullable = false)
+    @Digits(integer = 7, fraction = 0, message = "{validation.digits}")
     private int capacity;
 
     @Basic(optional = false)
@@ -59,6 +58,7 @@ public class Hall implements Serializable {
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Column(name = "area", nullable = false)
+    @Digits(integer = 7, fraction = 2, message = "{validation.digits}")
     private double area;
 
     @Basic(optional = false)
@@ -71,6 +71,7 @@ public class Hall implements Serializable {
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Column(name = "price", nullable = false)
+    @Digits(integer = 7, fraction = 2, message = "{validation.digits}")
     private double price;
 
     @Getter(lombok.AccessLevel.NONE)

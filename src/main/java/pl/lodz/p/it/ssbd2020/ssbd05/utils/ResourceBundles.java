@@ -13,7 +13,6 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 @Log
-@Named
 public class ResourceBundles {
     public static String getTranslatedText(String key) {
         return ResourceBundle.getBundle("i18n.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale()).getString(key);
