@@ -1,23 +1,16 @@
-package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
+package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
 import lombok.extern.java.Log;
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Properties;
 
-@ViewScoped
-@Named
+
 @Log
 public class ReservationUtils implements Serializable {
-
-
 
     private Properties eventTypeProperties;
     private Properties statusProperties;
@@ -61,8 +54,8 @@ public class ReservationUtils implements Serializable {
     }
 
 
-    @PostConstruct
-    private void init() {
+
+   public ReservationUtils(){
         this.eventTypeProperties = new Properties();
         this.statusProperties = new Properties();
         try {
