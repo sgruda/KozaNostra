@@ -5,10 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
@@ -45,7 +42,7 @@ public interface ReservationMapper {
     Collection<ReservationDTO> toReservationDTOCollection(Collection<Reservation> reservationCollection); //do wyswietlania listy
 
     //metoda uzywana w toReservationDTO
-    default Collection<String> extraServiceCollection(Collection<ExtraService> extraServiceCollection) {
+    default Collection<String> toExtraServiceDTOCollection(Collection<ExtraService> extraServiceCollection) {
         return extraServiceCollection.stream()
                 .map(ExtraService::getServiceName)
                 .collect(Collectors.toList());
@@ -66,4 +63,3 @@ public interface ReservationMapper {
         return eventType.getTypeName();
     }
 }
-

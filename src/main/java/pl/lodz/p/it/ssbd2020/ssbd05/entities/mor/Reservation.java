@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -80,6 +81,7 @@ public class Reservation implements Serializable {
             uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id", "extra_service_id"})
     )
     private Collection<ExtraService> extra_service = new ArrayList<>();
+
 
     @NotNull(message = "{validation.notnull}")
     @JoinColumn(name = "hall_id", referencedColumnName = "id", nullable = false)
