@@ -18,39 +18,17 @@
                 </p:column>
 
                 <p:column headerText="#{msg['page.client.reservations.reservation.event.type']}">
-                    <c:if test="#{reservationUtils.isEventTypeConference(reservation.eventTypeName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.conference']}"/>
-                    </c:if>
-                    <c:if test="#{reservationUtils.isEventTypeOther(reservation.eventTypeName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.other']}"/>
-                    </c:if>
-                    <c:if test="#{reservationUtils.isEventTypeParty(reservation.eventTypeName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.party']}"/>
-                    </c:if>
-                    <c:if test="#{reservationUtils.isEventTypeWedding(reservation.eventTypeName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.wedding']}"/>
-
-                    </c:if>
-
+                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.conference']}" rendered="#{reservationUtils.isEventTypeConference(reservation.eventTypeName)}"/>
+                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.other']}" rendered="#{reservationUtils.isEventTypeOther(reservation.eventTypeName)}"/>
+                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.party']}" rendered="#{reservationUtils.isEventTypeParty(reservation.eventTypeName)}"/>
+                        <h:outputText value="#{msg['page.client.reservations.reservation.event.type.wedding']}" rendered="#{reservationUtils.isEventTypeWedding(reservation.eventTypeName)}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['page.client.reservations.reservation.status']}">
-                    <c:if test="#{reservationUtils.isStatusPaid(reservation.statusName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.paid']}"/>
-                    </c:if>
-                    <c:if test="#{reservationUtils.isStatusCancelled(reservation.statusName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.cancelled']}"/>
-
-                    </c:if>
-                    <c:if test="#{reservationUtils.isStatusConfirmed(reservation.statusName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.confirmed']}"/>
-                    </c:if>
-                    <c:if test="#{reservationUtils.isStatusFinished(reservation.statusName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.finished']}"/>
-                    </c:if>
-                    <c:if test="#{reservationUtils.isStatusSubmitted(reservation.statusName.toString)}">
-                        <h:outputText value="#{msg['page.client.reservations.reservation.status.submitted']}"/>
-                    </c:if>
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.paid']}" rendered="#{reservationUtils.isStatusPaid(reservation.statusName)}"/>
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.cancelled']}" rendered="#{reservationUtils.isStatusCancelled(reservation.statusName)}"/>
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.confirmed']}" rendered="#{reservationUtils.isStatusConfirmed(reservation.statusName)}"/>
+                        <h:outputText value="#{msg['page.client.reservations.reservation.status.submitted']}" rendered="#{reservationUtils.isStatusSubmitted(reservation.statusName)}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['page.client.reservations.reservation.start.date']}">
