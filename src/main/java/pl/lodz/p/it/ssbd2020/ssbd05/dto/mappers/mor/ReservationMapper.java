@@ -28,6 +28,7 @@ public interface ReservationMapper {
     @Mapping(target = "clientLogin", source = "client")
     @Mapping(target = "statusName", source = "status")
     @Mapping(target = "eventTypeName", source = "eventType")
+    @Mapping(target = "extraServiceCollection", source = "extra_service")
     ReservationDTO toReservationDTO(Reservation reservation); //do wyswietlania
 
     @Mapping(target = "startDate", dateFormat = WITH_SECONDS)

@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
-import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -13,7 +12,6 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
 
-@Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
@@ -31,8 +29,7 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
 
     @RolesAllowed("addExtraService")
     public void addExtraService(ExtraService extraService) throws AppBaseException {
-        // TODO implementacja
-        throw new UnsupportedOperationException();
+        extraServiceFacade.create(extraService);
     }
 
     @RolesAllowed("getExtraServiceByName")

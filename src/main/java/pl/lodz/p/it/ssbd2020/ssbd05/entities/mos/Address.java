@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -20,7 +22,8 @@ import java.io.Serializable;
     @NamedQuery(name = "Address.findById", query = "SELECT a FROM Address a WHERE a.id = :id"),
     @NamedQuery(name = "Address.findByStreet", query = "SELECT a FROM Address a WHERE a.street = :street"),
     @NamedQuery(name = "Address.findByStreetNo", query = "SELECT a FROM Address a WHERE a.streetNo = :streetNo"),
-    @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city")
+    @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city"),
+    @NamedQuery(name = "Address.findByStreetAndNumberAndCity", query = "SELECT a FROM Address a WHERE a.street = :street AND a.streetNo = :number AND a.city = :city")
 })
 public class Address implements Serializable {
 
@@ -42,6 +45,7 @@ public class Address implements Serializable {
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Column(name = "street_no", nullable = false, updatable = false)
+    @Digits(integer = 7, fraction = 0, message = "{validation.digits}")
     private int streetNo;
 
     @Basic(optional = false)

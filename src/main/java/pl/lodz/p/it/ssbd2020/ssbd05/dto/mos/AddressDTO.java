@@ -8,8 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public @Data class AddressDTO {
 
-    private Long id;
     private String street;
     private int streetNo;
     private String city;
+
+    public String show() {
+        return street + " " + streetNo + ", " + city;
+    }
 }
