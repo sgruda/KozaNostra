@@ -27,13 +27,13 @@
                 </p:column>
 
                 <p:column headerText="#{msg['page.addextraservice.active']}">
-                    <h:outputText value="#{extraService.getActiveString()}" />
+                    <h:outputText rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}"
+                            value="#{extraService.getActiveString()}" />
+                    <p:commandButton rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}"
+                                     value="#{extraService.getActiveString()}" />
                 </p:column>
 
-<!--                <p:column headerText="#{msg['page.listaccounts.account.details']}">-->
-<!--                    <p:commandButton id="goDetailsButton" value="#{msg['page.listaccounts.account.details']}"-->
-<!--                                     action="#{listAccountsController.selectAccount(account.getLogin())}"/>-->
-<!--                </p:column>-->
+
             </p:dataTable>
         </h:form>
     </ui:define>

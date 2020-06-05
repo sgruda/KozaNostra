@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditExtraServiceEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListExtraServicesEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -21,6 +22,9 @@ public class ListExtraServicesController implements Serializable {
 
     @Inject
     ListExtraServicesEndpointLocal listExtraServicesEndpoint;
+
+    @Inject
+    EditExtraServiceEndpointLocal editExtraServiceEndpoint;
 
     @Getter
     private List<ExtraServiceDTO> extraServices;

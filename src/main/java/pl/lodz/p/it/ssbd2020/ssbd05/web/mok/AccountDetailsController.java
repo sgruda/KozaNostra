@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
 /**
- * Kontroler odpowiedzialny za operacje na końcie
+ * Kontroler odpowiedzialny za operacje na koncie
  */
 @Log
 @Named
