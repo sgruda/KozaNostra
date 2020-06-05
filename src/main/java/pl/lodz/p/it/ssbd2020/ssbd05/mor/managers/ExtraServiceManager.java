@@ -23,8 +23,7 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
 
     @RolesAllowed("getAllExtraServices")
     public List<ExtraService> getAllExtraServices() throws AppBaseException {
-        // TODO implementacja
-        throw new UnsupportedOperationException();
+        return extraServiceFacade.findAll();
     }
 
     @RolesAllowed("addExtraService")

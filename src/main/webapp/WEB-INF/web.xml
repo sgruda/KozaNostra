@@ -137,6 +137,17 @@
       </auth-constraint>
   </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>List extra services</web-resource-name>
+            <url-pattern>/listExtraServices.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>MANAGER</role-name>
+            <role-name>CLIENT</role-name>
+        </auth-constraint>
+    </security-constraint>
+
   <security-role>
       <role-name>ADMIN</role-name>
   </security-role>
