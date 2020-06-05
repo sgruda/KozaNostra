@@ -29,6 +29,14 @@
                     <h:outputText value="#{hall.address.show()}"/>
                 </p:column>
 
+                <p:column headerText="#{msg['page.listhalls.hall.area']}">
+                    <h:outputText value="#{hall.area} m&#178;"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listhalls.hall.capacity']}">
+                    <h:outputText value="#{hall.capacity}"/>
+                </p:column>
+
                 <p:column headerText="#{msg['page.listhalls.hall.details']}">
                     <p:commandButton id="goDetailsButton" value="#{msg['page.listhalls.hall.details']}"
                                      action="#{listHallsController.selectHall(hall.getName())}"/>
@@ -37,7 +45,7 @@
         </h:form>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.listhalls.breadcrumbs']}" outcome="/listAccounts.xhtml" />
+        <p:menuitem value="#{msg['page.listhalls.breadcrumbs']}" outcome="/listHalls.xhtml" />
     </ui:define>
 </ui:composition>
 </html>
