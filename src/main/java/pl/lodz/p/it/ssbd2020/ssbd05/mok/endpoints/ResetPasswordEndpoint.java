@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Endpoint odpowiadający za resetowanie hasła.
+ * Punkt dostępowy odpowiedzialny za reset hasła konta użytkownika, dostarcza implementację interfejsu ResetPasswordEndpointLocal
  */
 @Log
 @Stateful
@@ -38,26 +38,14 @@ import java.util.UUID;
 @Interceptors(TrackerInterceptor.class)
 public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpointLocal {
 
-    /**
-     * Manager konta.
-     */
     @Inject
     private AccountManager accountManager;
-    /**
-     * Obiekt typu Account - konto
-     */
+
     private Account account;
-    /**
-     * Obiekt typu ForgotPasswordToken.
-     */
+
     private ForgotPasswordToken forgotPasswordToken;
 
-    /**
-     * Znajdź po mailu
-     *
-     * @param mail mail
-     * @throws AppBaseException Wyjątek aplikacyjny
-     */
+
     @Override
     @PermitAll
     public void findByMail(String mail) throws AppBaseException {
@@ -80,13 +68,6 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
         }
     }
 
-    /**
-     * Znajdź po loginie
-     *
-     * @param login login
-     * @return AccountDTO
-     * @throws AppBaseException Wyjątek aplikacyjny
-     */
     @Override
     @PermitAll
     public AccountDTO findByLogin(String login) throws AppBaseException {
@@ -110,11 +91,6 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
-    /**
-     * Usuń poprzedni token
-     *
-     * @throws AppBaseException Wyjątek aplikacyjny
-     */
     @PermitAll
     private void deletePreviousToken() throws AppBaseException {
         int callCounter = 0;
@@ -139,12 +115,6 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
         }
     }
 
-    /**
-     * Resetuj hasło
-     *
-     * @param mail mail
-     * @throws AppBaseException Wyjątek aplikacyjny
-     */
     @Override
     @PermitAll
     public void resetPassword(String mail) throws AppBaseException {
@@ -181,13 +151,6 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
         }
     }
 
-    /**
-     * Znajdź token do resetowania hasła poprzez hash
-     *
-     * @param hash hash
-     * @return ForgotPasswordToken
-     * @throws AppBaseException the app base exception
-     */
     @Override
     @PermitAll
     public ForgotPasswordTokenDTO findByHash(String hash) throws AppBaseException {
@@ -211,12 +174,6 @@ public class ResetPasswordEndpoint implements Serializable, ResetPasswordEndpoin
         return ForgotPasswordTokenMapper.INSTANCE.toTokenDTO(forgotPasswordToken);
     }
 
-    /**
-     * Zresetuj i zmień hasło
-     *
-     * @param accountDTO obiekt typu AccountDTO - konto
-     * @throws AppBaseException Wyjątek aplikacyjny
-     */
     @Override
     @PermitAll
     public void changeResettedPassword(AccountDTO accountDTO) throws AppBaseException {
