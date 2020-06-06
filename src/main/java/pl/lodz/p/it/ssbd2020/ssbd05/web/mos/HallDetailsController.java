@@ -12,12 +12,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Log
 @Named
 @ViewScoped
-public class HallDetailsController {
+public class HallDetailsController implements Serializable {
 
     @Inject
     private HallDetailsEndpointLocal hallDetailsEndpoint;
@@ -30,12 +31,14 @@ public class HallDetailsController {
         String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
-            changeAccessLevelEndpointLocal.findByLogin(selectedLogin);
-            activationAccountController.setAccount(this.account);
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
-        this.setRolesInfo(this.account.getAccessLevelCollection());
+    }
+
+    public String goBack() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedHallName");
+        return "goBack";
     }
 }
