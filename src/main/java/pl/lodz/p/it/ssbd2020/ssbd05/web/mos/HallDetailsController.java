@@ -28,23 +28,16 @@ public class HallDetailsController implements Serializable {
     @Getter
     private HallDTO hall;
 
-    @PostConstruct
-    public void init() {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.getFlash().setKeepMessages(true);
-        String selectedHallName = (String) ec.getSessionMap().get("selectedHallName");
+    public String onLoad() {
+        String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            try {
-                ec.redirect("/ssbd05/listHalls.xhtml");
-                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-            } catch (IOException ioe) {
-                log.severe(ioe.getMessage() + ", " + LocalDateTime.now());
-                ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
-            }
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            return goBack();
         }
+        return "";
     }
 
     public String listEventTypes() {
@@ -72,4 +65,6 @@ public class HallDetailsController implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedHallName");
         return "goBack";
     }
+
+    //przy przechodzeniu na szczegóły sali chcę zrobić obsługę błędu w przypadku gdy ktoś w międzyczasie ją usunie
 }
