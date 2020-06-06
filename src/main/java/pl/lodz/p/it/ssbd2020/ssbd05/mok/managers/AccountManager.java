@@ -30,21 +30,10 @@ import java.util.Collection;
 @Interceptors(TrackerInterceptor.class)
 public class AccountManager extends AbstractManager implements SessionSynchronization {
 
-    /**
-     * Fasada Account
-     */
     @Inject
     private AccountFacade accountFacade;
-
-    /**
-     * Fasada Forgot password token
-     */
     @Inject
     private ForgotPasswordTokenFacade forgotPasswordTokenFacade;
-
-    /**
-     * Fasada Access level
-     */
     @Inject
     private AccessLevelFacade accessLevelFacade;
 
