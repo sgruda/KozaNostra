@@ -20,6 +20,7 @@ public interface HallMapper {
 
     HallDTO toHallDTO(Hall hall);
     Hall createNewHall(HallDTO hallDTO);
+    Collection<HallDTO> toHallDTOCollection(Collection<Hall> hallCollection);
 
     default Collection<String> toEventTypeStringCollection(Collection<EventType> eventTypeCollection) {
         return eventTypeCollection.stream()
