@@ -17,28 +17,28 @@
                                  update="filterbutton, :form1"/>
             </div>
             <p:dataTable var="hall" value="#{listHallsController.halls}" emptyMessage="#{msg['page.listhalls.list.empty']}" >
-                <p:column headerText="#{msg['page.listhalls.hall.name']}">
+                <p:column headerText="#{msg['page.hall.name']}">
                     <h:outputText value="#{hall.name}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['page.listhalls.hall.price']}">
+                <p:column headerText="#{msg['page.hall.price']}">
                     <h:outputText value="#{hall.price} PLN"/>
                 </p:column>
 
-                <p:column headerText="#{msg['page.listhalls.hall.address']}">
+                <p:column headerText="#{msg['page.hall.address']}">
                     <h:outputText value="#{hall.address.show()}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['page.listhalls.hall.area']}">
+                <p:column headerText="#{msg['page.hall.area']}">
                     <h:outputText value="#{hall.area} m&#178;"/>
                 </p:column>
 
-                <p:column headerText="#{msg['page.listhalls.hall.capacity']}">
+                <p:column headerText="#{msg['page.hall.capacity']}">
                     <h:outputText value="#{hall.capacity}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['page.listhalls.hall.details']}">
-                    <p:commandButton id="goDetailsButton" value="#{msg['page.listhalls.hall.details']}"
+                <p:column headerText="#{msg['page.hall.details']}">
+                    <p:commandButton id="goDetailsButton" value="#{msg['page.hall.details']}"
                                      action="#{listHallsController.selectHall(hall.getName())}"/>
                 </p:column>
             </p:dataTable>

@@ -37,6 +37,23 @@ public class HallDetailsController implements Serializable {
         }
     }
 
+    public String listEventTypes() {
+        StringBuilder result = new StringBuilder();
+        String[] eventTypes = hall.getEvent_type().toArray(new String[0]);
+        for (int i = 0; i < hall.getEvent_type().size(); i++) {
+            if (i != hall.getEvent_type().size() - 1) {
+                result.append(ResourceBundles.getTranslatedText(eventTypes[i])).append(", ");
+            } else {
+                result.append(ResourceBundles.getTranslatedText(eventTypes[i]));
+            }
+        }
+        return result.toString();
+    }
+
+    public String goToEditForm() {
+        return "editHall";
+    }
+
     public String goBack() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedHallName");
         return "goBack";
