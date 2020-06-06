@@ -161,7 +161,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     /**
-     *  Metoda odpowiedzialna za dołączanie i odłączanie poziomów dostępu przez
+     *  Metoda odpowiedzialna za dołączanie i odłączanie poziomów dostępu przez administratora
      */
     public void changeAccessLevels() {
         Collection<String> accessLevels = new ArrayList<>();
