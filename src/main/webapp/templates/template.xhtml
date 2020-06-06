@@ -81,11 +81,12 @@
                          </p:slideMenu>
                      </h:form>
                  </ui:fragment>
-                
+
                 <h:link id="reviewButton" class="link" outcome="/listReviews.xhtml">#{msg['page.template.reviews']}</h:link>
                 <h:link id="listExtraServicesButtonClient" class="link" outcome="/listExtraServices.xhtml" rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}">
                     #{msg['page.template.extraservices']}
                 </h:link>
+                <h:link id="hallsButton" class="link" outcome="/listHalls.xhtml">#{msg['page.template.halls']}</h:link>
              </div>
         </div>
         <div class ="breadcrumb">

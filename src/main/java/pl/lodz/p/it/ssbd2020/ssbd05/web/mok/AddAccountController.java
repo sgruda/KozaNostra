@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * Kontroler odpowiedzialny za tworzenie przez administratora konta użytkownika
+ */
 @Log
 @Getter
 @Setter
@@ -38,6 +41,9 @@ public class AddAccountController {
     private List<String> accessLevels = new ArrayList<>();
     private boolean active;
 
+    /**
+     * Metoda odpowiedzialna za dodawanie konta użytkownika
+     */
     public void addAccount() {
         AccountDTO account = new AccountDTO();
         account.setLogin(login);
@@ -68,6 +74,11 @@ public class AddAccountController {
         }
     }
 
+    /**
+     * Metoda przenosząca użytkownika na stronę główną aplikacji
+     *
+     * @return ciąg znaków przekierowujący na stronę główną
+     */
     public String goBack() {
         return "home";
     }

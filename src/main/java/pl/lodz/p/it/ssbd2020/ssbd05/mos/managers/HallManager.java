@@ -61,7 +61,7 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @PermitAll
     public Collection<Hall> getAllHalls() throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return hallFacade.findAll();
     }
 
     @PermitAll

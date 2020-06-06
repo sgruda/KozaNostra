@@ -18,6 +18,11 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+/**
+ * Punkt dostępowy implementujący interfejs AccountDetailsEndpointLocal
+ * pośredniczący przy wyświetlaniu szczegółów własnego konta użytkownika
+ * jak i konta użytkownika wybranego przez Administratora
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

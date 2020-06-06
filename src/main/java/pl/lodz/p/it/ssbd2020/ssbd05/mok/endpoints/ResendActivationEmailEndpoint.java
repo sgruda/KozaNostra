@@ -19,6 +19,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
+
+/**
+ * Punkt dostępowy implementujący interfejs ResendActivationEmailEndpointLocal
+ * pośredniczący przy powtórnym wysyłaniu maila z linkiem aktywacyjnym
+ */
 @Log
 @Stateful
 @Interceptors(TrackerInterceptor.class)

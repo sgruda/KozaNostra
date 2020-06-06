@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.listhalls.title']}</title>
+    </ui:define>
+    <ui:define name = "content">
+        <h:form id="form1" style="margin-bottom: auto">
+            <div style="width: auto; background-color: #626163">
+                <p:inputText id="filterHallsTextBox" value="#{listHallsController.hallFilter}"  style="width: 87.8%; border-radius: 0" placeholder="#{msg['page.listhalls.watermark']}"/>
+                <p:commandButton id="filterbutton" value="#{msg['page.listhalls.filter']}" style="float: right; width: 12%; border-radius: 0"
+                                 action="#{listAccountsController.filterAccounts()}"
+                                 update="filterbutton, :form1"/>
+            </div>
+            <p:dataTable var="hall" value="#{listHallsController.halls}" emptyMessage="#{msg['page.listhalls.list.empty']}" >
+                <p:column headerText="#{msg['page.listhalls.hall.name']}">
+                    <h:outputText value="#{hall.name}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listhalls.hall.price']}">
+                    <h:outputText value="#{hall.price} PLN"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listhalls.hall.address']}">
+                    <h:outputText value="#{hall.address.show()}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listhalls.hall.area']}">
+                    <h:outputText value="#{hall.area} m&#178;"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listhalls.hall.capacity']}">
+                    <h:outputText value="#{hall.capacity}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listhalls.hall.details']}">
+                    <p:commandButton id="goDetailsButton" value="#{msg['page.listhalls.hall.details']}"
+                                     action="#{listHallsController.selectHall(hall.getName())}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.listhalls.breadcrumbs']}" outcome="/listHalls.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>
