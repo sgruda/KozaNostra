@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template = "/templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.listaccounts.title']}</title>
+    </ui:define>
+    <ui:define name = "content">
+        <h:form style="margin-bottom: auto">
+            <p:dataTable style="text-align: center" var="extraService" value="#{listExtraServicesController.extraServices}" emptyMessage="#{msg['page.listaccounts.list.empty']}" >
+
+                <p:column headerText="#{msg['page.listextraservices.name']}">
+                    <h:outputText value="#{extraService.serviceName}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listextraservices.description']}">
+                    <h:outputText value="#{extraService.description}" />
+                </p:column>
+
+                <p:column headerText="#{msg['page.listextraservices.price']}">
+                    <h:outputText value="#{extraService.price} PLN" />
+                </p:column>
+
+                <p:column headerText="#{msg['page.addextraservice.active']}">
+                    <h:outputText rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}"
+                            value="#{extraService.getActiveString()}" />
+                    <p:commandButton rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}"
+                                     value="#{extraService.getActiveString()}" />
+                </p:column>
+
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.listextraservices.breadcrumbs']}" outcome="/listExtraServices.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>
