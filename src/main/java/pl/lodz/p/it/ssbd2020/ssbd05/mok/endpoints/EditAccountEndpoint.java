@@ -25,7 +25,7 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
 /**
- * Endpoint odpowiedzialny za edycję konta użytkownika
+ * Punkt dostępowy odpowiedzialny za edycję konta użytkownika
  */
 @Log
 @Stateful

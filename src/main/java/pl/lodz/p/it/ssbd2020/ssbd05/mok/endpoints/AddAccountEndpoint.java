@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Endpoint odpowiedzialny za tworzenie przez administratora konta użytkownika
+ * Punkt dostępowy odpowiedzialny za tworzenie przez administratora konta użytkownika
  */
 @Log
 @Stateful
