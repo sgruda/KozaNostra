@@ -30,58 +30,43 @@ import java.util.logging.Level;
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.StringUtils.collectionContainsIgnoreCase;
 
 /**
- * Kontroler odpowiedzialny za operacje na końcie
+ * Kontroler odpowiedzialny za wyświetlanie szczegółów konta
+ * W przypadku poziomu dostępu Administrator wykorzystywany jest również do operacji blolokowania/odblokowywania
+ * jak i dołączania/odłączania poziomu dostępu.
  */
 @Log
 @Named
 @ViewScoped
 public class AccountDetailsController implements Serializable {
 
-    /**
-     * Konto odpowiadające za pobranie konta
-     */
     @Inject
     private AccountDetailsEndpointLocal accountDetailsEndpointLocal;
-    /**
-     * Konto
-     */
+
     @Getter
     private AccountDTO account;
-    /**
-     * Kontroler odpowiadający za aktywację kont
-     */
+
     @Inject
     private ActivationAccountController activationAccountController;
-    /**
-     * Endpoint służący do zmiany poziomu dostępu
-     */
+
     @Inject
     private ChangeAccessLevelEndpointLocal changeAccessLevelEndpointLocal;
-    /**
-     * obiekt typu Properties
-     */
+
     private Properties roleProperties;
-    /**
-     * boolean roleAdminActive
-     */
+
     @Getter
     @Setter
     private boolean roleAdminActive;
-    /**
-     * boolean roleManagerActive
-     */
+
     @Getter
     @Setter
     private boolean roleManagerActive;
-    /**
-     * boolean roleClientActive
-     */
+
     @Getter
     @Setter
     private boolean roleClientActive;
 
     /**
-     * Zainicjuj kontroler
+     * Metoda inicjująca pobierająca obiekt DTO konta ,którego szczegóły mają zostać wyświetlone
      */
     @PostConstruct
     public void init() {
@@ -98,23 +83,23 @@ public class AccountDetailsController implements Serializable {
     }
 
     /**
-     * Przejdź do formularza edycji konta
+     * Metoda odpowiedzialna za przenoszenie użytkownika do strony edycji konta
      *
-     * @return the string
+     * @return string nazwa formularza
      */
     public String goToEditForm() {
         return "editAccount";
     }
 
     /**
-     * Przejdź do formularza zmiany hasła
+     * Metoda odpowiedzialna za przenosznie użytkownika do strony zmiany hasła
      *
-     * @return string
+     * @return string nazwa formularza
      */
     public String goToPasswordChange(){return "passwordForm";}
 
     /**
-     * Wróć na poprzednią stronę
+     * Metoda odpowiedzialna za przenoszenie na poprzednią stronę
      *
      * @return string
      */
@@ -124,7 +109,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     /**
-     * Odblokuj konto
+     *  Metoda odpowiedzialna za odblokowywanie zablokowanego konta
      */
     public void unlockAccount()  {
         try {
@@ -143,7 +128,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     /**
-     * Zablokuj konto.
+     * Metoda odpowiedzialna za blokowanie konta
      */
     public void blockAccount() {
         try{
@@ -162,7 +147,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     /**
-     * Odśwież stronę
+     * Metoda odświeżająca stronę
      */
     public void refresh() {
         try {
@@ -176,7 +161,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     /**
-     * Zmień poziom dostępu
+     *  Metoda odpowiedzialna za dołączanie i odłączanie poziomów dostępu przez
      */
     public void changeAccessLevels() {
         Collection<String> accessLevels = new ArrayList<>();
@@ -206,11 +191,7 @@ public class AccountDetailsController implements Serializable {
         refresh();
     }
 
-    /**
-     * Ustaw role konta
-     *
-     * @param accessLevelStringCollection kolekcja obiektów typu AccessLevel
-     */
+
     private void setRolesInfo(Collection<String> accessLevelStringCollection) {
         roleProperties = null;
         try {

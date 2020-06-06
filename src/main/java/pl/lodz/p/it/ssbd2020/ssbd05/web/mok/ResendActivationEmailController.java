@@ -9,6 +9,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDateTime;
+
+/**
+ * Kontroler odpowiedzialny za wysyłanie wiadomości z linkiem aktywacyjnym
+ */
 @Log
 @Named
 @RequestScoped
@@ -17,6 +21,11 @@ public class ResendActivationEmailController {
     @Inject
     private ResendActivationEmailEndpointLocal resendActivationEmailEndpoint;
 
+    /**
+     * Resend email.
+     *
+     * @param login nazwa użytkownika do którego ma zostać wysłany link aktywacyjny
+     */
     public void resendEmail(String login) {
         try {
             resendActivationEmailEndpoint.resendEmail(login);
