@@ -8,10 +8,12 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpoint
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -28,26 +30,38 @@ public class HallDetailsController implements Serializable {
 
     @PostConstruct
     public void init() {
-        String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.getFlash().setKeepMessages(true);
+        String selectedHallName = (String) ec.getSessionMap().get("selectedHallName");
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
         } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            try {
+                ec.redirect("/ssbd05/listHalls.xhtml");
+                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            } catch (IOException ioe) {
+                log.severe(ioe.getMessage() + ", " + LocalDateTime.now());
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            }
         }
     }
 
     public String listEventTypes() {
-        StringBuilder result = new StringBuilder();
-        String[] eventTypes = hall.getEvent_type().toArray(new String[0]);
-        for (int i = 0; i < hall.getEvent_type().size(); i++) {
-            if (i != hall.getEvent_type().size() - 1) {
-                result.append(ResourceBundles.getTranslatedText(eventTypes[i])).append(", ");
-            } else {
-                result.append(ResourceBundles.getTranslatedText(eventTypes[i]));
+        if (hall != null) {
+            StringBuilder result = new StringBuilder();
+            String[] eventTypes = hall.getEvent_type().toArray(new String[0]);
+            for (int i = 0; i < hall.getEvent_type().size(); i++) {
+                if (i != hall.getEvent_type().size() - 1) {
+                    result.append(ResourceBundles.getTranslatedText(eventTypes[i])).append(", ");
+                } else {
+                    result.append(ResourceBundles.getTranslatedText(eventTypes[i]));
+                }
             }
+            return result.toString();
+        } else {
+            return "";
         }
-        return result.toString();
     }
 
     public String goToEditForm() {
