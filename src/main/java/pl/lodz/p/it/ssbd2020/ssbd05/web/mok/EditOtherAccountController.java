@@ -21,6 +21,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Kontroler wykorzystywany przy edycji konta innego użytkownika przez użytkownika o poziomie dostępu Administrator.
+ */
 @Log
 @Named
 @ViewScoped
@@ -33,6 +36,10 @@ public class EditOtherAccountController implements Serializable {
     @Setter
     private AccountDTO accountDTO;
 
+
+    /**
+     * Metoda inicjulizująca, pobiera obiekt DTO edytowanego konta
+     */
     @PostConstruct
     public void init() {
         String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
@@ -57,6 +64,9 @@ public class EditOtherAccountController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za edycje konta.
+     */
     public void editAccount() {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
@@ -82,6 +92,11 @@ public class EditOtherAccountController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za przenoszenie na stronę szczegółów konta
+     *
+     * @return string
+     */
     public String goBack() {
         return "accountDetails";
     }
