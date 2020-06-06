@@ -101,13 +101,12 @@ public class EmailSender {
     }
 
     /**
-     * Wysyła maila po zalogowaniu na konto posiadające poziom dostępu - Admin
-     *
-     * @param mail the mail
-     * @param date the date
-     * @param ip   the ip
+     * Metoda odpowiedzialna za wysyłanie maila po zalogowaniu na konto posiadające poziom dostępu Administrator
+     * @param mail Adres email użytkownika
+     * @param date Data uwierzytelnienia
+     * @param ip   Adres logiczny, z którego nastąpiło uwierzytelnienie
      */
-    public void sendAuthorizedAdminEmail(String mail, LocalDateTime date, String ip) {
+    public void sendMailToAdmin(String mail, LocalDateTime date, String ip) {
         String subject = ResourceBundles.getTranslatedText("mail.admin.login.subject");
         StringBuilder body = new StringBuilder();
         body.append(ResourceBundles.getTranslatedText("mail.admin.login.subject"))
