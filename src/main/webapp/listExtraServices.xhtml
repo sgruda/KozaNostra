@@ -28,9 +28,10 @@
 
                 <p:column headerText="#{msg['page.addextraservice.active']}">
                     <h:outputText rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}"
-                            value="#{extraService.getActiveString()}" />
+                                  value="#{extraService.getActiveString()}" />
                     <p:commandButton rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}"
-                                     value="#{extraService.getActiveString()}" />
+                                     value="#{extraService.getActiveString()}"
+                                     action="#{activationExtraServiceController.changeActivity(extraService)}" />
                 </p:column>
 
 
