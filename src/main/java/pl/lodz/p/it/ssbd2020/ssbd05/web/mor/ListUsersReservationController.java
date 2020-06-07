@@ -46,7 +46,7 @@ public class ListUsersReservationController implements Serializable {
     }
 
     public String goToDetails(String reservationNumber){
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedHallName", reservationNumber);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedReservationNumber", reservationNumber);
         return "reservationDetails";
     }
 

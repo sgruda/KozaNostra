@@ -4,7 +4,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="../templates/template.xhtml">
@@ -19,34 +18,39 @@
                 <p:autoUpdate/>
             </p:messages>
             <p:panelGrid id="panelGrid" columns="2">
-                <h:outputText value="#{msg['page.hall.name']}"/>
-                <h:outputText value="cos"/>
+                <h:outputText value="#{msg['page.client.reservations.details.reservationNumber']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.reservationNumber}"/>
 
-                <h:outputText value="#{msg['page.hall.description']}"/>
-                <h:outputText value="cos"/>
+                <h:outputText value="#{msg['page.client.reservations.details.eventTypeName']}"/>
+                <h:outputText value="#{reservationDetailsController.resourceBundles.getTranslatedText(reservationDetailsController.reservationDTO.eventTypeName)}"/>
 
-                <h:outputText value="#{msg['page.hall.price']}"/>
-                <h:outputText value="#cos"/>
+                <h:outputText value="#{msg['page.client.reservations.details.from']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.startDate}"/>
 
-                <h:outputText value="#{msg['page.hall.address']}"/>
-                <h:outputText value="cos"/>
+                <h:outputText value="#{msg['page.client.reservations.details.till']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.endDate}"/>
 
-                <h:outputText value="#{msg['page.hall.area']}"/>
-                <h:outputText value="cos"/>
+                <h:outputText value="#{msg['page.client.reservations.details.price']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.totalPrice} PLN"/>
 
-                <h:outputText value="#{msg['page.hall.capacity']}"/>
-                <h:outputText value="cos"/>
+                <h:outputText value="#{msg['page.client.reservations.details.status']}"/>
+                <h:outputText value="#{reservationDetailsController.resourceBundles.getTranslatedText(reservationDetailsController.reservationDTO.statusName)}"/>
 
-                <h:outputText value="cos"/>
-                <h:outputText value="cosb"/>
+                <h:outputText value="#{msg['page.client.reservations.details.hallName']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.hallName}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.extraServices']}"/>
+                <h:outputText value="#{reservationDetailsController.extraServices}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.username']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.clientLogin}"/>
 
 
-                <h:outputText value="#{msg['page.hall.eventtypes']}"/>
-                <h:outputText value="herb"/>
+
             </p:panelGrid>
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
-                    <p:commandButton value="#{msg['page.halldetails.back']}"/>
+                    <p:commandButton value="#{msg['page.halldetails.back']}" action="#{reservationDetailsController.goBack}"/>
                     <p:commandButton value="#{msg['page.halldetails.edit']}"/>
                 </h:form>
             </div>

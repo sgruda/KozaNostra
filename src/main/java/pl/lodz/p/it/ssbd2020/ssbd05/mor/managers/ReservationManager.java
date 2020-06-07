@@ -70,7 +70,9 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("getReservationByNumber")
     public Reservation getReservationByNumber(String reservationNumber) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        if(reservationFacade.findByNumber(reservationNumber).isPresent()) {
+            return this.reservationFacade.findByNumber(reservationNumber).get();
+        } else throw new AppBaseException("error.default");
     }
 
     @RolesAllowed("changeReservationStatus")
