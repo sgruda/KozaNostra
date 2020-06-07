@@ -22,6 +22,10 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * Punkt dostępowy implementujący interfejs LastLoginEndpointLocal
+ * pośredniczący w uwierzytelnianiu użytkownika
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -40,7 +44,7 @@ public class LastLoginEndpoint implements Serializable, LastLoginEndpointLocal {
 
     @Override
     @PermitAll
-    public AccountDTO findByLogin(String username) throws AppBaseException {
+    public AccountDTO getAccountByLogin(String username) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;
         do {

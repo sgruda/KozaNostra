@@ -28,6 +28,7 @@
                     <h1>#{msg['page.template.manager.console']}</h1>
                     <p:button styleClass="sidebar-button" id="listReservationsButton" value="#{msg['page.template.manager.listReservations']}" outcome="/manager/listReservations.xhtml"/>
                     <p:button styleClass="sidebar-button" id="addHallButton" value="#{msg['page.template.manager.addhall']}" outcome="/manager/addHall.xhtml"/>
+                    <p:button styleClass="sidebar-button" id="listExtraServicesButton" value="#{msg['page.listextraservices.breadcrumbs']}" outcome="/listExtraServices.xhtml" />
                     <p:button styleClass="sidebar-button" id="addExtraServiceButton" value="#{msg['page.template.manager.addextraservice']}" outcome="/manager/addExtraService.xhtml" />
                 </ui:fragment>
                 <p:commandButton styleClass="sidebar-button" value="#{msg['page.template.hide']}" oncomplete="PF('sb').hide()"/>
@@ -40,12 +41,13 @@
                  <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
              </div>
             <div class = "header-right">
+
                 <ui:fragment id="guest-right-links" rendered="#{empty request.remoteUser}">
                     <h:link id="loginButton" class="link" outcome="/login/login.xhtml">#{msg['page.template.login']}</h:link>
                     <h:link id="registerButton" class="link" outcome="/register.xhtml">#{msg['page.template.signup']}</h:link>
                 </ui:fragment>
                  <ui:fragment id="user-details" rendered="#{not empty request.remoteUser}">
-                     <h:form>
+                     <h:form style="padding-left: 20px">
                          <p:commandButton id="dynaButton" value="#{request.remoteUser}" type="button" icon="pi pi-user" />
                          <p:slideMenu id="slidemenu-user" overlay="true" trigger="dynaButton" my="left top" at="left bottom" backLabel="#{msg['page.template.menu.backbutton']}">
                              <p:submenu id="accountDetailsMenu" label="#{msg['page.template.accountdetails']}" icon="pi pi-pencil" >
@@ -79,7 +81,11 @@
                          </p:slideMenu>
                      </h:form>
                  </ui:fragment>
+
                 <h:link id="reviewButton" class="link" outcome="/listReviews.xhtml">#{msg['page.template.reviews']}</h:link>
+                <h:link id="listExtraServicesButtonClient" class="link" outcome="/listExtraServices.xhtml" rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}">
+                    #{msg['page.template.extraservices']}
+                </h:link>
                 <h:link id="hallsButton" class="link" outcome="/listHalls.xhtml">#{msg['page.template.halls']}</h:link>
              </div>
         </div>

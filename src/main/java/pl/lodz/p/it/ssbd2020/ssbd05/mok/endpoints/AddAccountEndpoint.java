@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Punkt dostępowy odpowiedzialny za tworzenie przez administratora konta użytkownika
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -34,6 +37,13 @@ public class AddAccountEndpoint implements AddAccountEndpointLocal {
     private AccountManager accountManager;
     private Account account;
 
+
+    /**
+     * Metoda odpowiedzialna za tworzenie konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("addAccount")
     public void addAccount(AccountDTO accountDTO) throws AppBaseException {

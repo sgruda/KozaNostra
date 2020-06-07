@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.logging.Level;
 
+/**
+ * Kontroler odpowiedzialny za tworzenie nowej sesji użytkownika
+ */
 @Log
 @Named
 @ViewScoped
@@ -45,6 +48,10 @@ public class LoginController implements Serializable {
     @Getter
     private AccountDTO account;
 
+    /**
+     * Przy próbie dostępu do zasobu jako użytkownik nieuwierzytelniony zapamiętywany jest adres URL do którego użytkownik próbował uzyskać dostęp.
+     * Następnie przekierowywany on jest na stronę logowania a po poprawnym uwierzytelnieniu jest  kierowany na stronę, do której pierwotnie chciał się dostać.
+     */
     @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -77,12 +84,17 @@ public class LoginController implements Serializable {
         log.info(sb.toString());
     }
 
+    /**
+     * Metoda odpowiedzialna za tworzenie nowej sesji użytkownika
+     * Jeżeli dodatkowo użytkownik posiada poziom dostępu Administrator,
+     * to przy logowaniu wysłana jest wiadomość na jego adres email.
+     */
     public void login()  {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         try {
-            this.account = lastLoginEndpointLocal.findByLogin(username);
+            this.account = lastLoginEndpointLocal.getAccountByLogin(username);
              if(this.account.isActive() && this.account.isConfirmed()) {
                  try {
                      lastLoginController.startConversation(account, lastLoginEndpointLocal.getFailedAttemptNumberFromProperties());
@@ -102,7 +114,7 @@ public class LoginController implements Serializable {
                  if(account.getAccessLevelCollection().contains( properties.getProperty("roleAdmin"))) {
                      EmailSender emailSender;
                      emailSender = new EmailSender();
-                     emailSender.sendAuthorizedAdminEmail(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
+                     emailSender.sendMailToAdmin(account.getEmail(), LocalDateTime.now(), lastLoginController.getIP());
                  }
                  lastLoginController.updateLastAuthIP();
                  this.lastLoginEndpointLocal.edit(lastLoginController.endConversation());

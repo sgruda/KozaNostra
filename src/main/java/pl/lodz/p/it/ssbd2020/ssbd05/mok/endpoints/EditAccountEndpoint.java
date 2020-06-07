@@ -24,6 +24,9 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+/**
+ * Punkt dostępowy odpowiedzialny za edycję konta użytkownika
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -33,6 +36,13 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
     private AccountManager accountManager;
     private Account account;
 
+    /**
+     * Metoda odpowiedzialna za wyszukanie konta po loginie
+     *
+     * @param username nazwa użytkownika
+     * @return obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("findByLogin")
     public AccountDTO findByLogin(String username) throws AppBaseException {
@@ -56,6 +66,12 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         return AccountMapper.INSTANCE.toAccountDTO(account);
     }
 
+    /**
+     * Metoda odpowiedzialna za zmianę hasła własnego konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"changeOwnAccountPassword"})
     public void changePassword(AccountDTO accountDTO) throws AppBaseException {
@@ -88,6 +104,13 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
             throw new ExceededTransactionRetriesException();
         }
     }
+
+    /**
+     * Metoda odpowiedzialna za zmianę hasła cudzego konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"changeOtherAccountPassword"})
     public void changeOtherAccountPassword(AccountDTO accountDTO) throws AppBaseException {
@@ -125,6 +148,12 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za edycję konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"editOwnAccount","editOtherAccount"})
     public void editAccount(AccountDTO accountDTO) throws AppBaseException {
@@ -148,6 +177,12 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za blokowanie konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("blockAccount")
     public void blockAccount(AccountDTO accountDTO) throws AppBaseException {
@@ -175,6 +210,12 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za odblokowanie konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("unlockAccount")
     public void unlockAccount(AccountDTO accountDTO) throws AppBaseException {
