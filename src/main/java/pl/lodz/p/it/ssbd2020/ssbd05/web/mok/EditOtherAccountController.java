@@ -38,7 +38,7 @@ public class EditOtherAccountController implements Serializable {
 
 
     /**
-     * Metoda inicjulizująca, pobiera obiekt DTO edytowanego konta
+     * Metoda inicjalizująca, pobiera obiekt DTO edytowanego konta
      */
     @PostConstruct
     public void init() {
