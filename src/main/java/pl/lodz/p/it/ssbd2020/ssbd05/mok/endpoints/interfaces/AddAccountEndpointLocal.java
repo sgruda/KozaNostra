@@ -6,7 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import javax.ejb.Local;
 /**
  * Interfejs dla punktu dostępowego AddAccountEndpoint pośredniczącemu
- * w tworzeniy przez administratora konta użytkownika.
+ * w tworzeniu przez administratora konta użytkownika.
  */
 @Local
 public interface AddAccountEndpointLocal {
