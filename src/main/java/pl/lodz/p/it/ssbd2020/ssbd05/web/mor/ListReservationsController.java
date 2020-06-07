@@ -39,4 +39,6 @@ public class ListReservationsController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
     }
+
+
 }

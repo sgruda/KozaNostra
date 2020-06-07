@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.halldetails.title']}</title>
+        <style type="text/css">
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <div>
+            <p:messages globalOnly="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+            <p:panelGrid id="panelGrid" columns="2">
+                <h:outputText value="#{msg['page.hall.name']}"/>
+                <h:outputText value="cos"/>
+
+                <h:outputText value="#{msg['page.hall.description']}"/>
+                <h:outputText value="cos"/>
+
+                <h:outputText value="#{msg['page.hall.price']}"/>
+                <h:outputText value="#cos"/>
+
+                <h:outputText value="#{msg['page.hall.address']}"/>
+                <h:outputText value="cos"/>
+
+                <h:outputText value="#{msg['page.hall.area']}"/>
+                <h:outputText value="cos"/>
+
+                <h:outputText value="#{msg['page.hall.capacity']}"/>
+                <h:outputText value="cos"/>
+
+                <h:outputText value="cos"/>
+                <h:outputText value="cosb"/>
+
+
+                <h:outputText value="#{msg['page.hall.eventtypes']}"/>
+                <h:outputText value="herb"/>
+            </p:panelGrid>
+            <div style="margin: 5px;display:flex;justify-content: center">
+                <h:form id="commandButtons">
+                    <p:commandButton value="#{msg['page.halldetails.back']}"/>
+                    <p:commandButton value="#{msg['page.halldetails.edit']}"/>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.client.reservations.breadcrumbs']}" outcome="/client/clientReservationsPage.xhtml"/>
+        <p:menuitem value="#{msg['page.client.reservations.details.breadcrumbs']}" outcome="/client/clientReservationDetails.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>
