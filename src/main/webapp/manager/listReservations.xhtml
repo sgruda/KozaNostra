@@ -32,7 +32,7 @@
                 </p:column>
 
                 <p:column headerText="#{msg['page.listreservations.reservation.details']}">
-                    <p:commandButton id="goDetailsButton" value="#{msg['page.listreservations.reservation.details']}"/>
+                    <p:commandButton id="goDetailsButton" value="#{msg['page.listreservations.reservation.details']}" action="#{listReservationsController.goToDetails(reservation.reservationNumber)}"/>
                 </p:column>
             </p:dataTable>
         </h:form>

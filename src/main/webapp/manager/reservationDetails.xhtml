@@ -8,7 +8,7 @@
 
 <ui:composition template="../templates/template.xhtml">
     <ui:define name="head">
-        <title>#{msg['page.client.reservations.details.title']}</title>
+        <title>#{msg['page.reservationdetails.title']}</title>
         <style type="text/css">
         </style>
     </ui:define>
@@ -42,6 +42,9 @@
                 <h:outputText value="#{msg['page.client.reservations.details.extraServices']}"/>
                 <h:outputText value="#{reservationDetailsController.extraServices}"/>
 
+                <h:outputText value="#{msg['page.client.reservations.details.username']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.clientLogin}"/>
+
             </p:panelGrid>
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
@@ -52,8 +55,8 @@
         </div>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.client.reservations.breadcrumbs']}" outcome="/client/clientReservationsPage.xhtml"/>
-        <p:menuitem value="#{msg['page.client.reservations.details.breadcrumbs']}" outcome="/client/clientReservationDetails.xhtml" />
+        <p:menuitem value="#{msg['page.listreservations.breadcrumbs']}" outcome="/manager/listReservations.xhtml" />
+        <p:menuitem value="#{msg['page.reservations.details.breadcrumbs']}" outcome="/manager/reservationDetails.xhtml" />
     </ui:define>
 </ui:composition>
 </html>
