@@ -53,28 +53,6 @@ public class EditExtraServiceEndpoint implements Serializable, EditExtraServiceE
     }
 
     @Override
-    @RolesAllowed("changeExtraServiceActivity")
-    public void changeActivity(ExtraServiceDTO extraServiceDTO) throws AppBaseException {
-        int callCounter = 0;
-        boolean rollback;
-        do {
-            try {
-                extraServiceManager.changeActivity(extraService);
-                rollback = extraServiceManager.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
-                log.warning("EJBTransactionRolledBack");
-                rollback = true;
-            }
-            if(callCounter > 0)
-                log.info("Transaction with ID " + extraServiceManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-            callCounter++;
-        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
-        if (rollback) {
-            throw new ExceededTransactionRetriesException();
-        }
-    }
-
-    @Override
     @RolesAllowed("editExtraService")
     public void editExtraService(ExtraServiceDTO extraServiceDTO) throws AppBaseException {
         //TODO Implementacja

@@ -10,4 +10,5 @@ import java.util.List;
 public interface ListExtraServicesEndpointLocal {
 
     List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException;
+    void changeActivity(ExtraServiceDTO extraServiceDTO) throws AppBaseException;
 }

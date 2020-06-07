@@ -9,6 +9,5 @@ import javax.ejb.Local;
 public interface EditExtraServiceEndpointLocal {
 
     ExtraServiceDTO getExtraServiceByName(String name) throws AppBaseException;
-    void changeActivity(ExtraServiceDTO extraServiceDTO) throws AppBaseException;
     void editExtraService(ExtraServiceDTO extraServiceDTO) throws AppBaseException;
 }
