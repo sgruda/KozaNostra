@@ -45,7 +45,7 @@ public class ChangePasswordAccountController implements Serializable {
     private AccountDTO accountDTO;
 
     /**
-     * Metoda wczytujące dane własnego konta do edycji w postaci obiektu typu AccountDTO
+     * Metoda wczytująca dane własnego konta do edycji w postaci obiektu typu AccountDTO
      */
     @PostConstruct
     public void init() {
