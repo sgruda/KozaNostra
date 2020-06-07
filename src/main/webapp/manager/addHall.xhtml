@@ -125,7 +125,7 @@
                         </h:outputLabel>
                     </h:panelGroup>
 
-                    <h:outputLabel for="eventTypes" value="#{msg['page.addhall.eventtypes']} * ">
+                    <h:outputLabel for="eventTypes" value="#{msg['page.hall.eventtypes']} * ">
                         <p:selectManyCheckbox id="eventTypes" required="true" requiredMessage="#{msg['page.addhall.eventtypes.required']}" value="#{addHallController.eventTypes}">
                             <c:forEach items="#{addHallController.eventTypes}" var="eventType">
                                 <f:selectItem itemLabel="#{addHallController.translateEventType(eventType)}" itemValue="#{eventType}"/>

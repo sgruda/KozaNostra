@@ -7,7 +7,7 @@ public class HallNotFoundException extends AppBaseException {
     public static final String HALL_NOT_FOUND = "error.hall.not.found";
 
     public HallNotFoundException() {
-        super();
+        super(HALL_NOT_FOUND);
     }
 
     public HallNotFoundException(String message) {
