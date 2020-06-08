@@ -23,7 +23,7 @@
     <ui:define name = "content">
         <h:form id="addHallForm">
             <p:panel id="addHallPanel" header="#{msg['page.template.manager.addhall']}" style="font-size: 24px;">
-                <p:panelGrid id="addHallPanelGrid" columns="1">
+                <p:panelGrid id="addHallPanelGrid" columns="1" style="max-width: 60vw">
                     <h:outputLabel for="name" value="#{msg['page.addhall.name']} * ">
                         <p:inputText id="name" required="true"
                                      value="#{addHallController.hall.name}"
@@ -35,13 +35,13 @@
                     </h:outputLabel>
 
                     <h:outputLabel for="description" value="#{msg['page.addhall.description']} * ">
-                        <p:inputText id="description" required="true"
+                        <p:inputTextarea id="description" required="true"
                                      value="#{addHallController.hall.description}"
                                      requiredMessage="#{msg['page.addhall.description.required']}"
-                                     validatorMessage="#{msg['page.addhall.description.validator']}">
+                                     validatorMessage="#{msg['page.addhall.description.validator']}" rows="1" cols="40">
                             <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
                             <f:validateLength minimum="1" maximum="512"/>
-                        </p:inputText>
+                        </p:inputTextarea>
                     </h:outputLabel>
 
                     <h:outputLabel for="capacity" value="#{msg['page.addhall.capacity']} * ">
@@ -78,9 +78,9 @@
 
                     <h:form id="newAddressForm">
                         <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']} ">
-                            <h:commandButton id="newAddress" action="#{addHallController.toggleNewAddress}" immediate="true" style="background-color: #585858;">
+                            <p:commandButton id="newAddress" action="#{addHallController.toggleNewAddress}" value="#{addHallController.translateBoolean()}" immediate="true" style="background-color: #585858; border-color: #585858;">
                                 <f:ajax render=":newAddressGroup"/>
-                            </h:commandButton>
+                            </p:commandButton>
                         </h:outputLabel>
                     </h:form>
 
@@ -94,20 +94,16 @@
                                 <f:validateLength minimum="1" maximum="32"/>
                             </p:inputText>
                         </h:outputLabel>
-                        <br/>
-                        <br/>
 
-                        <h:outputLabel for="streetNo" value="#{msg['page.addhall.streetNo']} * " rendered="#{addHallController.newAddress}">
+                        <h:outputLabel for="streetNo" value="&#8195;#{msg['page.addhall.streetNo']} * " rendered="#{addHallController.newAddress}">
                             <p:inputNumber id="streetNo" required="true"
                                            value="#{addHallController.address.streetNo}"
                                            requiredMessage="#{msg['page.addhall.streetNo.required']}"
                                            minValue="1" maxValue="9999999">
                             </p:inputNumber>
                         </h:outputLabel>
-                        <br/>
-                        <br/>
 
-                        <h:outputLabel for="city" value="#{msg['page.addhall.city']} * " rendered="#{addHallController.newAddress}">
+                        <h:outputLabel for="city" value="&#8195;#{msg['page.addhall.city']} * " rendered="#{addHallController.newAddress}">
                             <p:inputText id="city" required="true"
                                          value="#{addHallController.address.city}"
                                          requiredMessage="#{msg['page.addhall.city.required']}"
@@ -117,8 +113,7 @@
                             </p:inputText>
                         </h:outputLabel>
 
-                        <h:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']} * " rendered="#{!addHallController.newAddress}">
-                            <br/>
+                        <h:outputLabel for="addresses" value="#{msg['page.addhall.addresseslabel']} *&#8195;" rendered="#{!addHallController.newAddress}">
                             <p:selectOneMenu id="addresses" value="#{addHallController.address}" converter="addressConverter">
                                 <f:selectItems value="#{addHallController.addresses}" var="address" itemLabel="#{address.show()}" itemValue="#{address}"/>
                             </p:selectOneMenu>
