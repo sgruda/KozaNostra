@@ -6,6 +6,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 
 import java.util.ArrayList;
@@ -20,11 +21,11 @@ public abstract class ReviewMapper {
 
     @Mapping(target = "date", dateFormat = WITH_SECONDS)
     @Mapping(source = "client", target = "clientLogin")
+    @Mapping(source = "reservation", target = "reservationNumber")
     public abstract ReviewDTO toReviewDTO(Review review);
 
     public abstract ArrayList<ReviewDTO> toReviewDTOArrayList(Collection<Review> reviewCollection);
 
-    public String map(Client value){
-     return value.getAccount().getLogin();
-    }
+    public String map(Client value){ return value.getAccount().getLogin(); }
+    public String map(Reservation value){ return value.getReservationNumber();}
 }
