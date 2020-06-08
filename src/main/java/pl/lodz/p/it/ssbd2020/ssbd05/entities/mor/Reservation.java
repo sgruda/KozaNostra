@@ -35,6 +35,7 @@ import java.util.UUID;
     @NamedQuery(name = "Reservation.findByGuestsNumber", query = "SELECT r FROM Reservation r WHERE r.guestsNumber = :guestsNumber"),
     @NamedQuery(name = "Reservation.filterByLoginAndNames", query = "SELECT r FROM Reservation r WHERE lower(r.client.account.firstname) like concat('%',lower(:filter),'%')" +
                                                                                                      " or lower(r.client.account.lastname) like concat('%',lower(:filter),'%') " +
+                                                                                                     " or lower(r.reservationNumber) like concat('%',lower(:filter),'%') " +
                                                                                                       "or lower(r.client.account.login) like concat('%',lower(:filter),'%')")})
 
 public class Reservation implements Serializable {

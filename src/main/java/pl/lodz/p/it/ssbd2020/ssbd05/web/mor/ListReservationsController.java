@@ -29,7 +29,7 @@ public class ListReservationsController implements Serializable {
     private ResourceBundles resourceBundles;
     @Getter
     @Setter
-    private String accountFilter;
+    private String reservationFilter;
 
     @PostConstruct
     public void init() {
@@ -44,7 +44,7 @@ public class ListReservationsController implements Serializable {
 
     public void filterReservations(){
         try {
-            reservations = listReservationEndpointLocal.filterReservations(accountFilter);
+            reservations = listReservationEndpointLocal.filterReservations(reservationFilter);
         } catch (AppBaseException e) {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
