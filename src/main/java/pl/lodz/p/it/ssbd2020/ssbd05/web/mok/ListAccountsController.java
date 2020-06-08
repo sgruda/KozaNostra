@@ -17,27 +17,20 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Kontroler odpowiadający za wyświetlenie wszystkich kont w systemie
+ * Kontroler odpowiedzialny za wyświetlenie wszystkich kont w systemie dla poziomu dostępu Administrator
  */
 @Log
 @Named
 @ViewScoped
 public class ListAccountsController implements Serializable {
 
-    /**
-     * Punkt dostępowy służący do wyświetlania kont
-     */
     @Inject
     private ListAccountsEndpointLocal listAccountsEndpointLocal;
-    /**
-     * Lista kont
-     */
+
     @Getter
     @Setter
     private List<AccountDTO> accounts;
-    /**
-     * filtr służący do przeszukiwania listy kont
-     */
+
     @Getter
     @Setter
     private String accountFilter;
@@ -56,7 +49,7 @@ public class ListAccountsController implements Serializable {
     }
 
     /**
-     * Metoda służąca do filtrowania po liście kont
+     * Metoda służąca do filtrowania po liście kont zgodnie z przekazanym filtrem
      */
     public void filterAccounts(){
         try {
@@ -71,7 +64,7 @@ public class ListAccountsController implements Serializable {
      * Metoda służąca do pobrania konta z bazy oraz przekierowania do strony ze szczegółami
      *
      * @param login login użytkownika
-     * @return zwraca zmienną tekstową
+     * @return string
      */
     public String selectAccount(String login) {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedLogin", login);

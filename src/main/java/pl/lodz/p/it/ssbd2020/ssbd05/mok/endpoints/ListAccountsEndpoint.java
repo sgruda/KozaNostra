@@ -21,27 +21,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Punkt dostępowy służący do wyświetlania listy kont
- */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Interceptors(TrackerInterceptor.class)
 public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointLocal {
 
-    /**
-     * Menedżer kont
-     */
     @Inject
     private AccountManager accountManager;
 
-    /**
-     * Metoda pobierająca wszystkie konta
-     *
-     * @return kolekcja wszystkich kont w systemie Collection<Account>
-     * @throws AppBaseException wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("listAccounts")
     public Collection<AccountDTO> getAllAccounts() throws AppBaseException {
@@ -66,13 +54,6 @@ public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointL
         return list;
     }
 
-    /**
-     * Metoda filtrująca i zwracająca listę kont zgodną z filtrem
-     *
-     * @param accountFilter filtr
-     * @return kolekcja kont Collection<Account>
-     * @throws AppBaseException wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("filterAccounts")
     public Collection<AccountDTO> filterAccounts (String accountFilter) throws AppBaseException {
