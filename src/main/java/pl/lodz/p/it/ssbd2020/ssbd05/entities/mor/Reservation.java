@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -108,6 +107,9 @@ public class Reservation implements Serializable {
     @NotNull(message = "{validation.notnull}")
     @Column(name = "guests_number", nullable = false)
     private Long guestsNumber;
+
+    @OneToOne(mappedBy = "reservation")
+    Review review;
 
     public Reservation() {
         this.reservationNumber = UUID.randomUUID().toString().replace("-", "");

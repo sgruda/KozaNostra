@@ -12,4 +12,5 @@ public @Data class ReviewDTO {
     private String date;
     private String clientLogin;
     private String reviewNumber;
+    private String reservationNumber;
 }
