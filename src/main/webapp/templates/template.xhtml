@@ -56,8 +56,6 @@
                              </p:submenu>
                              <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
                                  <p:menuitem id="reservations" value="Rezerwacje użytkownika" icon="pi pi-id-card" outcome="/client/clientReservationsPage.xhtml" />
-                             </c:if>
-                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
                                  <p:menuitem id="isClient" value="#{msg['page.changelevel.client']}" icon="pi pi-id-card" disabled="true"/>
                              </c:if>
                              <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}">
