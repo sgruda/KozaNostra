@@ -11,11 +11,13 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.WITHOUT_SECONDS;
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.WITH_SECONDS;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -29,6 +31,7 @@ public interface ReservationMapper {
     @Mapping(target = "statusName", source = "status")
     @Mapping(target = "eventTypeName", source = "eventType")
     @Mapping(target = "extraServiceCollection", source = "extra_service")
+    @Mapping(target="hallName", source = "hall")
     ReservationDTO toReservationDTO(Reservation reservation); //do wyswietlania
 
     @Mapping(target = "startDate", dateFormat = WITH_SECONDS)
@@ -62,4 +65,5 @@ public interface ReservationMapper {
     default String map(EventType eventType) {
         return eventType.getTypeName();
     }
+    default String map(Hall hall){return hall.getName();}
 }

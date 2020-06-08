@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,5 +39,10 @@ public class ListReservationsController implements Serializable {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
+    }
+
+    public String goToDetails(String reservationNumber){
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedReservationNumber", reservationNumber);
+        return "reservationDetails";
     }
 }

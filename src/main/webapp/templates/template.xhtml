@@ -55,7 +55,7 @@
                                  <p:menuitem id="accountDetailsButton" value="#{msg['page.template.accountdetails']}" action="#{ownAccountDetailsController.selectOwnAccount()}" />
                              </p:submenu>
                              <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
-                                 <p:menuitem id="reservations" value="Rezerwacje użytkownika" icon="pi pi-id-card" outcome="/client/clientReservationsPage.xhtml" />
+                                 <p:menuitem id="reservations" value="#{msg['page.template.client.reservations']}" icon="pi pi-id-card" outcome="/client/clientReservationsPage.xhtml" />
                              </c:if>
                              <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
                                  <p:menuitem id="isClient" value="#{msg['page.changelevel.client']}" icon="pi pi-id-card" disabled="true"/>

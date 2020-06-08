@@ -92,9 +92,12 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     @RolesAllowed("getReservationByNumber")
     public Optional<Reservation> findByNumber(String number) throws AppBaseException{
         try{
-           //TODO Implementacja
-            return null;
-        } catch (DatabaseException | PersistenceException e) {
+           return Optional.ofNullable(this.em.createNamedQuery("Reservation.findByReservationNumber", Reservation.class)
+                   .setParameter("reservationNumber", number).getSingleResult());
+        }
+        catch (NoResultException noResultException) {
+            throw new ReservationNotFoundException(noResultException);
+        }catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
     }
