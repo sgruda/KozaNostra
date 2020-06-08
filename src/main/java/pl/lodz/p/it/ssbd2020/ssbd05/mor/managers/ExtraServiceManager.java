@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ExtraServiceFacade;
 
@@ -33,14 +34,15 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
 
     @RolesAllowed("getExtraServiceByName")
     public ExtraService getExtraServiceByName(String name) throws AppBaseException {
-        // TODO implementacja
-        throw new UnsupportedOperationException();
+        if(extraServiceFacade.findByName(name).isPresent())
+            return extraServiceFacade.findByName(name).get();
+        else throw new ExtraServiceNotFoundException("error.extraservice.not.found");
     }
 
     @RolesAllowed("changeExtraServiceActivity")
-    void changeActivity(ExtraService extraService) throws AppBaseException {
-        // TODO implementacja
-        throw new UnsupportedOperationException();
+    public void changeActivity(ExtraService extraService) throws AppBaseException {
+        extraService.setActive(!extraService.isActive());
+        extraServiceFacade.edit(extraService);
     }
 
     @RolesAllowed("editExtraService")

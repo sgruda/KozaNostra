@@ -20,6 +20,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Kontroler odpowiedzialny za zmianę własnego hasła
+ */
 @Log
 @Named
 @ViewScoped
@@ -41,6 +44,9 @@ public class ChangePasswordAccountController implements Serializable {
     @Setter
     private AccountDTO accountDTO;
 
+    /**
+     * Metoda wczytująca dane własnego konta do edycji w postaci obiektu typu AccountDTO
+     */
     @PostConstruct
     public void init() {
         try {
@@ -51,6 +57,10 @@ public class ChangePasswordAccountController implements Serializable {
         }
     }
 
+    /**
+     * Metoda dokonująca sprawdzenia poprawności formularza
+     * i edycji obiektu typu AccountDTO polegającej na ustawieniu w nim nowego hasła
+     */
     public void changePassword() {
         if(HashGenerator.sha256(password).equals(accountDTO.getPassword())){
             try {
@@ -75,6 +85,12 @@ public class ChangePasswordAccountController implements Serializable {
         }
         return;
     }
+
+    /**
+     * Metoda przenosząca na stronę ze szczegółami własnego konta po pomyślnej zmianie hasła
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goBack() {
         return "accountDetails";
     }

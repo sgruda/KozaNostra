@@ -23,9 +23,6 @@ import java.util.Properties;
 @Log
 public class EmailSender {
 
-    /**
-     * obiekt typu Properties
-     */
     private final Properties emailProperties;
 
     /**

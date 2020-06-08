@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name="head">
@@ -28,14 +27,19 @@
 
                 <p:column headerText="#{msg['page.addextraservice.active']}">
                     <h:outputText rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}"
-                            value="#{extraService.getActiveString()}" />
+                                  value="#{extraService.getActiveString()}" />
                     <p:commandButton rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}"
-                                     value="#{extraService.getActiveString()}" />
+                                     value="#{extraService.getActiveString()}"
+                                     action="#{listExtraServicesController.changeActivity(extraService)}" />
                 </p:column>
-
 
             </p:dataTable>
         </h:form>
+        <div style="display:flex; flex-direction: column;">
+            <p:messages>
+                <p:autoUpdate/>
+            </p:messages>
+        </div>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.listextraservices.breadcrumbs']}" outcome="/listExtraServices.xhtml" />

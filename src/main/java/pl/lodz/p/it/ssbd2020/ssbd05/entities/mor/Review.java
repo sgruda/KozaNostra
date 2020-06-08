@@ -58,7 +58,12 @@ public class Review implements Serializable {
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ManyToOne(optional = false)
     private Client client;
-    
+
+    @NotNull(message = "{validation.notnull}")
+    @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = false, updatable = false)
+    @OneToOne(optional=false)
+    private Reservation reservation;
+
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Size(min = 32, max = 32, message = "{validation.size}")

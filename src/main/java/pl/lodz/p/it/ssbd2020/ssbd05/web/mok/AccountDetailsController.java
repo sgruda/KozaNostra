@@ -66,7 +66,7 @@ public class AccountDetailsController implements Serializable {
     private boolean roleClientActive;
 
     /**
-     * Metoda inicjująca pobierająca obiekt DTO konta ,którego szczegóły mają zostać wyświetlone
+     * Metoda inicjalizująca, pobiera obiekt DTO konta, którego szczegóły mają zostać wyświetlone
      */
     @PostConstruct
     public void init() {
@@ -161,7 +161,7 @@ public class AccountDetailsController implements Serializable {
     }
 
     /**
-     *  Metoda odpowiedzialna za dołączanie i odłączanie poziomów dostępu przez
+     *  Metoda odpowiedzialna za dołączanie i odłączanie poziomów dostępu przez administratora
      */
     public void changeAccessLevels() {
         Collection<String> accessLevels = new ArrayList<>();

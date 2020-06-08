@@ -18,6 +18,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Kontroler wykorzystywany przy edycji własnego konta.
+ */
 @Log
 @Named
 @ViewScoped
@@ -30,6 +33,9 @@ public class EditAccountController implements Serializable {
     @Setter
     private AccountDTO accountDTO;
 
+    /**
+     * Metoda inicjalizująca, pobiera obiekt DTO edytowanego konta
+     */
     @PostConstruct
     public void init() {
         try {
@@ -40,6 +46,9 @@ public class EditAccountController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za edycje własnego konta.
+     */
     public void editAccount() {
         try {
             editAccountEndpointLocal.editAccount(accountDTO);
@@ -55,6 +64,12 @@ public class EditAccountController implements Serializable {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
         }
     }
+
+    /**
+     * Metoda odpowiedzialna za przenoszenie na stronę szczegółów własnego konta
+     *
+     * @return string
+     */
     public String goBack() {
         return "accountDetails";
     }
