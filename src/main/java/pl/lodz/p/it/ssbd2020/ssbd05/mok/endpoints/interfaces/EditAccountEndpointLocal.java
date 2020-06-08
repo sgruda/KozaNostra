@@ -6,12 +6,11 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import javax.ejb.Local;
 
 /**
- * Interfejs dla punktu dostępowego EditAccountEndpoint pośredniczącemu
- * przy edycji kont
- *
+ * Interfejs dla punktu dostępowego EditAccountEndpoint wykorzystywanego do edycji kont użytkowników
  */
 @Local
 public interface EditAccountEndpointLocal {
+
     /**
      * Metoda odpowiedzialna za wyszukanie konta po loginie
      *
@@ -28,7 +27,7 @@ public interface EditAccountEndpointLocal {
      */
     void changePassword(AccountDTO accountDTO) throws AppBaseException;
     /**
-     * Metoda odpowiedzialna za zmianę hasła cudzego konta
+     * Metoda odpowiedzialna za zmianę hasła innego konta
      *
      * @param accountDTO obiekt typu AccountDTO
      * @throws AppBaseException Wyjątek aplikacyjny
