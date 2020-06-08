@@ -39,7 +39,7 @@ public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointL
     /**
      * Metoda pobierająca wszystkie konta
      *
-     * @return wszystkie konta w systemie
+     * @return kolekcja wszystkich kont w systemie Collection<Account>
      * @throws AppBaseException wyjątek aplikacyjny
      */
     @Override
@@ -70,7 +70,7 @@ public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointL
      * Metoda filtrująca i zwracająca listę kont zgodną z filtrem
      *
      * @param accountFilter filtr
-     * @return kolekcja kont
+     * @return kolekcja kont Collection<Account>
      * @throws AppBaseException wyjątek aplikacyjny
      */
     @Override
