@@ -3,6 +3,8 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mos.facades;
 import lombok.extern.java.Log;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
@@ -19,10 +21,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import javax.ws.rs.NotSupportedException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,8 +62,15 @@ public class HallFacade extends AbstractFacade<Hall> {
     }
 
     @PermitAll
-    public Hall findByName(String name){
-        throw new UnsupportedOperationException();
+    public Optional<Hall> findByName(String name) throws AppBaseException {
+        try {
+            return Optional.ofNullable(this.em.createNamedQuery("Hall.findByName", Hall.class)
+                    .setParameter("name", name).getSingleResult());
+        } catch (NoResultException noResultException) {
+            return Optional.empty();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @Override
