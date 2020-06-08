@@ -46,6 +46,7 @@ public class CancelReservationController implements Serializable {
         reservationDTO.setStatusName(ReservationStatuses.cancelled.toString());
         try {
             changeReservationStatusEndpointLocal.cancelReservation(reservationDTO);
+            ResourceBundles.emitMessageWithFlash(null, "page.client.reservations.details.cancel.success");
         } catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
