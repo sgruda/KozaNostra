@@ -3,11 +3,11 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReservationMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.StatusDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.NoncancelableReservationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ChangeReservationStatusEndpointLocal;
@@ -81,6 +81,8 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     @Override
     @RolesAllowed("cancelReservation")
     public void cancelReservation(ReservationDTO reservationDTO) throws AppBaseException {
+        if(!reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString()))
+            throw new NoncancelableReservationException();
         reservation.setStatus(reservationManager.getStatusCancelled());
         int callCounter = 0;
         boolean rollback;
