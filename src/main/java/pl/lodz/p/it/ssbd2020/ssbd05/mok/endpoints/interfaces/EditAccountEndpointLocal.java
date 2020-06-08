@@ -12,30 +12,46 @@ import javax.ejb.Local;
 public interface EditAccountEndpointLocal {
 
     /**
-     * Metoda pobierająca konto do jego późniejszej edycji
+     * Metoda odpowiedzialna za wyszukanie konta po loginie
      *
-     * @param username Nazwa użytkownika
-     * @return Obiekt typu AccountDTO
-     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
+     * @param username nazwa użytkownika
+     * @return obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
      */
     AccountDTO findByLogin(String username) throws AppBaseException;
-
     /**
-     * Metoda odpowiedzialna za zmianę własnego hasła
+     * Metoda odpowiedzialna za zmianę hasła własnego konta
      *
-     * @param accountDTO Obiekt typu AccountDTO
-     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
      */
     void changePassword(AccountDTO accountDTO) throws AppBaseException;
-
     /**
-     * Metoda odpowiedzialna za zmianę hasła innego użytkownika
+     * Metoda odpowiedzialna za zmianę hasła innego konta
      *
-     * @param accountDTO Obiekt typu AccountDTO
-     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
      */
     void changeOtherAccountPassword(AccountDTO accountDTO) throws AppBaseException;
+    /**
+     * Metoda odpowiedzialna za edycję konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     void editAccount(AccountDTO accountDTO) throws AppBaseException;
+    /**
+     * Metoda odpowiedzialna za blokowanie konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     void blockAccount(AccountDTO accountDTO) throws AppBaseException;
+    /**
+     * Metoda odpowiedzialna za odblokowanie konta
+     *
+     * @param accountDTO obiekt typu AccountDTO
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     void unlockAccount(AccountDTO accountDTO) throws AppBaseException;
 }
