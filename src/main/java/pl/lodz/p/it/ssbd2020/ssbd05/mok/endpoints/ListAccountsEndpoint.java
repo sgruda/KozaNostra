@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Endpoint służący do wyświetlania listy kont
+ * Punkt dostępowy służący do wyświetlania listy kont
  */
 @Log
 @Stateful

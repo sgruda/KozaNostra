@@ -25,7 +25,7 @@ import java.util.List;
 public class ListAccountsController implements Serializable {
 
     /**
-     * Endpoint do wyświetlania kont
+     * Punkt dostępowy służący do wyświetlania kont
      */
     @Inject
     private ListAccountsEndpointLocal listAccountsEndpointLocal;
