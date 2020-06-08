@@ -57,6 +57,24 @@ public class ListReservationEndpoint implements Serializable, ListReservationEnd
     @Override
     @RolesAllowed("filterReservations")
     public List<ReservationDTO> filterReservations(String filter) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        Collection<ReservationDTO> list = new ArrayList<>();
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                list = ReservationMapper.INSTANCE.toReservationDTOCollection(reservationManager.filterReservations(filter));
+                rollback = reservationManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if(callCounter > 0)
+                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
+        return new ArrayList<>(list);
     }
 }
