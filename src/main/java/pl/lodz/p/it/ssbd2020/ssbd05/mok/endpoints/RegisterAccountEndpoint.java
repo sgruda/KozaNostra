@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.Properties;
 
 /**
- * Endpoint odpowiadający za rejestrację
+ * Punkt dostępowy odpowiedzialny za rejestrację konta użytkownika, dostarcza implementację interfejsu RegisterAccountEndpointLocal
  */
 @Log
 @Stateful
@@ -36,32 +36,17 @@ import java.util.Properties;
 @Interceptors(TrackerInterceptor.class)
 public class RegisterAccountEndpoint implements Serializable, RegisterAccountEndpointLocal {
 
-    /**
-     * Klasa AccountManager
-     */
     @Inject
     private AccountManager accountManager;
 
-    /**
-     * Konto
-     */
     @Getter
     @Setter
     private Account account;
 
-    /**
-     *  Kolekcja obiektów typu AccessLevel
-     */
     @Getter
     @Setter
     private Collection<AccessLevel> accessLevels;
 
-    /**
-     * Dodaj nowe konto
-     *
-     * @param accountDTO obiekt typu AccountDTO
-     * @throws AppBaseException Wyjątek aplikacyjny
-     */
     @Override
     @PermitAll
     public void addNewAccount(AccountDTO accountDTO) throws AppBaseException {
@@ -96,12 +81,6 @@ public class RegisterAccountEndpoint implements Serializable, RegisterAccountEnd
         }
     }
 
-    /**
-     * Wygeneruj kolekcję obiektów AccessLevel
-     *
-     * @return Collection<AccessLevel>
-     * @throws AppBaseException Wyjątek aplikacyjny
-     */
     private Collection<AccessLevel> generateAccessLevels() throws AppBaseException {
         Collection<AccessLevel> accessLevels = new ArrayList<>();
         Properties properties =  ResourceBundles.loadProperties("config.user_roles.properties");
