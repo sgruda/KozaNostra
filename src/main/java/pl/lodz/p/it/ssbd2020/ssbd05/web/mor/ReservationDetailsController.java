@@ -4,17 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.ReservationDetailsEndpoint;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ReservationDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -41,7 +42,7 @@ public class ReservationDetailsController implements Serializable {
         try {
             resourceBundles = new ResourceBundles();
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
-            cancelReservationController.init(reservationDTO);
+            cancelReservationController.setReservationDTO(this.reservationDTO);
             for(String extraService: reservationDTO.getExtraServiceCollection()){
                 extraServices += extraService;
                 extraServices += " ";
@@ -52,10 +53,25 @@ public class ReservationDetailsController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());
         }
     }
-
+    public void cancelReservation() {
+        cancelReservationController.cancelReservation();
+        refresh();
+    }
     public String goBack(){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedReservationNumber");
         return "back";
+    }
+
+    private void refresh() {
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+            this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
+            cancelReservationController.setReservationDTO(this.reservationDTO);
+        } catch (AppBaseException | IOException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        }
     }
 
 }
