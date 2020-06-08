@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.client.reservations.details.title']}</title>
+        <style type="text/css">
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <div>
+            <p:messages globalOnly="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+            <p:panelGrid id="panelGrid" columns="2">
+                <h:outputText value="#{msg['page.client.reservations.details.reservationNumber']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.reservationNumber}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.eventTypeName']}"/>
+                <h:outputText value="#{reservationDetailsController.resourceBundles.getTranslatedText(reservationDetailsController.reservationDTO.eventTypeName)}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.from']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.startDate}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.till']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.endDate}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.price']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.totalPrice} PLN"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.status']}"/>
+                <h:outputText value="#{reservationDetailsController.resourceBundles.getTranslatedText(reservationDetailsController.reservationDTO.statusName)}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.hallName']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.hallName}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.extraServices']}"/>
+                <h:outputText value="#{reservationDetailsController.extraServices}"/>
+
+            </p:panelGrid>
+            <div style="margin: 5px;display:flex;justify-content: center">
+                <h:form id="commandButtons">
+                    <p:commandButton value="#{msg['page.halldetails.back']}" action="#{reservationDetailsController.goBack}"/>
+                    <p:commandButton value="#{msg['page.halldetails.edit']}"/>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.client.reservations.breadcrumbs']}" outcome="/client/clientReservationsPage.xhtml"/>
+        <p:menuitem value="#{msg['page.client.reservations.details.breadcrumbs']}" outcome="/client/clientReservationDetails.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>
