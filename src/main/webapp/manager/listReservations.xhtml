@@ -11,7 +11,7 @@
     <ui:define name = "content">
         <h:form id="form1" style="margin-bottom: auto">
             <div style="width: auto; background-color: #626163">
-                <p:inputText id="filterReservationsTextbox" value="#{listReservationsController.reservationFilter}"  style="width: 87.8%; border-radius: 0" placeholder="#{msg['page.listaccounts.watermark']}"/>
+                <p:inputText id="filterReservationsTextbox" value="#{listReservationsController.reservationFilter}"  style="width: 87.8%; border-radius: 0" placeholder="#{msg['page.listreservations.filterbox']}"/>
                 <p:commandButton id="resrvationFilterButton" value="#{msg['page.listaccounts.filter']}" style="float: right; width: 12%; border-radius: 0"
                                  action="#{listReservationsController.filterReservations}"
                                  update="resrvationFilterButton, :form1"/>
