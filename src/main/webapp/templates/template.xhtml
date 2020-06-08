@@ -55,10 +55,8 @@
                                  <p:menuitem id="accountDetailsButton" value="#{msg['page.template.accountdetails']}" action="#{ownAccountDetailsController.selectOwnAccount()}" />
                              </p:submenu>
                              <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
-                                 <p:menuitem id="reservations" value="#{msg['page.template.client.reservations']}" icon="pi pi-id-card" outcome="/client/clientReservationsPage.xhtml" />
-                             </c:if>
-                             <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
                                  <p:menuitem id="isClient" value="#{msg['page.changelevel.client']}" icon="pi pi-id-card" disabled="true"/>
+                                 <p:menuitem id="reservations" value="#{msg['page.template.client.reservations']}" icon="pi pi-id-card" outcome="/client/clientReservationsPage.xhtml" />
                              </c:if>
                              <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}">
                                  <p:menuitem id="isManager" value="#{msg['page.changelevel.manager']}" icon="pi pi-id-card" disabled="true"/>
