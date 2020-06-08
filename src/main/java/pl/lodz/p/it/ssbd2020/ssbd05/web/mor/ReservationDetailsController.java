@@ -33,11 +33,15 @@ public class ReservationDetailsController implements Serializable {
     @Setter
     private String extraServices;
 
+    @Inject
+    private CancelReservationController cancelReservationController;
+
     @PostConstruct
     public void init(){
         try {
             resourceBundles = new ResourceBundles();
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
+            cancelReservationController.init(reservationDTO);
             for(String extraService: reservationDTO.getExtraServiceCollection()){
                 extraServices += extraService;
                 extraServices += " ";

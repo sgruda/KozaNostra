@@ -45,8 +45,9 @@
             </p:panelGrid>
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
-                    <p:commandButton value="#{msg['page.halldetails.back']}" action="#{reservationDetailsController.goBack}"/>
-                    <p:commandButton value="#{msg['page.halldetails.edit']}"/>
+                    <p:commandButton value="#{msg['page.client.reservations.details.back']}" action="#{reservationDetailsController.goBack}"/>
+                    <p:commandButton value="#{msg['page.client.reservations.details.edit']}"/>
+                    <p:commandButton value="#{msg['page.client.reservations.details.cancel']}" action="#{cancelReservationController.cancelReservation}"/>
                 </h:form>
             </div>
         </div>
