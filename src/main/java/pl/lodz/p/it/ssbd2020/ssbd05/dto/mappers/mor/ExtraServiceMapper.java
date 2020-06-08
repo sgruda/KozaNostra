@@ -15,5 +15,7 @@ public interface ExtraServiceMapper {
 
     ExtraService createNewExtraService(ExtraServiceDTO extraServiceDTO);
 
+    ExtraServiceDTO toExtraServiceDTO(ExtraService extraService);
+
     List<ExtraServiceDTO> toExtraServiceDTOList(List<ExtraService> extraServiceCollection);
 }

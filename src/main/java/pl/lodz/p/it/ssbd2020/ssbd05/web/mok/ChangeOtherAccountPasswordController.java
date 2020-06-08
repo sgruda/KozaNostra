@@ -18,6 +18,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Kontroler odpowiedzialny za zmianę hasła innego użytkownika przez administratora
+ */
 @Log
 @Named
 @ViewScoped
@@ -39,6 +42,9 @@ public class ChangeOtherAccountPasswordController implements Serializable {
     @Setter
     private AccountDTO accountDTO;
 
+    /**
+     * Metoda wczytująca dane wybranego konta do edycji w postaci obiektu typu AccountDTO
+     */
     @PostConstruct
     public void init(){
         String selectedLogin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedLogin");
@@ -50,6 +56,9 @@ public class ChangeOtherAccountPasswordController implements Serializable {
         }
     }
 
+    /**
+     * Metoda dokonująca edycji obiektu typu AccountDTO polegającej na ustawieniu w nim nowego hasła
+     */
     public void setPassword() {
         try {
             this.accountDTO.setPassword(newPassword);
@@ -68,10 +77,20 @@ public class ChangeOtherAccountPasswordController implements Serializable {
         }
     }
 
+    /**
+     * Metoda przenosząca na stronę ze zmianą hasła wybranego użytkownika z poziomu szczegółów jego konta
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String redirectToChangePassword() {
         return "changePassword";
     }
 
+    /**
+     * Metoda przenosząca na stronę ze szczegółami wybranego konta po pomyślnej zmianie hasła
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goBack() {
         return "accountDetails";
     }

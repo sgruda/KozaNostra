@@ -16,10 +16,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +55,6 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
     public void edit(ExtraService entity) throws AppBaseException {
         try {
             super.edit(entity);
-            //TODO Implementacja /dodanie wyjątków
         } catch (OptimisticLockException e) {
             throw new AppOptimisticLockException(e);
         } catch (DatabaseException | PersistenceException e) {
@@ -85,7 +81,9 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
     @RolesAllowed("getExtraServiceByName")
     public Optional<ExtraService> findByName(String name) throws AppBaseException {
         try {
-            // TODO implementacja
+            return Optional.ofNullable(this.em.createNamedQuery("ExtraService.findByServiceName", ExtraService.class)
+            .setParameter("serviceName", name).getSingleResult());
+        } catch (NoResultException e) {
             return Optional.empty();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
