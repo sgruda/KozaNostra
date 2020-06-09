@@ -72,6 +72,14 @@ public class AddHallController implements Serializable {
         return ResourceBundles.getTranslatedText(eventTypeName);
     }
 
+    public String translateBoolean() {
+        if (newAddress) {
+            return ResourceBundles.getTranslatedText("page.common.yes");
+        } else {
+            return ResourceBundles.getTranslatedText("page.common.no");
+        }
+    }
+
     public void toggleNewAddress() {
         newAddress = !newAddress;
     }
