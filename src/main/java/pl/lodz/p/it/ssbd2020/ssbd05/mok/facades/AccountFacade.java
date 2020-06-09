@@ -190,7 +190,7 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     /**
-     * Edytuj.
+     * Edytuj konto
      *
      * @param entity encja
      * @throws AppBaseException Wyjątek aplikacyjny
@@ -214,7 +214,7 @@ public class AccountFacade extends AbstractFacade<Account> {
     }
 
     /**
-     * Usuń
+     * Usuń konto
      *
      * @param entity encja
      * @throws AppBaseException Wyjątek aplikacyjny

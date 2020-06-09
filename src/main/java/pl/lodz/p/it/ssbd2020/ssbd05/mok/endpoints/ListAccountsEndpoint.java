@@ -53,6 +53,7 @@ public class ListAccountsEndpoint implements Serializable, ListAccountsEndpointL
         }
         return list;
     }
+
     @Override
     @RolesAllowed("filterAccounts")
     public Collection<AccountDTO> filterAccounts (String accountFilter) throws AppBaseException {

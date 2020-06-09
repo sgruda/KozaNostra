@@ -71,7 +71,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
      * Wyszukaj konto po mailu
      *
      * @param mail mail
-     * @return account konto
+     * @return Account konto
      * @throws AppBaseException Wyjątek aplikacyjny
      */
     @PermitAll
@@ -123,7 +123,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     /**
      * Pobierz wszystkie konta
      *
-     * @return Collection kolekcja kont
+     * @return kolekcja kont Collection<Account>
      * @throws AppBaseException Wyjątek aplikacyjny
      */
     @RolesAllowed("listAccounts")
@@ -135,7 +135,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
      * Filtruj po kontach
      *
      * @param accountFilter filtr
-     * @return Collection<Account>
+     * @return kolekcja kont Collection<Account>
      * @throws AppBaseException Wyjątek aplikacyjny
      */
     @RolesAllowed("filterAccounts")
