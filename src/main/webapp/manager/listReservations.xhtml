@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name="head">
@@ -11,6 +10,12 @@
     </ui:define>
     <ui:define name = "content">
         <h:form id="form1" style="margin-bottom: auto">
+            <div style="width: auto; background-color: #626163">
+                <p:inputText id="filterReservationsTextbox" value="#{listReservationsController.reservationFilter}"  style="width: 87.8%; border-radius: 0" placeholder="#{msg['page.listreservations.filterbox']}"/>
+                <p:commandButton id="resrvationFilterButton" value="#{msg['page.listaccounts.filter']}" style="float: right; width: 12%; border-radius: 0"
+                                 action="#{listReservationsController.filterReservations}"
+                                 update="resrvationFilterButton, :form1"/>
+            </div>
             <p:dataTable var="reservation" value="#{listReservationsController.reservations}" emptyMessage="#{msg['page.listreservations.list.empty']}" >
                 <p:column headerText="#{msg['page.listreservations.reservation.reservation.number']}">
                     <h:outputText value="#{reservation.reservationNumber}"/>

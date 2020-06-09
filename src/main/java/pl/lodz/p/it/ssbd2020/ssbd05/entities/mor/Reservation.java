@@ -32,7 +32,12 @@ import java.util.UUID;
     @NamedQuery(name = "Reservation.findByClientId", query = "SELECT r from Reservation r WHERE r.client.account.id = :id"),
     @NamedQuery(name = "Reservation.findByTotalPrice", query = "SELECT r FROM Reservation r WHERE r.totalPrice = :totalPrice"),
     @NamedQuery(name = "Reservation.findByReservationNumber", query = "SELECT r FROM Reservation r WHERE r.reservationNumber = :reservationNumber"),
-    @NamedQuery(name = "Reservation.findByGuestsNumber", query = "SELECT r FROM Reservation r WHERE r.guestsNumber = :guestsNumber")})
+    @NamedQuery(name = "Reservation.findByGuestsNumber", query = "SELECT r FROM Reservation r WHERE r.guestsNumber = :guestsNumber"),
+    @NamedQuery(name = "Reservation.filterByLoginAndNames", query = "SELECT r FROM Reservation r WHERE lower(r.client.account.firstname) like concat('%',lower(:filter),'%')" +
+                                                                                                     " or lower(r.client.account.lastname) like concat('%',lower(:filter),'%') " +
+                                                                                                     " or lower(r.reservationNumber) like concat('%',lower(:filter),'%') " +
+                                                                                                      "or lower(r.client.account.login) like concat('%',lower(:filter),'%')")})
+
 public class Reservation implements Serializable {
 
     private static final long serialVersionUID = 1L;

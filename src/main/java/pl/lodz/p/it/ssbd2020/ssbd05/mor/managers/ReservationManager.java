@@ -6,7 +6,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
@@ -108,7 +107,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("filterReservations")
     public List<Reservation> filterReservations(String filter) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return reservationFacade.filterReservations(filter);
     }
 
     @RolesAllowed("getUserReviewableReservations")

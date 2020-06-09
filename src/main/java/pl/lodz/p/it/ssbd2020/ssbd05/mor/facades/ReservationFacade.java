@@ -1,17 +1,13 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 
 import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.AccessLevel;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
@@ -25,8 +21,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,7 +98,12 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
 
     @RolesAllowed("filterReservations")
     public List<Reservation> filterReservations(String filter) throws AppBaseException{
-        throw new UnsupportedOperationException();
+        try {
+            return em.createNamedQuery("Reservation.filterByLoginAndNames", Reservation.class)
+                    .setParameter("filter", filter).getResultList();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
     @RolesAllowed({"getAllUsersReservations", "getUserReviewableReservations"})
     public List<Reservation> findByLogin(String login) throws AppBaseException {

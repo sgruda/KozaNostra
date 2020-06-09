@@ -8,7 +8,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -28,13 +27,24 @@ public class ListReservationsController implements Serializable {
     private List<ReservationDTO> reservations;
     @Getter
     private ResourceBundles resourceBundles;
-
+    @Getter
+    @Setter
+    private String reservationFilter;
 
     @PostConstruct
     public void init() {
         try {
             reservations = listReservationEndpointLocal.getAllReservations();
             resourceBundles = new ResourceBundles();
+        } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
+    }
+
+    public void filterReservations(){
+        try {
+            reservations = listReservationEndpointLocal.filterReservations(reservationFilter);
         } catch (AppBaseException e) {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
