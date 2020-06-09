@@ -5,8 +5,10 @@ import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
@@ -16,6 +18,7 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Log
@@ -113,5 +116,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @RolesAllowed("getUserReviewableReservations")
     public List<Reservation> getUserReviewableReservations(String login) throws AppBaseException {
         throw new UnsupportedOperationException();
+    }
+
+    public Hall getHall(String hallName) throws AppBaseException{
+        if(hallFacade.findByName(hallName).isPresent()) {
+            return hallFacade.findByName(hallName).get();
+        }
+        else throw new HallNotFoundException();
     }
 }

@@ -210,4 +210,13 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/client/clientReservationDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/client/clientEditReservation.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

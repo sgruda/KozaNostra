@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.client.reservations.details.title']}</title>
+        <style type="text/css">
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <div>
+            <p:messages globalOnly="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+            <p:panelGrid id="panelGrid" columns="2">
+                <h:outputText value="#{msg['page.client.reservations.details.reservationNumber']}"/>
+                <h:inputText value="#{editReservationController.reservationDTO.reservationNumber}" disabled="true" style="width: 250px"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.eventTypeName']}"/>
+                <h:inputText value="#{editReservationController.reservationDTO.eventTypeName}" style="width: 250px"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.from']}"/>
+                <h:inputText value="#{editReservationController.reservationDTO.startDate}" style="width: 250px"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.till']}"/>
+                <h:inputText value="#{editReservationController.reservationDTO.endDate}" style="width: 250px"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.hallName']}"/>
+                <h:inputText value="#{editReservationController.reservationDTO.hallName}" style="width: 250px"/>
+
+<!--                <h:outputLabel for="hallNames" value="#{msg['page.addhall.addresseslabel']} *&#8195;" rendered="#{!addHallController.newAddress}">-->
+<!--                    <p:selectOneMenu id="hallNames" value="#{addHallController.address}" converter="addressConverter">-->
+<!--                        <f:selectItems value="#{addHallController.addresses}" var="address" itemLabel="#{address.show()}" itemValue="#{address}"/>-->
+<!--                    </p:selectOneMenu>-->
+<!--                </h:outputLabel>-->
+            </p:panelGrid>
+            <div style="margin: 5px;display:flex;justify-content: center">
+
+                    <p:commandButton value="#{msg['page.client.reservations.details.back']}"/>
+                    <p:commandButton value="#{msg['page.client.reservations.details.edit']}" />
+
+            </div>
+        </div>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.client.reservations.breadcrumbs']}" outcome="/client/clientReservationsPage.xhtml"/>
+        <p:menuitem value="#{msg['page.client.reservations.details.breadcrumbs']}" outcome="/client/clientReservationDetails.xhtml" />
+        <p:menuitem value="#{msg['page.client.reservations.edit.breadcrumbs']}" outcome="/client/clientEditReservation.xhtml"/>
+    </ui:define>
+</ui:composition>
+</html>

@@ -78,4 +78,8 @@ public class ReservationDetailsController implements Serializable {
         }
     }
 
+    public String goToEditPage(){
+        return "edit";
+    }
+
 }
