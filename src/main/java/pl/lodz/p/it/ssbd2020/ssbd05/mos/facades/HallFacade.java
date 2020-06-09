@@ -116,8 +116,8 @@ public class HallFacade extends AbstractFacade<Hall> {
     @PermitAll
     public Collection<Hall> filter(String hallFilter) throws AppBaseException {
         try {
-            // TODO implementacja
-            return new ArrayList<>();
+            return em.createNamedQuery("Hall.filterByNameAndAddress", Hall.class)
+                    .setParameter("filter", hallFilter).getResultList();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
