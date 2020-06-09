@@ -17,25 +17,24 @@
                                  update="resrvationFilterButton, :form1"/>
             </div>
             <p:dataTable var="reservation" value="#{listReservationsController.reservations}" emptyMessage="#{msg['page.listreservations.list.empty']}" >
-                <p:column headerText="#{msg['page.listreservations.reservation.reservation.number']}">
-                    <h:outputText value="#{reservation.reservationNumber}"/>
-                </p:column>
-                <p:column headerText="#{msg['page.listreservations.reservation.client.login']}">
-                    <h:outputText value="#{reservation.clientLogin}"/>
-                </p:column>
-                <p:column headerText="#{msg['page.listreservations.reservation.event.type']}">
-                    <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.eventTypeName)}"/>
+                <p:column headerText="#{msg['page.listreservations.reservation.hall.name']}">
+                    <h:outputText value="#{reservation.hallName}"/>
                 </p:column>
                 <p:column headerText="#{msg['page.listreservations.reservation.status']}">
                     <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.statusName)}"/>
                 </p:column>
-                <p:column headerText="#{msg['page.listreservations.reservation.start.date']}">
-                    <h:outputText value="#{reservation.startDate}"/>
+                <p:column headerText="#{msg['page.listreservations.reservation.event.type']}">
+                    <h:outputText value="#{listReservationsController.resourceBundles.getTranslatedText(reservation.eventTypeName)}"/>
                 </p:column>
-                <p:column headerText="#{msg['page.listreservations.reservation.end.date']}">
-                    <h:outputText value="#{reservation.endDate}"/>
+                <p:column headerText="#{msg['page.listreservations.reservation.client.login']}">
+                    <h:outputText value="#{reservation.clientDTO.login}"/>
                 </p:column>
-
+                <p:column headerText="#{msg['page.listreservations.reservation.name']}">
+                    <h:outputText value="#{reservation.clientDTO.getPersonalDetails()}"/>
+                </p:column>
+                <p:column headerText="#{msg['page.listreservations.reservation.client.email']}">
+                    <h:outputText value="#{reservation.clientDTO.email}"/>
+                </p:column>
                 <p:column headerText="#{msg['page.listreservations.reservation.details']}">
                     <p:commandButton id="goDetailsButton" value="#{msg['page.listreservations.reservation.details']}" action="#{listReservationsController.goToDetails(reservation.reservationNumber)}"/>
                 </p:column>

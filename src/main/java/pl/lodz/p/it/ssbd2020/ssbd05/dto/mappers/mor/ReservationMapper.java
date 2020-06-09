@@ -20,14 +20,16 @@ import java.util.stream.Collectors;
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.WITHOUT_SECONDS;
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.WITH_SECONDS;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(uses = ClientMapper.class,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ReservationMapper {
 
     ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);
 
     @Mapping(target = "startDate", dateFormat = WITH_SECONDS)
     @Mapping(target = "endDate", dateFormat = WITH_SECONDS)
-    @Mapping(target = "clientLogin", source = "client")
+//    @Mapping(target = "clientLogin", source = "client")
+    @Mapping(target = "clientDTO", source = "client")
     @Mapping(target = "statusName", source = "status")
     @Mapping(target = "eventTypeName", source = "eventType")
     @Mapping(target = "extraServiceCollection", source = "extra_service")

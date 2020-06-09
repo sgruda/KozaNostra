@@ -18,7 +18,7 @@ public @Data class ReservationDTO {
     private String statusName;
     private Collection<String> extraServiceCollection = new ArrayList<>();
     private String hallName;
-    private String clientLogin;
+    private ClientDTO clientDTO;
     private String reservationNumber;
     private String eventTypeName;
 }
