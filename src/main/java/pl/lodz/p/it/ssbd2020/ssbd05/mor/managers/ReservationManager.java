@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -67,6 +68,15 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     public Status getStatusByName(String statusName) throws AppBaseException  {
         throw new UnsupportedOperationException();
     }
+    @RolesAllowed({"getStatusCancelled", "cancelReservation"})
+    public Status getStatusCancelled() throws AppBaseException {
+        return statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).get();
+    }
+
+    @RolesAllowed("getAllStatuses")
+    public List<Status> getAllStatuses() throws AppBaseException {
+        return statusFacade.findAll();
+    }
 
     @RolesAllowed("getReservationByNumber")
     public Reservation getReservationByNumber(String reservationNumber) throws AppBaseException {
@@ -80,14 +90,10 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         throw new UnsupportedOperationException();
     }
 
-    @RolesAllowed("getStatusCanceled")
-    public Status getStatusCanceled() throws AppBaseException  {
-        throw new UnsupportedOperationException();
-    }
 
     @RolesAllowed("cancelReservation")
     public void cancelReservation(Reservation reservation) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        reservationFacade.edit(reservation);
     }
 
     @RolesAllowed("getReservationsByDate")

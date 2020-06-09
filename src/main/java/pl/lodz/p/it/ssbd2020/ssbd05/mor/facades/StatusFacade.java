@@ -16,6 +16,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -55,8 +56,15 @@ public class StatusFacade extends AbstractFacade<Status> {
         }
     }
     @RolesAllowed({"getStatusByName", "getStatusCanceled"})
-    public Optional<Status> findByStatusName(String statusName) {
-        throw new UnsupportedOperationException();
+    public Optional<Status> findByStatusName(String statusName) throws AppBaseException {
+        try {
+            return Optional.ofNullable(this.em.createNamedQuery("Status.findByStatusName", Status.class)
+                    .setParameter("statusName", statusName).getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @Override
