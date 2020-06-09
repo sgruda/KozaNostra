@@ -125,6 +125,7 @@
     </security-role-mapping>
     <security-role-mapping>
         <role-name>getAllReservations</role-name>
+        <group-name>CLIENT</group-name>
         <group-name>MANAGER</group-name>
     </security-role-mapping>
     <security-role-mapping>
@@ -171,6 +172,8 @@
         <group-name>MANAGER</group-name>
     </security-role-mapping>
 
+
+
     <security-role-mapping>
         <role-name>editHall</role-name>
         <group-name>MANAGER</group-name>
@@ -179,6 +182,7 @@
     <security-role-mapping>
         <role-name>getHallByName</role-name>
         <group-name>MANAGER</group-name>
+        <group-name>CLIENT</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
