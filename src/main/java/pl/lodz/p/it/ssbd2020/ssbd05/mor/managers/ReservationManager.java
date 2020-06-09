@@ -65,7 +65,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
     @RolesAllowed("getStatusByName")
     public Status getStatusByName(String statusName) throws AppBaseException  {
-        throw new UnsupportedOperationException();
+        return statusFacade.findByStatusName(statusName).get();
     }
     @RolesAllowed({"getStatusCancelled", "cancelReservation"})
     public Status getStatusCancelled() throws AppBaseException {
@@ -86,7 +86,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(Reservation reservation) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        reservationFacade.edit(reservation);
     }
 
 
