@@ -48,6 +48,24 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+<!-- TODO Zmienić później z listy na stronę szczegółów extra Service -->
+    <navigation-rule>
+        <from-view-id>/listExtraServices.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>editExtraServicePage</from-outcome>
+            <to-view-id>/manager/editExtraService.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <!-- TODO Zmienić później z listy na stronę szczegółów extra Service -->
+    <navigation-rule>
+        <from-view-id>/manager/editExtraService.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>listExtraServices</from-outcome>
+            <to-view-id>/listExtraServices.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 
     <navigation-rule>
         <from-view-id>/accountDetails.xhtml</from-view-id>

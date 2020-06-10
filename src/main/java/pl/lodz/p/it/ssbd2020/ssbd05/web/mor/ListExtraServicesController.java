@@ -64,4 +64,10 @@ public class ListExtraServicesController implements Serializable {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
     }
+
+
+    public String goToEditPage(String extraServiceName){
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedExtraService", extraServiceName);
+        return "editExtraServicePage";
+    }
 }
