@@ -3,6 +3,11 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 
 import lombok.Data;
 import lombok.extern.java.Log;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ClientDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
@@ -23,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequestScoped
 @Named
@@ -50,6 +56,50 @@ public class CreateReservationController {
     private Integer numberOfGuests;
     private ClientDTO clientDTO;
 
+    //Do kalendarza i wyświetlania okienek czasowych
+    //start
+    private ScheduleModel scheduleModel;
+
+    private ScheduleModel eventModel;
+
+    private ScheduleEvent event = new DefaultScheduleEvent();
+
+    private boolean datesRenderd = false;
+
+
+    public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
+        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject().plusHours(1)).build();
+        for (ScheduleEvent ev :scheduleModel.getEvents()){
+            if(event.getStartDate().isAfter(ev.getStartDate()) && event.getEndDate().isBefore(ev.getEndDate())){
+                if(ev.isAllDay()){
+                    datesRenderd = false;
+                }else{
+                    datesRenderd = true;
+                }
+            }
+        }
+    }
+
+    public void addEvent() {
+        if(event.getId() == null)
+            eventModel.addEvent(event);
+        else
+            eventModel.updateEvent(event);
+
+        event = new DefaultScheduleEvent();
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //koniec
     public void createReservation() {
         reservationDTO = new ReservationDTO();
         clientDTO = new ClientDTO();
@@ -63,6 +113,7 @@ public class CreateReservationController {
         reservationDTO.setHallName(hallDTO.getName());
         reservationDTO.setGuestsNumber(Long.valueOf(numberOfGuests));
         reservationDTO.setTotalPrice(calculateTotalPrice());
+        reservationDTO.setReservationNumber( UUID.randomUUID().toString().replace("-", ""));
         try {
             createReservationEndpointLocal.createReservation(reservationDTO);
             ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
@@ -94,13 +145,25 @@ public class CreateReservationController {
         try {
             this.hallDTO = createReservationEndpointLocal.getHallByName(selectedHallName);
             this.extraServices = createReservationEndpointLocal.getAllExtraServices();
-            this.unavailableDates = createReservationEndpointLocal.getUnavailableDates();
+            this.unavailableDates = createReservationEndpointLocal.getUnavailableDates(selectedHallName);
             this.eventTypes = (List<String>) hallDTO.getEvent_type();
         } catch (AppBaseException ex) {
             log.severe(ex.getMessage());
         }
-    }
 
+        //Tutaj jeszcze kalendarzyk
+        eventModel = new DefaultScheduleModel();
+            for (UnavailableDate unavailableDate: unavailableDates){
+            DefaultScheduleEvent event = DefaultScheduleEvent.builder()
+                    .title("Rezerwacja")
+                    .startDate(unavailableDate.getStartDate())
+                    .endDate(unavailableDate.getEndDate())
+                    .build();
+            eventModel.addEvent(event);
+            }
+
+
+    }
     public String goBack() {
         return "goBack";
     }

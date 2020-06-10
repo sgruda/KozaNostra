@@ -14,7 +14,7 @@ import java.util.List;
 @Local
 public interface CreateReservationEndpointLocal {
 
-    List<UnavailableDate> getUnavailableDates() throws AppBaseException;
+    List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException;
     List<String> getAllEventTypes() throws AppBaseException;
     void createReservation(ReservationDTO reservationDTO) throws AppBaseException;
     List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException;

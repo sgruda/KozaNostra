@@ -23,17 +23,17 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ExtraServiceManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.managers.HallManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
+import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.formatDate;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJBTransactionRolledbackException;
-import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,7 +51,7 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
     @Override
     @RolesAllowed("getUnavailableDates")
-    public List<UnavailableDate> getUnavailableDates() throws AppBaseException {
+    public List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException {
         Collection<ReservationDTO> list = new ArrayList<>();
         int callCounter = 0;
         boolean rollback;
@@ -73,7 +73,10 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
         List<UnavailableDate> dates = new ArrayList<>();
         for (ReservationDTO res : list) {
-            dates.add(new UnavailableDate(Timestamp.valueOf(res.getStartDate()), Timestamp.valueOf(res.getEndDate())));
+            if(res.getHallName().equalsIgnoreCase(hallName)){
+                dates.add(new UnavailableDate(LocalDateTime.parse(res.getStartDate(),DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss" )),
+                        LocalDateTime.parse(res.getEndDate(),DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss" ))));
+            }
         }
         return new ArrayList<>(dates);
     }
@@ -164,7 +167,6 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         Reservation reservation = ReservationMapper.INSTANCE.createNewReservation(reservationDTO);
         reservation.setClient(reservationManager.getClientByLogin(reservationDTO.getClientDTO().getLogin()));
         List<ExtraService> selectedExtraService = new ArrayList<>();
-
         for (String extraService : reservationDTO.getExtraServiceCollection()) {
             selectedExtraService.add(reservationManager.getExtraServiceByName(extraService));
         }
@@ -174,6 +176,7 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
         reservation.setHall(reservationManager.getHallByName(reservationDTO.getHallName()));
         reservation.setTotalPrice(reservationDTO.getTotalPrice());
+        reservation.setReservationNumber(reservationDTO.getReservationNumber());
 
 
         int callCounter = 0;

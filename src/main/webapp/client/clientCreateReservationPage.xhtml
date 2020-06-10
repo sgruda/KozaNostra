@@ -38,11 +38,46 @@
                                   decimalPlaces="0"
                                    minValue="0" maxValue="#{createReservationController.hallDTO.capacity}"/>
 
-                <p:outputLabel for="since" value="#{msg['page.createreservation.start.date']} *" />
-                <p:datePicker id="since" value="#{createReservationController.startDate}" showTime="true" lang="#{msg['page.createreservation.calendar.language']}" locale="#{msg['page.createreservation.calendar.language']}" pattern="yyyy-MM-dd HH:mm:ss"/>
 
-                <p:outputLabel for="until" value="#{msg['page.createreservation.end.date']} *" />
-                <p:datePicker id="until" value="#{createReservationController.endDate}" showTime="true" lang="#{msg['page.createreservation.calendar.language']}" locale="#{msg['page.createreservation.calendar.language']}" pattern="yyyy-MM-dd HH:mm:ss"/>
+
+                <h:form>
+                    <p:growl id="messages" showDetail="true" />
+
+                    <h:panelGrid columnClasses="value">
+                        <p:schedule id="schedule" value="#{createReservationController.eventModel}" widgetVar="myschedule"
+                      style=" width: 600px;" >
+
+                            <p:ajax event="dateSelect" listener="#{createReservationController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        </p:schedule>
+                    </h:panelGrid>
+
+
+
+                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" >
+
+                        <h:panelGrid id="eventDetails" columns="2">
+                            <c:if test="#{createReservationController.datesRenderd}">
+                            <p:outputLabel for="from" value="#{msg['page.createreservation.start.date']} *" />
+                            <p:datePicker id="from"  required="true" value="#{createReservationController.event.startDate}" timeOnly="true" pattern="HH:mm" mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}" appendTo="@(body)"/>
+
+                            <p:outputLabel for="to" value="#{msg['page.createreservation.end.date']} *" />
+                            <p:datePicker id="to" required="true" value="#{createReservationController.event.endDate }" timeOnly="true" pattern="HH:mm" mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}" appendTo="@(body)"/>
+
+
+                            <p:commandButton id="addButton" value="Save" action="#{createReservationController.setDates}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                            </c:if>
+                            <c:if test="#{!createReservationController.datesRenderd}">
+                                <h:outputText value="No slots available" />
+                            </c:if>
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+
+<!--                <p:outputLabel for="since" value="#{msg['page.createreservation.start.date']} *" />-->
+<!--                <p:datePicker id="since" value="#{createReservationController.startDate}" showTime="true" lang="#{msg['page.createreservation.calendar.language']}" locale="#{msg['page.createreservation.calendar.language']}" pattern="yyyy-MM-dd HH:mm:ss"/>-->
+
+<!--                <p:outputLabel for="until" value="#{msg['page.createreservation.end.date']} *" />-->
+<!--                <p:datePicker id="until" value="#{createReservationController.endDate}" showTime="true" lang="#{msg['page.createreservation.calendar.language']}" locale="#{msg['page.createreservation.calendar.language']}" pattern="yyyy-MM-dd HH:mm:ss"/>-->
             </p:panelGrid>
             <div style="display:flex; flex-direction: column;">
                 <p:messages>
