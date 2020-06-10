@@ -35,33 +35,24 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 <h:outputText value="#{msg['page.client.reservations.details.till']}"/>
                 <p:inputText value="#{editReservationController.reservationDTO.endDate}" style="width: 250px"/>
 
-<!--                <h:outputLabel for="eventTypes" value="#{msg['page.editreservation.choose.event.type']} *" >-->
-<!--                <p:selectOneMenu id="eventTypes" value="#{editReservationController.reservationDTO.eventTypeName}" panelStyle="width:250px">-->
-<!--                    <f:selectItems value="#{editReservationController.eventTypes}" var="eventType" itemLabel="#{eventType}" itemValue="#{eventType}" />-->
-<!--                </p:selectOneMenu>-->
-<!--                </h:outputLabel>-->
-
                 <h:outputLabel for="eventType" value="#{msg['page.editreservation.choose.event.type']} *" />
                 <p:selectOneMenu id="eventType" value="#{editReservationController.eventTypeName}" panelStyle="width:250px" required="true">
-                    <f:selectItem itemLabel="" itemValue="" />
                     <f:selectItems value="#{editReservationController.eventTypes}" var="eventType" itemLabel="#{eventType}" itemValue="#{eventType}"/>
                 </p:selectOneMenu>
 
+                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} *"/>
+                <p:inputNumber id="numberOfGuests" required="true"
+                               value="#{editReservationController.reservationDTO.guestsNumber}"
+                               decimalPlaces="0"
+                               minValue="0" maxValue="#{editReservationController.hallDTO.capacity}"/>
 
-
-<!--                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} *"/>-->
-<!--                <p:inputNumber id="numberOfGuests" required="true"-->
-<!--                               value="#{editReservationController.reservationDTO.guestsNumber}"-->
-<!--                               decimalPlaces="0"-->
-<!--                               minValue="0" maxValue="#{editReservationController.hallDTO.capacity}"/>-->
-
-<!--                <h:outputLabel for="extraServices" value="#{msg['page.editreservation.extraservices']}">-->
-<!--                    <p:selectManyCheckbox id="extraServices" value="#{editReservationController.extraServicesNames}">-->
-<!--                        <c:forEach items="#{editReservationController.extraServicesNames}" var="extraService">-->
-<!--                            <f:selectItem itemLabel="#{extraService}" itemValue="#{extraService}"/>-->
-<!--                        </c:forEach>-->
-<!--                    </p:selectManyCheckbox>-->
-<!--                </h:outputLabel>-->
+                <h:outputLabel for="extraServices" value="#{msg['page.editreservation.extraservices']}">
+                    <p:selectManyCheckbox id="extraServices" value="#{editReservationController.extraServicesNames}">
+                        <c:forEach items="#{editReservationController.extraServicesNames}" var="extraService">
+                            <f:selectItem itemLabel="#{extraService}" itemValue="#{extraService}"/>
+                        </c:forEach>
+                    </p:selectManyCheckbox>
+                </h:outputLabel>
 
                 <h:outputLabel value="Cena calkowita">
                 <h:outputLabel value="#{editReservationController.reservationDTO.totalPrice}"/>
