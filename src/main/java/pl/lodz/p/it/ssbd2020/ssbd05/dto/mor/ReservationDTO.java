@@ -21,4 +21,5 @@ public @Data class ReservationDTO {
     private ClientDTO clientDTO;
     private String reservationNumber;
     private String eventTypeName;
+    private Long guestsNumber;
 }

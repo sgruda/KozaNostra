@@ -175,6 +175,16 @@
         </navigation-case>
     </navigation-rule>
 
+
+    <navigation-rule>
+        <from-view-id>/client/clientCreateReservationPage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>goBack</from-outcome>
+            <to-view-id>/hallDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
     <navigation-rule>
         <from-view-id>/hallDetails.xhtml</from-view-id>
         <navigation-case>

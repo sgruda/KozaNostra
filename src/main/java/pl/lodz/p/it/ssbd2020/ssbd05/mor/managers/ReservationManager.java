@@ -2,11 +2,15 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.ClientNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
@@ -44,6 +48,10 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private AccountFacade accountFacade;
+
+    @Inject
+    private  ExtraServiceFacade extraServiceFacade;
+
     @Inject
     private ClientFacade clientFacade;
 
@@ -56,6 +64,27 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @RolesAllowed("getAllReservations")
     public List<Reservation> getAllReservations() throws AppBaseException {
         return reservationFacade.findAll();
+    }
+
+    @RolesAllowed("findByLogin")
+    public Client getClientByLogin(String login) throws AppBaseException{
+        if(clientFacade.findByLogin(login).isEmpty()){
+            throw new ClientNotFoundException();
+        }else return clientFacade.findByLogin(login).get();
+    }
+
+    @RolesAllowed("getExtraServiceByName")
+    public ExtraService getExtraServiceByName(String name) throws AppBaseException{
+        if(extraServiceFacade.findByName(name).isEmpty()){
+            throw new ExtraServiceNotFoundException();
+        }else return extraServiceFacade.findByName(name).get();
+    }
+
+    @RolesAllowed("getEventTypeByName")
+    public EventType getEventTypeByName(String name) throws AppBaseException{
+        if(eventTypesFacade.findByName(name).isEmpty()){
+            throw new ExtraServiceNotFoundException();
+        }else return eventTypesFacade.findByName(name).get();
     }
 
     /**
@@ -108,7 +137,9 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("getStatusByName")
     public Status getStatusByName(String statusName) throws AppBaseException  {
-        throw new UnsupportedOperationException();
+        if(statusFacade.findByStatusName(statusName).isEmpty()){
+            throw new ExtraServiceNotFoundException();
+        }else return statusFacade.findByStatusName(statusName).get();
     }
 
     /**
