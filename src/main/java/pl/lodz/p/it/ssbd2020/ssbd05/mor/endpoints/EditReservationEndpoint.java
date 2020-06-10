@@ -112,6 +112,9 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     @RolesAllowed("editReservation")
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
         ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
+        reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
+        log.severe("endpoint " +reservationDTO.getEventTypeName());
+        log.severe(reservation.getEventType().getTypeName());
         reservationManager.editReservation(reservation);
         log.severe("poszlo endpoinnnt");
     }

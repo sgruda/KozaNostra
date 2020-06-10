@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
@@ -25,29 +26,23 @@ import java.util.List;
 @Log
 @Named
 @ViewScoped
+@Data
 public class EditReservationController implements Serializable {
 
     @Inject
     private EditReservationEndpointLocal editReservationEndpointLocal;
 
-    @Getter
-    @Setter
     private ReservationDTO reservationDTO;
 
-    @Getter
     private List<String> eventTypes;
 
-    @Getter
-    @Setter
     private List<ExtraServiceDTO> extraServices;
-    @Getter
-    @Setter
-    private String eventTypeName;
-    @Getter
-    @Setter
+
     private List<String> extraServicesNames;
-    @Getter
+
     private HallDTO hallDTO;
+
+    private String eventTypeName;
 
     @PostConstruct
     public void init(){
@@ -55,13 +50,14 @@ public class EditReservationController implements Serializable {
             reservationDTO = editReservationEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
             hallDTO = editReservationEndpointLocal.getHallByName(reservationDTO.getHallName());
             extraServices = editReservationEndpointLocal.getAllExtraServices();
+            eventTypeName = reservationDTO.getEventTypeName();
             extraServicesNames = new ArrayList<>();
             for(ExtraServiceDTO extraServiceDTO: extraServices){
                 extraServicesNames.add(extraServiceDTO.getServiceName());
                 log.severe(extraServiceDTO.getServiceName());
             }
-            log.severe(extraServicesNames.get(0).toString());
-            log.severe(extraServicesNames.get(1).toString());
+            log.severe(eventTypeName);
+            log.severe("herb init " + reservationDTO.getEventTypeName());
             eventTypes = (List<String>) hallDTO.getEvent_type();
         } catch (AppBaseException appBaseException) {
             appBaseException.printStackTrace();
@@ -69,13 +65,21 @@ public class EditReservationController implements Serializable {
     }
 
     public void editReservation(){
-        reservationDTO.setEventTypeName(eventTypeName);
+
+        log.severe("herb " + reservationDTO.getEventTypeName());
         try {
-            log.severe("kontroller poczatek");
+            log.severe("herb2 "+reservationDTO.getEventTypeName());
+            log.severe("herb2.5 "+eventTypeName);
+            reservationDTO.setEventTypeName(eventTypeName);
+            log.severe("herb3 "+reservationDTO.getEventTypeName());
             editReservationEndpointLocal.editReservation(reservationDTO);
             log.severe("poszlo kontorller");
         } catch (AppBaseException appBaseException) {
             ResourceBundles.emitErrorMessageWithFlash(null,appBaseException.getMessage());
         }
+    }
+
+    public String goBack(){
+        return "goToDetails";
     }
 }

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
+import jdk.jfr.Event;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
@@ -8,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
@@ -21,6 +23,7 @@ import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -108,8 +111,16 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
+//        Optional<EventType> eventType = eventTypesFacade.find()
         reservationFacade.edit(reservation);
         log.severe("poszlo manager");
+    }
+
+    @RolesAllowed("getEventTypeByName")
+    public EventType getEventTypeByName(String name) throws AppBaseException{
+        if(eventTypesFacade.findByName(name).isEmpty()){
+            throw new ExtraServiceNotFoundException();
+        }else return eventTypesFacade.findByName(name).get();
     }
 
     @RolesAllowed("filterReservations")
