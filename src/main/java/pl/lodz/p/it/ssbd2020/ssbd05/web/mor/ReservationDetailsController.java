@@ -66,7 +66,6 @@ public class ReservationDetailsController implements Serializable {
         refresh();
     }
     public void changeReservationStatus() {
-        log.severe("WTF ReservationDetailsController " + LocalDateTime.now());
         changeReservationStatusController.changeStatus();
         refresh();
     }

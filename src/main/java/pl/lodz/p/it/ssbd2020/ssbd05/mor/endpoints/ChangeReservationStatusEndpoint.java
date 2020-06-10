@@ -75,7 +75,6 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     @Override
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(ReservationDTO reservationDTO) throws AppBaseException {
-log.severe("WTF 1");
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
         int callCounter = 0;
         boolean rollback;

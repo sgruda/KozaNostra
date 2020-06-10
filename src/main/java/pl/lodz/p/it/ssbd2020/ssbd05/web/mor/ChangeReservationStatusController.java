@@ -52,14 +52,9 @@ public class ChangeReservationStatusController implements Serializable {
     }
 
     public void changeStatus() {
-        log.severe("WTF ChangeReservationStatusController " + LocalDateTime.now());
-log.severe("WTF status " + newStatus);
         reservationDTO.setStatusName(newStatus);
-log.severe("WTF status w dto " + reservationDTO.getStatusName());
         try {
-log.severe("WTF A");
             changeReservationStatusEndpointLocal.changeReservationStatus(reservationDTO);
-log.severe("WTF B");
             ResourceBundles.emitMessageWithFlash(null, "page.listreservations.reservation.details.change.status");
         } catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
