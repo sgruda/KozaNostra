@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
@@ -41,6 +42,8 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     private AccountFacade accountFacade;
     @Inject
     private ClientFacade clientFacade;
+    @Inject
+    private ExtraServiceFacade extraServiceFacade;
 
     @RolesAllowed("getAllReservations")
     public List<Reservation> getAllReservations() throws AppBaseException {
@@ -105,7 +108,8 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        reservationFacade.edit(reservation);
+        log.severe("poszlo manager");
     }
 
     @RolesAllowed("filterReservations")
@@ -118,10 +122,14 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         throw new UnsupportedOperationException();
     }
 
-    public Hall getHall(String hallName) throws AppBaseException{
+    public Hall getHallByName(String hallName) throws AppBaseException{
         if(hallFacade.findByName(hallName).isPresent()) {
             return hallFacade.findByName(hallName).get();
         }
         else throw new HallNotFoundException();
+    }
+
+    public List<ExtraService> getAllExtraServices() throws AppBaseException{
+       return extraServiceFacade.findAll();
     }
 }

@@ -48,7 +48,7 @@ public class ReservationDetailsController implements Serializable {
                 extraServices += extraService;
                 extraServices += " ";
             }
-            extraServices = extraServices.replace("null", "");
+//            extraServices = extraServices.replace("null", "");
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());

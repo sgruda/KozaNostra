@@ -2,10 +2,15 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ExtraServiceMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReservationMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.EventTypeMapper;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
@@ -40,6 +45,9 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
 
     @Getter
     private Collection<String> eventTypes;
+
+    @Getter
+    private Hall hall;
 
     @Override
     @RolesAllowed("getReservationByNumber")
@@ -79,7 +87,7 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         boolean rollback;
         do {
             try {
-                Hall hall = reservationManager.getHall(hallName);
+                hall = reservationManager.getHallByName(hallName);
                 eventTypes = EventTypeMapper.toEventTypeStringCollection(hall.getEvent_type());
                 list.addAll(eventTypes);
                 rollback = reservationManager.isLastTransactionRollback();
@@ -98,9 +106,59 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     }
 
 
+
+
     @Override
     @RolesAllowed("editReservation")
-    public void editReservation(ReservationDTO reservationDTO) {
-        throw new UnsupportedOperationException();
+    public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
+        ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
+        reservationManager.editReservation(reservation);
+        log.severe("poszlo endpoinnnt");
+    }
+
+    @Override
+    public HallDTO getHallByName(String name) throws AppBaseException {
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                 hall = reservationManager.getHallByName(name);
+                eventTypes = EventTypeMapper.toEventTypeStringCollection(hall.getEvent_type());
+                rollback = reservationManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if(callCounter > 0)
+                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
+        return HallMapper.INSTANCE.toHallDTO(hall);
+    }
+
+    @Override
+    public List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException{
+        List<ExtraService> extraServices = new ArrayList<>();
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                extraServices = reservationManager.getAllExtraServices();
+                rollback = reservationManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if(callCounter > 0)
+                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
+        return ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(extraServices);
     }
 }

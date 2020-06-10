@@ -5,7 +5,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <ui:composition template="../templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.client.reservations.details.title']}</title>
@@ -17,33 +18,55 @@
             <p:messages globalOnly="true" closable="true">
                 <p:autoUpdate/>
             </p:messages>
-            <p:panelGrid id="panelGrid" columns="2">
+            <p:panelGrid id="panelGrid" columns="1">
+
+
                 <h:outputText value="#{msg['page.client.reservations.details.reservationNumber']}"/>
-                <h:inputText value="#{editReservationController.reservationDTO.reservationNumber}" disabled="true" style="width: 250px"/>
+                <p:inputText value="#{editReservationController.reservationDTO.reservationNumber}" disabled="true" style="width: 250px"/>
 
-                <h:outputText value="#{msg['page.client.reservations.details.eventTypeName']}"/>
-                <h:inputText value="#{editReservationController.reservationDTO.eventTypeName}" style="width: 250px"/>
-
-                <h:outputText value="#{msg['page.client.reservations.details.from']}"/>
-                <h:inputText value="#{editReservationController.reservationDTO.startDate}" style="width: 250px"/>
-
-                <h:outputText value="#{msg['page.client.reservations.details.till']}"/>
-                <h:inputText value="#{editReservationController.reservationDTO.endDate}" style="width: 250px"/>
 
                 <h:outputText value="#{msg['page.client.reservations.details.hallName']}"/>
-                <h:inputText value="#{editReservationController.reservationDTO.hallName}" style="width: 250px"/>
+                <p:inputText value="#{editReservationController.reservationDTO.hallName}" disabled="true" style="width: 250px"/>
 
-<!--                <h:outputLabel for="hallNames" value="#{msg['page.addhall.addresseslabel']} *&#8195;" rendered="#{!addHallController.newAddress}">-->
-<!--                    <p:selectOneMenu id="hallNames" value="#{addHallController.address}" converter="addressConverter">-->
-<!--                        <f:selectItems value="#{addHallController.addresses}" var="address" itemLabel="#{address.show()}" itemValue="#{address}"/>-->
-<!--                    </p:selectOneMenu>-->
-<!--                </h:outputLabel>-->
+                <h:outputText value="#{msg['page.client.reservations.details.from']}"/>
+                <p:inputText value="#{editReservationController.reservationDTO.startDate}" style="width: 250px"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.till']}"/>
+                <p:inputText value="#{editReservationController.reservationDTO.endDate}" style="width: 250px"/>
+
+                <h:outputLabel for="eventType" value="#{msg['page.editreservation.choose.event.type']} *" />
+                <p:selectOneMenu id="eventType" value="#{editReservationController.reservationDTO.eventTypeName}" panelStyle="width:250px" required="true">
+                    <f:selectItems value="#{editReservationController.eventTypes}" var="eventType" itemLabel="#{eventType}" itemValue="#{eventType}" />
+                </p:selectOneMenu>
+
+                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} *"/>
+                <p:inputNumber id="numberOfGuests" required="true"
+                               value="#{editReservationController.reservationDTO.guestsNumber}"
+                               decimalPlaces="0"
+                               minValue="0" maxValue="#{editReservationController.hallDTO.capacity}"/>
+
+                <h:outputLabel for="extraServices" value="#{msg['page.editreservation.extraservices']}">
+                    <p:selectManyCheckbox id="extraServices" value="#{editReservationController.extraServicesNames}">
+                        <c:forEach items="#{editReservationController.extraServicesNames}" var="extraService">
+                            <f:selectItem itemLabel="#{extraService}" itemValue="#{extraService}"/>
+                        </c:forEach>
+                    </p:selectManyCheckbox>
+                </h:outputLabel>
+
+                <h:outputLabel value="Cena calkowita">
+                <h:outputLabel value="#{editReservationController.reservationDTO.totalPrice}"/>
+                </h:outputLabel>
             </p:panelGrid>
             <div style="margin: 5px;display:flex;justify-content: center">
 
                     <p:commandButton value="#{msg['page.client.reservations.details.back']}"/>
-                    <p:commandButton value="#{msg['page.client.reservations.details.edit']}" />
-
+                    <p:commandButton id="submit" validateClient="true" value="#{msg['page.client.editreservation.button.submit']}" action="#{editReservationController.editReservation}">
+<!--                        <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>-->
+                    </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+                    <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                    <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                </p:confirmDialog>
             </div>
         </div>
     </ui:define>

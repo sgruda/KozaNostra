@@ -1,7 +1,9 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
@@ -16,4 +18,6 @@ public interface EditReservationEndpointLocal {
     public List<ReservationDTO> getReservationsByDate(LocalDateTime date) throws AppBaseException;
     public List<String> getEventTypeForHall(String hallName) throws AppBaseException;
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException;
+    public HallDTO getHallByName(String name) throws AppBaseException;
+    public List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException;
 }
