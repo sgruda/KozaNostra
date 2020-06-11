@@ -17,12 +17,18 @@
             <p:messages globalOnly="true" closable="true">
                 <p:autoUpdate/>
             </p:messages>
-            <p:panelGrid id="panelGrid" columns="2">
+            <p:panelGrid id="panelGrid" columns="2" style="margin-bottom: auto">
                 <h:outputText value="#{msg['page.client.reservations.details.reservationNumber']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.reservationNumber}"/>
 
                 <h:outputText value="#{msg['page.client.reservations.details.eventTypeName']}"/>
                 <h:outputText value="#{reservationDetailsController.resourceBundles.getTranslatedText(reservationDetailsController.reservationDTO.eventTypeName)}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.name']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.clientDTO.personalDetails}"/>
+
+                <h:outputText value="#{msg['page.client.reservations.details.email']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.clientDTO.email}"/>
 
                 <h:outputText value="#{msg['page.client.reservations.details.from']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.startDate}"/>
@@ -41,9 +47,6 @@
 
                 <h:outputText value="#{msg['page.client.reservations.details.extraServices']}"/>
                 <h:outputText value="#{reservationDetailsController.extraServices}"/>
-
-                <h:outputText value="#{msg['page.client.reservations.details.username']}"/>
-                <h:outputText value="#{reservationDetailsController.reservationDTO.clientDTO.login}"/>
 
             </p:panelGrid>
             <div style="margin: 5px;display:flex;justify-content: center">
