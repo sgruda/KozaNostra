@@ -14,21 +14,27 @@
         </style>
     </ui:define>
     <ui:define name="content">
-        <div>
+
             <p:messages globalOnly="true" closable="true">
                 <p:autoUpdate/>
             </p:messages>
             <c:choose>
                 <c:when test="#{addReviewController.availableReservations}">
                     <p:panel header="#{msg['page.addreview.title']}">
-                        <h:form>
-                            <p:selectOneMenu id="selectReservationMenu" value="#{addReviewController.reservationNumber}">
-                                <f:selectItems value="#{addReviewController.reservationNumbers}" var="reservationNumber" itemLabel="#{addReviewController.addReviewLabel(reservationNumber)}" itemValue="#{reservationNumber}"/>
-                            </p:selectOneMenu>
-                            <p:inputTextarea value="#{addReviewController.reviewText}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="#{msg['page.addreview.counter']}" autoResize="false"/>
-                            <h:outputText id="display" />
-                            <p:commandButton ajax="false" id="submit" validateClient="true" value="#{msg['page.addreview.button']}"  icon="pi pi-check" style="float: center;" action="#{addReviewController.addReview()}"/>
-                        </h:form>
+
+                            <h:form>
+                                <div id="add-review-div">
+                                    <p:outputLabel for="select-reservation" value="#{msg['page.addReview.reservationlabel']}"/>
+                                    <p:selectOneMenu id="select-reservation" value="#{addReviewController.reservationNumber}">
+                                        <f:selectItems value="#{addReviewController.reservationNumbers}" var="reservationNumber" itemLabel="#{addReviewController.addReviewLabel(reservationNumber)}" itemValue="#{reservationNumber}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="review-content-input" value="#{msg['page.addReview.contentlabel']}"/>
+                                    <p:inputTextarea id="review-content-input" value="#{addReviewController.reviewText}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="#{msg['page.addreview.counter']}"/>
+                                    <h:outputText id="display" />
+                                    <p:commandButton ajax="false" id="submit" validateClient="true" value="#{msg['page.addreview.button']}"  icon="pi pi-check" style="float: center;" action="#{addReviewController.addReview()}"/>
+                                </div>
+                            </h:form>
+
                     </p:panel>
 
                 </c:when>
@@ -39,7 +45,6 @@
                 </c:otherwise>
             </c:choose>
 
-        </div>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.addreview.reviews.breadcrumb']}" outcome="/listReviews.xhtml"/>
