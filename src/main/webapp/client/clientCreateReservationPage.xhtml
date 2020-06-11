@@ -57,10 +57,10 @@
                             <p:outputLabel for="from" value="#{msg['page.createreservation.start.date']} *" />
                             <p:datePicker id="from" valueChangeListener="#{createReservationController.onDateSelect}"
                                           rendered="#{createReservationController.datesRenderd}" required="true"
-                                          value="#{createReservationController.event.startDate}" timeOnly="true" pattern="yyyy-MM-dd HH:mm:ss" mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}" appendTo="@(body)"/>
+                                          value="#{createReservationController.event.startDate}" timeOnly="true" pattern="yyyy-MM-dd HH:mm:ss" appendTo="@(body)"/>
 
                             <p:outputLabel for="to" value="#{msg['page.createreservation.end.date']} *" />
-                            <p:datePicker id="to" required="true" value="#{createReservationController.event.endDate }" timeOnly="true" pattern="yyyy-MM-dd HH:mm:ss" mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}" appendTo="@(body)"/>
+                            <p:datePicker id="to" required="true" value="#{createReservationController.event.endDate }" timeOnly="true" pattern="yyyy-MM-dd HH:mm:ss" appendTo="@(body)"/>
 
 
                             <p:commandButton id="addButton" value="Save" action="#{createReservationController.setDates}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
