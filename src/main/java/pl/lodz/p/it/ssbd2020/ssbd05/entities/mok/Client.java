@@ -12,6 +12,7 @@ import java.util.Collection;
 @DiscriminatorValue("CLIENT")
 @NamedQueries({
         @NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c"),
+        @NamedQuery(name = "Client.findByLogin", query = "SELECT c FROM Client c WHERE c.account.login = :login"),
         @NamedQuery(name = "Client.findById", query = "SELECT c FROM Client c WHERE c.id = :id")
 })
 public class Client extends AccessLevel implements Serializable {

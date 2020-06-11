@@ -1,9 +1,11 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 
 import lombok.extern.java.Log;
+import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReviewFacade;
 
@@ -12,6 +14,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 @Log
@@ -35,7 +38,11 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
 
     @RolesAllowed("addReview")
     public void addReview(Review review) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        try{
+            reviewFacade.create(review);
+        }catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @RolesAllowed("editReview")

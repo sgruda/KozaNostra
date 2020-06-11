@@ -26,6 +26,9 @@ public abstract class ReviewMapper {
 
     public abstract ArrayList<ReviewDTO> toReviewDTOArrayList(Collection<Review> reviewCollection);
 
+    @Mapping(target = "date", dateFormat = WITH_SECONDS)
+    public abstract Review toReview(ReviewDTO reviewDTO);
+
     public String map(Client value){ return value.getAccount().getLogin(); }
     public String map(Reservation value){ return value.getReservationNumber();}
 }
