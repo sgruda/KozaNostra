@@ -22,19 +22,21 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@RequestScoped
+@ViewScoped
 @Named
 @Log
 @Data
-public class CreateReservationController {
+public class CreateReservationController implements Serializable {
 
     @Inject
     private CreateReservationEndpointLocal createReservationEndpointLocal;
@@ -49,8 +51,10 @@ public class CreateReservationController {
     private HallDTO hallDTO;
 
     private ReservationDTO reservationDTO;
+
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+
     private List<String> selectedExtraServices = new ArrayList<>();
     private String eventTypeName;
     private Integer numberOfGuests;
@@ -64,39 +68,19 @@ public class CreateReservationController {
 
     private ScheduleEvent event = new DefaultScheduleEvent();
 
-    private boolean datesRenderd = false;
+    private boolean datesRenderd = true;
 
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
-        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject().plusHours(1)).build();
-        for (ScheduleEvent ev :scheduleModel.getEvents()){
-            if(event.getStartDate().isAfter(ev.getStartDate()) && event.getEndDate().isBefore(ev.getEndDate())){
-                if(ev.isAllDay()){
-                    datesRenderd = false;
-                }else{
-                    datesRenderd = true;
-                }
-            }
-        }
+        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).build();
     }
 
-    public void addEvent() {
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);
-
+    public void setDates() {
+        eventModel.addEvent(event);
         event = new DefaultScheduleEvent();
+        startDate = event.getStartDate();
+        endDate = event.getEndDate();
     }
-
-
-
-
-
-
-
-
-
 
 
     //koniec
@@ -113,18 +97,18 @@ public class CreateReservationController {
         reservationDTO.setHallName(hallDTO.getName());
         reservationDTO.setGuestsNumber(Long.valueOf(numberOfGuests));
         reservationDTO.setTotalPrice(calculateTotalPrice());
-        reservationDTO.setReservationNumber( UUID.randomUUID().toString().replace("-", ""));
+        reservationDTO.setReservationNumber(UUID.randomUUID().toString().replace("-", ""));
         try {
             createReservationEndpointLocal.createReservation(reservationDTO);
             ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
-    } catch (ValidationException e) {
-        ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
-        log.severe(e.getMessage() + ", " + LocalDateTime.now());
-    } catch (AppBaseException e) {
-        ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-        log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        } catch (ValidationException e) {
+            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        }
     }
-}
 
     private double calculateTotalPrice() {
         double totalPrice = hallDTO.getPrice() * numberOfGuests;
@@ -153,17 +137,20 @@ public class CreateReservationController {
 
         //Tutaj jeszcze kalendarzyk
         eventModel = new DefaultScheduleModel();
-            for (UnavailableDate unavailableDate: unavailableDates){
-            DefaultScheduleEvent event = DefaultScheduleEvent.builder()
+
+
+        for (UnavailableDate unavailableDate : unavailableDates) {
+            DefaultScheduleEvent event = DefaultScheduleEvent.builder().editable(false)
                     .title("Rezerwacja")
                     .startDate(unavailableDate.getStartDate())
-                    .endDate(unavailableDate.getEndDate())
+                    .endDate(unavailableDate.getEndDate()).overlapAllowed(false)
                     .build();
             eventModel.addEvent(event);
-            }
+        }
 
 
     }
+
     public String goBack() {
         return "goBack";
     }
