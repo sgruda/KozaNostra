@@ -16,6 +16,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -93,10 +94,15 @@ public class EditReservationController implements Serializable {
             reservationDTO.setExtraServiceCollection(extraServicesNames);
 
             editReservationEndpointLocal.editReservation(reservationDTO);
+            ResourceBundles.emitErrorMessageWithFlash(null, "page.client.editreservation.success");
             log.severe("poszlo kontorller");
             for (String extraServicesName : extraServicesNames) log.severe(extraServicesName + "\n");
+        } catch (AppOptimisticLockException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
         } catch (AppBaseException appBaseException) {
             ResourceBundles.emitErrorMessageWithFlash(null,appBaseException.getMessage());
+            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
         }
     }
 

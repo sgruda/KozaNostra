@@ -162,12 +162,12 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
 
     @Override
     public List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException{
-        List<ExtraService> extraServices = new ArrayList<>();
+        List<ExtraServiceDTO> extraServices = new ArrayList<>();
         int callCounter = 0;
         boolean rollback;
         do {
             try {
-                extraServices = reservationManager.getAllExtraServices();
+                extraServices = ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(reservationManager.getAllExtraServices());
                 rollback = reservationManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -180,7 +180,13 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         if (rollback) {
             throw new ExceededTransactionRetriesException();
         }
-        return ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(extraServices);
+        Collection<ExtraServiceDTO> extraServicesActiveList = new ArrayList<>();
+        for (ExtraServiceDTO ext : extraServices) {
+            if (ext.isActive()) {
+                extraServicesActiveList.add(ext);
+            }
+        }
+        return new ArrayList<>(extraServicesActiveList);
     }
 
     @Override

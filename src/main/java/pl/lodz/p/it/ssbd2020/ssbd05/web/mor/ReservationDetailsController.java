@@ -69,6 +69,10 @@ public class ReservationDetailsController implements Serializable {
         return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString());
     }
 
+    public boolean isCancelled(){
+        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.toString());
+    }
+
     private void refresh() {
         try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();

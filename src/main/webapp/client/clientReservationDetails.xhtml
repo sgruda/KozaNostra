@@ -39,6 +39,9 @@
                 <h:outputText value="#{msg['page.client.reservations.details.hallName']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.hallName}"/>
 
+                <h:outputText value="#{msg['page.client.reservations.details.guestsNumber']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.guestsNumber}"/>
+
                 <h:outputText value="#{msg['page.client.reservations.details.extraServices']}"/>
                 <h:outputText value="#{reservationDetailsController.extraServices}"/>
 
@@ -46,7 +49,7 @@
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.client.reservations.details.back']}" action="#{reservationDetailsController.goBack}"/>
-                    <p:commandButton value="#{msg['page.client.reservations.details.edit']}" action="#{reservationDetailsController.goToEditPage}"/>
+                    <p:commandButton  rendered="#{!reservationDetailsController.isCancelled()}" value="#{msg['page.client.reservations.details.edit']}" action="#{reservationDetailsController.goToEditPage}"/>
                     <p:commandButton rendered="#{reservationDetailsController.isSubmitted()}"
                                      value="#{msg['page.client.reservations.details.cancel']}"
                                      action="#{reservationDetailsController.cancelReservation}">
