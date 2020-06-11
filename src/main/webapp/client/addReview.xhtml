@@ -9,7 +9,7 @@
 
 <ui:composition template="../templates/template.xhtml">
     <ui:define name="head">
-        <title>#{msg['page.client.reservations.details.title']}</title>
+        <title>#{msg['page.addreview.title']}</title>
         <style type="text/css">
         </style>
     </ui:define>
@@ -20,21 +20,21 @@
             </p:messages>
             <c:choose>
                 <c:when test="#{addReviewController.availableReservations}">
-                    <p:panel header="Add review">
+                    <p:panel header="#{msg['page.addreview.title']}">
                         <h:form>
                             <p:selectOneMenu id="selectReservationMenu" value="#{addReviewController.reservationNumber}">
                                 <f:selectItems value="#{addReviewController.reservationNumbers}" var="reservationNumber" itemLabel="#{addReviewController.addReviewLabel(reservationNumber)}" itemValue="#{reservationNumber}"/>
                             </p:selectOneMenu>
-                            <p:inputTextarea value="#{addReviewController.reviewText}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="{0} characters remaining" autoResize="false"/>
+                            <p:inputTextarea value="#{addReviewController.reviewText}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="#{msg['page.addreview.counter']}" autoResize="false"/>
                             <h:outputText id="display" />
-                            <p:commandButton ajax="false" id="submit" validateClient="true" value="#{msg['page.template.admin.addAccount']}"  icon="pi pi-check" style="float: center;" action="#{addReviewController.addReview()}"/>
+                            <p:commandButton ajax="false" id="submit" validateClient="true" value="#{msg['page.addreview.button']}"  icon="pi pi-check" style="float: center;" action="#{addReviewController.addReview()}"/>
                         </h:form>
                     </p:panel>
 
                 </c:when>
                 <c:otherwise>
-                    <p:panel header="No reservations">
-                        <h:outputText value="There are no reservations you can review."/>
+                    <p:panel header="#{msg['page.addreview.noreservations.header']}">
+                        <h:outputText value="#{msg['page.addreview.noreservations']}"/>
                     </p:panel>
                 </c:otherwise>
             </c:choose>
@@ -42,8 +42,8 @@
         </div>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.client.reservations.breadcrumbs']}" outcome="/client/clientReservationsPage.xhtml"/>
-        <p:menuitem value="#{msg['page.client.reservations.details.breadcrumbs']}" outcome="/client/clientReservationDetails.xhtml" />
+        <p:menuitem value="#{msg['page.addreview.reviews.breadcrumb']}" outcome="/listReviews.xhtml"/>
+        <p:menuitem value="#{msg['page.addreview.breadcrumb']}" outcome="/client/addReview.xhtml" />
     </ui:define>
 </ui:composition>
 </html>

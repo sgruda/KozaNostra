@@ -203,6 +203,15 @@
     </navigation-rule>
 
     <navigation-rule>
+        <from-view-id>/client/addReview.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>addReview</from-outcome>
+            <to-view-id>/listReviews.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
         <from-view-id>/manager/reservationDetails.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>back</from-outcome>

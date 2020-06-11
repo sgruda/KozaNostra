@@ -67,7 +67,7 @@ public class AddReviewController implements Serializable {
         }
     }
 
-    public void addReview(){
+    public String addReview(){
         ReviewDTO review = new ReviewDTO();
         review.setClientLogin(login);
         review.setContent(reviewText);
@@ -81,6 +81,8 @@ public class AddReviewController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
+        ResourceBundles.emitMessageWithFlash(null,"page.addReview.created");
+        return "addReview";
     }
 
     public String addReviewLabel(String reservationNumber){
