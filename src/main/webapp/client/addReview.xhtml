@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <ui:composition template="../templates/template.xhtml">
     <ui:define name="head">
@@ -17,13 +18,26 @@
             <p:messages globalOnly="true" closable="true">
                 <p:autoUpdate/>
             </p:messages>
-            <ui:repeat id="repeat" value="#{addReviewController.reservations}" var="reservation">
-                <p:fieldset legend="#{reservation.reservationNumber}" styleClass="review-fieldset">
-                    <div class="review-div">
-                        <h:outputText value="#{reservation.statusName}" styleClass="review-content"/>
-                    </div>
-                </p:fieldset>
-            </ui:repeat>
+            <c:choose>
+                <c:when test="#{addReviewController.availableReservations}">
+                    <p:panel header="Add review">
+                        <h:form>
+                            <p:selectOneMenu id="selectReservationMenu" value="#{addReviewController.reservation}">
+                                <f:selectItems value="#{addReviewController.reservations}" var="reservation" itemLabel="#{addReviewController.addReviewLabel(reservation)}" itemValue="#{reservation}"/>
+                            </p:selectOneMenu>
+                            <p:inputTextarea value="#{addReviewController.reviewText}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="{0} characters remaining" autoResize="false"/>
+                            <h:outputText id="display" />
+                        </h:form>
+                    </p:panel>
+
+                </c:when>
+                <c:otherwise>
+                    <p:panel header="No reservations">
+                        <h:outputText value="There are no reservations you can review."/>
+                    </p:panel>
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">

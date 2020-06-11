@@ -31,6 +31,15 @@ public class AddReviewController implements Serializable {
     @Setter
     private List<ReservationDTO> reservations;
 
+    @Getter
+    @Setter
+    private ReservationDTO reservation;
+
+    @Getter
+    @Setter
+    private String reviewText;
+
+
 
 
     @PostConstruct
@@ -42,5 +51,19 @@ public class AddReviewController implements Serializable {
             log.warning(e.getClass().toString() + " " + e.getMessage());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
+    }
+
+    public String addReviewLabel(ReservationDTO reservationDTO){
+        StringBuilder sb = new StringBuilder();
+        sb.append(reservationDTO.getHallName());
+        sb.append(" ");
+        sb.append(reservationDTO.getStartDate());
+        sb.append(":");
+        sb.append(reservationDTO.getEndDate());
+        return sb.toString();
+    }
+
+    public boolean isAvailableReservations(){
+        return !reservations.isEmpty();
     }
 }
