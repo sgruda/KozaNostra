@@ -121,13 +121,17 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     public List<Reservation> getUserReviewableReservations(String login) throws AppBaseException {
         List<Reservation> result;
         try {
-            List<Reservation> userReservations = reservationFacade.findByLogin(login);
-            List<Review> userReviews = reviewFacade.findByLogin(login);
-            List<Reservation> reviewedReservations = userReviews
+            List<Reservation> userFinishedReservations = reservationFacade
+                    .findByLogin(login)
+                    .stream()
+                    .filter(reservation -> reservation.getStatus().getStatusName().equals(ReservationStatuses.finished.name()))
+                    .collect(Collectors.toList());
+            List<Reservation> reviewedReservations = reviewFacade
+                    .findByLogin(login)
                     .stream()
                     .map(Review::getReservation)
                     .collect(Collectors.toList());
-            result = new ArrayList<>(userReservations);
+            result = new ArrayList<>(userFinishedReservations);
             result.removeAll(reviewedReservations);
         } catch (ReservationNotFoundException e) {
             throw new ReservationNotFoundException(e);

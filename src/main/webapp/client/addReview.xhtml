@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.client.reservations.details.title']}</title>
+        <style type="text/css">
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <div>
+            <p:messages globalOnly="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+            <ui:repeat id="repeat" value="#{addReviewController.reservations}" var="reservation">
+                <p:fieldset legend="#{reservation.reservationNumber}" styleClass="review-fieldset">
+                    <div class="review-div">
+                        <h:outputText value="#{reservation.statusName}" styleClass="review-content"/>
+                    </div>
+                </p:fieldset>
+            </ui:repeat>
+        </div>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.client.reservations.breadcrumbs']}" outcome="/client/clientReservationsPage.xhtml"/>
+        <p:menuitem value="#{msg['page.client.reservations.details.breadcrumbs']}" outcome="/client/clientReservationDetails.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>
