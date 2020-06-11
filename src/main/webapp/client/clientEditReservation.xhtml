@@ -27,38 +27,6 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 <h:outputLabel value="#{msg['page.client.reservations.details.hallName']}">
                 <p:inputText  value="#{editReservationController.reservationDTO.hallName}" disabled="true" style="width: 250px; margin-left: 20px"/>
                 </h:outputLabel>
-<!--                <h:form>-->
-<!--                    <p:growl id="messages" showDetail="true" />-->
-
-<!--                    <h:panelGrid columnClasses="value">-->
-<!--                        <p:schedule id="schedule" value="#{createReservationController.eventModel}" widgetVar="myschedule"-->
-<!--                                    style=" width: 600px;" >-->
-
-<!--                            <p:ajax event="dateSelect" listener="#{createReservationController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />-->
-<!--                        </p:schedule>-->
-<!--                    </h:panelGrid>-->
-
-
-
-<!--                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" >-->
-
-<!--                        <h:panelGrid id="eventDetails" columns="2">-->
-<!--                            <c:if test="#{createReservationController.datesRenderd}">-->
-<!--                                <p:outputLabel for="from" value="#{msg['page.createreservation.start.date']} *" />-->
-<!--                                <p:datePicker id="from"  required="true" value="#{editReservationController.event.startDate}" timeOnly="true" pattern="HH:mm" mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}" appendTo="@(body)"/>-->
-
-<!--                                <p:outputLabel for="to" value="#{msg['page.createreservation.end.date']} *" />-->
-<!--                                <p:datePicker id="to" required="true" value="#{editReservationController.event.endDate }" timeOnly="true" pattern="HH:mm" mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}" appendTo="@(body)"/>-->
-
-
-<!--                                <p:commandButton id="addButton" value="Save" action="#{editReservationController.setDates}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />-->
-<!--                            </c:if>-->
-<!--                            <c:if test="#{!editReservationController.datesRenderd}">-->
-<!--                                <h:outputText value="No slots available" />-->
-<!--                            </c:if>-->
-<!--                        </h:panelGrid>-->
-<!--                    </p:dialog>-->
-<!--                </h:form>-->
 
                 <h:outputLabel  for="eventType" value="#{msg['page.editreservation.choose.event.type']} *" >
                 <p:selectOneMenu style="margin-left: 20px" id="eventType" value="#{editReservationController.eventTypeName}" panelStyle="width:250px" required="true">
@@ -80,6 +48,40 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                         </c:forEach>
                     </p:selectManyCheckbox>
                 </h:outputLabel>
+
+
+                <h:form>
+                    <p:growl id="messages" showDetail="true" />
+
+                    <h:panelGrid columnClasses="value">
+                        <p:schedule id="schedule" value="#{editReservationController.eventModel}" widgetVar="myschedule"
+                                    style=" width: 600px;" >
+
+                            <p:ajax event="dateSelect" listener="#{editReservationController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        </p:schedule>
+                    </h:panelGrid>
+
+
+
+                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" >
+
+                        <h:panelGrid id="eventDetails" columns="2">
+                            <c:if test="#{editReservationController.datesRenderd}">
+                                <p:outputLabel for="from" value="start *" />
+                                <p:datePicker id="from"  required="true" value="#{editReservationController.event.startDate}" timeOnly="true" pattern="HH:mm" mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}" appendTo="@(body)"/>
+
+                                <p:outputLabel for="to" value="koniec *" />
+                                <p:datePicker id="to" required="true" value="#{editReservationController.event.endDate }" timeOnly="true" pattern="HH:mm" mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}" appendTo="@(body)"/>
+
+
+                                <p:commandButton id="addButton" value="Save" action="#{editReservationController.setDates}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                            </c:if>
+                            <c:if test="#{!editReservationController.datesRenderd}">
+                                <h:outputText value="No slots available" />
+                            </c:if>
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
             </p:panelGrid>
             <div style="margin: 5px;display:flex;justify-content: center">
                     <p:commandButton value="#{msg['page.client.reservations.details.back']}" action="#{editReservationController.goBack()}"/>

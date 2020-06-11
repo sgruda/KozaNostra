@@ -111,9 +111,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
-//        Optional<EventType> eventType = eventTypesFacade.find()
         reservationFacade.edit(reservation);
-        log.severe("poszlo manager");
     }
 
     @RolesAllowed("getEventTypeByName")
@@ -133,7 +131,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         throw new UnsupportedOperationException();
     }
 
-
+    @RolesAllowed("getHallForReservation")
     public Hall getHallByName(String hallName) throws AppBaseException{
         if(hallFacade.findByName(hallName).isPresent()) {
             return hallFacade.findByName(hallName).get();

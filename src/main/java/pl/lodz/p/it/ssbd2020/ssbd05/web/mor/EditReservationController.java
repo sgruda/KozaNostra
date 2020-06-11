@@ -22,6 +22,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -56,6 +57,10 @@ public class EditReservationController implements Serializable {
 
     private String eventTypeName;
 
+    private LocalDateTime startDate;
+
+    private LocalDateTime endDate;
+
     @PostConstruct
     public void init(){
         try {
@@ -76,16 +81,19 @@ public class EditReservationController implements Serializable {
             appBaseException.printStackTrace();
         }
         eventModel = new DefaultScheduleModel();
-        for (UnavailableDate unavailableDate: unavailableDates){
-            DefaultScheduleEvent event = DefaultScheduleEvent.builder()
+
+
+        for (UnavailableDate unavailableDate : unavailableDates) {
+            DefaultScheduleEvent event = DefaultScheduleEvent.builder().editable(false)
                     .title("Rezerwacja")
                     .startDate(unavailableDate.getStartDate())
-                    .endDate(unavailableDate.getEndDate())
+                    .endDate(unavailableDate.getEndDate()).overlapAllowed(false)
                     .build();
             eventModel.addEvent(event);
         }
     }
 
+    @RolesAllowed("editReservationClient")
     public void editReservation(){
 
         log.severe("herb " + reservationDTO.getEventTypeName());
@@ -94,8 +102,7 @@ public class EditReservationController implements Serializable {
             reservationDTO.setExtraServiceCollection(extraServicesNames);
 
             editReservationEndpointLocal.editReservation(reservationDTO);
-            ResourceBundles.emitErrorMessageWithFlash(null, "page.client.editreservation.success");
-            log.severe("poszlo kontorller");
+            ResourceBundles.emitMessageWithFlash(null, "page.client.editreservation.success");
             for (String extraServicesName : extraServicesNames) log.severe(extraServicesName + "\n");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
@@ -138,6 +145,14 @@ public class EditReservationController implements Serializable {
 
         event = new DefaultScheduleEvent();
     }
+
+    public void setDates() {
+        eventModel.addEvent(event);
+        event = new DefaultScheduleEvent();
+        startDate = event.getStartDate();
+        endDate = event.getEndDate();
+    }
+
 
 
 

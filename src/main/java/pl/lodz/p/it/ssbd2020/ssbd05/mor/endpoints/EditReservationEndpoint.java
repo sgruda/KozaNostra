@@ -80,64 +80,21 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
 
 
     @Override
-    @RolesAllowed("getReservationsByDate")
-    public List<ReservationDTO> getReservationsByDate(LocalDateTime date) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    @RolesAllowed("getAllEventTypes")
-    public List<String> getEventTypeForHall(String hallName) throws AppBaseException {
-        List<String> list = new ArrayList<>();
-        int callCounter = 0;
-        boolean rollback;
-        do {
-            try {
-                hall = reservationManager.getHallByName(hallName);
-                eventTypes = EventTypeMapper.toEventTypeStringCollection(hall.getEvent_type());
-                list.addAll(eventTypes);
-                rollback = reservationManager.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
-                log.warning("EJBTransactionRolledBack");
-                rollback = true;
-            }
-            if(callCounter > 0)
-                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-            callCounter++;
-        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
-        if (rollback) {
-            throw new ExceededTransactionRetriesException();
-        }
-        return list;
-    }
-
-
-
-
-    @Override
     @RolesAllowed("editReservation")
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
         ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
-        log.severe("cena: " + reservation.getTotalPrice());
-
         List<ExtraService> extraServices = new ArrayList<>();
         for(String extraService: reservationDTO.getExtraServiceCollection()){
             extraServices.add(reservationManager.getExtraServicesByName(extraService));
         }
-        log.severe(extraServices.get(0).getServiceName() + "herb ");
         reservation.setExtra_service(extraServices);
         reservation.setTotalPrice(calculateTotalPrice());
-        log.severe("endpoint " +reservationDTO.getEventTypeName());
-        log.severe(reservation.getEventType().getTypeName());
-        log.severe(reservation.getExtra_service().iterator().next().getDescription() + "herb1.1 ");
-        log.severe(reservation.getExtra_service().iterator().next().getServiceName()+ "herb1.2 ");
-        log.severe(reservation.getExtra_service().iterator().next().getServiceName()+ "herb1.3 ");
         reservationManager.editReservation(reservation);
-        log.severe("poszlo endpoinnnt");
     }
 
     @Override
+    @RolesAllowed("GetHallForReservation")
     public HallDTO getHallByName(String name) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;
@@ -161,6 +118,7 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     }
 
     @Override
+    @RolesAllowed("getAllExtraServicesForReservation")
     public List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException{
         List<ExtraServiceDTO> extraServices = new ArrayList<>();
         int callCounter = 0;

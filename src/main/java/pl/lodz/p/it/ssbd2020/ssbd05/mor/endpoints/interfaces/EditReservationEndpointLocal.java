@@ -15,11 +15,9 @@ import java.util.List;
 @Local
 public interface EditReservationEndpointLocal {
 
-    public ReservationDTO getReservationByNumber(String number) throws AppBaseException;
-    public List<ReservationDTO> getReservationsByDate(LocalDateTime date) throws AppBaseException;
-    public List<String> getEventTypeForHall(String hallName) throws AppBaseException;
-    public void editReservation(ReservationDTO reservationDTO) throws AppBaseException;
-    public HallDTO getHallByName(String name) throws AppBaseException;
-    public List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException;
+    ReservationDTO getReservationByNumber(String number) throws AppBaseException;
+    void editReservation(ReservationDTO reservationDTO) throws AppBaseException;
+    HallDTO getHallByName(String name) throws AppBaseException;
+    List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException;
     List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException;
 }
