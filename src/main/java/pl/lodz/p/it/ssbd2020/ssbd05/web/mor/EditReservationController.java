@@ -17,6 +17,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReservationEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -89,6 +91,7 @@ public class EditReservationController implements Serializable {
         try {
             reservationDTO.setEventTypeName(eventTypeName);
             reservationDTO.setExtraServiceCollection(extraServicesNames);
+
             editReservationEndpointLocal.editReservation(reservationDTO);
             log.severe("poszlo kontorller");
             for (String extraServicesName : extraServicesNames) log.severe(extraServicesName + "\n");
@@ -129,6 +132,8 @@ public class EditReservationController implements Serializable {
 
         event = new DefaultScheduleEvent();
     }
+
+
 
     public String goBack(){
         return "goToDetails";

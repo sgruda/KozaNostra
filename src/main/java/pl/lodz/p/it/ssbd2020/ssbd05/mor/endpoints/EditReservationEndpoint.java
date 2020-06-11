@@ -20,6 +20,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRe
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.RolesAllowed;
@@ -30,10 +31,13 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Log
@@ -115,14 +119,15 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
         ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
+        log.severe("cena: " + reservation.getTotalPrice());
+
         List<ExtraService> extraServices = new ArrayList<>();
         for(String extraService: reservationDTO.getExtraServiceCollection()){
             extraServices.add(reservationManager.getExtraServicesByName(extraService));
         }
         log.severe(extraServices.get(0).getServiceName() + "herb ");
-        log.severe(extraServices.get(1).getServiceName() + "herb1 ");
-        log.severe(extraServices.get(2).getServiceName() + "herb2 ");
         reservation.setExtra_service(extraServices);
+        reservation.setTotalPrice(calculateTotalPrice());
         log.severe("endpoint " +reservationDTO.getEventTypeName());
         log.severe(reservation.getEventType().getTypeName());
         log.severe(reservation.getExtra_service().iterator().next().getDescription() + "herb1.1 ");
@@ -208,5 +213,19 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
             }
         }
         return new ArrayList<>(dates);
+    }
+
+    private double calculateTotalPrice() {
+        Period period = DateFormatter.getPeriod(reservation.getStartDate(),reservation.getEndDate());
+        int rentedTime = period.getDays();
+        long[] time = DateFormatter.getTime(reservation.getStartDate(),reservation.getEndDate());
+        if(time[2]>0)
+            rentedTime+=1;
+//        double totalPrice = hall.getPrice() * reservation.getGuestsNumber();
+        double totalPrice = hall.getPrice() * rentedTime;
+        for (ExtraService ext : this.reservation.getExtra_service()) {
+           totalPrice+=ext.getPrice();
+        }
+        return totalPrice;
     }
 }
