@@ -8,8 +8,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.AddReviewEndpointLocal;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ClientFacade;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReservationFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReviewManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -21,6 +19,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Stateful
 @Log
@@ -32,26 +31,20 @@ public class AddReviewEndpoint implements AddReviewEndpointLocal, Serializable {
     private ReviewManager reviewManager;
     private Review review;
 
-    @Inject
-    ClientFacade clientFacade;
-
-    @Inject
-    ReservationFacade reservationFacade;
-
-    @Inject
 
 
     @Override
     @RolesAllowed("addReview")
     public void addReview(ReviewDTO reviewDTO) throws AppBaseException {
-        review = ReviewMapper.INSTANCE.toReview(reviewDTO);
+        review = ReviewMapper.INSTANCE.createNewReview(reviewDTO);
         int callCounter = 0;
         boolean rollback;
         do {
             try {
-                review.setClient(clientFacade.findByLogin(reviewDTO.getClientLogin()));
-                review.setReservation(reservationFacade.findByNumber(reviewDTO.getReservationNumber()).get());
-                reviewManager.addReview(review);
+                String clientLogin = reviewDTO.getClientLogin();
+                String reservationNumber = reviewDTO.getReservationNumber();
+                review.setDate(LocalDateTime.now());
+                reviewManager.addReview(review, clientLogin, reservationNumber);
                 rollback = reviewManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");

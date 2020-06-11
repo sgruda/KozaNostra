@@ -7,6 +7,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ClientFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReservationFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.ReviewFacade;
 
 import javax.annotation.security.PermitAll;
@@ -26,6 +28,12 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
     @Inject
     private ReviewFacade reviewFacade;
 
+    @Inject
+    ClientFacade clientFacade;
+
+    @Inject
+    ReservationFacade reservationFacade;
+
     @RolesAllowed("getReviewByReviewNumber")
     public Review getReviewByReviewNumber(String reviewNumber) throws AppBaseException {
         throw new UnsupportedOperationException();
@@ -37,8 +45,10 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
     }
 
     @RolesAllowed("addReview")
-    public void addReview(Review review) throws AppBaseException {
+    public void addReview(Review review, String clientLogin, String reservationNumber) throws AppBaseException {
         try{
+            review.setClient(clientFacade.findByLogin(clientLogin));
+            review.setReservation(reservationFacade.findByNumber(reservationNumber).get());
             reviewFacade.create(review);
         }catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);

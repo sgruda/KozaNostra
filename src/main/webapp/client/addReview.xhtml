@@ -22,11 +22,12 @@
                 <c:when test="#{addReviewController.availableReservations}">
                     <p:panel header="Add review">
                         <h:form>
-                            <p:selectOneMenu id="selectReservationMenu" value="#{addReviewController.reservation}">
-                                <f:selectItems value="#{addReviewController.reservations}" var="reservation" itemLabel="#{addReviewController.addReviewLabel(reservation)}" itemValue="#{reservation}"/>
+                            <p:selectOneMenu id="selectReservationMenu" value="#{addReviewController.reservationNumber}">
+                                <f:selectItems value="#{addReviewController.reservationNumbers}" var="reservationNumber" itemLabel="#{addReviewController.addReviewLabel(reservationNumber)}" itemValue="#{reservationNumber}"/>
                             </p:selectOneMenu>
                             <p:inputTextarea value="#{addReviewController.reviewText}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="{0} characters remaining" autoResize="false"/>
                             <h:outputText id="display" />
+                            <p:commandButton ajax="false" id="submit" validateClient="true" value="#{msg['page.template.admin.addAccount']}"  icon="pi pi-check" style="float: center;" action="#{addReviewController.addReview()}"/>
                         </h:form>
                     </p:panel>
 
