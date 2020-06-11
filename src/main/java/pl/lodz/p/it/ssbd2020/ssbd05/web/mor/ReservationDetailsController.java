@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Log
 @Named
@@ -44,11 +45,13 @@ public class ReservationDetailsController implements Serializable {
             resourceBundles = new ResourceBundles();
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
             cancelReservationController.setReservationDTO(this.reservationDTO);
+            extraServices = "";
             for(String extraService: reservationDTO.getExtraServiceCollection()){
                 extraServices += extraService;
-                extraServices += " ";
+                extraServices += ", ";
             }
-//            extraServices = extraServices.replace("null", "");
+            if(!extraServices.isEmpty())
+            extraServices = extraServices.replace("null", "");
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());

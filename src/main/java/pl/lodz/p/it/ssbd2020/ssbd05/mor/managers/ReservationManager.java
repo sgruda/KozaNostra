@@ -133,6 +133,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         throw new UnsupportedOperationException();
     }
 
+
     public Hall getHallByName(String hallName) throws AppBaseException{
         if(hallFacade.findByName(hallName).isPresent()) {
             return hallFacade.findByName(hallName).get();
@@ -142,5 +143,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     public List<ExtraService> getAllExtraServices() throws AppBaseException{
        return extraServiceFacade.findAll();
+    }
+
+    @RolesAllowed("getExtraServiceByName")
+    public ExtraService getExtraServicesByName(String name) throws AppBaseException{
+        if(extraServiceFacade.findByName(name).isPresent())
+        return extraServiceFacade.findByName(name).get();
+        else throw new ExtraServiceNotFoundException();
     }
 }

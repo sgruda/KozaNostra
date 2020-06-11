@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ExtraServiceMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReservationMapper;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.EventTypeMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
@@ -30,6 +31,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -113,8 +115,19 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
         ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
+        List<ExtraService> extraServices = new ArrayList<>();
+        for(String extraService: reservationDTO.getExtraServiceCollection()){
+            extraServices.add(reservationManager.getExtraServicesByName(extraService));
+        }
+        log.severe(extraServices.get(0).getServiceName() + "herb ");
+        log.severe(extraServices.get(1).getServiceName() + "herb1 ");
+        log.severe(extraServices.get(2).getServiceName() + "herb2 ");
+        reservation.setExtra_service(extraServices);
         log.severe("endpoint " +reservationDTO.getEventTypeName());
         log.severe(reservation.getEventType().getTypeName());
+        log.severe(reservation.getExtra_service().iterator().next().getDescription() + "herb1.1 ");
+        log.severe(reservation.getExtra_service().iterator().next().getServiceName()+ "herb1.2 ");
+        log.severe(reservation.getExtra_service().iterator().next().getServiceName()+ "herb1.3 ");
         reservationManager.editReservation(reservation);
         log.severe("poszlo endpoinnnt");
     }
@@ -163,5 +176,37 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
             throw new ExceededTransactionRetriesException();
         }
         return ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(extraServices);
+    }
+
+    @Override
+    @RolesAllowed("getUnavailableDates")
+    public List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException {
+        Collection<ReservationDTO> list = new ArrayList<>();
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                list = ReservationMapper.INSTANCE.toReservationDTOCollection(reservationManager.getAllReservations());
+                rollback = reservationManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if (callCounter > 0)
+                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
+
+        List<UnavailableDate> dates = new ArrayList<>();
+        for (ReservationDTO res : list) {
+            if(res.getHallName().equalsIgnoreCase(hallName)){
+                dates.add(new UnavailableDate(LocalDateTime.parse(res.getStartDate(), DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss" )),
+                        LocalDateTime.parse(res.getEndDate(),DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss" ))));
+            }
+        }
+        return new ArrayList<>(dates);
     }
 }

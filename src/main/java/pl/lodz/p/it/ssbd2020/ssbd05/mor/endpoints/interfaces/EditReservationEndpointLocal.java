@@ -1,5 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces;
 
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
@@ -20,4 +21,5 @@ public interface EditReservationEndpointLocal {
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException;
     public HallDTO getHallByName(String name) throws AppBaseException;
     public List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException;
+    List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException;
 }

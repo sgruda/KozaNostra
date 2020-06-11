@@ -5,6 +5,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
@@ -19,6 +25,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +38,8 @@ public class EditReservationController implements Serializable {
 
     @Inject
     private EditReservationEndpointLocal editReservationEndpointLocal;
+
+    private List<UnavailableDate> unavailableDates;
 
     private ReservationDTO reservationDTO;
 
@@ -51,6 +60,7 @@ public class EditReservationController implements Serializable {
             hallDTO = editReservationEndpointLocal.getHallByName(reservationDTO.getHallName());
             extraServices = editReservationEndpointLocal.getAllExtraServices();
             eventTypeName = reservationDTO.getEventTypeName();
+            unavailableDates = editReservationEndpointLocal.getUnavailableDates(hallDTO.getName());
             extraServicesNames = new ArrayList<>();
             for(ExtraServiceDTO extraServiceDTO: extraServices){
                 extraServicesNames.add(extraServiceDTO.getServiceName());
@@ -62,21 +72,62 @@ public class EditReservationController implements Serializable {
         } catch (AppBaseException appBaseException) {
             appBaseException.printStackTrace();
         }
+        eventModel = new DefaultScheduleModel();
+        for (UnavailableDate unavailableDate: unavailableDates){
+            DefaultScheduleEvent event = DefaultScheduleEvent.builder()
+                    .title("Rezerwacja")
+                    .startDate(unavailableDate.getStartDate())
+                    .endDate(unavailableDate.getEndDate())
+                    .build();
+            eventModel.addEvent(event);
+        }
     }
 
     public void editReservation(){
 
         log.severe("herb " + reservationDTO.getEventTypeName());
         try {
-            log.severe("herb2 "+reservationDTO.getEventTypeName());
-            log.severe("herb2.5 "+eventTypeName);
             reservationDTO.setEventTypeName(eventTypeName);
-            log.severe("herb3 "+reservationDTO.getEventTypeName());
+            reservationDTO.setExtraServiceCollection(extraServicesNames);
             editReservationEndpointLocal.editReservation(reservationDTO);
             log.severe("poszlo kontorller");
+            for (String extraServicesName : extraServicesNames) log.severe(extraServicesName + "\n");
         } catch (AppBaseException appBaseException) {
             ResourceBundles.emitErrorMessageWithFlash(null,appBaseException.getMessage());
         }
+    }
+
+    //Do kalendarza i wyświetlania okienek czasowych
+    //start
+    private ScheduleModel scheduleModel;
+
+    private ScheduleModel eventModel;
+
+    private ScheduleEvent event = new DefaultScheduleEvent();
+
+    private boolean datesRenderd = false;
+
+
+    public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
+        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject().plusHours(1)).build();
+        for (ScheduleEvent ev :scheduleModel.getEvents()){
+            if(event.getStartDate().isAfter(ev.getStartDate()) && event.getEndDate().isBefore(ev.getEndDate())){
+                if(ev.isAllDay()){
+                    datesRenderd = false;
+                }else{
+                    datesRenderd = true;
+                }
+            }
+        }
+    }
+
+    public void addEvent() {
+        if(event.getId() == null)
+            eventModel.addEvent(event);
+        else
+            eventModel.updateEvent(event);
+
+        event = new DefaultScheduleEvent();
     }
 
     public String goBack(){
