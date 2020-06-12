@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Log
@@ -57,6 +58,8 @@ public class EditReservationController implements Serializable {
 
     private String eventTypeName;
 
+    private LocalDateTime today;
+
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
@@ -81,6 +84,9 @@ public class EditReservationController implements Serializable {
             appBaseException.printStackTrace();
         }
         eventModel = new DefaultScheduleModel();
+        today = LocalDateTime.now();
+        startDate = LocalDateTime.now();
+        endDate = LocalDateTime.now();
 
 
         for (UnavailableDate unavailableDate : unavailableDates) {
@@ -91,6 +97,7 @@ public class EditReservationController implements Serializable {
                     .build();
             eventModel.addEvent(event);
         }
+
     }
 
     @RolesAllowed("editReservationClient")
@@ -100,7 +107,8 @@ public class EditReservationController implements Serializable {
         try {
             reservationDTO.setEventTypeName(eventTypeName);
             reservationDTO.setExtraServiceCollection(extraServicesNames);
-
+            reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
+            reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
             editReservationEndpointLocal.editReservation(reservationDTO);
             ResourceBundles.emitMessageWithFlash(null, "page.client.editreservation.success");
             for (String extraServicesName : extraServicesNames) log.severe(extraServicesName + "\n");
@@ -108,7 +116,7 @@ public class EditReservationController implements Serializable {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
         } catch (AppBaseException appBaseException) {
-            ResourceBundles.emitErrorMessageWithFlash(null,appBaseException.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
         }
     }
@@ -125,16 +133,7 @@ public class EditReservationController implements Serializable {
 
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
-        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject().plusHours(1)).build();
-        for (ScheduleEvent ev :scheduleModel.getEvents()){
-            if(event.getStartDate().isAfter(ev.getStartDate()) && event.getEndDate().isBefore(ev.getEndDate())){
-                if(ev.isAllDay()){
-                    datesRenderd = false;
-                }else{
-                    datesRenderd = true;
-                }
-            }
-        }
+        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
     }
 
     public void addEvent() {
@@ -146,11 +145,18 @@ public class EditReservationController implements Serializable {
         event = new DefaultScheduleEvent();
     }
 
-    public void setDates() {
+    public void setDates() throws AppBaseException {
         eventModel.addEvent(event);
-        event = new DefaultScheduleEvent();
-        startDate = event.getStartDate();
-        endDate = event.getEndDate();
+        for (ScheduleEvent ev : eventModel.getEvents()) {
+            log.severe("events "+ ev.getStartDate() + " " + ev.getEndDate());
+            if (ev.getEndDate().isAfter(event.getStartDate()) || ev.getStartDate().isBefore(event.getEndDate())) {
+                ResourceBundles.emitErrorMessage(null, "error.createreservation.dates.overlap");
+                throw new AppBaseException();
+            } else {
+                startDate = event.getStartDate();
+                endDate = event.getEndDate();
+            }
+        }
     }
 
 
