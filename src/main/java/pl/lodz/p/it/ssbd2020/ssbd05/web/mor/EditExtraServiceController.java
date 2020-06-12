@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
@@ -19,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -26,8 +28,8 @@ import java.time.LocalDateTime;
  */
 @Named
 @Log
-@RequestScoped
-public class EditExtraServiceController {
+@ViewScoped
+public class EditExtraServiceController implements Serializable {
 
     @Inject
     private EditExtraServiceEndpointLocal editExtraServiceEndpointLocal;
@@ -42,21 +44,16 @@ public class EditExtraServiceController {
     public void editExtraService(){
         try{
             editExtraServiceEndpointLocal.editExtraService(extraServiceDTO);
+            ResourceBundles.emitMessageWithFlash(null,"page.edit.extraservice.message");
         }catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        } catch (ExceededTransactionRetriesException ex) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.extraservice.optimisticlock");
+        } catch (ValidationException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        } catch (DatabaseQueryException ex) {
+            ResourceBundles.emitErrorMessageByPlainText(null, ex.getMessage());
+        } catch (AppBaseException ex) {
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (DatabaseConnectionException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
-        }catch (AppBaseException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
     }
 
