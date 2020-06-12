@@ -32,6 +32,10 @@
                                      value="#{extraService.getActiveString()}"
                                      action="#{listExtraServicesController.changeActivity(extraService)}" />
                 </p:column>
+                <p:column headerText="#{msg['page.listextraservices.edit']}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
+                <p:commandButton id="goEditPage" value="#{msg['page.listextraservices.goToEditPage']}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}"
+                                 action="#{listExtraServicesController.goToEditPage(extraService.getServiceName())}"/>
+                </p:column>
 
             </p:dataTable>
         </h:form>

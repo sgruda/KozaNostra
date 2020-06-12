@@ -71,8 +71,7 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @PermitAll
     public Collection<Hall> getFilteredHalls(String hallFilter) throws AppBaseException {
-        // TODO implement
-        return new ArrayList<>();
+        return hallFacade.filter(hallFilter);
     }
 
     @RolesAllowed("editHall")

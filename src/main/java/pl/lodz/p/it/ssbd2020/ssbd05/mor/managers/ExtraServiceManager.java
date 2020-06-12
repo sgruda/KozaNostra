@@ -13,6 +13,9 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
 
+/**
+ * The type Extra service manager.
+ */
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
@@ -22,16 +25,35 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
     private ExtraServiceFacade extraServiceFacade;
 
 
+    /**
+     * Pobierz wszystkie usługi dodatkowe
+     *
+     * @return lista wszystkich usług dodatkowych
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getAllExtraServices")
     public List<ExtraService> getAllExtraServices() throws AppBaseException {
         return extraServiceFacade.findAll();
     }
 
+    /**
+     * Add extra service.
+     *
+     * @param extraService the extra service
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("addExtraService")
     public void addExtraService(ExtraService extraService) throws AppBaseException {
         extraServiceFacade.create(extraService);
     }
 
+    /**
+     * Pobierz usługę dodatkową o podanej nazwie
+     *
+     * @param name nazwa usługi dodatkowej do pobrania
+     * @return Obiekt usługi dodatkowej
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getExtraServiceByName")
     public ExtraService getExtraServiceByName(String name) throws AppBaseException {
         if(extraServiceFacade.findByName(name).isPresent())
@@ -39,15 +61,27 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
         else throw new ExtraServiceNotFoundException("error.extraservice.not.found");
     }
 
+    /**
+     * Change activity.
+     *
+     * @param extraService the extra service
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("changeExtraServiceActivity")
     public void changeActivity(ExtraService extraService) throws AppBaseException {
         extraService.setActive(!extraService.isActive());
         extraServiceFacade.edit(extraService);
     }
 
+
+    /**
+     * Edytuj usługę dodatkową
+     *
+     * @param extraService usługa dodatkowa podlegająca edycji
+     * @throws AppBaseException podstawowy wyjatek aplikacyjny
+     */
     @RolesAllowed("editExtraService")
     public void editExtraService(ExtraService extraService) throws AppBaseException{
-        //TODO Implemnetacja
-        throw new UnsupportedOperationException();
+        extraServiceFacade.edit(extraService);
     }
 }

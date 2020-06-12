@@ -4,11 +4,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <ui:composition template="../templates/template.xhtml">
     <ui:define name="head">
-        <title>#{msg['page.reservationdetails.title']}</title>
+        <title>#{msg['page.listreservations.reservation.details.title']}</title>
         <style type="text/css">
         </style>
     </ui:define>
@@ -18,45 +19,64 @@
                 <p:autoUpdate/>
             </p:messages>
             <p:panelGrid id="panelGrid" columns="2">
-                <h:outputText value="#{msg['page.client.reservations.details.reservationNumber']}"/>
+                <h:outputText value="#{msg['page.listreservations.reservation.details.reservationNumber']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.reservationNumber}"/>
 
-                <h:outputText value="#{msg['page.client.reservations.details.eventTypeName']}"/>
+                <h:outputText value="#{msg['page.listreservations.reservation.details.eventTypeName']}"/>
                 <h:outputText value="#{reservationDetailsController.resourceBundles.getTranslatedText(reservationDetailsController.reservationDTO.eventTypeName)}"/>
 
-                <h:outputText value="#{msg['page.client.reservations.details.from']}"/>
+                <h:outputText value="#{msg['page.listreservations.reservation.details.from']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.startDate}"/>
 
-                <h:outputText value="#{msg['page.client.reservations.details.till']}"/>
+                <h:outputText value="#{msg['page.listreservations.reservation.details.till']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.endDate}"/>
 
-                <h:outputText value="#{msg['page.client.reservations.details.price']}"/>
+                <h:outputText value="#{msg['page.listreservations.reservation.details.price']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.totalPrice} PLN"/>
 
-                <h:outputText value="#{msg['page.client.reservations.details.status']}"/>
-                <h:outputText value="#{reservationDetailsController.resourceBundles.getTranslatedText(reservationDetailsController.reservationDTO.statusName)}"/>
+                <h:outputText value="#{msg['page.listreservations.reservation.details.status']}"/>
+                <h:form>
+                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                    <p:selectOneMenu value="#{changeReservationStatusController.newStatus}">
+                        <f:selectItems value="#{changeReservationStatusController.statuses}" var="status"
+                                       itemLabel="#{changeReservationStatusController.resourceBundles.getTranslatedText(status)}"
+                                       itemValue="#{status}" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:commandButton value="#{msg['page.listreservations.reservation.details.change']}"
+                                 icon="pi pi-check" style="float: center;" validateClient="true"
+                                 actionListener="#{reservationDetailsController.changeReservationStatus()}"
+                                 action="#{changeReservationStatusController.goBack()}">
+                              <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+                    <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                    <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                </p:confirmDialog>
+                </h:form>
 
-                <h:outputText value="#{msg['page.client.reservations.details.hallName']}"/>
+
+                <h:outputText value="#{msg['page.listreservations.reservation.details.hallName']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.hallName}"/>
 
-                <h:outputText value="#{msg['page.client.reservations.details.extraServices']}"/>
+                <h:outputText value="#{msg['page.listreservations.reservation.details.extraServices']}"/>
                 <h:outputText value="#{reservationDetailsController.extraServices}"/>
 
-                <h:outputText value="#{msg['page.client.reservations.details.username']}"/>
+                <h:outputText value="#{msg['page.listreservations.reservation.details.username']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.clientDTO.login}"/>
 
             </p:panelGrid>
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
-                    <p:commandButton value="#{msg['page.halldetails.back']}" action="#{reservationDetailsController.goBack}"/>
-                    <p:commandButton value="#{msg['page.halldetails.edit']}"/>
+                    <p:commandButton value="#{msg['page.listreservations.reservation.details.back']}" action="#{reservationDetailsController.goBack}"/>
+                    <p:commandButton value="#{msg['page.listreservations.reservation.details.edit']}"/>
                 </h:form>
             </div>
         </div>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.listreservations.breadcrumbs']}" outcome="/manager/listReservations.xhtml" />
-        <p:menuitem value="#{msg['page.reservations.details.breadcrumbs']}" outcome="/manager/reservationDetails.xhtml" />
+        <p:menuitem value="#{msg['page.listreservations.reservation.details.breadcrumbs']}" outcome="/manager/reservationDetails.xhtml" />
     </ui:define>
 </ui:composition>
 </html>

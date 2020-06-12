@@ -6,6 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
@@ -17,9 +18,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import java.sql.SQLNonTransientConnectionException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Extra service facade.
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -34,6 +39,9 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         return em;
     }
 
+    /**
+     * Instantiates a new Extra service facade.
+     */
     public ExtraServiceFacade() {
         super(ExtraService.class);
     }
@@ -49,16 +57,27 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
             throw new DatabaseConnectionException(e);
         }
     }
-
+    /**
+     * Edytuj usługę dodatkową
+     *
+     * @param entity encja
+     * @throws AppBaseException Wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"editExtraService", "changeExtraServiceActivity"})
     public void edit(ExtraService entity) throws AppBaseException {
         try {
             super.edit(entity);
+        } catch (DatabaseException ex) {
+            if (ex.getCause() instanceof SQLNonTransientConnectionException) {
+                throw new DatabaseConnectionException(ex);
+            } else {
+                throw new DatabaseQueryException(ex);
+            }
         } catch (OptimisticLockException e) {
             throw new AppOptimisticLockException(e);
-        } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException(e);
+        } catch (PersistenceException e) {
+            throw new DatabaseQueryException(e);
         }
     }
 
@@ -68,6 +87,12 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         return super.find(id);
     }
 
+    /**
+     * Pobierz listę wszystkich usług dodatkowych
+     *
+     * @return lista wszystkich usług dodatkowych
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"getAllExtraServices", "changeExtraServiceActivity"})
     public List<ExtraService> findAll() throws AppBaseException {
@@ -78,6 +103,13 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         }
     }
 
+    /**
+     * Pobierz usługę dodatkową na podstawie nazwy
+     *
+     * @param name nazwa usługi dodatkowej
+     * @return obiekt typu Optional
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getExtraServiceByName")
     public Optional<ExtraService> findByName(String name) throws AppBaseException {
         try {
