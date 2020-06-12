@@ -14,10 +14,10 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
         </style>
     </ui:define>
     <ui:define name="content">
-        <h:form id="form1" style="margin-bottom: auto; margin-top: 125px">
+        <h:form id="form1" style="margin-bottom: auto; margin-top: 75px">
 
 
-            <p:panelGrid id="panelGrid" columns="1">
+            <p:panelGrid id="panelGrid" columns="1" style="width: 600px">
 
 
                 <h:outputLabel value="#{msg['page.client.reservations.details.reservationNumber']}">
@@ -72,7 +72,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                     <h:panelGrid id="eventDetails" columns="2">
                         <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}"/>
 
-                        <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true" required="true"
+                        <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true"
                                       mindate="#{editReservationController.today.plusMinutes(1)}"
                                       lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.today.plusMinutes(1)}"
@@ -83,7 +83,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 
                         <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}"/>
-                        <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true" required="true"
+                        <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true"
                                       mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
                                       lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.event.startDate}"
@@ -91,7 +91,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                       validatorMessage="#{msg['page.editreservation.enddate.validator']}"
                                       locale="#{msg['page.editreservation.calendar.language']}"
                                       pattern="yyyy-MM-dd HH:mm:ss"/>
-                        <p:commandButton id="addButton" value="Save"
+                        <p:commandButton id="addButton" value="#{msg['page.editreservation.button.save.date']}"
                                          action="#{editReservationController.addEvent}"
                                          oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
 
