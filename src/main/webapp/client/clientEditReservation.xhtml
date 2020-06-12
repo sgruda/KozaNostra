@@ -14,8 +14,8 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
         </style>
     </ui:define>
     <ui:define name="content">
-        <h:form id="form1" style="margin-bottom: auto; margin-top: 150px">
-        <div>
+        <h:form id="form1" style="margin-bottom: auto; margin-top: 125px">
+
 
             <p:panelGrid id="panelGrid" columns="1">
 
@@ -52,61 +52,63 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
             </p:panelGrid>
 
 
+            <h:form>
+                <h:panelGrid columnClasses="value">
+                    <p:schedule id="schedule"
+                                styleClass="fc-dayGridMonth-button#disabled; fc-draggable#disabled"
+                                value="#{editReservationController.eventModel}" widgetVar="myschedule"
+                                view="agendaWeek" rightHeaderTemplate="timeGridWeek" timeZone=""
+                                style=" width: 600px;" allDaySlot="false" clientTimeZone="local"
+                                locale="#{msg['page.createreservation.calendar.language']}" tooltip="true"
+                                draggable="false" resizable="false" slotEventOverlap="false">
+                        <p:ajax event="dateSelect" listener="#{editReservationController.onDateSelect}"
+                                update="eventDetails" oncomplete="PF('eventDialog').show();"/>
+                    </p:schedule>
+                </h:panelGrid>
 
-            <h:panelGrid columnClasses="value">
-                <p:schedule id="schedule"
-                            styleClass="fc-dayGridMonth-button#disabled; fc-draggable#disabled"
-                            value="#{editReservationController.eventModel}" widgetVar="myschedule"
-                            view="agendaWeek" rightHeaderTemplate="timeGridWeek"
-                            style=" width: 600px;" allDaySlot="false"
-                            locale="#{msg['page.createreservation.calendar.language']}" tooltip="true"
-                            draggable="false" resizable="false" slotEventOverlap="false">
-                    <p:ajax event="dateSelect" listener="#{editReservationController.onDateSelect}"
-                            update="eventDetails" oncomplete="PF('eventDialog').show();"/>
-                </p:schedule>
-            </h:panelGrid>
+                <p:dialog id="eventDialog" widgetVar="eventDialog" header="Event Details" showEffect="clip"
+                          hideEffect="clip">
+
+                    <h:panelGrid id="eventDetails" columns="2">
+                        <p:outputLabel for="since" value="#{msg['page.createreservation.start.date']}"/>
+
+                        <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true" required="true"
+                                      mindate="#{editReservationController.today.plusMinutes(1)}"
+                                      lang="#{msg['page.createreservation.calendar.language']}"
+                                      minValue="#{editReservationController.today.plusMinutes(1)}"
+                                      requiredMessage="#{msg['page.createreservation.startdate.required']}"
+                                      validatorMessage="#{msg['page.createreservation.startdate.validator']}"
+                                      locale="#{msg['page.createreservation.calendar.language']}" appendTo="@(body)"
+                                      pattern="yyyy-MM-dd HH:mm:ss"/>
 
 
+                        <p:outputLabel for="until" value="#{msg['page.createreservation.end.date']}"/>
+                        <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true" required="true"
+                                      mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
+                                      lang="#{msg['page.createreservation.calendar.language']}"
+                                      minValue="#{editReservationController.event.startDate}"
+                                      requiredMessage="#{msg['page.createreservation.enddate.required']}"
+                                      validatorMessage="#{msg['page.createreservation.enddate.validator']}"
+                                      locale="#{msg['page.createreservation.calendar.language']}"
+                                      pattern="yyyy-MM-dd HH:mm:ss"/>
+                        <p:commandButton id="addButton" value="Save"
+                                         action="#{editReservationController.addEvent}"
+                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
 
-            <p:dialog id="eventDialog" widgetVar="eventDialog" header="Event Details" showEffect="clip"
-                      hideEffect="clip">
-
-            <h:panelGrid id="eventDetails" columns="2">
-                <p:outputLabel for="since" value="#{msg['page.createreservation.start.date']}"/>
-
-                <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true" required="true"
-                          mindate="#{editReservationController.today.plusMinutes(1)}"
-                          lang="#{msg['page.createreservation.calendar.language']}"
-                          minValue="#{editReservationController.today.plusMinutes(1)}"
-                          requiredMessage="#{msg['page.createreservation.startdate.validator']}"
-                          locale="#{msg['page.createreservation.calendar.language']}" appendTo="@(body)"
-                          pattern="yyyy-MM-dd HH:mm:ss"/>
-
-
-            <p:outputLabel for="until" value="#{msg['page.createreservation.end.date']}"/>
-            <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true" required="true"
-                          mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
-                          lang="#{msg['page.createreservation.calendar.language']}"
-                          minValue="#{editReservationController.event.startDate}"
-                          requiredMessage="#{msg['page.createreservation.enddate.validator']}"
-                          locale="#{msg['page.createreservation.calendar.language']}"
-                          pattern="yyyy-MM-dd HH:mm:ss"/>
-            <p:commandButton id="addButton" value="Save"
-                             action="#{editReservationController.setDates()}"
-                             oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
-        </h:panelGrid>
-            </p:dialog>
+                    </h:panelGrid>
+                </p:dialog>
+        </h:form>
             <div style="display:flex; flex-direction: column;">
-                <p:messages>
+                <p:messages globalOnly="true">
                     <p:autoUpdate/>
                 </p:messages>
             </div>
             <div style="margin: 5px;display:flex;justify-content: center">
-                    <p:commandButton value="#{msg['page.client.reservations.details.back']}" action="#{editReservationController.goBack()}"/>
+                    <p:commandButton value="#{msg['page.client.reservations.details.back']}" immediate="true" action="#{editReservationController.goBack()}"/>
                     <p:commandButton id="submit" validateClient="true" value="#{msg['page.client.editreservation.button.submit']}"
                                      actionListener="#{editReservationController.editReservation()}"
                                      action="#{editReservationController.goBack()}">
-<!--                        <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>-->
+                        <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
                     </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
                     <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
@@ -114,7 +116,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 </p:confirmDialog>
 
             </div>
-        </div>
+
         </h:form>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">

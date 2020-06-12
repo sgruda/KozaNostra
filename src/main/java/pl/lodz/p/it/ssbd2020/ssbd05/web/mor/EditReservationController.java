@@ -16,6 +16,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
@@ -65,7 +66,7 @@ public class EditReservationController implements Serializable {
     private LocalDateTime endDate;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
             reservationDTO = editReservationEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
             hallDTO = editReservationEndpointLocal.getHallByName(reservationDTO.getHallName());
@@ -73,7 +74,7 @@ public class EditReservationController implements Serializable {
             eventTypeName = reservationDTO.getEventTypeName();
             unavailableDates = editReservationEndpointLocal.getUnavailableDates(hallDTO.getName());
             extraServicesNames = new ArrayList<>();
-            for(ExtraServiceDTO extraServiceDTO: extraServices){
+            for (ExtraServiceDTO extraServiceDTO : extraServices) {
                 extraServicesNames.add(extraServiceDTO.getServiceName());
                 log.severe(extraServiceDTO.getServiceName());
             }
@@ -90,36 +91,61 @@ public class EditReservationController implements Serializable {
 
 
         for (UnavailableDate unavailableDate : unavailableDates) {
-            DefaultScheduleEvent event = DefaultScheduleEvent.builder().editable(false)
-                    .title("Rezerwacja")
-                    .startDate(unavailableDate.getStartDate())
-                    .endDate(unavailableDate.getEndDate()).overlapAllowed(false)
-                    .build();
-            eventModel.addEvent(event);
+            log.severe("dataaa " + unavailableDate.getStartDate() + unavailableDate.getEndDate());
+                if(!reservationDTO.getStartDate().equals(DateFormatter.formatDate(unavailableDate.getStartDate()))) {
+                    DefaultScheduleEvent event = DefaultScheduleEvent.builder().editable(false)
+                            .title(ResourceBundles.getTranslatedText("page.createreservation.title"))
+                            .startDate(unavailableDate.getStartDate())
+                            .endDate(unavailableDate.getEndDate()).overlapAllowed(false)
+                            .build();
+                    log.severe("dodanie evebtu");
+                    eventModel.addEvent(event);
+                }
         }
 
     }
 
     @RolesAllowed("editReservationClient")
-    public void editReservation(){
+    public void editReservation() {
 
         log.severe("herb " + reservationDTO.getEventTypeName());
-        try {
-            reservationDTO.setEventTypeName(eventTypeName);
-            reservationDTO.setExtraServiceCollection(extraServicesNames);
-            reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
-            reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
-            editReservationEndpointLocal.editReservation(reservationDTO);
-            ResourceBundles.emitMessageWithFlash(null, "page.client.editreservation.success");
-            for (String extraServicesName : extraServicesNames) log.severe(extraServicesName + "\n");
-        } catch (AppOptimisticLockException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
-        } catch (AppBaseException appBaseException) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
-            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
+
+        reservationDTO.setEventTypeName(eventTypeName);
+        reservationDTO.setExtraServiceCollection(extraServicesNames);
+        reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
+        reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
+        boolean notGood = false;
+        if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
+            ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
+            notGood = true;
+        } else {
+            for (ScheduleEvent ev : eventModel.getEvents()) {
+                if (ev.getEndDate().isAfter(startDate) && ev.getStartDate().isBefore(endDate)) {
+                    ResourceBundles.emitErrorMessageWithFlash(null, "error.createreservation.dates.overlap");
+                    notGood = true;
+                }
+            }
+        }
+        if (!notGood) {
+            try {
+                editReservationEndpointLocal.editReservation(reservationDTO);
+                ResourceBundles.emitMessageWithFlash(null, "page.client.editreservation.success");
+                for (String extraServicesName : extraServicesNames) log.severe(extraServicesName + "\n");
+            } catch (AppOptimisticLockException ex) {
+                log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
+            } catch (ValidationException e) {
+                ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            } catch (AppBaseException appBaseException) {
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
+                log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
+
+            }
         }
     }
+
+
 
     //Do kalendarza i wyświetlania okienek czasowych
     //start
@@ -136,31 +162,17 @@ public class EditReservationController implements Serializable {
         event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
     }
 
-    public void addEvent() {
+    public void addEvent(){
         if(event.getId() == null)
             eventModel.addEvent(event);
         else
             eventModel.updateEvent(event);
 
         event = new DefaultScheduleEvent();
+        startDate = event.getStartDate();
+        endDate = event.getEndDate();
+
     }
-
-    public void setDates() throws AppBaseException {
-        eventModel.addEvent(event);
-        for (ScheduleEvent ev : eventModel.getEvents()) {
-            log.severe("events "+ ev.getStartDate() + " " + ev.getEndDate());
-            if (ev.getEndDate().isAfter(event.getStartDate()) || ev.getStartDate().isBefore(event.getEndDate())) {
-                ResourceBundles.emitErrorMessage(null, "error.createreservation.dates.overlap");
-                throw new AppBaseException();
-            } else {
-                startDate = event.getStartDate();
-                endDate = event.getEndDate();
-            }
-        }
-    }
-
-
-
 
     public String goBack(){
         return "goToDetails";
