@@ -80,17 +80,16 @@ public class CreateReservationController implements Serializable {
         event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
     }
 
-    public void setDates() throws AppBaseException {
-        eventModel.addEvent(event);
-        for (ScheduleEvent ev : eventModel.getEvents()) {
-            if (ev.getEndDate().isAfter(event.getStartDate()) || ev.getStartDate().isBefore(event.getEndDate())) {
-                ResourceBundles.emitErrorMessage(null, "error.createreservation.dates.overlap");
-                throw new AppBaseException();
-            } else {
-                startDate = event.getStartDate();
-                endDate = event.getEndDate();
-            }
-        }
+    public void addEvent(){
+        if(event.getId() == null)
+            eventModel.addEvent(event);
+        else
+            eventModel.updateEvent(event);
+
+        event = new DefaultScheduleEvent();
+        startDate = event.getStartDate();
+        endDate = event.getEndDate();
+
     }
 
     public double calculateTotalPrice() {
@@ -125,20 +124,19 @@ public class CreateReservationController implements Serializable {
         reservationDTO.setGuestsNumber(Long.valueOf(numberOfGuests));
         reservationDTO.setTotalPrice(calculateTotalPrice());
         reservationDTO.setReservationNumber(UUID.randomUUID().toString().replace("-", ""));
-        if (startDate.isAfter(endDate)) {
+        boolean notGood = false;
+        if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
             ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
+            notGood = true;
         } else {
             for (ScheduleEvent ev : eventModel.getEvents()) {
-                if (ev.getEndDate().isAfter(startDate) || ev.getStartDate().isBefore(endDate)) {
-                    try {
-                        throw new DatesOverlapException();
-                    } catch (DatesOverlapException e) {
-                        ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
-                        log.severe(e.getMessage() + ", " + LocalDateTime.now());
-                        return;
+                if (ev.getEndDate().isAfter(startDate) && ev.getStartDate().isBefore(endDate)) {
+                        ResourceBundles.emitErrorMessage(null, "error.createreservation.dates.overlap");
+                        notGood = true;
                     }
                 }
             }
+        if(!notGood){
             try {
                 createReservationEndpointLocal.createReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
@@ -174,7 +172,7 @@ public class CreateReservationController implements Serializable {
 
         for (UnavailableDate unavailableDate : unavailableDates) {
             DefaultScheduleEvent event = DefaultScheduleEvent.builder().editable(false)
-                    .title("Rezerwacja")
+                    .title(ResourceBundles.getTranslatedText("page.createreservation.title"))
                     .startDate(unavailableDate.getStartDate())
                     .endDate(unavailableDate.getEndDate()).overlapAllowed(false)
                     .build();

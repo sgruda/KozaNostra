@@ -36,18 +36,20 @@
                 <h:outputLabel for="numberOfGuests" value="#{msg['page.createreservation.number.of.guests']} *"/>
                 <p:inputNumber id="numberOfGuests" required="true"
                                value="#{createReservationController.numberOfGuests}"
+                               requiredMessage="#{msg['page.createreservation.number.of.guests.required']}"
                                decimalPlaces="0" validatorMessage="#{msg['page.createreservation.number.of.guests.validator']}"
                                minValue="1" maxValue="#{createReservationController.hallDTO.capacity}"/>
 <!--                <p:outputLabel for="totalPrice" value="#{msg['page.createreservation.totalprice']}" />-->
 <!--                <p:inputNumber id="totalPrice" valueChangeListener="#{createReservationController.calculateTotalPrice()}" value="#{createReservationController.totalPrice}"-->
 <!--                               disabled="true" />-->
             </p:panelGrid>
+        <h:form>
             <h:panelGrid columnClasses="value">
                 <p:schedule id="schedule"
                             styleClass="fc-dayGridMonth-button#disabled; fc-draggable#disabled"
                             value="#{createReservationController.eventModel}" widgetVar="myschedule"
-                            view="agendaWeek" rightHeaderTemplate="timeGridWeek"
-                            style=" width: 600px;" allDaySlot="false"
+                            view="agendaWeek" rightHeaderTemplate="timeGridWeek" timeZone=""
+                            style=" width: 600px;" allDaySlot="false" clientTimeZone="local"
                             locale="#{msg['page.createreservation.calendar.language']}" tooltip="true"
                             draggable="false" resizable="false" slotEventOverlap="false">
                     <p:ajax event="dateSelect" listener="#{createReservationController.onDateSelect}"
@@ -65,7 +67,8 @@
                                   mindate="#{createReservationController.today.plusMinutes(1)}"
                                   lang="#{msg['page.createreservation.calendar.language']}"
                                   minValue="#{createReservationController.today.plusMinutes(1)}"
-                                  requiredMessage="#{msg['page.createreservation.startdate.validator']}"
+                                  requiredMessage="#{msg['page.createreservation.startdate.required']}"
+                                  validatorMessage="#{msg['page.createreservation.startdate.validator']}"
                                   locale="#{msg['page.createreservation.calendar.language']}" appendTo="@(body)"
                                   pattern="yyyy-MM-dd HH:mm:ss"/>
 
@@ -75,16 +78,19 @@
                                   mindate="#{createReservationController.today.plusMinutes(1)}" appendTo="@(body)"
                                   lang="#{msg['page.createreservation.calendar.language']}"
                                   minValue="#{createReservationController.event.startDate}"
-                                  requiredMessage="#{msg['page.createreservation.enddate.validator']}"
+                                  requiredMessage="#{msg['page.createreservation.enddate.required']}"
+                                  validatorMessage="#{msg['page.createreservation.enddate.validator']}"
                                   locale="#{msg['page.createreservation.calendar.language']}"
                                   pattern="yyyy-MM-dd HH:mm:ss"/>
                     <p:commandButton id="addButton" value="Save"
-                                     action="#{createReservationController.setDates()}"
+                                     action="#{createReservationController.addEvent}"
                                      oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+
                 </h:panelGrid>
             </p:dialog>
+        </h:form>
             <div style="display:flex; flex-direction: column;">
-                <p:messages>
+                <p:messages globalOnly="true">
                     <p:autoUpdate/>
                 </p:messages>
             </div>
