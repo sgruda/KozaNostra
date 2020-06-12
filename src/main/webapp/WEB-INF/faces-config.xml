@@ -210,4 +210,13 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/manager/reservationDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reservationStatusHasBeenChanged</from-outcome>
+            <to-view-id>/manager/reservationDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>
