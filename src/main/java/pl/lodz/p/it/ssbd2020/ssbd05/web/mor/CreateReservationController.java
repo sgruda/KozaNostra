@@ -15,18 +15,21 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.DatesOverlapException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,22 +71,46 @@ public class CreateReservationController implements Serializable {
 
     private ScheduleEvent event = new DefaultScheduleEvent();
 
-    private boolean datesRenderd = true;
+    private LocalDateTime today;
+
+    private double totalPrice = 0;
 
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
-        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).build();
+        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
     }
 
-    public void setDates() {
+    public void setDates() throws AppBaseException {
         eventModel.addEvent(event);
-        event = new DefaultScheduleEvent();
-        startDate = event.getStartDate();
-        endDate = event.getEndDate();
+        for (ScheduleEvent ev : eventModel.getEvents()) {
+            if (ev.getEndDate().isAfter(event.getStartDate()) || ev.getStartDate().isBefore(event.getEndDate())) {
+                ResourceBundles.emitErrorMessage(null, "error.createreservation.dates.overlap");
+                throw new AppBaseException();
+            } else {
+                startDate = event.getStartDate();
+                endDate = event.getEndDate();
+            }
+        }
     }
 
+    public double calculateTotalPrice() {
+        Period period = DateFormatter.getPeriod(startDate, endDate);
+        int rentedTime = period.getDays();
+        long[] time = DateFormatter.getTime(startDate, endDate);
+        if (time[2] > 0)
+            rentedTime += 1;
+        double totalPrice = hallDTO.getPrice() * rentedTime * numberOfGuests;
+        for (ExtraServiceDTO ext : extraServices) {
+            for (int i = 0; i < selectedExtraServices.size(); i++) {
+                if (ext.getServiceName().equals(selectedExtraServices.get(i)))
+                    totalPrice += ext.getPrice();
+            }
 
-    //koniec
+        }
+        this.totalPrice = totalPrice;
+        return totalPrice;
+    }
+
     public void createReservation() {
         reservationDTO = new ReservationDTO();
         clientDTO = new ClientDTO();
@@ -98,28 +125,32 @@ public class CreateReservationController implements Serializable {
         reservationDTO.setGuestsNumber(Long.valueOf(numberOfGuests));
         reservationDTO.setTotalPrice(calculateTotalPrice());
         reservationDTO.setReservationNumber(UUID.randomUUID().toString().replace("-", ""));
-        try {
-            createReservationEndpointLocal.createReservation(reservationDTO);
-            ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
-        } catch (ValidationException e) {
-            ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
-            log.severe(e.getMessage() + ", " + LocalDateTime.now());
-        } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-            log.severe(e.getMessage() + ", " + LocalDateTime.now());
-        }
-    }
-
-    private double calculateTotalPrice() {
-        double totalPrice = hallDTO.getPrice() * numberOfGuests;
-        for (ExtraServiceDTO ext : this.extraServices) {
-            for (int i = 0; i < selectedExtraServices.size(); i++) {
-                if (ext.getServiceName().equalsIgnoreCase(selectedExtraServices.get(i))) {
-                    totalPrice += extraServices.get(i).getPrice();
+        if (startDate.isAfter(endDate)) {
+            ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
+        } else {
+            for (ScheduleEvent ev : eventModel.getEvents()) {
+                if (ev.getEndDate().isAfter(startDate) || ev.getStartDate().isBefore(endDate)) {
+                    try {
+                        throw new DatesOverlapException();
+                    } catch (DatesOverlapException e) {
+                        ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+                        log.severe(e.getMessage() + ", " + LocalDateTime.now());
+                        return;
+                    }
                 }
             }
+            try {
+                createReservationEndpointLocal.createReservation(reservationDTO);
+                ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
+            } catch (ValidationException e) {
+                ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            } catch (AppBaseException e) {
+                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            }
         }
-        return totalPrice;
+
     }
 
 
@@ -135,8 +166,10 @@ public class CreateReservationController implements Serializable {
             log.severe(ex.getMessage());
         }
 
-        //Tutaj jeszcze kalendarzyk
         eventModel = new DefaultScheduleModel();
+        today = LocalDateTime.now();
+        startDate = LocalDateTime.now();
+        endDate = LocalDateTime.now();
 
 
         for (UnavailableDate unavailableDate : unavailableDates) {
