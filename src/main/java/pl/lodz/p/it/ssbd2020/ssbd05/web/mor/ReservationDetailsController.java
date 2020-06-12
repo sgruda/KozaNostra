@@ -37,6 +37,8 @@ public class ReservationDetailsController implements Serializable {
 
     @Inject
     private CancelReservationController cancelReservationController;
+    @Inject
+    private ChangeReservationStatusController changeReservationStatusController;
 
     @PostConstruct
     public void init(){
@@ -44,6 +46,7 @@ public class ReservationDetailsController implements Serializable {
             resourceBundles = new ResourceBundles();
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
             cancelReservationController.setReservationDTO(this.reservationDTO);
+            changeReservationStatusController.setReservationDTO(this.reservationDTO);
             for(String extraService: reservationDTO.getExtraServiceCollection()){
                 extraServices += extraService;
                 extraServices += " ";
@@ -62,6 +65,10 @@ public class ReservationDetailsController implements Serializable {
         cancelReservationController.cancelReservation();
         refresh();
     }
+    public void changeReservationStatus() {
+        changeReservationStatusController.changeStatus();
+        refresh();
+    }
     public boolean isSubmitted() {
         return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString());
     }
@@ -72,6 +79,7 @@ public class ReservationDetailsController implements Serializable {
             ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
             cancelReservationController.setReservationDTO(this.reservationDTO);
+            changeReservationStatusController.setReservationDTO(this.reservationDTO);
         } catch (AppBaseException | IOException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             log.severe(e.getMessage() + ", " + LocalDateTime.now());

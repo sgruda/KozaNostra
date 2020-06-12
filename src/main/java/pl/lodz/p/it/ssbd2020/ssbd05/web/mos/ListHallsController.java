@@ -45,4 +45,13 @@ public class ListHallsController implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedHallName", name);
         return "hallDetails";
     }
+
+    public void filterHalls() {
+        try {
+            halls = listHallsEndpoint.getFilteredHalls(hallFilter);
+        } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
+    }
 }
