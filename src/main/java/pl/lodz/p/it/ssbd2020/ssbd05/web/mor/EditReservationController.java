@@ -76,10 +76,7 @@ public class EditReservationController implements Serializable {
             extraServicesNames = new ArrayList<>();
             for (ExtraServiceDTO extraServiceDTO : extraServices) {
                 extraServicesNames.add(extraServiceDTO.getServiceName());
-                log.severe(extraServiceDTO.getServiceName());
             }
-            log.severe(eventTypeName);
-            log.severe("herb init " + reservationDTO.getEventTypeName());
             eventTypes = (List<String>) hallDTO.getEvent_type();
         } catch (AppBaseException appBaseException) {
             appBaseException.printStackTrace();
@@ -91,14 +88,12 @@ public class EditReservationController implements Serializable {
 
 
         for (UnavailableDate unavailableDate : unavailableDates) {
-            log.severe("dataaa " + unavailableDate.getStartDate() + unavailableDate.getEndDate());
                 if(!reservationDTO.getStartDate().equals(DateFormatter.formatDate(unavailableDate.getStartDate()))) {
                     DefaultScheduleEvent event = DefaultScheduleEvent.builder().editable(false)
-                            .title(ResourceBundles.getTranslatedText("page.createreservation.title"))
+                            .title(ResourceBundles.getTranslatedText("page.editreservation.title"))
                             .startDate(unavailableDate.getStartDate())
                             .endDate(unavailableDate.getEndDate()).overlapAllowed(false)
                             .build();
-                    log.severe("dodanie evebtu");
                     eventModel.addEvent(event);
                 }
         }
@@ -108,20 +103,18 @@ public class EditReservationController implements Serializable {
     @RolesAllowed("editReservationClient")
     public void editReservation() {
 
-        log.severe("herb " + reservationDTO.getEventTypeName());
-
         reservationDTO.setEventTypeName(eventTypeName);
         reservationDTO.setExtraServiceCollection(extraServicesNames);
         reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
         reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
         boolean notGood = false;
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
-            ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
+            ResourceBundles.emitErrorMessage(null, "page.editreservation.dates.error");
             notGood = true;
         } else {
             for (ScheduleEvent ev : eventModel.getEvents()) {
                 if (ev.getEndDate().isAfter(startDate) && ev.getStartDate().isBefore(endDate)) {
-                    ResourceBundles.emitErrorMessageWithFlash(null, "error.createreservation.dates.overlap");
+                    ResourceBundles.emitErrorMessageWithFlash(null, "error.editreservation.dates.overlap");
                     notGood = true;
                 }
             }
@@ -130,7 +123,6 @@ public class EditReservationController implements Serializable {
             try {
                 editReservationEndpointLocal.editReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.client.editreservation.success");
-                for (String extraServicesName : extraServicesNames) log.severe(extraServicesName + "\n");
             } catch (AppOptimisticLockException ex) {
                 log.severe(ex.getMessage() + ", " + LocalDateTime.now());
                 ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
@@ -138,7 +130,7 @@ public class EditReservationController implements Serializable {
                 ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (AppBaseException appBaseException) {
-                ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
                 log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
 
             }
@@ -172,6 +164,10 @@ public class EditReservationController implements Serializable {
         startDate = event.getStartDate();
         endDate = event.getEndDate();
 
+    }
+
+    public String translateExtraService(String eventTypeName) {
+        return ResourceBundles.getTranslatedText(eventTypeName);
     }
 
     public String goBack(){

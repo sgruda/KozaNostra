@@ -24,7 +24,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 <p:inputText value="#{editReservationController.reservationDTO.reservationNumber}" disabled="true" style="width: 250px; margin-left: 20px"/>
                 </h:outputLabel>
 
-                <h:outputLabel value="#{msg['page.client.reservations.details.hallName']}">
+                <h:outputLabel value="#{msg['page.client.editreservation.hallName']}">
                 <p:inputText  value="#{editReservationController.reservationDTO.hallName}" disabled="true" style="width: 250px; margin-left: 20px"/>
                 </h:outputLabel>
 
@@ -44,7 +44,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 <h:outputLabel for="extraServices" value="#{msg['page.editreservation.extraservices']}">
                     <p:selectManyCheckbox id="extraServices" value="#{editReservationController.extraServicesNames}">
                         <c:forEach items="#{editReservationController.extraServicesNames}" var="extraService">
-                            <f:selectItem itemLabel="#{extraService}" itemValue="#{extraService}"/>
+                            <f:selectItem itemLabel="#{editReservationController.translateExtraService(extraService)}" itemValue="#{extraService}"/>
                         </c:forEach>
                     </p:selectManyCheckbox>
                 </h:outputLabel>
@@ -59,7 +59,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                 value="#{editReservationController.eventModel}" widgetVar="myschedule"
                                 view="agendaWeek" rightHeaderTemplate="timeGridWeek" timeZone=""
                                 style=" width: 600px;" allDaySlot="false" clientTimeZone="local"
-                                locale="#{msg['page.createreservation.calendar.language']}" tooltip="true"
+                                locale="#{msg['page.editreservation.calendar.language']}" tooltip="true"
                                 draggable="false" resizable="false" slotEventOverlap="false">
                         <p:ajax event="dateSelect" listener="#{editReservationController.onDateSelect}"
                                 update="eventDetails" oncomplete="PF('eventDialog').show();"/>
@@ -70,26 +70,26 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                           hideEffect="clip">
 
                     <h:panelGrid id="eventDetails" columns="2">
-                        <p:outputLabel for="since" value="#{msg['page.createreservation.start.date']}"/>
+                        <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}"/>
 
                         <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true" required="true"
                                       mindate="#{editReservationController.today.plusMinutes(1)}"
-                                      lang="#{msg['page.createreservation.calendar.language']}"
+                                      lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.today.plusMinutes(1)}"
-                                      requiredMessage="#{msg['page.createreservation.startdate.required']}"
-                                      validatorMessage="#{msg['page.createreservation.startdate.validator']}"
-                                      locale="#{msg['page.createreservation.calendar.language']}" appendTo="@(body)"
+                                      requiredMessage="#{msg['page.editreservation.startdate.required']}"
+                                      validatorMessage="#{msg['page.editreservation.startdate.validator']}"
+                                      locale="#{msg['page.editreservation.calendar.language']}" appendTo="@(body)"
                                       pattern="yyyy-MM-dd HH:mm:ss"/>
 
 
-                        <p:outputLabel for="until" value="#{msg['page.createreservation.end.date']}"/>
+                        <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}"/>
                         <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true" required="true"
                                       mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
-                                      lang="#{msg['page.createreservation.calendar.language']}"
+                                      lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.event.startDate}"
-                                      requiredMessage="#{msg['page.createreservation.enddate.required']}"
-                                      validatorMessage="#{msg['page.createreservation.enddate.validator']}"
-                                      locale="#{msg['page.createreservation.calendar.language']}"
+                                      requiredMessage="#{msg['page.editreservation.enddate.required']}"
+                                      validatorMessage="#{msg['page.editreservation.enddate.validator']}"
+                                      locale="#{msg['page.editreservation.calendar.language']}"
                                       pattern="yyyy-MM-dd HH:mm:ss"/>
                         <p:commandButton id="addButton" value="Save"
                                          action="#{editReservationController.addEvent}"
