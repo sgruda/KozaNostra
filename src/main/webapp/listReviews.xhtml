@@ -27,7 +27,7 @@
                         <f:selectItem itemLabel="5" itemValue="5"/>
                         <f:selectItem itemLabel="10" itemValue="10"/>
                     </p:selectOneMenu>
-                    <c:if test="#{roleController.inClientRole}">
+                    <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
                         <p:button outcome="/client/addReview.xhtml" value="#{msg['page.addreview.title']}"/>
                     </c:if>
 
