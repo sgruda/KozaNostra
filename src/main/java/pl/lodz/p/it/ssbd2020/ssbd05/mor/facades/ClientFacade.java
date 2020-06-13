@@ -4,9 +4,10 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
-import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
@@ -16,6 +17,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -40,9 +42,14 @@ public class ClientFacade extends AbstractFacade<Client> {
     }
 
     @RolesAllowed("findByLogin")
-    public Optional<Client> findByLogin(String username) {
-        return Optional.ofNullable(this.em.createNamedQuery("Client.findByLogin", Client.class)
-                .setParameter("login", username).getSingleResult());
+    public Client findByLogin(String login) throws AppBaseException{
+        try {
+            return this.em.createNamedQuery("Client.findByLogin", Client.class).setParameter("login", login).getSingleResult();
+        }catch (NoResultException noResultException) {
+            throw new AccountNotFoundException(noResultException);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @Override

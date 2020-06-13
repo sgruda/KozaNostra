@@ -22,6 +22,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Klasa odpowiedzialna za operacje na obiektach encyjnych typu Hall
+ */
 @Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
@@ -69,10 +72,16 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         return hallFacade.findAll();
     }
 
+    /**
+     * Metoda odpowiedzialna za filtrowanie listy sal zgodnie z podanym ciągiem znaków
+     *
+     * @param hallFilter Ciąg znaków do filtrowania
+     * @return Kolekcja obiektów typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Collection<Hall> getFilteredHalls(String hallFilter) throws AppBaseException {
-        // TODO implement
-        return new ArrayList<>();
+        return hallFacade.filter(hallFilter);
     }
 
     @RolesAllowed("editHall")

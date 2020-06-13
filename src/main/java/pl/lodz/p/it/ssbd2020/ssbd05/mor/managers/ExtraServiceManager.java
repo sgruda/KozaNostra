@@ -14,14 +14,13 @@ import javax.interceptor.Interceptors;
 import java.util.List;
 
 /**
- * Manager odpowiadający za operację na encji typu ExtraService
+ * Klasa odpowiedzialna za operacje na obiektach encyjnych typu ExtraService
  */
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
 @Interceptors(TrackerInterceptor.class)
-public class
-ExtraServiceManager extends AbstractManager implements SessionSynchronization {
+public class ExtraServiceManager extends AbstractManager implements SessionSynchronization {
     @Inject
     private ExtraServiceFacade extraServiceFacade;
 
@@ -38,10 +37,10 @@ ExtraServiceManager extends AbstractManager implements SessionSynchronization {
     }
 
     /**
-     * Add extra service.
+     * Metoda odpowiedzialna za utworzenie obiektu typu ExtraService
      *
-     * @param extraService the extra service
-     * @throws AppBaseException the app base exception
+     * @param extraService obiekt typu ExtraService
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("addExtraService")
     public void addExtraService(ExtraService extraService) throws AppBaseException {
@@ -49,10 +48,10 @@ ExtraServiceManager extends AbstractManager implements SessionSynchronization {
     }
 
     /**
-     * Pobierz usługę dodatkową według nazwy
+     * Pobierz usługę dodatkową o podanej nazwie
      *
-     * @param name nazwa usługi dodatkowej
-     * @return Usługa dodatkowa
+     * @param name nazwa usługi dodatkowej do pobrania
+     * @return Obiekt usługi dodatkowej
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getExtraServiceByName")
@@ -63,17 +62,16 @@ ExtraServiceManager extends AbstractManager implements SessionSynchronization {
     }
 
     /**
-     * Change activity.
+     * Metoda odpowiedzialna za zmianę aktywności wybranej usługi dodatkowej
      *
-     * @param extraService the extra service
-     * @throws AppBaseException the app base exception
+     * @param extraService Obiekt typu ExtraService
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("changeExtraServiceActivity")
     public void changeActivity(ExtraService extraService) throws AppBaseException {
         extraService.setActive(!extraService.isActive());
         extraServiceFacade.edit(extraService);
     }
-
     /**
      * Edytuj usługę dodatkową
      *
@@ -82,7 +80,6 @@ ExtraServiceManager extends AbstractManager implements SessionSynchronization {
      */
     @RolesAllowed("editExtraService")
     public void editExtraService(ExtraService extraService) throws AppBaseException{
-        //TODO Implemnetacja
-        throw new UnsupportedOperationException();
+        extraServiceFacade.edit(extraService);
     }
 }

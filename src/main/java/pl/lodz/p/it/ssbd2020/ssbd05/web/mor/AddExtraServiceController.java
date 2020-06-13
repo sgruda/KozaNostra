@@ -14,6 +14,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDateTime;
 
+/**
+ * Kontroler odpowiedzialny za tworzenie nowych usług dodatkowych
+ */
 @Log
 @Getter
 @Setter
@@ -29,10 +32,18 @@ public class AddExtraServiceController {
     private String description;
     private boolean active = false;
 
+    /**
+     * Metoda przenosząca użytkownika na stronę główną aplikacji
+     *
+     * @return ciąg znaków przekierowujący na stronę główną
+     */
     public String goBack() {
         return "home";
     }
 
+    /**
+     * Metoda odpowiedzialna za utworzenie nowej usługi dodatkowej
+     */
     public void addExtraService() {
         ExtraServiceDTO extraServiceDTO = new ExtraServiceDTO();
         extraServiceDTO.setServiceName(name);

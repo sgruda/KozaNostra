@@ -5,6 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
@@ -13,17 +14,20 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.ClientNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.StatusNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type Reservation manager.
@@ -42,6 +46,9 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private StatusFacade statusFacade;
+
+    @Inject
+    private ReviewFacade reviewFacade;
 
     @Inject
     private HallFacade hallFacade;
@@ -75,9 +82,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("findByLogin")
     public Client getClientByLogin(String login) throws AppBaseException{
-        if(clientFacade.findByLogin(login).isEmpty()){
-            throw new ClientNotFoundException();
-        }else return clientFacade.findByLogin(login).get();
+        return clientFacade.findByLogin(login);
     }
 
     /**
@@ -172,9 +177,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("getStatusByName")
     public Status getStatusByName(String statusName) throws AppBaseException  {
-        if(statusFacade.findByStatusName(statusName).isEmpty()){
-            throw new ExtraServiceNotFoundException();
-        }else return statusFacade.findByStatusName(statusName).get();
+        if(statusFacade.findByStatusName(statusName).isPresent()) {
+            return statusFacade.findByStatusName(statusName).get();
+        } else {
+            throw new StatusNotFoundException();
+        }
     }
 
     /**
@@ -185,7 +192,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed({"getStatusCancelled", "cancelReservation"})
     public Status getStatusCancelled() throws AppBaseException {
-        return statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).get();
+        if(statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).isPresent()) {
+            return statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).get();
+        } else {
+            throw new StatusNotFoundException();
+        }
     }
 
     /**
@@ -210,7 +221,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     public Reservation getReservationByNumber(String reservationNumber) throws AppBaseException {
         if(reservationFacade.findByNumber(reservationNumber).isPresent()) {
             return this.reservationFacade.findByNumber(reservationNumber).get();
-        } else throw new AppBaseException("error.default");
+        } else throw new ReservationNotFoundException();
     }
 
     /**
@@ -221,7 +232,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(Reservation reservation) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        reservationFacade.edit(reservation);
     }
 
 
@@ -280,6 +291,25 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("getUserReviewableReservations")
     public List<Reservation> getUserReviewableReservations(String login) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        List<Reservation> result;
+        try {
+            List<Reservation> userFinishedReservations = reservationFacade
+                    .findByLogin(login)
+                    .stream()
+                    .filter(reservation -> reservation.getStatus().getStatusName().equals(ReservationStatuses.finished.name()))
+                    .collect(Collectors.toList());
+            List<Reservation> reviewedReservations = reviewFacade
+                    .findByLogin(login)
+                    .stream()
+                    .map(Review::getReservation)
+                    .collect(Collectors.toList());
+            result = new ArrayList<>(userFinishedReservations);
+            result.removeAll(reviewedReservations);
+        } catch (ReservationNotFoundException e) {
+            throw new ReservationNotFoundException(e);
+        } catch (ReviewNotFoundException e){
+            throw new ReviewNotFoundException(e);
+        }
+        return result;
     }
 }

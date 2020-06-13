@@ -181,3 +181,8 @@ fieldset > legend{
 #reviews-form-perpage{
     margin-top: 0.3em
 }
+
+#add-review-div{
+    display: flex;
+    flex-direction: column;
+}

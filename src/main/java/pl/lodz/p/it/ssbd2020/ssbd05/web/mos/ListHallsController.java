@@ -16,6 +16,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Kontroler odpowiedzialny za wyświetlenie wszystkich sal dostępnych w systemie
+ */
 @Log
 @Named
 @ViewScoped
@@ -31,6 +34,9 @@ public class ListHallsController implements Serializable {
     @Setter
     private String hallFilter;
 
+    /**
+     * Metoda wykonywana po stworzeniu instancji klasy ListHallsController. Pobiera wszystkie sale z bazy
+     */
     @PostConstruct
     public void init() {
         try {
@@ -41,8 +47,26 @@ public class ListHallsController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za pobranie wybranej sali z bazy i przekierowanie na stronę z jej szczegółami
+     *
+     * @param name nazwa sali
+     * @return ciąg znaków przekierowujący na stronę ze szczegółami sali
+     */
     public String selectHall(String name) {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedHallName", name);
         return "hallDetails";
+    }
+
+    /**
+     * Metoda odpowiedzialna za filtrowanie listy sal zgoodnie z przekazanym ciągiem znaków
+     */
+    public void filterHalls() {
+        try {
+            halls = listHallsEndpoint.getFilteredHalls(hallFilter);
+        } catch (AppBaseException e) {
+            log.warning(e.getClass().toString() + " " + e.getMessage());
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+        }
     }
 }
