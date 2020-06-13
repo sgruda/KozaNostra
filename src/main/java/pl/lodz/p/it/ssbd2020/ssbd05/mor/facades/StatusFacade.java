@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Fasada dla encji StatusEntity
+ * Fasada statusów - typ Status
  */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless

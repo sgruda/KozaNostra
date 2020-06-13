@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Fasda dla encji ReservationEntity
+ * Fasda rezerwacji - typ Reservation
  */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
