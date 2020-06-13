@@ -13,7 +13,7 @@
             <div style="width: auto; background-color: #626163">
                 <p:inputText id="filterHallsTextBox" value="#{listHallsController.hallFilter}"  style="width: 87.8%; border-radius: 0" placeholder="#{msg['page.listhalls.watermark']}"/>
                 <p:commandButton id="filterbutton" value="#{msg['page.listhalls.filter']}" style="float: right; width: 12%; border-radius: 0"
-                                 action="#{listAccountsController.filterAccounts()}"
+                                 action="#{listHallsController.filterHalls()}"
                                  update="filterbutton, :form1"/>
             </div>
             <p:dataTable var="hall" value="#{listHallsController.halls}" emptyMessage="#{msg['page.listhalls.list.empty']}" >

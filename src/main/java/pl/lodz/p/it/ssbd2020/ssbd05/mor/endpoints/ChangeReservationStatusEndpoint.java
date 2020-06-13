@@ -75,7 +75,24 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     @Override
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(ReservationDTO reservationDTO) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                reservationManager.changeReservationStatus(reservation);
+                rollback = reservationManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if(callCounter > 0)
+                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.StatusNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
@@ -72,11 +73,19 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
     @RolesAllowed("getStatusByName")
     public Status getStatusByName(String statusName) throws AppBaseException  {
-        throw new UnsupportedOperationException();
+        if(statusFacade.findByStatusName(statusName).isPresent()) {
+            return statusFacade.findByStatusName(statusName).get();
+        } else {
+            throw new StatusNotFoundException();
+        }
     }
     @RolesAllowed({"getStatusCancelled", "cancelReservation"})
     public Status getStatusCancelled() throws AppBaseException {
-        return statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).get();
+        if(statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).isPresent()) {
+            return statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).get();
+        } else {
+            throw new StatusNotFoundException();
+        }
     }
 
     @RolesAllowed("getAllStatuses")
@@ -88,12 +97,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     public Reservation getReservationByNumber(String reservationNumber) throws AppBaseException {
         if(reservationFacade.findByNumber(reservationNumber).isPresent()) {
             return this.reservationFacade.findByNumber(reservationNumber).get();
-        } else throw new AppBaseException("error.default");
+        } else throw new ReservationNotFoundException();
     }
 
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(Reservation reservation) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        reservationFacade.edit(reservation);
     }
 
 
