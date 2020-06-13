@@ -40,7 +40,7 @@ public class EditHallController implements Serializable {
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-            return goBack();
+            return "listHalls";
         }
         return "";
     }

@@ -278,8 +278,17 @@
     <navigation-rule>
         <from-view-id>/manager/editHall.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>goBack</from-outcome>
+            <from-outcome>hallDetails</from-outcome>
             <to-view-id>/hallDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/manager/editHall.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>listHalls</from-outcome>
+            <to-view-id>/listHalls.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

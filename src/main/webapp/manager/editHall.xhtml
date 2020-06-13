@@ -28,8 +28,7 @@
             <p:panel id="editHallPanel" header="#{msg['page.template.manager.edithall']}" style="font-size: 24px;">
                 <p:panelGrid id="editHallPanelGrid" columns="1" style="max-width: 60vw">
                     <h:outputLabel for="name" value="#{msg['page.addhall.name']} ">
-                        <p:inputText id="name" disabled="true"
-                                     value="#{editHallController.hall.name}">
+                        <p:inputText id="name" value="#{editHallController.hall.name}" disabled="true">
                         </p:inputText>
                     </h:outputLabel>
 
