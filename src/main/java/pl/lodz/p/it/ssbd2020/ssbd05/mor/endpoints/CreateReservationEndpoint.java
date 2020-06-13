@@ -170,7 +170,9 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         for (String extraService : reservationDTO.getExtraServiceCollection()) {
             selectedExtraService.add(reservationManager.getExtraServiceByName(extraService));
         }
-        reservation.setExtra_service(selectedExtraService);
+        if(selectedExtraService.size()>0){
+            reservation.setExtra_service(selectedExtraService);
+        }
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         reservation.setGuestsNumber(reservationDTO.getGuestsNumber());
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));

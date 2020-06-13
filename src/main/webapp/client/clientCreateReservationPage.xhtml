@@ -9,6 +9,17 @@
 <ui:composition template="/templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.createreservation.title']}</title>
+        <script type="text/javascript">
+            PrimeFaces.locales['pl'] = {
+                monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+                monthNamesShort: ['Sty','Lut','Mar','Kwi','Maj','Cze', 'Lip','Sie','Wrz','Paź','Lis','Gru'],
+                dayNames: ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
+                dayNamesShort: ['Pn','Wt','Śr','Czw','Pt','Sb','Ndz'],
+                dayNamesMin: ['Pn','Wt','Śr','Czw','Pt','Sb','Ndz'],
+                firstDay: 1,
+                ampm: false,
+            };
+        </script>
     </ui:define>
     <ui:define name="content">
         <h:form id="form1" style="margin-bottom: auto">
@@ -30,7 +41,7 @@
                 <p:selectOneMenu id="eventType" value="#{createReservationController.eventTypeName}"
                                  panelStyle="width:250px" required="true">
                     <f:selectItems value="#{createReservationController.eventTypes}" var="eventType"
-                                   itemLabel="#{eventType}" itemValue="#{eventType}"/>
+                                   itemLabel="#{createReservationController.resourceBundles.getTranslatedText(eventType)}" itemValue="#{eventType}"/>
                 </p:selectOneMenu>
 
                 <h:outputLabel for="numberOfGuests" value="#{msg['page.createreservation.number.of.guests']} *"/>
@@ -39,9 +50,6 @@
                                requiredMessage="#{msg['page.createreservation.number.of.guests.required']}"
                                decimalPlaces="0" validatorMessage="#{msg['page.createreservation.number.of.guests.validator']}"
                                minValue="1" maxValue="#{createReservationController.hallDTO.capacity}"/>
-<!--                <p:outputLabel for="totalPrice" value="#{msg['page.createreservation.totalprice']}" />-->
-<!--                <p:inputNumber id="totalPrice" valueChangeListener="#{createReservationController.calculateTotalPrice()}" value="#{createReservationController.totalPrice}"-->
-<!--                               disabled="true" />-->
             </p:panelGrid>
         <h:form>
             <h:panelGrid columnClasses="value">
@@ -57,7 +65,7 @@
                 </p:schedule>
             </h:panelGrid>
 
-            <p:dialog id="eventDialog" widgetVar="eventDialog" header="Event Details" showEffect="clip"
+            <p:dialog id="eventDialog" widgetVar="eventDialog" header="#{msg['page.createreservation.select.dates']}" showEffect="clip"
                       hideEffect="clip">
 
                 <h:panelGrid id="eventDetails" columns="2">
@@ -82,7 +90,7 @@
                                   validatorMessage="#{msg['page.createreservation.enddate.validator']}"
                                   locale="#{msg['page.createreservation.calendar.language']}"
                                   pattern="yyyy-MM-dd HH:mm:ss"/>
-                    <p:commandButton id="addButton" value="Save"
+                    <p:commandButton id="addButton" value="#{msg['page.createreservation.select.dates.button']}"
                                      action="#{createReservationController.addEvent}"
                                      oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
 

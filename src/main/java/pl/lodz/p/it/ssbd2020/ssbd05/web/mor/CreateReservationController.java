@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.java.Log;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
@@ -43,6 +44,8 @@ public class CreateReservationController implements Serializable {
 
     @Inject
     private CreateReservationEndpointLocal createReservationEndpointLocal;
+
+    private ResourceBundles resourceBundles;
 
 
     private List<UnavailableDate> unavailableDates;
@@ -124,19 +127,19 @@ public class CreateReservationController implements Serializable {
         reservationDTO.setGuestsNumber(Long.valueOf(numberOfGuests));
         reservationDTO.setTotalPrice(calculateTotalPrice());
         reservationDTO.setReservationNumber(UUID.randomUUID().toString().replace("-", ""));
-        boolean notGood = false;
+        boolean areDatesInvalid = false;
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
             ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
-            notGood = true;
+            areDatesInvalid = true;
         } else {
             for (ScheduleEvent ev : eventModel.getEvents()) {
                 if (ev.getEndDate().isAfter(startDate) && ev.getStartDate().isBefore(endDate)) {
                         ResourceBundles.emitErrorMessage(null, "error.createreservation.dates.overlap");
-                        notGood = true;
+                    areDatesInvalid = true;
                     }
                 }
             }
-        if(!notGood){
+        if(!areDatesInvalid){
             try {
                 createReservationEndpointLocal.createReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
@@ -156,6 +159,7 @@ public class CreateReservationController implements Serializable {
     private void init() {
         String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
         try {
+            resourceBundles = new ResourceBundles();
             this.hallDTO = createReservationEndpointLocal.getHallByName(selectedHallName);
             this.extraServices = createReservationEndpointLocal.getAllExtraServices();
             this.unavailableDates = createReservationEndpointLocal.getUnavailableDates(selectedHallName);
