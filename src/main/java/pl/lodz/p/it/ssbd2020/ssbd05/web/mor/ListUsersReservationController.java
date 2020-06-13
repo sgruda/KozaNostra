@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -18,8 +17,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
+/**
+ * Kontroler odpowiedzialny za wyświetlanie listy rezerwacji zalogowanego klienta
+ */
 @Log
 @Named
+@Data
 @ViewScoped
 public class ListUsersReservationController implements Serializable {
 
@@ -27,11 +30,8 @@ public class ListUsersReservationController implements Serializable {
     @Inject
     ListUserReservationsEndpointLocal userReservationsEndpointLocal;
 
-    @Getter
-    @Setter
     List<ReservationDTO> usersReservations;
 
-    @Getter
     private ResourceBundles resourceBundles;
 
     @PostConstruct
@@ -45,6 +45,13 @@ public class ListUsersReservationController implements Serializable {
         }
     }
 
+    /**
+     * Metoda wykorzystywana do nawgiacji.
+     * Po jej wykonaniu użytkownik przekierowywany jest do strony szczegółów rezerwacji
+     *
+     * @param reservationNumber numer wybranej rezerwacji
+     * @return nazwa przypadku nawigacyjnego
+     */
     public String goToDetails(String reservationNumber){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedReservationNumber", reservationNumber);
         return "reservationDetails";

@@ -58,6 +58,7 @@
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.halldetails.back']}" action="#{hallDetailsController.goBack()}"/>
                     <p:commandButton value="#{msg['page.halldetails.edit']}" action="#{hallDetailsController.goToEditForm()}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}"/>
+                    <p:commandButton value="#{msg['page.halldetails.create.reservation']}" action="#{hallDetailsController.goToReservationPage()}" rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}"/>
                 </h:form>
             </div>
         </div>

@@ -2,6 +2,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
@@ -9,6 +10,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.AccountNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -39,6 +41,7 @@ public class ClientFacade extends AbstractFacade<Client> {
         super(Client.class);
     }
 
+    @RolesAllowed("findByLogin")
     public Client findByLogin(String login) throws AppBaseException{
         try {
             return this.em.createNamedQuery("Client.findByLogin", Client.class).setParameter("login", login).getSingleResult();

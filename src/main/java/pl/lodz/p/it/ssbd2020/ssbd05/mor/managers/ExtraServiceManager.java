@@ -72,13 +72,11 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
         extraService.setActive(!extraService.isActive());
         extraServiceFacade.edit(extraService);
     }
-
-
     /**
      * Edytuj usługę dodatkową
      *
-     * @param extraService usługa dodatkowa podlegająca edycji
-     * @throws AppBaseException podstawowy wyjatek aplikacyjny
+     * @param extraService obiekt usługi dodatkowej podlegający edycji
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("editExtraService")
     public void editExtraService(ExtraService extraService) throws AppBaseException{
