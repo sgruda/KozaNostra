@@ -102,4 +102,5 @@ public class ListReviewsController implements Serializable {
     public int getPagesDigits(){
         return String.valueOf(pages).length();
     }
+
 }

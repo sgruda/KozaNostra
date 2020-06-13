@@ -11,6 +11,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReviewManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -50,5 +51,11 @@ public class ListReviewsEndpoint implements ListReviewsEndpointLocal {
             throw new ExceededTransactionRetriesException();
         }
         return list;
+    }
+
+    @Override
+    @RolesAllowed("removeReview")
+    public void removeReview(String reviewNumber) throws AppBaseException {
+
     }
 }
