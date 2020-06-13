@@ -22,6 +22,9 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Fasada dla encji StatusEntity
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -36,6 +39,9 @@ public class StatusFacade extends AbstractFacade<Status> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy
+     */
     public StatusFacade() {
         super(Status.class);
     }
@@ -55,6 +61,14 @@ public class StatusFacade extends AbstractFacade<Status> {
             throw new DatabaseConnectionException(e);
         }
     }
+
+    /**
+     * Pobierz status według nazwy
+     *
+     * @param statusName nazwa statusu
+     * @return Optional Status
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed({"getStatusByName", "getStatusCanceled"})
     public Optional<Status> findByStatusName(String statusName) throws AppBaseException {
         try {

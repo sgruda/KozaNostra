@@ -38,6 +38,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Punkt dostępowy implementujący interfejs CreateReservationEndpointLocal
+ * pośredniczący w tworzeniu nowej rezerwacji
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

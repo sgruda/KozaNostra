@@ -20,6 +20,9 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Fasada dla encji ExtraService
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -34,6 +37,9 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         return em;
     }
 
+    /**
+     * Konstruktur bezprarametrowy fasady
+     */
     public ExtraServiceFacade() {
         super(ExtraService.class);
     }
@@ -78,6 +84,13 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         }
     }
 
+    /**
+     * Pobierz ExtraService według nazwy
+     *
+     * @param name nazwa usługi dodatkowej do pobrania
+     * @return optional ExtraService
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getExtraServiceByName")
     public Optional<ExtraService> findByName(String name) throws AppBaseException {
         try {

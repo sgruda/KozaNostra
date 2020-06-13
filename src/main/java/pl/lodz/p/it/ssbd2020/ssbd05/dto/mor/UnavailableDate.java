@@ -7,6 +7,10 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * Obiekt wykorzystywany przy tworzeniu rezerwacji do
+ * utworzenia niedostępnych okienek czasowych.
+ */
 @Data
 @AllArgsConstructor
 public class UnavailableDate {

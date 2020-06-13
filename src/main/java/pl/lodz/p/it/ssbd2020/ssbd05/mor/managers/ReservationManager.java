@@ -58,7 +58,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     /**
      * Pobieranie listy wszystkich rezerwacji
      *
-     * @return List<Reservation>
+     * @return List<Reservation> all reservations
      * @throws AppBaseException podstawowy wyjatek aplikacyjny
      */
     @RolesAllowed("getAllReservations")
@@ -66,6 +66,13 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         return reservationFacade.findAll();
     }
 
+    /**
+     * Gets client by login.
+     *
+     * @param login the login
+     * @return the client by login
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("findByLogin")
     public Client getClientByLogin(String login) throws AppBaseException{
         if(clientFacade.findByLogin(login).isEmpty()){
@@ -73,6 +80,13 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         }else return clientFacade.findByLogin(login).get();
     }
 
+    /**
+     * Gets extra service by name.
+     *
+     * @param name the name
+     * @return the extra service by name
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("getExtraServiceByName")
     public ExtraService getExtraServiceByName(String name) throws AppBaseException{
         if(extraServiceFacade.findByName(name).isEmpty()){
@@ -80,6 +94,13 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         }else return extraServiceFacade.findByName(name).get();
     }
 
+    /**
+     * Gets event type by name.
+     *
+     * @param name the name
+     * @return the event type by name
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("getEventTypeByName")
     public EventType getEventTypeByName(String name) throws AppBaseException{
         if(eventTypesFacade.findByName(name).isEmpty()){
@@ -98,6 +119,13 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         return eventTypesFacade.findAll();
     }
 
+    /**
+     * Gets hall by name.
+     *
+     * @param name the name
+     * @return the hall by name
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("getHallByName")
     public Hall getHallByName(String name) throws AppBaseException {
         if (hallFacade.findByName(name).isPresent()) {
@@ -119,6 +147,13 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         reservationFacade.create(reservation);
     }
 
+    /**
+     * Gets all users reservations.
+     *
+     * @param login the login
+     * @return the all users reservations
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("getAllUsersReservations")
     public List<Reservation> getAllUsersReservations(String login) throws AppBaseException {
         try {

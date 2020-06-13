@@ -13,25 +13,48 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.List;
 
+/**
+ * Manager odpowiadający za operację na encji typu ExtraService
+ */
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
 @LocalBean
 @Interceptors(TrackerInterceptor.class)
-public class ExtraServiceManager extends AbstractManager implements SessionSynchronization {
+public class
+ExtraServiceManager extends AbstractManager implements SessionSynchronization {
     @Inject
     private ExtraServiceFacade extraServiceFacade;
 
 
+    /**
+     * Pobierz wszystkie usługi dodatkowe
+     *
+     * @return lista wszystkich usług dodatkowych
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getAllExtraServices")
     public List<ExtraService> getAllExtraServices() throws AppBaseException {
         return extraServiceFacade.findAll();
     }
 
+    /**
+     * Add extra service.
+     *
+     * @param extraService the extra service
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("addExtraService")
     public void addExtraService(ExtraService extraService) throws AppBaseException {
         extraServiceFacade.create(extraService);
     }
 
+    /**
+     * Pobierz usługę dodatkową według nazwy
+     *
+     * @param name nazwa usługi dodatkowej
+     * @return Usługa dodatkowa
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getExtraServiceByName")
     public ExtraService getExtraServiceByName(String name) throws AppBaseException {
         if(extraServiceFacade.findByName(name).isPresent())
@@ -39,12 +62,24 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
         else throw new ExtraServiceNotFoundException("error.extraservice.not.found");
     }
 
+    /**
+     * Change activity.
+     *
+     * @param extraService the extra service
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("changeExtraServiceActivity")
     public void changeActivity(ExtraService extraService) throws AppBaseException {
         extraService.setActive(!extraService.isActive());
         extraServiceFacade.edit(extraService);
     }
 
+    /**
+     * Edytuj usługę dodatkową
+     *
+     * @param extraService obiekt usługi dodatkowej podlegający edycji
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("editExtraService")
     public void editExtraService(ExtraService extraService) throws AppBaseException{
         //TODO Implemnetacja
