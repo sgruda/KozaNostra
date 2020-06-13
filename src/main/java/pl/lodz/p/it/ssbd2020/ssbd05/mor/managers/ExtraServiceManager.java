@@ -14,7 +14,7 @@ import javax.interceptor.Interceptors;
 import java.util.List;
 
 /**
- * The type Extra service manager.
+ * Klasa odpowiedzialna za operacje na obiektach encyjnych typu ExtraService
  */
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
@@ -37,10 +37,10 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
     }
 
     /**
-     * Add extra service.
+     * Metoda odpowiedzialna za utworzenie obiektu typu ExtraService
      *
-     * @param extraService the extra service
-     * @throws AppBaseException the app base exception
+     * @param extraService obiekt typu ExtraService
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("addExtraService")
     public void addExtraService(ExtraService extraService) throws AppBaseException {
@@ -62,10 +62,10 @@ public class ExtraServiceManager extends AbstractManager implements SessionSynch
     }
 
     /**
-     * Change activity.
+     * Metoda odpowiedzialna za zmianę aktywności wybranej usługi dodatkowej
      *
-     * @param extraService the extra service
-     * @throws AppBaseException the app base exception
+     * @param extraService Obiekt typu ExtraService
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("changeExtraServiceActivity")
     public void changeActivity(ExtraService extraService) throws AppBaseException {
