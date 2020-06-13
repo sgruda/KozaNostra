@@ -2,10 +2,12 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.annotation.security.DenyAll;
@@ -16,10 +18,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,8 +91,16 @@ public class ReviewFacade extends AbstractFacade<Review> {
     }
 
     @RolesAllowed("getUserReviewableReservations")
-    public List<Review> findByLogin() throws AppBaseException {
-            throw new UnsupportedOperationException();
+    public List<Review> findByLogin(String login) throws AppBaseException {
+        try {
+            Account account = this.em.createNamedQuery("Account.findByLogin", Account.class)
+                    .setParameter("login", login).getSingleResult();
+            return this.em.createNamedQuery("Review.findByClientId", Review.class).setParameter("id", account.getId()).getResultList();
+        }catch (NoResultException noResultException) {
+            throw new ReviewNotFoundException(noResultException);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @RolesAllowed({"getReviewByReviewNumber", "editReview"})

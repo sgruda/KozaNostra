@@ -28,6 +28,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Klasa fasady dla typu Hall
+ */
 @Log
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
@@ -113,11 +116,18 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za filtrowanie listy sal zgodnie z podanym ciągiem znaków
+     *
+     * @param hallFilter Ciąg znaków do filtrowania
+     * @return Kolekcja obiektów typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Collection<Hall> filter(String hallFilter) throws AppBaseException {
         try {
-            // TODO implementacja
-            return new ArrayList<>();
+            return em.createNamedQuery("Hall.filterByNameAndAddress", Hall.class)
+                    .setParameter("filter", hallFilter).getResultList();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }

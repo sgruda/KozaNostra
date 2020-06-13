@@ -13,7 +13,7 @@ public class ReviewNotFoundException extends AppBaseException {
         super(message);
     }
 
-    public ReviewNotFoundException(String message, Throwable cause) {
+    public ReviewNotFoundException(Throwable cause) {
         super(REVIEW_NOT_FOUND, cause);
     }
 }

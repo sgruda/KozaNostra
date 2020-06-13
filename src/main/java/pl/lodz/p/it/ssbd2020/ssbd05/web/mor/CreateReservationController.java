@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Kontroler odpowiedzialny za tworzenie nowej rezerwacji
+ */
 @ViewScoped
 @Named
 @Log
@@ -66,8 +69,6 @@ public class CreateReservationController implements Serializable {
     private Integer numberOfGuests;
     private ClientDTO clientDTO;
 
-    //Do kalendarza i wyświetlania okienek czasowych
-    //start
     private ScheduleModel scheduleModel;
 
     private ScheduleModel eventModel;
@@ -79,10 +80,19 @@ public class CreateReservationController implements Serializable {
     private double totalPrice = 0;
 
 
+    /**
+     * Metoda wykorzystywana przy wyborze terminu rezerwacji.
+     * Wywoływana jest po kliknięciu w dany termin w kalendarzu.
+     *
+     * @param selectEvent wybrana data
+     */
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
         event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
     }
 
+    /**
+     * Metoda wykorzystywana do zapisania wybranego terminu
+     */
     public void addEvent(){
         if(event.getId() == null)
             eventModel.addEvent(event);
@@ -95,6 +105,11 @@ public class CreateReservationController implements Serializable {
 
     }
 
+    /**
+     * Metoda wykorzystywana do obliczenia całkowitej ceny rezerwacji
+     *
+     * @return całkowita wartość rezerwacji
+     */
     public double calculateTotalPrice() {
         Period period = DateFormatter.getPeriod(startDate, endDate);
         int rentedTime = period.getDays();
@@ -113,6 +128,9 @@ public class CreateReservationController implements Serializable {
         return totalPrice;
     }
 
+    /**
+     * Metoda tworząca nową rezerwację
+     */
     public void createReservation() {
         reservationDTO = new ReservationDTO();
         clientDTO = new ClientDTO();
@@ -186,6 +204,11 @@ public class CreateReservationController implements Serializable {
 
     }
 
+    /**
+     * Metoda wykorzystywana do nawigacji. Wraca na poprzednią stronę
+     *
+     * @return nazwa przypadku nawigacyjnego
+     */
     public String goBack() {
         return "goBack";
     }
