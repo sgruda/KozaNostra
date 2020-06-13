@@ -48,6 +48,7 @@ public class ReservationDetailsController implements Serializable {
                 extraServices += extraService;
                 extraServices += " ";
             }
+            if(!reservationDTO.getExtraServiceCollection().isEmpty())
             extraServices = extraServices.replace("null", "");
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());

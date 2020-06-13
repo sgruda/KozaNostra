@@ -24,6 +24,9 @@
                 <h:outputText value="#{msg['page.client.reservations.details.eventTypeName']}"/>
                 <h:outputText value="#{reservationDetailsController.resourceBundles.getTranslatedText(reservationDetailsController.reservationDTO.eventTypeName)}"/>
 
+                <h:outputText value="#{msg['page.client.reservations.details.username']}"/>
+                <h:outputText value="#{reservationDetailsController.reservationDTO.clientDTO.login}"/>
+
                 <h:outputText value="#{msg['page.client.reservations.details.name']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.clientDTO.personalDetails}"/>
 
@@ -52,7 +55,6 @@
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.halldetails.back']}" action="#{reservationDetailsController.goBack}"/>
-                    <p:commandButton value="#{msg['page.halldetails.edit']}"/>
                 </h:form>
             </div>
         </div>
