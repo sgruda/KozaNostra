@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template="../templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.addreview.title']}</title>
+        <style type="text/css">
+        </style>
+    </ui:define>
+    <ui:define name="content">
+
+            <p:messages globalOnly="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+            <c:choose>
+                <c:when test="#{addReviewController.availableReservations}">
+                    <p:panel header="#{msg['page.addreview.title']}">
+
+                            <h:form>
+                                <div id="add-review-div">
+                                    <p:outputLabel for="select-reservation" value="#{msg['page.addReview.reservationlabel']}"/>
+                                    <p:selectOneMenu id="select-reservation" value="#{addReviewController.reservationNumber}">
+                                        <f:selectItems value="#{addReviewController.reservationNumbers}" var="reservationNumber" itemLabel="#{addReviewController.addReviewLabel(reservationNumber)}" itemValue="#{reservationNumber}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="review-content-input" value="#{msg['page.addReview.contentlabel']}"/>
+                                    <p:inputTextarea id="review-content-input" value="#{addReviewController.reviewText}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="#{msg['page.addreview.counter']}"/>
+                                    <h:outputText id="display" />
+                                    <p:commandButton ajax="false" id="submit" validateClient="true" value="#{msg['page.addreview.button']}"  icon="pi pi-check" style="float: center;" action="#{addReviewController.addReview()}"/>
+                                </div>
+                            </h:form>
+
+                    </p:panel>
+
+                </c:when>
+                <c:otherwise>
+                    <p:panel header="#{msg['page.addreview.noreservations.header']}">
+                        <h:outputText value="#{msg['page.addreview.noreservations']}"/>
+                    </p:panel>
+                </c:otherwise>
+            </c:choose>
+
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.addreview.reviews.breadcrumb']}" outcome="/listReviews.xhtml"/>
+        <p:menuitem value="#{msg['page.addreview.breadcrumb']}" outcome="/client/addReview.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>

@@ -23,6 +23,7 @@ import java.util.UUID;
     @NamedQuery(name = "Review.findById", query = "SELECT r FROM Review r WHERE r.id = :id"),
     @NamedQuery(name = "Review.findByContent", query = "SELECT r FROM Review r WHERE r.content = :content"),
     @NamedQuery(name = "Review.findByDate", query = "SELECT r FROM Review r WHERE r.date = :date"),
+    @NamedQuery(name = "Review.findByClientId", query = "SELECT r FROM Review r WHERE r.client.account.id =:id"),
     @NamedQuery(name = "Review.findByReviewNumber", query = "SELECT r FROM Review r WHERE r.reviewNumber = :reviewNumber")})
 public class Review implements Serializable {
 

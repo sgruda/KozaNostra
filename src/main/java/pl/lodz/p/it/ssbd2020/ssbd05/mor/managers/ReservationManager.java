@@ -3,10 +3,12 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.StatusNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
@@ -17,7 +19,9 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -33,6 +37,9 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private StatusFacade statusFacade;
+    @Inject
+    private ReviewFacade reviewFacade;
+
     @Inject
     private HallFacade hallFacade;
     @Inject
@@ -121,6 +128,25 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @RolesAllowed("getUserReviewableReservations")
     public List<Reservation> getUserReviewableReservations(String login) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        List<Reservation> result;
+        try {
+            List<Reservation> userFinishedReservations = reservationFacade
+                    .findByLogin(login)
+                    .stream()
+                    .filter(reservation -> reservation.getStatus().getStatusName().equals(ReservationStatuses.finished.name()))
+                    .collect(Collectors.toList());
+            List<Reservation> reviewedReservations = reviewFacade
+                    .findByLogin(login)
+                    .stream()
+                    .map(Review::getReservation)
+                    .collect(Collectors.toList());
+            result = new ArrayList<>(userFinishedReservations);
+            result.removeAll(reviewedReservations);
+        } catch (ReservationNotFoundException e) {
+            throw new ReservationNotFoundException(e);
+        } catch (ReviewNotFoundException e){
+            throw new ReviewNotFoundException(e);
+        }
+        return result;
     }
 }
