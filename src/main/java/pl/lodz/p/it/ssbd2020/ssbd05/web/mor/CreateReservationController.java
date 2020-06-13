@@ -129,13 +129,13 @@ public class CreateReservationController implements Serializable {
         reservationDTO.setReservationNumber(UUID.randomUUID().toString().replace("-", ""));
         boolean areDatesInvalid = false;
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
-            ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
+            ResourceBundles.emitErrorMessageWithFlash(null, "page.createreservation.dates.error");
             areDatesInvalid = true;
         } else {
             for (ScheduleEvent ev : eventModel.getEvents()) {
                 if (ev.getEndDate().isAfter(startDate) && ev.getStartDate().isBefore(endDate)) {
-                        ResourceBundles.emitErrorMessage(null, "error.createreservation.dates.overlap");
-                    areDatesInvalid = true;
+                        ResourceBundles.emitErrorMessageWithFlash(null, "error.createreservation.dates.overlap");
+                        areDatesInvalid = true;
                     }
                 }
             }
