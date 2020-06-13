@@ -265,4 +265,22 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/hallDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>editHall</from-outcome>
+            <to-view-id>/manager/editHall.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/manager/editHall.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>goBack</from-outcome>
+            <to-view-id>/hallDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

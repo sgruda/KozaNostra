@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Log
@@ -45,7 +46,7 @@ public class EditHallController implements Serializable {
     }
 
     public void editHall() {
-        hall.setEvent_type(eventTypes);
+        log.info("CONTROLLER: " + Arrays.asList(eventTypes.toArray()));
         try {
             editHallEndpoint.editHall(hall);
             ResourceBundles.emitMessageWithFlash(null, "page.edithall.success");
@@ -66,6 +67,6 @@ public class EditHallController implements Serializable {
     }
 
     public String goBack() {
-        return "home";
+        return "hallDetails";
     }
 }

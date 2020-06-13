@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.EventTypeMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Address;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
         do {
             try {
                 this.hall = hallManager.getHallByName(name);
-                if (!this.hall.isActive()) {
+                if (this.hall.isActive()) {
                     throw new HallActiveException();
                 }
                 rollback = hallManager.isLastTransactionRollback();
@@ -66,9 +68,13 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
     @Override
     @RolesAllowed("editHall")
     public void editHall(HallDTO hallDTO) throws AppBaseException {
+        Address temp = hall.getAddress();
         HallMapper.INSTANCE.updateHallFromDTO(hallDTO, hall);
+        log.info("ENDPOINT BEFORE: " + Arrays.asList(eventTypes.toArray()));
         eventTypes.removeIf(eventType -> !hallDTO.getEvent_type().contains(eventType.getTypeName()));
+        log.info("ENDPOINT AFTER: " + Arrays.asList(eventTypes.toArray()));
         hall.setEvent_type(eventTypes);
+        hall.setAddress(temp);
         int callCounter = 0;
         boolean rollback;
         do {
