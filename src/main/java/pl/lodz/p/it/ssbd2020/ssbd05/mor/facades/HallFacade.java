@@ -22,6 +22,9 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Fasada dla encji Hall
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -36,6 +39,9 @@ public class HallFacade extends AbstractFacade<Hall> {
         return em;
     }
 
+    /**
+     * Konstruktur bezprarametrowy fasady
+     */
     public HallFacade() {
         super(Hall.class);
     }
@@ -80,6 +86,13 @@ public class HallFacade extends AbstractFacade<Hall> {
         return super.count();
     }
 
+    /**
+     * Pobierz Hall według nazwy
+     *
+     * @param name nazwa sali do pobrania
+     * @return optional Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getHallByName")
     public Optional<Hall> findByName(String name) throws AppBaseException {
         try {
