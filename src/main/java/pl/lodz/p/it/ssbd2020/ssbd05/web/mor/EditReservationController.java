@@ -65,6 +65,12 @@ public class EditReservationController implements Serializable {
 
     private LocalDateTime endDate;
 
+    private boolean datesChanged=false;
+
+    private boolean startDateChanged=false;
+
+    private boolean endDateChanged=false;
+
     @PostConstruct
     public void init() {
         try {
@@ -105,8 +111,13 @@ public class EditReservationController implements Serializable {
 
         reservationDTO.setEventTypeName(eventTypeName);
         reservationDTO.setExtraServiceCollection(extraServicesNames);
-        reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
-        reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
+        log.severe(startDate+ " herb1" + endDate  );
+        if(startDateChanged) {
+            reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
+        }
+        if(endDateChanged) {
+            reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
+        }
         boolean notGood = false;
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
             ResourceBundles.emitErrorMessage(null, "page.editreservation.dates.error");
@@ -152,6 +163,8 @@ public class EditReservationController implements Serializable {
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
         event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
+        startDate=event.getStartDate();
+        endDate=event.getEndDate();
     }
 
     public void addEvent(){
@@ -172,5 +185,23 @@ public class EditReservationController implements Serializable {
 
     public String goBack(){
         return "goToDetails";
+    }
+
+    public void editDate(){
+        if(datesRenderd){
+            datesRenderd=false;
+            datesChanged=false;
+        }else {
+            datesRenderd = true;
+            datesChanged=true;
+        }
+    }
+
+    public void changeStartDate(){
+        startDateChanged=true;
+    }
+
+    public void changeEndDate(){
+        endDateChanged=true;
     }
 }

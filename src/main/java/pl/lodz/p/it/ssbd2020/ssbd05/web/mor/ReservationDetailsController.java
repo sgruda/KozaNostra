@@ -45,11 +45,17 @@ public class ReservationDetailsController implements Serializable {
             resourceBundles = new ResourceBundles();
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
             cancelReservationController.setReservationDTO(this.reservationDTO);
+            String[] eventTypes = reservationDTO.getExtraServiceCollection().toArray(new String[0]);
+            StringBuilder result = new StringBuilder();
             extraServices = "";
-            for(String extraService: reservationDTO.getExtraServiceCollection()){
-                extraServices += extraService;
-                extraServices += ", ";
+            for(int i=0; i< reservationDTO.getExtraServiceCollection().size(); i++){
+                if (i != reservationDTO.getExtraServiceCollection().size() - 1) {
+                    result.append(ResourceBundles.getTranslatedText(eventTypes[i])).append(", ");
+                } else {
+                    result.append(ResourceBundles.getTranslatedText(eventTypes[i]));
+                }
             }
+            extraServices = result.toString();
             if(!extraServices.isEmpty())
             extraServices = extraServices.replace("null", "");
         } catch (AppBaseException appBaseException) {
