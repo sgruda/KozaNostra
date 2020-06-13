@@ -45,6 +45,7 @@ public class AddHallEndpoint implements Serializable, AddHallEndpointLocal {
         eventTypes.removeIf(eventType -> !hallDTO.getEvent_type().contains(eventType.getTypeName()));
         hall.setEvent_type(eventTypes);
         hall.setAddress(AddressMapper.INSTANCE.createNewAddress(hallDTO.getAddress()));
+        hall.setReservationCollection(new ArrayList<>());
         int callCounter = 0;
         boolean rollback;
         do {

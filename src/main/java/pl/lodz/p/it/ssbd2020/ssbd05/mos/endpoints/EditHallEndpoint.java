@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallActiveException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.EditHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.managers.HallManager;
@@ -44,6 +45,9 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
         do {
             try {
                 this.hall = hallManager.getHallByName(name);
+                if (!this.hall.isActive()) {
+                    throw new HallActiveException();
+                }
                 rollback = hallManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -63,6 +67,8 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
     @RolesAllowed("editHall")
     public void editHall(HallDTO hallDTO) throws AppBaseException {
         HallMapper.INSTANCE.updateHallFromDTO(hallDTO, hall);
+        eventTypes.removeIf(eventType -> !hallDTO.getEvent_type().contains(eventType.getTypeName()));
+        hall.setEvent_type(eventTypes);
         int callCounter = 0;
         boolean rollback;
         do {
