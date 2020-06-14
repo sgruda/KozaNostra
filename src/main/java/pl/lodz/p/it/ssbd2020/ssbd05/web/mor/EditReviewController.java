@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockExce
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReviewEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -52,7 +53,10 @@ public class EditReviewController implements Serializable {
             ResourceBundles.emitMessageWithFlash(null, "page.reviews.remove.success");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, "page.reviews.remove.optimisticlock");
+            ResourceBundles.emitErrorMessageWithFlash(null, "page.reviews.edit.optimisticlock");
+        } catch (ReviewNotFoundException ex) {
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, "page.reviews.remove.failed.notfound");
         } catch (AppBaseException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             log.severe(e.getMessage() + ", " + LocalDateTime.now());

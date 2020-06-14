@@ -41,7 +41,7 @@
                         <h:outputText value="#{review.date}" styleClass="review-date"/>
                         <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient()) ||
                                       roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}">
-                            <p:commandButton value="#{msg['page.listaccounts.account.details']}"
+                            <p:commandButton value="#{msg['page.reviews.editOrRemove']}"
                                              action="#{listReviewsController.selectReview(review.reviewNumber)}"/>
                         </c:if>
                     </div>

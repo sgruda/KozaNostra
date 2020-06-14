@@ -61,7 +61,7 @@ public class EditReviewEndpoint implements EditReviewEndpointLocal, Serializable
     @Override
     @RolesAllowed("removeReview")
     public void removeReview(ReviewDTO reviewDTO) throws AppBaseException {
-        ReviewMapper.INSTANCE.updateReservationFromDTO(reviewDTO, review);
+        ReviewMapper.INSTANCE.updateAndCheckReservationFromDTO(reviewDTO, review);
         int callCounter = 0;
         boolean rollback;
         do {
