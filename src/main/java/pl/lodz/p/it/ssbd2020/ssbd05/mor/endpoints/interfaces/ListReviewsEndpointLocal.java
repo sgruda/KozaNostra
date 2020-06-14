@@ -9,5 +9,4 @@ import java.util.List;
 @Local
 public interface ListReviewsEndpointLocal {
     List<ReviewDTO> getAllReviews() throws AppBaseException;
-    void removeReview(ReviewDTO reviewDTO) throws AppBaseException;
 }

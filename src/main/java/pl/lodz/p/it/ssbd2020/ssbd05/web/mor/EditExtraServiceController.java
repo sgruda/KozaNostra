@@ -45,7 +45,7 @@ public class EditExtraServiceController implements Serializable {
         try{
             editExtraServiceEndpointLocal.editExtraService(extraServiceDTO);
             ResourceBundles.emitMessageWithFlash(null,"page.edit.extraservice.message");
-        }catch (AppOptimisticLockException ex) {
+        } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "error.extraservice.optimisticlock");
         } catch (ValidationException ex) {

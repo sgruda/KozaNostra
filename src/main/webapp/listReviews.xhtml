@@ -30,7 +30,6 @@
                     <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
                         <p:button outcome="/client/addReview.xhtml" value="#{msg['page.addreview.title']}"/>
                     </c:if>
-
                 </h:form>
             </div>
         </div>
@@ -40,6 +39,11 @@
                     <div class="review-div">
                         <h:outputText value="#{review.content}" styleClass="review-content"/>
                         <h:outputText value="#{review.date}" styleClass="review-date"/>
+                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient()) ||
+                                      roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}">
+                            <p:commandButton value="#{msg['page.listaccounts.account.details']}"
+                                             action="#{listReviewsController.selectReview(review.reviewNumber)}"/>
+                        </c:if>
                     </div>
                 </p:fieldset>
             </ui:repeat>
@@ -47,7 +51,7 @@
 
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.reviews.breadcrumb']}" outcome="/listReviews.xhtml" />
+        <p:menuitem value="#{msg['page.reviews.breadcrumbs']}" outcome="/listReviews.xhtml" />
     </ui:define>
 </ui:composition>
 </html>

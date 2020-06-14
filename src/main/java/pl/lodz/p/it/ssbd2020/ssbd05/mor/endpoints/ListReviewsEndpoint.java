@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
 import lombok.extern.java.Log;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReviewMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
@@ -54,9 +55,4 @@ public class ListReviewsEndpoint implements ListReviewsEndpointLocal {
         return list;
     }
 
-    @Override
-    @RolesAllowed("removeReview")
-    public void removeReview(ReviewDTO reviewDTO) throws AppBaseException {
-
-    }
 }

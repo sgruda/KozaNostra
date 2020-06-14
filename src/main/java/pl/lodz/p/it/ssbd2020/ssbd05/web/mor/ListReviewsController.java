@@ -3,7 +3,9 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListReviewsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
@@ -12,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.OptimisticLockException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -104,12 +107,9 @@ public class ListReviewsController implements Serializable {
     public int getPagesDigits(){
         return String.valueOf(pages).length();
     }
-    public void removeReview(String reviewNumber){
-        try {
-            listReviewsEndpoint.removeReview(reviewNumber);
-        } catch (AppBaseException e) {
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
-            log.severe(e.getMessage() + ", " + LocalDateTime.now());
-        }
+
+    public String selectReview(String reviewNumber) {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedReview", reviewNumber);
+        return "editReview";
     }
 }

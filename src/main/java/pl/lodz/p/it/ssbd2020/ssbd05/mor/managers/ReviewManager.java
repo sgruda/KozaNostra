@@ -36,7 +36,7 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
 
     @RolesAllowed("getReviewByReviewNumber")
     public Review getReviewByReviewNumber(String reviewNumber) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        return reviewFacade.findByNumber(reviewNumber).get();
     }
 
     @RolesAllowed("removeReview")
