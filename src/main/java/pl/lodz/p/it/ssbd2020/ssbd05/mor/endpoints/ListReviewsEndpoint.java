@@ -1,8 +1,10 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
 import lombok.extern.java.Log;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReviewMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
@@ -11,6 +13,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReviewManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -51,4 +54,5 @@ public class ListReviewsEndpoint implements ListReviewsEndpointLocal {
         }
         return list;
     }
+
 }

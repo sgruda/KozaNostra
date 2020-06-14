@@ -2,12 +2,15 @@ package pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +26,16 @@ public abstract class ReviewMapper {
     @Mapping(source = "client", target = "clientLogin")
     @Mapping(source = "reservation", target = "reservationNumber")
     public abstract ReviewDTO toReviewDTO(Review review);
+
+    @Mapping(target = "date", dateFormat = WITH_SECONDS)
+    public abstract void updateReservationFromDTO(ReviewDTO reviewDTO, @MappingTarget Review review);
+
+    public void updateAndCheckReservationFromDTO(ReviewDTO reviewDTO, Review review) throws AppBaseException {
+        if(review == null) {
+            throw new ReviewNotFoundException();
+        }
+        this.updateReservationFromDTO(reviewDTO, review);
+    }
 
     public abstract ArrayList<ReviewDTO> toReviewDTOArrayList(Collection<Review> reviewCollection);
 

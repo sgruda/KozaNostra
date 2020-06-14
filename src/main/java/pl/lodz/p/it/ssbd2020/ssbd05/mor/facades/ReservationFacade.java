@@ -101,10 +101,9 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         try{
            return Optional.ofNullable(this.em.createNamedQuery("Reservation.findByReservationNumber", Reservation.class)
                    .setParameter("reservationNumber", number).getSingleResult());
-        }
-        catch (NoResultException noResultException) {
+        } catch (NoResultException noResultException) {
             throw new ReservationNotFoundException(noResultException);
-        }catch (DatabaseException | PersistenceException e) {
+        } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
     }

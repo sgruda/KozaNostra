@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+<ui:composition template="templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.reviews.edit.title']}</title>
+        <style type="text/css">
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <p:commandButton value="#{msg['page.reviews.remove']}"
+                         actionListener="#{editReviewController.removeReview}"
+                         action="#{editReviewController.goBack}">
+            <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
+        </p:commandButton>
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+            <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+            <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+        </p:confirmDialog>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.reviews.breadcrumbs']}" outcome="/listReviews.xhtml" />
+        <p:menuitem value="#{msg['page.reviews.edit.breadcrumbs']}" outcome="/editReview.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>

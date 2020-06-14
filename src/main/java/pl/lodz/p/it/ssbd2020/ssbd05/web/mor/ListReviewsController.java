@@ -3,15 +3,22 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListReviewsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.ejb.SessionContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.OptimisticLockException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Log
@@ -101,5 +108,20 @@ public class ListReviewsController implements Serializable {
 
     public int getPagesDigits(){
         return String.valueOf(pages).length();
+    }
+
+    public String selectReview(String reviewNumber) {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedReview", reviewNumber);
+        return "editReview";
+    }
+    public boolean isOwnerOfOpinion(String reviewOwnerLogin) {
+        String currentUser;
+        currentUser = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+        if(null == currentUser)
+            currentUser = "";
+        if(reviewOwnerLogin.contains(currentUser) && currentUser.contains(reviewOwnerLogin))
+            return true;
+        else
+            return false;
     }
 }

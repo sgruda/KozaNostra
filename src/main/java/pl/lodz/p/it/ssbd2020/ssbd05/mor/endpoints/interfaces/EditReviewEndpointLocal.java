@@ -7,7 +7,7 @@ import javax.ejb.Local;
 
 @Local
 public interface EditReviewEndpointLocal {
-    ReviewDTO getReviewByReviewNumber(String number) throws AppBaseException;
-
+    ReviewDTO getReviewByReviewNumber(String reviewNumber) throws AppBaseException;
     void editReview(ReviewDTO reviewDTO) throws AppBaseException;
+    void removeReview(ReviewDTO reviewDTO) throws AppBaseException;
 }
