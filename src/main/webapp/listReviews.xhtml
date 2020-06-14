@@ -39,14 +39,10 @@
                     <div class="review-div">
                         <h:outputText value="#{review.content}" styleClass="review-content"/>
                         <h:outputText value="#{review.date}" styleClass="review-date"/>
-<!--                        <c:if test="#{listReviewsController.isOwnerOfOpinion(review.clientLogin) ||-->
-<!--                                      roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}">-->
                             <p:commandButton rendered="#{listReviewsController.isOwnerOfOpinion(review.clientLogin) ||
                                                         roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}"
                                              value="#{msg['page.reviews.editOrRemove']}"
                                              action="#{listReviewsController.selectReview(review.reviewNumber)}"/>
-<!--                        </c:if>-->
-<!--                        <h:outputText value="#{listReviewsController.isOwnerOfOpinion(review.clientLogin)}"/>-->
                     </div>
                 </p:fieldset>
             </ui:repeat>
