@@ -17,7 +17,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -86,7 +85,7 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @RolesAllowed("editHall")
     public void editHall(Hall hall) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hallFacade.edit(hall);
     }
 
     @RolesAllowed("getAllEventTypes")

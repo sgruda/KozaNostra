@@ -19,5 +19,4 @@ public @Data class HallDTO {
     private double price;
     private Collection<String> event_type = new ArrayList<>();
     private AddressDTO address;
-    private Collection<String> reservationCollection = new ArrayList<>();
 }

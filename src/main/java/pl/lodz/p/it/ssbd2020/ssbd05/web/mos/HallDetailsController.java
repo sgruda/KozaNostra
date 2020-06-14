@@ -69,6 +69,4 @@ public class HallDetailsController implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedHallName");
         return "goBack";
     }
-
-    //przy przechodzeniu na szczegóły sali chcę zrobić obsługę błędu w przypadku gdy ktoś w międzyczasie ją usunie
 }
