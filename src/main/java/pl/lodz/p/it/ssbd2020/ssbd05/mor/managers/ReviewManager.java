@@ -57,7 +57,7 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
 
     @RolesAllowed("editReview")
     public void editReview(Review review) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        reviewFacade.edit(review);
     }
 
     @PermitAll
