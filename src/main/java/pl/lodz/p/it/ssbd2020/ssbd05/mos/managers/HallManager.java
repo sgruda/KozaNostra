@@ -101,7 +101,7 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @RolesAllowed("removeHall")
     public void removeHall(Hall hall) throws AppBaseException{
-        throw new UnsupportedOperationException();
+        hallFacade.remove(hall);
     }
 
     @RolesAllowed("changeHallActivity")

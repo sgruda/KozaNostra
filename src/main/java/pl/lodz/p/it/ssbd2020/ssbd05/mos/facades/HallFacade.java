@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.facades;
 
 import lombok.extern.java.Log;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;

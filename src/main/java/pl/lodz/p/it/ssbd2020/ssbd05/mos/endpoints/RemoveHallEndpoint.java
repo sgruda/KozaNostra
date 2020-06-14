@@ -1,7 +1,10 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
 
 import lombok.extern.java.Log;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.managers.HallManager;
@@ -30,7 +33,10 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
 
     @Override
     @RolesAllowed("removeHall")
-    public void removeHall(HallDTO hallDTO) {
-        throw new UnsupportedOperationException();
+    public void removeHall(HallDTO hallDTO) throws AppBaseException {
+        log.severe("hallDTO" +hallDTO.getName());
+        Hall hall =HallMapper.INSTANCE.toHall(hallDTO);
+        log.severe("hall" +hall.getName());
+        hallManager.removeHall(hall);
     }
 }

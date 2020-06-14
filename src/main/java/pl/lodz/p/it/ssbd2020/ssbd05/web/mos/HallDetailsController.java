@@ -5,6 +5,7 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +25,9 @@ public class HallDetailsController implements Serializable {
 
     @Inject
     private HallDetailsEndpointLocal hallDetailsEndpoint;
+
+    @Inject
+    private RemoveHallEndpointLocal removeHallEndpoint;
 
     @Getter
     private HallDTO hall;
@@ -54,6 +58,19 @@ public class HallDetailsController implements Serializable {
             return result.toString();
         } else {
             return "";
+        }
+    }
+
+    public void removeHall(){
+        try {
+            if(!hall.isActive()) {
+                removeHallEndpoint.removeHall(hall);
+            }else{
+                ResourceBundles.emitErrorMessageWithFlash(null, "page.hall.details.active");
+            }
+        } catch (AppBaseException appBaseException) {
+            log.severe(LocalDateTime.now() + " " + appBaseException.getMessage());
+            ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
         }
     }
 
