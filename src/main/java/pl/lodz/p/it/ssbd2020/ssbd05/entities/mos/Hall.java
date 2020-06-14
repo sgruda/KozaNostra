@@ -29,7 +29,7 @@ import java.util.Collection;
         @NamedQuery(name = "Hall.filterByNameAndAddress", query = "SELECT h FROM Hall h WHERE LOWER(h.name) LIKE CONCAT('%', LOWER(:filter), '%')" +
                 "OR LOWER(h.address.street) LIKE CONCAT('%', LOWER(:filter), '%')" +
                 "OR LOWER(h.address.city) LIKE CONCAT('%', LOWER(:filter), '%')"),
-        @NamedQuery(name = "RemoveHall", query = "delete from Hall h where :hallName = h.name")
+        @NamedQuery(name = "RemoveHall", query = "delete from Hall h where h.name=:name")
 })
 public class Hall implements Serializable {
 
