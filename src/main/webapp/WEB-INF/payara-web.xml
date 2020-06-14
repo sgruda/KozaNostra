@@ -65,6 +65,12 @@
         <group-name>CLIENT</group-name>
         <group-name>MANAGER</group-name>
       </security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>getEventTypeByName</role-name>
+        <group-name>CLIENT</group-name>
+    </security-role-mapping>
+
       <security-role-mapping>
         <role-name>editOwnAccount</role-name>
         <group-name>CLIENT</group-name>
@@ -97,10 +103,16 @@
         <group-name>MANAGER</group-name>
         <group-name>ADMIN</group-name>
     </security-role-mapping>
+    <security-role-mapping>
+        <role-name>getExtraServiceByName</role-name>
+        <group-name>CLIENT</group-name>
+        <group-name>MANAGER</group-name>
+    </security-role-mapping>
 
     <security-role-mapping>
         <role-name>getStatusByName</role-name>
         <group-name>MANAGER</group-name>
+        <group-name>CLIENT</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>getReservationByNumber</role-name>
@@ -125,6 +137,7 @@
     </security-role-mapping>
     <security-role-mapping>
         <role-name>getAllReservations</role-name>
+        <group-name>CLIENT</group-name>
         <group-name>MANAGER</group-name>
     </security-role-mapping>
     <security-role-mapping>
@@ -171,6 +184,8 @@
         <group-name>MANAGER</group-name>
     </security-role-mapping>
 
+
+
     <security-role-mapping>
         <role-name>editHall</role-name>
         <group-name>MANAGER</group-name>
@@ -179,6 +194,7 @@
     <security-role-mapping>
         <role-name>getHallByName</role-name>
         <group-name>MANAGER</group-name>
+        <group-name>CLIENT</group-name>
     </security-role-mapping>
 
     <security-role-mapping>
@@ -225,11 +241,6 @@
 
     <security-role-mapping>
         <role-name>addExtraService</role-name>
-        <group-name>MANAGER</group-name>
-    </security-role-mapping>
-
-    <security-role-mapping>
-        <role-name>getExtraServiceByName</role-name>
         <group-name>MANAGER</group-name>
     </security-role-mapping>
 

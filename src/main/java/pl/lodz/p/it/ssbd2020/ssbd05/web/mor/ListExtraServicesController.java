@@ -20,6 +20,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Kontroler odpowiedzialny za wyświetlenie wszystkich usług dodatkowych dostępnych w systemie
+ */
 @Log
 @Named
 @ViewScoped
@@ -31,6 +34,9 @@ public class ListExtraServicesController implements Serializable {
     @Getter
     private List<ExtraServiceDTO> extraServices;
 
+    /**
+     * Metoda wykonywana po stworzeniu instancji klasy ListExtraServicesController. Pobiera wszystkie usługi dodatkowe z bazy
+     */
     @PostConstruct
     public void init() {
         try {
@@ -41,6 +47,11 @@ public class ListExtraServicesController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za zmianę aktywności wybranej usługi dodatkowej
+     *
+     * @param extraServiceDTO obiekt typu ExtraServiceDTO
+     */
     public void changeActivity(ExtraServiceDTO extraServiceDTO) {
         try {
             listExtraServicesEndpoint.changeActivity(extraServiceDTO);
@@ -63,5 +74,10 @@ public class ListExtraServicesController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
+    }
+
+    public String goToEditPage(String extraServiceName){
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedExtraService", extraServiceName);
+        return "editExtraServicePage";
     }
 }

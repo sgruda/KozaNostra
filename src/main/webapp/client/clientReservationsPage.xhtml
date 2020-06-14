@@ -13,8 +13,8 @@
         <h:form id="form1" style="margin-bottom: auto">
             <p:dataTable var="reservation" value="#{listUsersReservationController.usersReservations}"
                          emptyMessage="#{msg['page.client.reservations.notfound']}">
-                <p:column headerText="#{msg['page.client.reservations.reservation.number']}">
-                    <h:outputText value="#{reservation.reservationNumber}"/>
+                <p:column headerText="#{msg['page.client.reservations.reservation.hallName']}">
+                    <h:outputText value="#{reservation.hallName}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['page.client.reservations.reservation.event.type']}">

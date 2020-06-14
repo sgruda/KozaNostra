@@ -26,6 +26,15 @@ public abstract class ReviewMapper {
 
     public abstract ArrayList<ReviewDTO> toReviewDTOArrayList(Collection<Review> reviewCollection);
 
+    public Review createNewReview(ReviewDTO reviewDTO){
+        if ( reviewDTO == null ) {
+            return null;
+        }
+        Review review = new Review();
+        review.setContent( reviewDTO.getContent() );
+        return review;
+    }
+
     public String map(Client value){ return value.getAccount().getLogin(); }
     public String map(Reservation value){ return value.getReservationNumber();}
 }

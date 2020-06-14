@@ -61,6 +61,10 @@ public class HallDetailsController implements Serializable {
         return "editHall";
     }
 
+    public String goToReservationPage() {
+        return "toReservationPage";
+    }
+
     public String goBack() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedHallName");
         return "goBack";
