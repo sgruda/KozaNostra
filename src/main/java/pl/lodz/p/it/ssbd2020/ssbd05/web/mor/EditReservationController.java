@@ -158,7 +158,7 @@ public class EditReservationController implements Serializable {
 
     private ScheduleEvent event = new DefaultScheduleEvent();
 
-    private boolean datesRenderd = false;
+    private boolean datesRenderd = true;
 
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
