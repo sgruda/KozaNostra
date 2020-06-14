@@ -8,10 +8,12 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ListReviewsEndpoint
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Log
@@ -102,5 +104,12 @@ public class ListReviewsController implements Serializable {
     public int getPagesDigits(){
         return String.valueOf(pages).length();
     }
-
+    public void removeReview(String reviewNumber){
+        try {
+            listReviewsEndpoint.removeReview(reviewNumber);
+        } catch (AppBaseException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        }
+    }
 }

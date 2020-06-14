@@ -3,6 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReviewMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReviewDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
@@ -55,7 +56,7 @@ public class ListReviewsEndpoint implements ListReviewsEndpointLocal {
 
     @Override
     @RolesAllowed("removeReview")
-    public void removeReview(String reviewNumber) throws AppBaseException {
+    public void removeReview(ReviewDTO reviewDTO) throws AppBaseException {
 
     }
 }
