@@ -4,8 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+>
 
 
 <ui:composition template="templates/template.xhtml">
@@ -15,15 +15,26 @@
         </style>
     </ui:define>
     <ui:define name="content">
-        <p:commandButton value="#{msg['page.reviews.remove']}"
-                         actionListener="#{editReviewController.removeReview}"
-                         action="#{editReviewController.goBack}">
-            <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
-        </p:commandButton>
-        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
-            <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-            <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-        </p:confirmDialog>
+        <p:panel header="#{msg['page.addreview.title']}">
+            <h:form>
+                <p:outputLabel for="review-content-input" value="#{msg['page.addReview.contentlabel']}"/>
+                <p:inputTextarea id="review-content-input" value="#{editReviewController.reviewDTO.content}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="#{msg['page.addreview.counter']}"/>
+                <h:outputText id="display" />
+                <p:commandButton value="#{msg['page.addreview.button']}"
+                                 icon="pi pi-check" style="float: center;"
+                                 actionListener="#{editReviewController.editReview()}"
+                                 action="#{editReviewController.goBack}"/>
+            </h:form>
+            <p:commandButton value="#{msg['page.reviews.remove']}"
+                             actionListener="#{editReviewController.removeReview}"
+                             action="#{editReviewController.goBack}">
+                <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
+            </p:commandButton>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+                <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+        </p:panel>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.reviews.breadcrumbs']}" outcome="/listReviews.xhtml" />
