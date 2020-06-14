@@ -49,7 +49,7 @@
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.client.reservations.details.back']}" action="#{reservationDetailsController.goBack}"/>
-                    <p:commandButton  rendered="#{!reservationDetailsController.isCancelled()}" value="#{msg['page.client.reservations.details.edit']}" action="#{reservationDetailsController.goToEditPage}"/>
+                    <p:commandButton  rendered="#{reservationDetailsController.editable}" value="#{msg['page.client.reservations.details.edit']}" action="#{reservationDetailsController.goToEditPage}"/>
                     <p:commandButton rendered="#{reservationDetailsController.isSubmitted()}"
                                      value="#{msg['page.client.reservations.details.cancel']}"
                                      action="#{reservationDetailsController.cancelReservation}">

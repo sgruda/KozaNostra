@@ -39,11 +39,20 @@ public class ReservationDetailsController implements Serializable {
     @Inject
     private CancelReservationController cancelReservationController;
 
+    @Getter
+    @Setter
+    private boolean editable;
+
     @PostConstruct
     public void init(){
         try {
+
             resourceBundles = new ResourceBundles();
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
+            editable=true;
+            if(reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.toString()) || reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())) {
+                editable = false;
+            }
             cancelReservationController.setReservationDTO(this.reservationDTO);
             String[] eventTypes = reservationDTO.getExtraServiceCollection().toArray(new String[0]);
             StringBuilder result = new StringBuilder();
@@ -75,9 +84,7 @@ public class ReservationDetailsController implements Serializable {
         return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString());
     }
 
-    public boolean isCancelled(){
-        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.toString());
-    }
+
 
     private void refresh() {
         try {
