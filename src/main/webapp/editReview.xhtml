@@ -15,7 +15,9 @@
         </style>
     </ui:define>
     <ui:define name="content">
-        <p:commandButton value="#{msg['page.reviews.remove']}" action="#{editReviewController.removeReview}"/>
+        <p:commandButton value="#{msg['page.reviews.remove']}"
+                         actionListener="#{editReviewController.removeReview}"
+                         action="#{editReviewController.goBack}"/>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.reviews.breadcrumbs']}" outcome="/listReviews.xhtml" />
