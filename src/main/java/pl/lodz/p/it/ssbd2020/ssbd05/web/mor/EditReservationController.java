@@ -89,8 +89,8 @@ public class EditReservationController implements Serializable {
         }
         eventModel = new DefaultScheduleModel();
         today = LocalDateTime.now();
-        startDate = LocalDateTime.now();
-        endDate = LocalDateTime.now();
+        startDate = DateFormatter.stringToLocalDateTime(reservationDTO.getStartDate());
+        endDate = DateFormatter.stringToLocalDateTime(reservationDTO.getEndDate());
 
 
         for (UnavailableDate unavailableDate : unavailableDates) {
@@ -185,16 +185,6 @@ public class EditReservationController implements Serializable {
 
     public String goBack(){
         return "goToDetails";
-    }
-
-    public void editDate(){
-        if(datesRenderd){
-            datesRenderd=false;
-            datesChanged=false;
-        }else {
-            datesRenderd = true;
-            datesChanged=true;
-        }
     }
 
     public void changeStartDate(){

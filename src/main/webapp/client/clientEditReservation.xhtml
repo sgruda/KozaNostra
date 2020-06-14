@@ -63,25 +63,25 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 
                 <h:panelGrid columnClasses="value" >
-                    <p:schedule id="schedule" rendered="#{editReservationController.datesRenderd}"
-                                styleClass="fc-dayGridMonth-button#disabled; fc-draggable#disabled"
+                    <p:schedule id="schedule"
+                                styleClass=" fc-draggable#disabled"
                                 value="#{editReservationController.eventModel}" widgetVar="myschedule"
                                 view="agendaWeek" rightHeaderTemplate="timeGridWeek" timeZone=""
                                 style=" width: 600px;" allDaySlot="false" clientTimeZone="local"
                                 locale="#{msg['page.editreservation.calendar.language']}" tooltip="true"
-                                draggable="false" resizable="false" slotEventOverlap="false" >
+                                draggable="false" resizable="false" slotEventOverlap="false">
                         <p:ajax event="dateSelect" listener="#{editReservationController.onDateSelect}"
                                 update="eventDetails" oncomplete="PF('eventDialog').show();"/>
                     </p:schedule>
                 </h:panelGrid>
 
-                <p:dialog id="eventDialog" widgetVar="eventDialog" header="#{msg['page.editreservation.event.details']}" showEffect="clip" rendered="#{editReservationController.datesRenderd}"
+                <p:dialog id="eventDialog" widgetVar="eventDialog" header="#{msg['page.editreservation.event.details']}" showEffect="clip"
                           hideEffect="clip">
 
                     <h:panelGrid id="eventDetails" columns="2" >
-                        <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}" rendered="#{editReservationController.datesRenderd}"/>
+                        <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}"/>
 
-                        <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true" rendered="#{editReservationController.datesRenderd}"
+                        <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true"
                                       mindate="#{editReservationController.today.plusMinutes(1)}"
                                       lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.today.plusMinutes(1)}"
@@ -91,8 +91,8 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                       pattern="yyyy-MM-dd HH:mm:ss"  valueChangeListener="#{editReservationController.changeStartDate}"/>
 
 
-                        <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}" rendered="#{editReservationController.datesRenderd}"/>
-                        <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true" rendered="#{editReservationController.datesRenderd}"
+                        <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}" />
+                        <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true"
                                       mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
                                       lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.event.startDate}"
@@ -101,7 +101,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                       locale="#{msg['page.editreservation.calendar.language']}"
                                       pattern="yyyy-MM-dd HH:mm:ss" valueChangeListener="#{editReservationController.changeEndDate}"/>
 
-                        <p:commandButton id="addButton" value="#{msg['page.editreservation.button.save.date']}" rendered="#{editReservationController.datesRenderd}"
+                        <p:commandButton id="addButton" value="#{msg['page.editreservation.button.save.date']}"
                                          action="#{editReservationController.addEvent}" actionListener="#{editReservationController.addEvent}"
                                          oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
 
