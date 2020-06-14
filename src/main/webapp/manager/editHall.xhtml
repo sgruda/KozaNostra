@@ -36,7 +36,7 @@
                         <p:inputTextarea id="description" required="true"
                                          value="#{editHallController.hall.description}"
                                          requiredMessage="#{msg['page.addhall.description.required']}"
-                                         validatorMessage="#{msg['page.addhall.description.validator']}" rows="1" cols="40">
+                                         validatorMessage="#{msg['page.addhall.description.validator']}" rows="1" cols="40" maxlength="512">
                             <f:validateRegex pattern="[ 0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\-]+"/>
                             <f:validateLength minimum="1" maximum="512"/>
                         </p:inputTextarea>
