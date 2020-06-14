@@ -65,6 +65,7 @@ public class HallDetailsController implements Serializable {
         try {
             if(!hall.isActive()) {
                 removeHallEndpoint.removeHall(hall);
+                ResourceBundles.emitMessageWithFlash(null, "page.hall.details.delete.success");
             }else{
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.hall.details.active");
             }
