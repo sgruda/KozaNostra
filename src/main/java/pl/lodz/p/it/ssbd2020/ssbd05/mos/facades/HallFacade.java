@@ -89,6 +89,12 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za edcyję encji reprezentującej salę w bazie danych
+     *
+     * @param entity Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"editHall", "changeHallActivity"})
     public void edit(Hall entity) throws AppBaseException {

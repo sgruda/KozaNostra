@@ -102,6 +102,12 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         return hallFacade.filter(hallFilter);
     }
 
+    /**
+     * Metoda odpowiedzialna za edycję sali
+     *
+     * @param hall Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("editHall")
     public void editHall(Hall hall) throws AppBaseException {
         hallFacade.edit(hall);
