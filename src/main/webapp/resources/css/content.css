@@ -198,3 +198,8 @@ fieldset > legend{
 .edit-remove-review-button{
     align-self: center;
 }
+
+.remove-review-buttons-div{
+    margin: auto;
+    display: flex;
+}
