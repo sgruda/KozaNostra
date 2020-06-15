@@ -70,7 +70,7 @@ public class EditReviewController implements Serializable {
         try {
             reviewDTO.setDate(DateFormatter.formatDate(LocalDateTime.now()));
             editReviewEndpointLocal.editReview(reviewDTO);
-            ResourceBundles.emitMessageWithFlash(null, "page.reviews.remove.success");
+            ResourceBundles.emitMessageWithFlash(null, "page.review.edit.success");
         } catch (AppOptimisticLockException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, "page.reviews.edit.optimisticlock");

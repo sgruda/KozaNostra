@@ -39,7 +39,7 @@
                     <div class="review-div">
                         <h:outputText value="#{review.content}" styleClass="review-content"/>
                         <h:outputText value="#{review.date}" styleClass="review-date"/>
-                            <p:commandButton rendered="#{listReviewsController.isOwnerOfOpinion(review.clientLogin) ||
+                            <p:commandButton styleClass="edit-remove-review-button" rendered="#{listReviewsController.isOwnerOfOpinion(review.clientLogin) ||
                                                         roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}"
                                              value="#{msg['page.reviews.editOrRemove']}"
                                              action="#{listReviewsController.selectReview(review.reviewNumber)}"/>
