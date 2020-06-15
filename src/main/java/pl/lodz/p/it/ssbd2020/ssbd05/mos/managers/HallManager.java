@@ -66,6 +66,12 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich sal
+     *
+     * @return kolekcja obiektów  typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Collection<Hall> getAllHalls() throws AppBaseException {
         return hallFacade.findAll();

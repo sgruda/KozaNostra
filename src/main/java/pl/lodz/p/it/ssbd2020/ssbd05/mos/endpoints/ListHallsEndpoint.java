@@ -19,9 +19,12 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Punkt dostępowego implementujący interfejs ListHallsEndpointLocal, który pośredniczy
+ * przy wyświetlaniu wszystkich sal w systemie oraz filtrowaniu ich
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

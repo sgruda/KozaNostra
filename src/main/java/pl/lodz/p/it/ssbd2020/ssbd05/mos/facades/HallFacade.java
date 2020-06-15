@@ -106,6 +106,12 @@ public class HallFacade extends AbstractFacade<Hall> {
         return super.find(id);
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich sal z bazy danych
+     *
+     * @return Lista obiektów typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @PermitAll
     public List<Hall> findAll() throws AppBaseException {
