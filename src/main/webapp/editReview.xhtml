@@ -13,31 +13,39 @@
 </f:metadata>
 <ui:composition template="templates/template.xhtml">
     <ui:define name="head">
-        <title>#{msg['page.reviews.edit.title']}</title>
+        <title>#{msg['page.review.removeedit.title']}</title>
         <style type="text/css">
         </style>
     </ui:define>
     <ui:define name="content">
-        <p:panel header="#{msg['page.addreview.title']}">
-            <h:form>
-                <p:outputLabel for="review-content-input" value="#{msg['page.addReview.contentlabel']}"/>
-                <p:inputTextarea id="review-content-input" value="#{editReviewController.reviewDTO.content}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="#{msg['page.addreview.counter']}"/>
-                <h:outputText id="display" />
-                <p:commandButton value="#{msg['page.addreview.button']}"
-                                 icon="pi pi-check" style="float: center;"
-                                 actionListener="#{editReviewController.editReview()}"
-                                 action="#{editReviewController.goBack}"/>
-            </h:form>
-            <p:commandButton value="#{msg['page.reviews.remove']}"
-                             actionListener="#{editReviewController.removeReview}"
-                             action="#{editReviewController.goBack}">
-                <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
-            </p:commandButton>
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
-                <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-            </p:confirmDialog>
-        </p:panel>
+        <p:tabView>
+            <p:tab title="#{msg['page.review.edit.title']}">
+                <h:form>
+                    <div class="edit-remove-review-div">
+                        <p:outputLabel for="review-content-input" value="#{msg['page.addReview.contentlabel']}"/>
+                        <p:inputTextarea id="review-content-input" value="#{editReviewController.reviewDTO.content}" rows="5" cols="30" counter="display" maxlength="512" counterTemplate="#{msg['page.addreview.counter']}"/>
+                        <h:outputText id="display" />
+                        <p:commandButton value="#{msg['page.review.edit.button']}"
+                                         icon="pi pi-check" style="float: center;"
+                                         actionListener="#{editReviewController.editReview()}"
+                                         action="#{editReviewController.goBack}"/>
+                    </div>
+                </h:form>
+            </p:tab>
+            <p:tab title="#{msg['page.review.remove.title']}">
+                <div class="edit-remove-review-div">
+                <p:commandButton value="#{msg['page.reviews.remove']}"
+                                 actionListener="#{editReviewController.removeReview}"
+                                 action="#{editReviewController.goBack}">
+                    <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+                    <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                    <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                </p:confirmDialog>
+                </div>
+            </p:tab>
+        </p:tabView>
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
         <p:menuitem value="#{msg['page.reviews.breadcrumbs']}" outcome="/listReviews.xhtml" />
