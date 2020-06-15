@@ -32,10 +32,9 @@ public class EditReviewController implements Serializable {
     public String onLoad(){
         String selectedReview = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReview");
         try {
-            log.info("SELECTEDREVIEW:" + selectedReview);
             this.reviewDTO = editReviewEndpointLocal.getReviewByReviewNumber(selectedReview);
         } catch (ReviewNotFoundException ex){
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now() + "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             return goBack();
         } catch (AppBaseException ex) {
@@ -61,7 +60,6 @@ public class EditReviewController implements Serializable {
     }
 
     public String goBack() {
-        log.info("GOING BACK");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedReview");
         return "listReviews";
     }
