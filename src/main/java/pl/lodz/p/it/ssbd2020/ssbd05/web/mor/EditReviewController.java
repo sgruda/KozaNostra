@@ -11,7 +11,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReviewEndpointL
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -30,19 +29,20 @@ public class EditReviewController implements Serializable {
     @Setter
     private ReviewDTO reviewDTO;
 
-    @PostConstruct
-    public void init() {
+    public String onLoad(){
         String selectedReview = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReview");
         try {
+            log.info("SELECTEDREVIEW:" + selectedReview);
             this.reviewDTO = editReviewEndpointLocal.getReviewByReviewNumber(selectedReview);
-        }
-        catch (AppOptimisticLockException ex) {
-            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessage(null, ex.getMessage());
+        } catch (ReviewNotFoundException ex){
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now() + "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            return goBack();
         } catch (AppBaseException ex) {
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, ex.getMessage());
         }
+        return "";
     }
     public void removeReview() {
         try {
@@ -61,6 +61,8 @@ public class EditReviewController implements Serializable {
     }
 
     public String goBack() {
+        log.info("GOING BACK");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedReview");
         return "listReviews";
     }
 

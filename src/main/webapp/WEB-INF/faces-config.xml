@@ -292,4 +292,22 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/editReview.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>listReviews</from-outcome>
+            <to-view-id>/listReviews.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/listReviews.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>editReview</from-outcome>
+            <to-view-id>/editReview.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

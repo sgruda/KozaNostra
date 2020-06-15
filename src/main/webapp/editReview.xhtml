@@ -5,9 +5,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
 >
 
-
+<f:metadata>
+    <f:viewAction action="#{editReviewController.onLoad}"/>
+</f:metadata>
 <ui:composition template="templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.reviews.edit.title']}</title>
