@@ -50,6 +50,12 @@ public class HallFacade extends AbstractFacade<Hall> {
         super(Hall.class);
     }
 
+    /**
+     * Metoda odpowiedzialna za dodawanie encji reprezentującej salę do bazy danych
+     *
+     * @param entity Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("addHall")
     public void create(Hall entity) throws AppBaseException {

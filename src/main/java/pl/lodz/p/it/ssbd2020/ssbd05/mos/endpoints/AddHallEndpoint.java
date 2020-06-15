@@ -27,6 +27,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Punkt dostępowy implementujący interfejs AddHallEndpointLocal, który pośredniczy
+ * przy dodawaniu sali przez użytkownika o poziomie dostępu menadżer
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

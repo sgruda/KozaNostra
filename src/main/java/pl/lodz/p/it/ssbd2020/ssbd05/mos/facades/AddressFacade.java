@@ -42,6 +42,12 @@ public class AddressFacade extends AbstractFacade<Address> {
         super(Address.class);
     }
 
+    /**
+     * Metoda odpowiedzialna za dodawanie encji reprezentującej adres do bazy danych
+     *
+     * @param entity Obiekt typu Address
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("addHall")
     public void create(Address entity) throws AppBaseException {
@@ -58,6 +64,16 @@ public class AddressFacade extends AbstractFacade<Address> {
         return super.find(id);
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie encji reprezentującej adres o danej
+     * nazwie ulicy, numerze ulicy i nazwie miasta z bazy danych
+     *
+     * @param street Nazwa ulicy
+     * @param number Numer ulicy
+     * @param city   Nazwa miasta
+     * @return Obiekt typu Address opakowany w obiekt Optional
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("addHall")
     public Optional<Address> findByStreetAndNumberAndCity(String street, int number, String city) throws AppBaseException {
         try {
@@ -73,6 +89,12 @@ public class AddressFacade extends AbstractFacade<Address> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich adresów z bazy danych
+     *
+     * @return Lista obiektów typu Address
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("getAllAddresses")
     public List<Address> findAll() throws AppBaseException {
