@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Punkt dostępowego implementujący interfejs ListHallsEndpointLocal, który pośredniczy
+ * Punkt dostępowy implementujący interfejs ListHallsEndpointLocal, który pośredniczy
  * przy wyświetlaniu wszystkich sal w systemie oraz filtrowaniu ich
  */
 @Log

@@ -57,6 +57,13 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         hallFacade.create(hall);
     }
 
+    /**
+     * Metoda odpowiedzialna za wyszukiwanie sali na podstawie jej nazwy
+     *
+     * @param name Nazwa sali
+     * @return Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Hall getHallByName(String name) throws AppBaseException {
         if (hallFacade.findByName(name).isPresent()) {

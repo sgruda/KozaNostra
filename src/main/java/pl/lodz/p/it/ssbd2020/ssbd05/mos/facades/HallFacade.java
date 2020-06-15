@@ -64,6 +64,13 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie sali o danej nazwie z bazy danych
+     *
+     * @param name Nazwa sali
+     * @return Obiekt typu Hall opakowany w obiekt Optional
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Optional<Hall> findByName(String name) throws AppBaseException {
         try {
