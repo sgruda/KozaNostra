@@ -328,6 +328,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         else throw new ExtraServiceNotFoundException();
     }
 
+    /**
+     * Metoda odpowiedzialna za pobranie obiektu agregatu
+     *
+     * @return Obiekt typu AverageGuestNumber
+     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public AverageGuestNumber getAggregate() throws AppBaseException {
         return averageGuestNumberFacade.findAll().get(0);
