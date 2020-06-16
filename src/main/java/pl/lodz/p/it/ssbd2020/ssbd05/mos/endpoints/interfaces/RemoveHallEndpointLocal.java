@@ -9,5 +9,6 @@ import javax.ejb.Local;
 @Local
 public interface RemoveHallEndpointLocal {
     public void removeHall(HallDTO hallDTO) throws AppBaseException;
+    HallDTO getHallByName(String Hall) throws  AppBaseException;
 
 }

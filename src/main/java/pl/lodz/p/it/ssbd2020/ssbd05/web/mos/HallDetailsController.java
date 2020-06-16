@@ -49,6 +49,7 @@ public class HallDetailsController implements Serializable {
         String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
+            removeHallEndpoint.getHallByName(selectedHallName);
             if(!this.hall.isActive()){
                 isReservationButtonVisible = false;
             }else{

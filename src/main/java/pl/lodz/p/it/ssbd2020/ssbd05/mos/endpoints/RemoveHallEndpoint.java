@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
@@ -30,6 +32,8 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
     @Inject
     private HallManager hallManager;
 
+    @Getter
+    @Setter
     private Hall hall;
 
 
@@ -40,17 +44,17 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
         boolean rollback;
         do {
             try {
-                hall = HallMapper.INSTANCE.toHall(hallDTO);
-                hall = hallManager.getHallByName(hall.getName());
+                HallMapper.INSTANCE.updateHallFromDTO(hallDTO,hall);
                 rollback = hallManager.isLastTransactionRollback();
-                if(hall.getReservationCollection().isEmpty()) {
+                log.severe("nr sali" + hall.getId());
+                if (hall.getReservationCollection().isEmpty()) {
                     hallManager.removeHall(hall);
                 } else throw new HallHasReservationsException();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
             }
-            if(callCounter > 0)
+            if (callCounter > 0)
                 log.info("Transaction with ID " + hallManager.getTransactionId() + " is being repeated for " + callCounter + " time");
             callCounter++;
         } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
@@ -58,4 +62,29 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
             throw new ExceededTransactionRetriesException();
         }
     }
+
+    @Override
+    public HallDTO getHallByName(String hallName) throws AppBaseException {
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                hall = hallManager.getHallByName(hallName);
+                log.severe("nr sali 2"+ hall.getId());
+                rollback = hallManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if (callCounter > 0)
+                log.info("Transaction with ID " + hallManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
+        return HallMapper.INSTANCE.toHallDTO(hall);
+    }
+
+
 }
