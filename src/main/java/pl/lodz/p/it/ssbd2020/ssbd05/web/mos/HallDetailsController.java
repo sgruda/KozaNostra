@@ -5,6 +5,7 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.EditHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -98,12 +99,14 @@ public class HallDetailsController implements Serializable {
     public void changeHallActivity(){
         hall.setActive(!hall.isActive());
         try {
-            log.severe("event " + hall.getEvent_type());
-            editHallEndpoint.changeActivity(hall);
+            hallDetailsEndpoint.changeActivity(hall);
             if(hall.isActive()){
                 ResourceBundles.emitMessageWithFlash(null,"page.halldetails.hall.activated");
             }else ResourceBundles.emitMessageWithFlash(null,"page.halldetails.hall.deactivated");
             refresh();
+        }catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
         } catch (AppOptimisticLockException ex){
             log.severe(ex.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null,"error.hall.optimisticlock");
@@ -117,8 +120,7 @@ public class HallDetailsController implements Serializable {
         try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-            this.hall = hallDetailsEndpoint.getHallByName(hall.getName());
-        } catch (AppBaseException | IOException e) {
+        } catch ( IOException e) {
             ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }

@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.EventTypeMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
@@ -40,7 +42,13 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
 
     @Inject
     private HallManager hallManager;
+
+    @Getter
+    @Setter
     private Hall hall;
+
+    @Getter
+    @Setter
     private Collection<EventType> eventTypes;
 
     @Override
@@ -124,33 +132,6 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
     }
 
 
-    @Override
-    @RolesAllowed("changeHallActivity")
-    public void changeActivity(HallDTO hallDTO) throws AppBaseException {
-        hall = hallManager.getHallByName(hallDTO.getName());
-        Address temp = hall.getAddress();
-        HallMapper.INSTANCE.updateHallFromDTO(hallDTO, hall);
-        eventTypes = hallManager.getAllEventTypes();
-        eventTypes.removeIf(eventType -> !hallDTO.getEvent_type().contains(eventType.getTypeName()));
-        hall.setEvent_type(eventTypes);
-        hall.setAddress(temp);
-        int callCounter = 0;
-        boolean rollback;
-        do {
-            try {
-                hallManager.changeActivity(hall);
-                rollback = hallManager.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
-                log.warning("EJBTransactionRolledBack");
-                rollback = true;
-            }
-            if(callCounter > 0)
-                log.info("Transaction with ID " + hallManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-            callCounter++;
-        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
-        if (rollback) {
-            throw new ExceededTransactionRetriesException();
-        }
-    }
+
 
 }
