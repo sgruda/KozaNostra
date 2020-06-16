@@ -21,11 +21,11 @@ public interface ListReservationEndpointLocal {
     List<ReservationDTO> getAllReservations() throws AppBaseException;
 
     /**
-     * Filter reservations list.
+     * Metoda odpowiedzalna za pobranie przefiltrowanej listy rezerwacji.
      *
-     * @param filter the filter
-     * @return the list
-     * @throws AppBaseException the app base exception
+     * @param filter filtr, rezerwacje filtorwane są po loginie, imieniu, nazwisku oraz numerze rezerwacji. Wielkość liter nie ma znaczenia.
+     * @return przefiltrowana lista rezerwacji w postaci obiektów typu ReservationDTO
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     List<ReservationDTO> filterReservations(String filter) throws AppBaseException;
 }
