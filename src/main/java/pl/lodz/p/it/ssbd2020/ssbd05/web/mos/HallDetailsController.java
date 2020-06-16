@@ -47,7 +47,7 @@ public class HallDetailsController implements Serializable {
     }
 
     /**
-     * Meotda odpowiedzialna za przetłumaczenie i konkatenację nazw typów imprez,
+     * Metoda odpowiedzialna za przetłumaczenie i konkatenację nazw typów imprez,
      * do których wybrana sala jest przystosowana
      *
      * @return Zinternacjonalizowane nazwy typów imprez

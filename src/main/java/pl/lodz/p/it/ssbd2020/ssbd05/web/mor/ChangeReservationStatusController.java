@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Kontroler odpowiedzialny za zmianę statusu wybranej rezerwacji.
+ */
 @Log
 @Named
 @ViewScoped
@@ -35,6 +38,11 @@ public class ChangeReservationStatusController implements Serializable {
     @Getter @Setter
     private String newStatus;
 
+    /**
+     * Metoda ustawiająca w kontrolerze obiekt transferowy edytowanej rezerwacji
+     *
+     * @param reservationDTO obiekt typu ReservationDTO
+     */
     public void setReservationDTO(ReservationDTO reservationDTO) {
         this.reservationDTO = reservationDTO;
         this.newStatus = reservationDTO.getStatusName();
@@ -51,6 +59,9 @@ public class ChangeReservationStatusController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za zmianę statusu rezerwacji.
+     */
     public void changeStatus() {
         reservationDTO.setStatusName(newStatus);
         try {
@@ -73,6 +84,12 @@ public class ChangeReservationStatusController implements Serializable {
             ret.add(status.name());
         return ret;
     }
+
+    /**
+     * Metoda przenosząca użytkownika na stronę z listą wszystkich rezerwacji
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goBack() {
         return "reservationStatusHasBeenChanged";
     }
