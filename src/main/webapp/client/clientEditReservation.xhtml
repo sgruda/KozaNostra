@@ -30,7 +30,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
                 <h:outputLabel  for="eventType" value="#{msg['page.editreservation.choose.event.type']} *" >
                 <p:selectOneMenu style="margin-left: 20px" id="eventType" value="#{editReservationController.eventTypeName}" panelStyle="width:250px" required="true">
-                    <f:selectItems value="#{editReservationController.eventTypes}" var="eventType" itemLabel="#{eventType}" itemValue="#{eventType}"/>
+                    <f:selectItems value="#{editReservationController.eventTypes}" var="eventType" itemLabel="#{editReservationController.translateExtraService(eventType)}" itemValue="#{eventType}"/>
                 </p:selectOneMenu>
                 </h:outputLabel>
 
@@ -111,7 +111,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
         </h:form>
             <div style="display:flex; flex-direction: column;">
-                <p:messages globalOnly="true">
+                <p:messages>
                     <p:autoUpdate/>
                 </p:messages>
             </div>
