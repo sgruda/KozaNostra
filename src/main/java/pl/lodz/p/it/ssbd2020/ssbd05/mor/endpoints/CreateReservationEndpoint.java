@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
-import jdk.dynalink.beans.StaticClass;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ExtraServiceMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReservationMapper;
@@ -9,31 +10,25 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.UnavailableDate;
-import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.EventTypeDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotActiveException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallModifiedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
-import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ExtraServiceManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
-import pl.lodz.p.it.ssbd2020.ssbd05.mos.managers.HallManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
-import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.formatDate;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,6 +49,10 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
     @Inject
     private ExtraServiceManager extraServiceManager;
+
+    @Getter
+    @Setter
+    private Hall hall;
 
     @Override
     @RolesAllowed("getUnavailableDates")
@@ -79,9 +78,9 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
         List<UnavailableDate> dates = new ArrayList<>();
         for (ReservationDTO res : list) {
-            if(res.getHallName().equalsIgnoreCase(hallName)){
-                dates.add(new UnavailableDate(LocalDateTime.parse(res.getStartDate(),DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss" )),
-                        LocalDateTime.parse(res.getEndDate(),DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss" ))));
+            if (res.getHallName().equalsIgnoreCase(hallName)) {
+                dates.add(new UnavailableDate(LocalDateTime.parse(res.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                        LocalDateTime.parse(res.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
             }
         }
         return new ArrayList<>(dates);
@@ -119,7 +118,8 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         boolean rollback;
         do {
             try {
-                hallDTO = HallMapper.INSTANCE.toHallDTO(reservationManager.getHallByName(hallName));
+                this.hall = reservationManager.getHallByName(hallName);
+                hallDTO = HallMapper.INSTANCE.toHallDTO(hall);
                 ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(extraServiceManager.getAllExtraServices());
 
                 rollback = reservationManager.isLastTransactionRollback();
@@ -171,19 +171,23 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
     @RolesAllowed("createReservation")
     public void createReservation(ReservationDTO reservationDTO) throws AppBaseException {
         Reservation reservation = ReservationMapper.INSTANCE.createNewReservation(reservationDTO);
+        Hall retrievedHall = reservationManager.getHallByName(reservationDTO.getHallName());
         reservation.setClient(reservationManager.getClientByLogin(reservationDTO.getClientDTO().getLogin()));
         List<ExtraService> selectedExtraService = new ArrayList<>();
         for (String extraService : reservationDTO.getExtraServiceCollection()) {
             selectedExtraService.add(reservationManager.getExtraServiceByName(extraService));
         }
-        if(selectedExtraService.size()>0){
+        if (selectedExtraService.size() > 0) {
             reservation.setExtra_service(selectedExtraService);
         }
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         reservation.setGuestsNumber(reservationDTO.getGuestsNumber());
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
-        Hall hall = reservationManager.getHallByName(reservationDTO.getHallName());
-        if(hall.isActive()){
+
+
+        if (hasHallChanged(retrievedHall)) {
+            throw new HallModifiedException();
+        } else {
             reservation.setHall(hall);
             reservation.setTotalPrice(reservationDTO.getTotalPrice());
             reservation.setReservationNumber(reservationDTO.getReservationNumber());
@@ -206,10 +210,27 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
             if (rollback) {
                 throw new ExceededTransactionRetriesException();
             }
-        }else{
-            throw new HallNotActiveException();
         }
+    }
 
-
+    private boolean hasHallChanged(Hall retrievedHall) {
+        boolean hasChanged = false;
+        if ((hall.getCapacity() != retrievedHall.getCapacity()) || (hall.getPrice() != retrievedHall.getPrice())
+                || (!retrievedHall.isActive())
+                || (retrievedHall.getArea() != hall.getArea())) {
+            hasChanged = true;
+        } else {
+            if (hall.getEvent_type().size() == retrievedHall.getEvent_type().size()) {
+                for (EventType ev : hall.getEvent_type()) {
+                    if (!retrievedHall.getEvent_type().contains(ev)) {
+                        hasChanged = true;
+                        break;
+                    }
+                }
+            } else {
+                hasChanged = true;
+            }
+        }
+        return hasChanged;
     }
 }
