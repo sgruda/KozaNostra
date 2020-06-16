@@ -51,7 +51,7 @@ public abstract class AbstractFacade<T> {
 
     public void remove(T entity) throws AppBaseException {
 
-        getEntityManager().remove(getEntityManager().merge(entity));
+        getEntityManager().remove(entity);
         getEntityManager().flush();
     }
 
