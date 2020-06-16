@@ -7,8 +7,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.EditHallEndpointLocal;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallHasReservationsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
@@ -56,11 +54,7 @@ public class HallDetailsController implements Serializable {
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
             removeHallEndpoint.getHallByName(selectedHallName);
-            if(!this.hall.isActive()){
-                isReservationButtonVisible = false;
-            }else{
-                isReservationButtonVisible = true;
-            }
+            isReservationButtonVisible = this.hall.isActive();
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
@@ -92,14 +86,17 @@ public class HallDetailsController implements Serializable {
         }
     }
 
-    public void removeHall(){
+    public void removeHall() {
         try {
-            if(!hall.isActive()) {
-                    removeHallEndpoint.removeHall(hall);
-                    ResourceBundles.emitMessageWithFlash(null, "page.hall.details.delete.success");
-            }else{
+            if (!hall.isActive()) {
+                removeHallEndpoint.removeHall(hall);
+                ResourceBundles.emitMessageWithFlash(null, "page.hall.details.delete.success");
+            } else {
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.hall.details.active");
             }
+        } catch (AppOptimisticLockException e) {
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.hall.optimisticlock");
         } catch (ExceededTransactionRetriesException e) {
             ResourceBundles.emitErrorMessage(null, e.getMessage());
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
