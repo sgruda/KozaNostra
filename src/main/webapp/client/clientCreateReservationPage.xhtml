@@ -13,9 +13,9 @@
             PrimeFaces.locales['pl'] = {
                 monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
                 monthNamesShort: ['Sty','Lut','Mar','Kwi','Maj','Cze', 'Lip','Sie','Wrz','Paź','Lis','Gru'],
-                dayNames: ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'],
-                dayNamesShort: ['Pn','Wt','Śr','Czw','Pt','Sb','Ndz'],
-                dayNamesMin: ['Pn','Wt','Śr','Czw','Pt','Sb','Ndz'],
+                dayNames: ['Niedziela', 'Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota',],
+                dayNamesShort: ['Ndz','Pn','Wt','Śr','Czw','Pt','Sb',],
+                dayNamesMin: ['Ndz','Pn','Wt','Śr','Czw','Pt','Sb',],
                 firstDay: 1,
                 ampm: false,
             };
@@ -23,6 +23,9 @@
     </ui:define>
     <ui:define name="content">
         <h:form id="form1" style="margin-bottom: auto">
+            <p:messages>
+                <p:autoUpdate/>
+            </p:messages>
             <p:panelGrid columns="2" style="display:flex; flex-direction: column; text-align: center; margin: auto;">
                 <h:outputLabel for="hallName" value="#{msg['page.createreservation.hallName']}"/>
                 <h:outputText id="hallName" disabled="true"
