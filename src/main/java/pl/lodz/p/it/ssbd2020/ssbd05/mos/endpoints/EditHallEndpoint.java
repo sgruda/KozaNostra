@@ -28,6 +28,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Punkt dostępowy implementujący interfejs EditHallEndpointLocal, który pośredniczy
+ * przy edycji sali przez użytkownika o poziomie dostępu menadżer
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

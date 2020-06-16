@@ -56,7 +56,24 @@ public class EditReviewEndpoint implements EditReviewEndpointLocal, Serializable
     @Override
     @RolesAllowed("editReview")
     public void editReview(ReviewDTO reviewDTO) throws AppBaseException{
-        throw new UnsupportedOperationException();
+        ReviewMapper.INSTANCE.updateAndCheckReservationFromDTO(reviewDTO, review);
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                reviewManager.editReview(review);
+                rollback = reviewManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if(callCounter > 0)
+                log.info("Transaction with ID " + reviewManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
     }
     @Override
     @RolesAllowed("removeReview")

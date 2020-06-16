@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Kontroler odpowiedzialny za edycję danych sali przez użytkownika o poziomie dostępu menadżer
+ */
 @Log
 @Getter
 @Setter
@@ -32,6 +35,12 @@ public class EditHallController implements Serializable {
     private HallDTO hall;
     private List<String> eventTypes;
 
+    /**
+     * Metoda wykonywana przy wejściu na stronę z edycją sali, wczytuje dane wybranej sali oraz dostępne typy imprez
+     *
+     * @return Ciąg znaków, który po pomyślnym wczytaniu danych sali powoduje pozostanie na stronie,
+     * natomiast w przeciwnym wypadku powraca do strony z listą wszystkich sal
+     */
     public String onLoad() {
         String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
         try {
@@ -45,8 +54,10 @@ public class EditHallController implements Serializable {
         return "";
     }
 
+    /**
+     * Metoda odpowiedzialna za edycję sali
+     */
     public void editHall() {
-        log.info("CONTROLLER: " + Arrays.asList(eventTypes.toArray()));
         try {
             editHallEndpoint.editHall(hall);
             ResourceBundles.emitMessageWithFlash(null, "page.edithall.success");
@@ -62,10 +73,21 @@ public class EditHallController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za tłumaczenie nazw typów imprez
+     *
+     * @param eventTypeName Nazwa typu imprezy
+     * @return Zinternacjonalizowana nazwa typu imprezy
+     */
     public String translateEventType(String eventTypeName) {
         return ResourceBundles.getTranslatedText(eventTypeName);
     }
 
+    /**
+     * Metoda przenosząca użytkownika na stronę ze szczegółami sali
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goBack() {
         return "hallDetails";
     }

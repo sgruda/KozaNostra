@@ -8,7 +8,6 @@ import javax.ejb.Local;
 /**
  * Interfejs dla punktu dostępowego AccountDetailsEndpoint pośredniczącemu
  * przy wyświetlaniu szczegółów własnego konta oraz konta użytkownika wybranego przez administratora
- *
  */
 @Local
 public interface AccountDetailsEndpointLocal {

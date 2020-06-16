@@ -20,6 +20,10 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+/**
+ * Punkt dostępowy implementujący interfejs HallDetailsEndpointLocal, który pośredniczy
+ * przy wyświetlaniu szczegółów wybranej sali
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

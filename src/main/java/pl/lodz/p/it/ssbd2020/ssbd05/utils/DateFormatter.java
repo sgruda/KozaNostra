@@ -21,6 +21,10 @@ public class DateFormatter {
         }
     }
 
+    public static LocalDateTime stringToLocalDateTime(String date){
+        return LocalDateTime.parse(date,DateTimeFormatter.ofPattern(WITH_SECONDS));
+    }
+
     public static Period getPeriod(LocalDateTime dob, LocalDateTime now) {
         return Period.between(dob.toLocalDate(), now.toLocalDate());
     }
