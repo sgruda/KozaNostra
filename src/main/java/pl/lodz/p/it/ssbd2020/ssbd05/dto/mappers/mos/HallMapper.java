@@ -18,6 +18,7 @@ public interface HallMapper {
 
     HallMapper INSTANCE = Mappers.getMapper(HallMapper.class);
 
+    Hall toHall(HallDTO hallDTO);
     HallDTO toHallDTO(Hall hall);
     Hall toHall(HallDTO hallDTO);
     Hall createNewHall(HallDTO hallDTO);

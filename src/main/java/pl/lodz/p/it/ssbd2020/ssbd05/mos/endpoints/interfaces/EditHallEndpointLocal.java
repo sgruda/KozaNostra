@@ -38,5 +38,5 @@ public interface EditHallEndpointLocal {
      */
     List<String> getAllEventTypes() throws AppBaseException;
 
-    void changeActivity(HallDTO hallDTO) throws AppBaseException;
+//    void changeActivity(HallDTO hallDTO) throws AppBaseException;
 }

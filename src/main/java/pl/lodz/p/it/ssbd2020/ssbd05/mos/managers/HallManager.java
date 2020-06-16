@@ -142,6 +142,6 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @RolesAllowed("changeHallActivity")
     public void changeActivity(Hall hall) throws AppBaseException{
-        throw new UnsupportedOperationException();
+        hallFacade.edit(hall);
     }
 }

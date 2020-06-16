@@ -20,4 +20,5 @@ public interface HallDetailsEndpointLocal {
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     HallDTO getHallByName(String name) throws AppBaseException;
+    void changeActivity(HallDTO hall) throws AppBaseException;
 }
