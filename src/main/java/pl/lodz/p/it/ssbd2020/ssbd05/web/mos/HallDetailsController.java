@@ -65,10 +65,8 @@ public class HallDetailsController implements Serializable {
     public void removeHall(){
         try {
             if(!hall.isActive()) {
-                if(hall.getReservationCollection().isEmpty()) {
                     removeHallEndpoint.removeHall(hall);
                     ResourceBundles.emitMessageWithFlash(null, "page.hall.details.delete.success");
-                }else throw new HallHasReservationsException();
             }else{
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.hall.details.active");
             }
