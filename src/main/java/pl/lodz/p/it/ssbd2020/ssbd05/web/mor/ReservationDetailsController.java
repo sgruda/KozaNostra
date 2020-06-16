@@ -19,7 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
+/**
+ * Kontroler odpowiedzialny za wyświetlanie szczegółów wybranej rezerwacji.
+ */
 @Log
 @Named
 @ViewScoped
@@ -40,40 +44,80 @@ public class ReservationDetailsController implements Serializable {
     @Inject
     private ChangeReservationStatusController changeReservationStatusController;
 
+    @Getter
+    @Setter
+    private boolean editable;
+
+    /**
+     * Metoda wykonywana przy otwarciu strony ze szczegółami rezerwacji i wczytująca dane wybranej rezerwacji
+     **/
     @PostConstruct
     public void init(){
         try {
+
             resourceBundles = new ResourceBundles();
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
+            editable=true;
+            if(reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.toString()) || reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())) {
+                editable = false;
+            }
             cancelReservationController.setReservationDTO(this.reservationDTO);
             changeReservationStatusController.setReservationDTO(this.reservationDTO);
-            if(!reservationDTO.getExtraServiceCollection().isEmpty()) {
-                for (String extraService : reservationDTO.getExtraServiceCollection()) {
-                    extraServices += extraService;
-                    extraServices += " ";
+            String[] eventTypes = reservationDTO.getExtraServiceCollection().toArray(new String[0]);
+            StringBuilder result = new StringBuilder();
+            extraServices = "";
+            for(int i=0; i< reservationDTO.getExtraServiceCollection().size(); i++){
+                if (i != reservationDTO.getExtraServiceCollection().size() - 1) {
+                    result.append(ResourceBundles.getTranslatedText(eventTypes[i])).append(", ");
+                } else {
+                    result.append(ResourceBundles.getTranslatedText(eventTypes[i]));
                 }
-                extraServices = extraServices.replace("null", "");
-            } else extraServices = "";
+            }
+            extraServices = result.toString();
+            if(!extraServices.isEmpty())
+            extraServices = extraServices.replace("null", "");
         } catch (AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());
         }
     }
+
+    /**
+     * Metoda przenosząca użytkownika na stronę z listą wszystkich rezerwacji
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goBack(){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedReservationNumber");
         return "back";
     }
+
+    /**
+     * Metoda anulująca rezerwację (o statusie "złożona") i odświeżająca stronę po tym.
+     */
     public void cancelReservation() {
         cancelReservationController.cancelReservation();
         refresh();
     }
+
+    /**
+     * Metoda zmianiająca status rezerwacji i odświeżająca stronę po tym.
+     */
     public void changeReservationStatus() {
         changeReservationStatusController.changeStatus();
         refresh();
     }
+
+    /**
+     * Metoda sprawdzająca czy status wybranej rezerwacji to "złożona"
+     *
+     * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "złożona"
+     */
     public boolean isSubmitted() {
         return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString());
     }
+
+
 
     private void refresh() {
         try {
@@ -86,6 +130,10 @@ public class ReservationDetailsController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
+    }
+
+    public String goToEditPage(){
+        return "edit";
     }
 
 }

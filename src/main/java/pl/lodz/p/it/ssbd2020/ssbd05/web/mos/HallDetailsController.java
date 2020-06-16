@@ -1,13 +1,17 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mos;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.EditHallEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallHasReservationsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.faces.context.ExternalContext;
@@ -32,10 +36,14 @@ public class HallDetailsController implements Serializable {
     private HallDetailsEndpointLocal hallDetailsEndpoint;
 
     @Inject
-    private EditHallEndpointLocal editHallEndpoint;
+    private RemoveHallEndpointLocal removeHallEndpoint;
 
     @Getter
     private HallDTO hall;
+
+    @Getter
+    @Setter
+    private boolean isReservationButtonVisible;
 
     /**
      * Metoda wykonywana przy wejściu na stronę ze szczegółami sali i wczytująca dane wybranej sali
@@ -47,6 +55,12 @@ public class HallDetailsController implements Serializable {
         String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
+            removeHallEndpoint.getHallByName(selectedHallName);
+            if(!this.hall.isActive()){
+                isReservationButtonVisible = false;
+            }else{
+                isReservationButtonVisible = true;
+            }
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
@@ -56,7 +70,7 @@ public class HallDetailsController implements Serializable {
     }
 
     /**
-     * Meotda odpowiedzialna za przetłumaczenie i konkatenację nazw typów imprez,
+     * Metoda odpowiedzialna za przetłumaczenie i konkatenację nazw typów imprez,
      * do których wybrana sala jest przystosowana
      *
      * @return Zinternacjonalizowane nazwy typów imprez
@@ -75,6 +89,26 @@ public class HallDetailsController implements Serializable {
             return result.toString();
         } else {
             return "";
+        }
+    }
+
+    public void removeHall(){
+        try {
+            if(!hall.isActive()) {
+                    removeHallEndpoint.removeHall(hall);
+                    ResourceBundles.emitMessageWithFlash(null, "page.hall.details.delete.success");
+            }else{
+                ResourceBundles.emitErrorMessageWithFlash(null, "page.hall.details.active");
+            }
+        } catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        } catch (HallHasReservationsException ex){
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            log.severe( ex.getMessage() + ", " +LocalDateTime.now());
+        } catch (AppBaseException appBaseException) {
+            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
         }
     }
 

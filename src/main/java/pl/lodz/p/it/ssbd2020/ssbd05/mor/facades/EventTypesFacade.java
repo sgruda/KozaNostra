@@ -61,7 +61,6 @@ public class EventTypesFacade extends AbstractFacade<EventType> {
             throw new DatabaseConnectionException(e);
         }
     }
-
     /**
      * Pobierz EventType według nazwy
      *

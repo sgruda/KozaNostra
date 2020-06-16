@@ -19,7 +19,10 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
-
+/**
+ * Punkt dostępowy implementujący interfejs EditReviewEndpointLocal, który pośredniczy
+ * przy edycji opinii
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

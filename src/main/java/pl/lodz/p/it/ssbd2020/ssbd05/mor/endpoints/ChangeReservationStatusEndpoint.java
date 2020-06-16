@@ -25,6 +25,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *  Punkt dostępowy implementujący interfejs ChangeReservationStatusEndpointLocal, który pośredniczy
+ *  przy zmianie statusu rezerwacji.
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -34,11 +38,6 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     private ReservationManager reservationManager;
     private Reservation reservation;
 
-//    @Override
-//    @RolesAllowed("getStatusByName")
-//    public StatusDTO getStatusByName(String statusName) {
-//        throw new UnsupportedOperationException();
-//    }
 
     @Override
     @RolesAllowed("getAllStatuses")

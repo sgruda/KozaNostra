@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Punkt dostępowy implementujący interfejs ListReservationEndpointLocal
+ * pośredniczący w wyświetlaniu listy rezerwacji wszystkich użytkowników
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

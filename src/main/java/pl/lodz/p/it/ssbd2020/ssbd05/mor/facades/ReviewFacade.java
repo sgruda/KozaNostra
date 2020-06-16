@@ -22,6 +22,9 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Fasada opinii - dla encji Review
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -36,6 +39,9 @@ public class ReviewFacade extends AbstractFacade<Review> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy
+     */
     public ReviewFacade() {
         super(Review.class);
     }
@@ -49,7 +55,12 @@ public class ReviewFacade extends AbstractFacade<Review> {
             throw new DatabaseConnectionException(e);
         }
     }
-
+    /**
+     * Metoda odpowiedzialna za edycję obiektu encji reprezentującej opinię w bazie danych
+     *
+     * @param entity Obiekt typu Review
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("editReview")
     public void edit(Review entity) throws AppBaseException {
@@ -62,6 +73,12 @@ public class ReviewFacade extends AbstractFacade<Review> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za usunięcie obiektu encji reprezentującej opinię w bazie danych
+     *
+     * @param entity Obiekt typu Review
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("removeReview")
     public void remove(Review entity) throws AppBaseException {
@@ -79,7 +96,12 @@ public class ReviewFacade extends AbstractFacade<Review> {
     public Optional<Review> find(Object id) {
         return super.find(id);
     }
-
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich opinii z bazy danych
+     *
+     * @return Lista obiektów typu Review
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @PermitAll
     public List<Review> findAll() throws AppBaseException {
@@ -90,6 +112,13 @@ public class ReviewFacade extends AbstractFacade<Review> {
         }
     }
 
+    /**
+     * Find by login list.
+     *
+     * @param login the login
+     * @return the list
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("getUserReviewableReservations")
     public List<Review> findByLogin(String login) throws AppBaseException {
         try {
@@ -103,6 +132,13 @@ public class ReviewFacade extends AbstractFacade<Review> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie z bazy danych opinii na podstawie jej numeru.
+     *
+     * @param reviewNumber numer opinii
+     * @return optional Review
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed({"getReviewByReviewNumber", "editReview"})
     public Optional<Review> findByNumber(String reviewNumber) throws AppBaseException {
         try{

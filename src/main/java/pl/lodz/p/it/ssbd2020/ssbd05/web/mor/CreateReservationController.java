@@ -2,7 +2,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.extern.java.Log;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
@@ -16,7 +15,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.DatesOverlapException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallModifiedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
@@ -28,7 +27,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -132,6 +130,7 @@ public class CreateReservationController implements Serializable {
      * Metoda tworząca nową rezerwację
      */
     public void createReservation() {
+
         reservationDTO = new ReservationDTO();
         clientDTO = new ClientDTO();
         clientDTO.setLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
@@ -161,7 +160,10 @@ public class CreateReservationController implements Serializable {
             try {
                 createReservationEndpointLocal.createReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
-            } catch (ValidationException e) {
+            } catch (HallModifiedException e) {
+                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            }  catch (ValidationException e) {
                 ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (AppBaseException e) {

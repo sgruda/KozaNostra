@@ -14,7 +14,7 @@ import java.util.List;
 public interface EditHallEndpointLocal {
 
     /**
-     * Meotda odpowiedzialna za pobieranie pojedynczej sali na podstawie jej nazwy
+     * Metoda odpowiedzialna za pobieranie pojedynczej sali na podstawie jej nazwy
      *
      * @param name Nazwa sali
      * @return Obiekt typu HallDTO reprezentujący salę
