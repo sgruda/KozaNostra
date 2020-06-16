@@ -4,13 +4,18 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.EditHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -24,6 +29,9 @@ public class HallDetailsController implements Serializable {
 
     @Inject
     private HallDetailsEndpointLocal hallDetailsEndpoint;
+
+    @Inject
+    private EditHallEndpointLocal editHallEndpoint;
 
     @Getter
     private HallDTO hall;
@@ -87,6 +95,34 @@ public class HallDetailsController implements Serializable {
         return "toReservationPage";
     }
 
+    public void changeHallActivity(){
+        hall.setActive(!hall.isActive());
+        try {
+            log.severe("event " + hall.getEvent_type());
+            editHallEndpoint.changeActivity(hall);
+            if(hall.isActive()){
+                ResourceBundles.emitMessageWithFlash(null,"page.halldetails.hall.activated");
+            }else ResourceBundles.emitMessageWithFlash(null,"page.halldetails.hall.deactivated");
+            refresh();
+        } catch (AppOptimisticLockException ex){
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null,"error.hall.optimisticlock");
+        } catch (AppBaseException appBaseException) {
+            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
+        }
+    }
+
+    public void refresh() {
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+            this.hall = hallDetailsEndpoint.getHallByName(hall.getName());
+        } catch (AppBaseException | IOException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        }
+    }
     /**
      * Metoda przenosząca użytkownika na stronę z listą wszystkich sal
      *

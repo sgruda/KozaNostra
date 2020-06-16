@@ -123,9 +123,34 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
         return list;
     }
 
+
     @Override
     @RolesAllowed("changeHallActivity")
     public void changeActivity(HallDTO hallDTO) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hall = hallManager.getHallByName(hallDTO.getName());
+        Address temp = hall.getAddress();
+        HallMapper.INSTANCE.updateHallFromDTO(hallDTO, hall);
+        eventTypes = hallManager.getAllEventTypes();
+        eventTypes.removeIf(eventType -> !hallDTO.getEvent_type().contains(eventType.getTypeName()));
+        hall.setEvent_type(eventTypes);
+        hall.setAddress(temp);
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                hallManager.changeActivity(hall);
+                rollback = hallManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if(callCounter > 0)
+                log.info("Transaction with ID " + hallManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
     }
+
 }
