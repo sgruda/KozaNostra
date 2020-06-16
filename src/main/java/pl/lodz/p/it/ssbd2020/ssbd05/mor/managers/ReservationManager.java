@@ -10,7 +10,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.ClientNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
@@ -25,8 +24,8 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -61,6 +60,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private ClientFacade clientFacade;
+
 
     /**
      * Pobieranie listy wszystkich rezerwacji
@@ -112,7 +112,6 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
             throw new ExtraServiceNotFoundException();
         }else return eventTypesFacade.findByName(name).get();
     }
-
     /**
      * Gets all event types.
      *
@@ -131,7 +130,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @return the hall by name
      * @throws AppBaseException the app base exception
      */
-    @RolesAllowed("getHallByName")
+    @RolesAllowed({"getHallByName", "getHallForReservation"})
     public Hall getHallByName(String name) throws AppBaseException {
         if (hallFacade.findByName(name).isPresent()) {
             return hallFacade.findByName(name).get();
@@ -139,7 +138,6 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
             throw new HallNotFoundException();
         }
     }
-
 
     /**
      * Tworzenie nowej rezerwacji
@@ -267,13 +265,14 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        reservationFacade.edit(reservation);
     }
+
 
     /**
      * Filter reservations list.
      *
-     * @param filter the filter
+     * @pram filter the filter
      * @return the list
      * @throws AppBaseException the app base exception
      */
@@ -311,5 +310,17 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
             throw new ReviewNotFoundException(e);
         }
         return result;
+    }
+
+
+    public List<ExtraService> getAllExtraServices() throws AppBaseException{
+       return extraServiceFacade.findAll();
+    }
+
+    @RolesAllowed("getExtraServiceByName")
+    public ExtraService getExtraServicesByName(String name) throws AppBaseException{
+        if(extraServiceFacade.findByName(name).isPresent())
+        return extraServiceFacade.findByName(name).get();
+        else throw new ExtraServiceNotFoundException();
     }
 }

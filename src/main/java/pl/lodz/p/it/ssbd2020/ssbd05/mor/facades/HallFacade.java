@@ -8,7 +8,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
 import javax.annotation.security.DenyAll;
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -79,13 +78,6 @@ public class HallFacade extends AbstractFacade<Hall> {
     public void remove(Hall entity) throws AppBaseException {
         super.remove(entity);
     }
-
-    @Override
-    @DenyAll
-    public int count() {
-        return super.count();
-    }
-
     /**
      * Pobierz Hall według nazwy
      *
@@ -104,4 +96,11 @@ public class HallFacade extends AbstractFacade<Hall> {
             throw new DatabaseConnectionException(e);
         }
     }
+
+    @Override
+    @DenyAll
+    public int count() {
+        return super.count();
+    }
+
 }

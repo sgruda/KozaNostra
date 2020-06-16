@@ -83,6 +83,7 @@ public class Reservation implements Serializable {
     @ManyToMany
     @JoinTable(name = "extra_service_mapping", schema = "ssbd05schema",
             uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id", "extra_service_id"})
+
     )
     private Collection<ExtraService> extra_service = new ArrayList<>();
 
