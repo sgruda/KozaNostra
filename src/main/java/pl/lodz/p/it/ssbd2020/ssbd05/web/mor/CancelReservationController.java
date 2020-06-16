@@ -16,6 +16,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Kontroler odpowiedzialny za anulowanie wybranej rezerwacji.
+ */
 @Log
 @Named
 @ViewScoped
@@ -28,6 +31,11 @@ public class CancelReservationController implements Serializable {
     @Getter
     private ResourceBundles resourceBundles;
 
+    /**
+     * Metoda ustawiająca w kontrolerze obiekt transferowy anulowanej rezerwacji
+     *
+     * @param reservationDTO obiekt typu ReservationDTO
+     */
     public void setReservationDTO(ReservationDTO reservationDTO) {
         this.reservationDTO = reservationDTO;
         try {
@@ -42,6 +50,9 @@ public class CancelReservationController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za anulowanie wybranej rezerwacji.
+     */
     public void cancelReservation() {
         reservationDTO.setStatusName(ReservationStatuses.cancelled.toString());
         try {
