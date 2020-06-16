@@ -203,3 +203,15 @@ fieldset > legend{
     margin: auto;
     display: flex;
 }
+
+.footer-aggregate{
+    margin: 0 1em;
+}
+
+.footer-right{
+    flex: 1;
+}
+
+.footer-left{
+    flex: 1;
+}
