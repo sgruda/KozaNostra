@@ -23,7 +23,7 @@ public interface ListReservationEndpointLocal {
     /**
      * Metoda odpowiedzalna za pobranie przefiltrowanej listy rezerwacji.
      *
-     * @param filter filtr, rezerwacje filtorwane są po loginie, imieniu, nazwisku oraz numerze rezerwacji. Wielkość liter nie ma znaczenia.
+     * @param filter filtr, rezerwacje filtrowane są po loginie, imieniu, nazwisku oraz numerze rezerwacji. Wielkość liter nie ma znaczenia.
      * @return przefiltrowana lista rezerwacji w postaci obiektów typu ReservationDTO
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
