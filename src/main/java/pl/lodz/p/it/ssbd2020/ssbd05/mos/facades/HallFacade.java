@@ -90,7 +90,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     }
 
     /**
-     * Metoda odpowiedzialna za edcyję encji reprezentującej salę w bazie danych
+     * Metoda odpowiedzialna za edycję encji reprezentującej salę w bazie danych
      *
      * @param entity Obiekt typu Hall
      * @throws AppBaseException podstawowy wyjątek aplikacyjny

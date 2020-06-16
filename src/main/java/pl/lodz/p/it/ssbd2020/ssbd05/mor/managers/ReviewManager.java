@@ -18,7 +18,9 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.PersistenceException;
 import java.util.List;
-
+/**
+ * Klasa odpowiedzialna za operacje na obiektach encyjnych typu Review
+ */
 @Log
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateful
@@ -34,11 +36,23 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
     @Inject
     ReservationFacade reservationFacade;
 
+    /**
+     * Metoda odpowiedzialna za pobieranie opinii na podstawie jej numeru.
+     *
+     * @param reviewNumber Numer opinii
+     * @return Obiekt typu Review reprezentujący opinię
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getReviewByReviewNumber")
     public Review getReviewByReviewNumber(String reviewNumber) throws AppBaseException {
         return reviewFacade.findByNumber(reviewNumber).get();
     }
-
+    /**
+     * Metoda odpowiedzialna za usunięcie opinii.
+     *
+     * @param review Obiekt typu Review
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("removeReview")
     public void removeReview(Review review) throws AppBaseException {
         reviewFacade.remove(review);
@@ -54,12 +68,22 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
             throw new DatabaseConnectionException(e);
         }
     }
-
+    /**
+     * Metoda odpowiedzialna za edycję opinii.
+     *
+     * @param review Obiekt typu Review
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("editReview")
     public void editReview(Review review) throws AppBaseException {
         reviewFacade.edit(review);
     }
-
+    /**
+     * Metoda odpowiedzialna za pobranie listy wszystkich opinii
+     *
+     * @return List<Review> lista opinii
+     * @throws AppBaseException podstawowy wyjatek aplikacyjny
+     */
     @PermitAll
     public List<Review> getAllReviews() throws AppBaseException {
         return reviewFacade.findAll();

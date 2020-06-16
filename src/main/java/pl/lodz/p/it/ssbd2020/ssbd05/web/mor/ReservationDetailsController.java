@@ -21,6 +21,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * Kontroler odpowiedzialny za wyświetlanie szczegółów wybranej rezerwacji.
+ */
 @Log
 @Named
 @ViewScoped
@@ -45,6 +48,9 @@ public class ReservationDetailsController implements Serializable {
     @Setter
     private boolean editable;
 
+    /**
+     * Metoda wykonywana przy otwarciu strony ze szczegółami rezerwacji i wczytująca dane wybranej rezerwacji
+     **/
     @PostConstruct
     public void init(){
         try {
@@ -75,18 +81,38 @@ public class ReservationDetailsController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());
         }
     }
+
+    /**
+     * Metoda przenosząca użytkownika na stronę z listą wszystkich rezerwacji
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goBack(){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedReservationNumber");
         return "back";
     }
+
+    /**
+     * Metoda anulująca rezerwację (o statusie "złożona") i odświeżająca stronę po tym.
+     */
     public void cancelReservation() {
         cancelReservationController.cancelReservation();
         refresh();
     }
+
+    /**
+     * Metoda zmianiająca status rezerwacji i odświeżająca stronę po tym.
+     */
     public void changeReservationStatus() {
         changeReservationStatusController.changeStatus();
         refresh();
     }
+
+    /**
+     * Metoda sprawdzająca czy status wybranej rezerwacji to "złożona"
+     *
+     * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "złożona"
+     */
     public boolean isSubmitted() {
         return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString());
     }

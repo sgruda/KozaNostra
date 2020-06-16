@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Fasda rezerwacji - typ Reservation
+ * Fasada rezerwacji - dla encji Reservation
  */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
@@ -62,8 +62,12 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         }
     }
 
-
-
+    /**
+     * Metoda odpowiedzialna za edycję obiektu encji reprezentującej rezerwację w bazie danych
+     *
+     * @param entity Obiekt typu Reservation
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"changeReservationStatus", "cancelReservation", "editReservation"})
     public void edit(Reservation entity) throws AppBaseException {
@@ -82,6 +86,12 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         return super.find(id);
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich rezerwacji z bazy danych
+     *
+     * @return Lista obiektów typu Reservation
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"getAllReservations", "getAllEventTypes"})
     public List<Reservation> findAll() throws AppBaseException {
@@ -93,7 +103,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     /**
-     * Pobierz rezerwacji według numeru rezerwacji
+     * Metoda odpowiedzialna za pobieranie z bazy danych rezerwacji na podstawie jej numeru.
      *
      * @param number numer rezerwacji
      * @return optional Reservation
