@@ -62,7 +62,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     /**
-     * Metoda odpowiedzialna za edycję encji reprezentującej rezerwację w bazie danych
+     * Metoda odpowiedzialna za edycję obiektu encji reprezentującej rezerwację w bazie danych
      *
      * @param entity Obiekt typu Reservation
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
