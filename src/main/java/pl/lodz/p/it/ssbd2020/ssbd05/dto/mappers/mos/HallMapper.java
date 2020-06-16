@@ -20,7 +20,6 @@ public interface HallMapper {
 
     Hall toHall(HallDTO hallDTO);
     HallDTO toHallDTO(Hall hall);
-    Hall toHall(HallDTO hallDTO);
     Hall createNewHall(HallDTO hallDTO);
     void updateHallFromDTO(HallDTO hallDTO, @MappingTarget Hall hall);
     Collection<HallDTO> toHallDTOCollection(Collection<Hall> hallCollection);
