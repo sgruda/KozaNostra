@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mos;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -28,10 +29,19 @@ public class HallDetailsController implements Serializable {
     @Getter
     private HallDTO hall;
 
+    @Getter
+    @Setter
+    private boolean isReservationButtonVisible;
+
     public String onLoad() {
         String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
+            if(!this.hall.isActive()){
+                isReservationButtonVisible = false;
+            }else{
+                isReservationButtonVisible = true;
+            }
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
@@ -56,6 +66,7 @@ public class HallDetailsController implements Serializable {
             return "";
         }
     }
+
 
     public String goToEditForm() {
         return "editHall";

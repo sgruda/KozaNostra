@@ -14,8 +14,10 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotActiveException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
@@ -180,27 +182,34 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         reservation.setGuestsNumber(reservationDTO.getGuestsNumber());
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
-        reservation.setHall(reservationManager.getHallByName(reservationDTO.getHallName()));
-        reservation.setTotalPrice(reservationDTO.getTotalPrice());
-        reservation.setReservationNumber(reservationDTO.getReservationNumber());
+        Hall hall = reservationManager.getHallByName(reservationDTO.getHallName());
+        if(hall.isActive()){
+            reservation.setHall(hall);
+            reservation.setTotalPrice(reservationDTO.getTotalPrice());
+            reservation.setReservationNumber(reservationDTO.getReservationNumber());
 
 
-        int callCounter = 0;
-        boolean rollback;
-        do {
-            try {
-                reservationManager.createReservation(reservation);
-                rollback = reservationManager.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
-                log.warning("EJBTransactionRolledBack");
-                rollback = true;
+            int callCounter = 0;
+            boolean rollback;
+            do {
+                try {
+                    reservationManager.createReservation(reservation);
+                    rollback = reservationManager.isLastTransactionRollback();
+                } catch (EJBTransactionRolledbackException e) {
+                    log.warning("EJBTransactionRolledBack");
+                    rollback = true;
+                }
+                if (callCounter > 0)
+                    log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+                callCounter++;
+            } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+            if (rollback) {
+                throw new ExceededTransactionRetriesException();
             }
-            if (callCounter > 0)
-                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-            callCounter++;
-        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
-        if (rollback) {
-            throw new ExceededTransactionRetriesException();
+        }else{
+            throw new HallNotActiveException();
         }
+
+
     }
 }
