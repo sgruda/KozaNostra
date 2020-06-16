@@ -57,8 +57,6 @@
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.halldetails.back']}" action="#{hallDetailsController.goBack()}"/>
-                    <p:commandButton value="#{msg['page.halldetails.edit']}" action="#{hallDetailsController.goToEditForm()}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}"/>
-                    <p:commandButton value="#{msg['page.halldetails.create.reservation']}" action="#{hallDetailsController.goToReservationPage()}" rendered="#{roleController.isSelectedRole(roleController.getRoleClient())}"/>
                     <p:commandButton value="#{msg['page.halldetails.remove.hall']}" actionListener="#{hallDetailsController.removeHall()}" action="#{hallDetailsController.goBack}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
                     <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
@@ -66,6 +64,8 @@
                     <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
                     <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
                 </p:confirmDialog>
+                    <p:commandButton value="#{msg['page.halldetails.edit']}" action="#{hallDetailsController.goToEditForm()}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}" disabled="#{hallDetailsController.hall.active}"/>
+                    <p:commandButton value="#{msg['page.halldetails.create.reservation']}" action="#{hallDetailsController.goToReservationPage()}" rendered="#{(roleController.isSelectedRole(roleController.getRoleClient()) and hallDetailsController.reservationButtonVisible)}"/>
                 </h:form>
             </div>
         </div>

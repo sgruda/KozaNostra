@@ -1,10 +1,10 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 
@@ -21,6 +21,7 @@ public interface HallMapper {
     HallDTO toHallDTO(Hall hall);
     Hall toHall(HallDTO hallDTO);
     Hall createNewHall(HallDTO hallDTO);
+    void updateHallFromDTO(HallDTO hallDTO, @MappingTarget Hall hall);
     Collection<HallDTO> toHallDTOCollection(Collection<Hall> hallCollection);
 
     default Collection<String> toEventTypeStringCollection(Collection<EventType> eventTypeCollection) {
@@ -30,17 +31,6 @@ public interface HallMapper {
     }
 
     default Collection<EventType> toEventTypeCollection(Collection<String> eventTypeStringCollection) {
-        return new ArrayList<>();
-    }
-
-    //tymczasowe
-    default Collection<String> toReservationStringCollection(Collection<Reservation> reservationCollection) {
-        return reservationCollection.stream()
-                .map(Reservation::getReservationNumber)
-                .collect(Collectors.toList());
-    }
-
-    default Collection<Reservation> toReservationCollection(Collection<String> reservationStringCollection) {
         return new ArrayList<>();
     }
 }

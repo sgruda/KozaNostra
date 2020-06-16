@@ -258,10 +258,69 @@
     </navigation-rule>
 
     <navigation-rule>
+        <from-view-id>/client/clientReservationDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/client/clientEditReservation.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>/manager/reservationDetails.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>reservationStatusHasBeenChanged</from-outcome>
             <to-view-id>/manager/reservationDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/client/clientEditReservation.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>goToDetails</from-outcome>
+            <to-view-id>/client/clientReservationDetails.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/hallDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>editHall</from-outcome>
+            <to-view-id>/manager/editHall.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/manager/editHall.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>hallDetails</from-outcome>
+            <to-view-id>/hallDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/manager/editHall.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>listHalls</from-outcome>
+            <to-view-id>/listHalls.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/editReview.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>listReviews</from-outcome>
+            <to-view-id>/listReviews.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/listReviews.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>editReview</from-outcome>
+            <to-view-id>/editReview.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

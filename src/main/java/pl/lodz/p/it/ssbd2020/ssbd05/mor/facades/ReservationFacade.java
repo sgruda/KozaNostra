@@ -5,6 +5,7 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
@@ -61,6 +62,8 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         }
     }
 
+
+
     @Override
     @RolesAllowed({"changeReservationStatus", "cancelReservation", "editReservation"})
     public void edit(Reservation entity) throws AppBaseException {
@@ -101,10 +104,9 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         try{
            return Optional.ofNullable(this.em.createNamedQuery("Reservation.findByReservationNumber", Reservation.class)
                    .setParameter("reservationNumber", number).getSingleResult());
-        }
-        catch (NoResultException noResultException) {
+        } catch (NoResultException noResultException) {
             throw new ReservationNotFoundException(noResultException);
-        }catch (DatabaseException | PersistenceException e) {
+        } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
     }

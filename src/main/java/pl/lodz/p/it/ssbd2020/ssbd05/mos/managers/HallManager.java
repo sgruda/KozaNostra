@@ -17,7 +17,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +38,12 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
     @Inject
     private EventTypesFacade eventTypesFacade;
 
+    /**
+     * Metoda odpowiedzialna za dodawanie sali i opcjonalne dodawanie adresu
+     *
+     * @param hall Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("addHall")
     public void addHall(Hall hall) throws AppBaseException {
         Optional<Address> address = addressFacade.findByStreetAndNumberAndCity(
@@ -58,6 +63,13 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         hallFacade.create(hall);
     }
 
+    /**
+     * Metoda odpowiedzialna za wyszukiwanie sali na podstawie jej nazwy
+     *
+     * @param name Nazwa sali
+     * @return Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Hall getHallByName(String name) throws AppBaseException {
         if (hallFacade.findByName(name).isPresent()) {
@@ -67,6 +79,12 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich sal
+     *
+     * @return kolekcja obiektów typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Collection<Hall> getAllHalls() throws AppBaseException {
         return hallFacade.findAll();
@@ -84,16 +102,34 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         return hallFacade.filter(hallFilter);
     }
 
+    /**
+     * Metoda odpowiedzialna za edycję sali
+     *
+     * @param hall Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("editHall")
     public void editHall(Hall hall) throws AppBaseException {
-        throw new UnsupportedOperationException();
+        hallFacade.edit(hall);
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich typów imprez
+     *
+     * @return lista obiektów typu EventType
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getAllEventTypes")
     public List<EventType> getAllEventTypes() throws AppBaseException {
         return eventTypesFacade.findAll();
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich adresów
+     *
+     * @return lista obiektów typu Address
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getAllAddresses")
     public List<Address> getAllAddresses() throws AppBaseException {
         return addressFacade.findAll();

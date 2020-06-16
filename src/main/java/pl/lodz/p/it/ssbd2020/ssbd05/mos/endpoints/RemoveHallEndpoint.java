@@ -35,9 +35,9 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
     @Override
     @RolesAllowed("removeHall")
     public void removeHall(HallDTO hallDTO) throws AppBaseException {
-        if(hallDTO.getReservationCollection().isEmpty()) {
             Hall hall = HallMapper.INSTANCE.toHall(hallDTO);
             hall = hallManager.getHallByName(hall.getName());
+        if(hall.getReservationCollection().isEmpty()) {
             hallManager.removeHall(hall);
         } else throw new HallHasReservationsException();
     }

@@ -104,8 +104,15 @@ public class ReviewFacade extends AbstractFacade<Review> {
     }
 
     @RolesAllowed({"getReviewByReviewNumber", "editReview"})
-    public Optional<Review> findByNumber(String reviewNumber) {
-        throw new UnsupportedOperationException();
+    public Optional<Review> findByNumber(String reviewNumber) throws AppBaseException {
+        try{
+            return Optional.ofNullable(this.em.createNamedQuery("Review.findByReviewNumber", Review.class)
+                    .setParameter("reviewNumber", reviewNumber).getSingleResult());
+        } catch (NoResultException noResultException) {
+            throw new ReviewNotFoundException(noResultException);
+        } catch (DatabaseException | PersistenceException e) {
+            throw new DatabaseConnectionException(e);
+        }
     }
 
     @Override

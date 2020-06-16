@@ -27,6 +27,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Punkt dostępowy implementujący interfejs AddHallEndpointLocal, który pośredniczy
+ * przy dodawaniu sali przez użytkownika o poziomie dostępu menadżer
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -45,6 +49,7 @@ public class AddHallEndpoint implements Serializable, AddHallEndpointLocal {
         eventTypes.removeIf(eventType -> !hallDTO.getEvent_type().contains(eventType.getTypeName()));
         hall.setEvent_type(eventTypes);
         hall.setAddress(AddressMapper.INSTANCE.createNewAddress(hallDTO.getAddress()));
+        hall.setReservationCollection(new ArrayList<>());
         int callCounter = 0;
         boolean rollback;
         do {

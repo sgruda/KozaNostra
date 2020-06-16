@@ -34,7 +34,7 @@
                                          requiredMessage="#{msg['page.addextraservice.description.required']}"
                                          validatorMessage="#{msg['page.addextraservice.description.validator']}"
                                          maxlength="255">
-                            <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\-]+"/>
+                            <f:validateRegex pattern="[ 0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\-]+"/>
                             <f:validateLength minimum="1" maximum="512"/>
                         </p:inputTextarea>
                     </h:outputLabel>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<ui:composition template="../templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.client.editreservation.title']}</title>
+        <style type="text/css">
+        </style>
+        <script type="text/javascript">
+            PrimeFaces.locales['pl'] = {
+                monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+                monthNamesShort: ['Sty','Lut','Mar','Kwi','Maj','Cze', 'Lip','Sie','Wrz','Paź','Lis','Gru'],
+                dayNames: ['Niedziela', 'Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota',],
+                dayNamesShort: ['Ndz','Pn','Wt','Śr','Czw','Pt','Sb',],
+                dayNamesMin: ['Ndz','Pn','Wt','Śr','Czw','Pt','Sb',],
+                firstDay: 1,
+                ampm: false,
+            };
+        </script>
+    </ui:define>
+    <ui:define name="content">
+
+        <h:form id="form1" style="margin-bottom: auto; margin-top: 75px">
+
+
+            <p:panelGrid id="panelGrid" columns="1" style="width: 600px">
+
+
+                <h:outputLabel value="#{msg['page.client.reservations.details.reservationNumber']}">
+                <p:inputText value="#{editReservationController.reservationDTO.reservationNumber}" disabled="true" style="width: 250px; margin-left: 20px"/>
+                </h:outputLabel>
+
+                <h:outputLabel value="#{msg['page.client.editreservation.hallName']}">
+                <p:inputText  value="#{editReservationController.reservationDTO.hallName}" disabled="true" style="width: 250px; margin-left: 20px"/>
+                </h:outputLabel>
+
+                <h:outputLabel  for="eventType" value="#{msg['page.editreservation.choose.event.type']} *" >
+                <p:selectOneMenu style="margin-left: 20px" id="eventType" value="#{editReservationController.eventTypeName}" panelStyle="width:250px" required="true">
+                    <f:selectItems value="#{editReservationController.eventTypes}" var="eventType" itemLabel="#{editReservationController.translateExtraService(eventType)}" itemValue="#{eventType}"/>
+                </p:selectOneMenu>
+                </h:outputLabel>
+
+                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} *">
+                <p:inputNumber style="margin-left: 20px" id="numberOfGuests" required="true"
+                               value="#{editReservationController.reservationDTO.guestsNumber}"
+                               decimalPlaces="0"
+                               minValue="1" maxValue="#{editReservationController.hallDTO.capacity}"/>
+                </h:outputLabel>
+
+                <h:outputLabel for="extraServices" value="#{msg['page.editreservation.extraservices']}">
+                    <p:selectManyCheckbox id="extraServices" value="#{editReservationController.extraServicesNames}">
+                        <c:forEach items="#{editReservationController.extraServicesNames}" var="extraService">
+                            <f:selectItem itemLabel="#{editReservationController.translateExtraService(extraService)}" itemValue="#{extraService}"/>
+                        </c:forEach>
+                    </p:selectManyCheckbox>
+                </h:outputLabel>
+
+                <h:outputLabel value="#{msg['page.client.reservations.details.from']}">
+                     <p:inputText value="#{editReservationController.reservationDTO.startDate}" disabled="true" style="width: 250px; margin-left: 20px"/>
+                </h:outputLabel>
+
+                <h:outputLabel value="#{msg['page.client.reservations.details.till']}">
+                     <p:inputText value="#{editReservationController.reservationDTO.endDate}" disabled="true" style="width: 250px; margin-left: 20px"/>
+                </h:outputLabel>
+            </p:panelGrid>
+
+            <h:form id="panelGrid1">
+
+
+
+                <h:panelGrid columnClasses="value" >
+                    <p:schedule id="schedule"
+                                styleClass=" fc-draggable#disabled"
+                                value="#{editReservationController.eventModel}" widgetVar="myschedule"
+                                view="agendaWeek" rightHeaderTemplate="timeGridWeek" timeZone=""
+                                style=" width: 600px;" allDaySlot="false" clientTimeZone="local"
+                                locale="#{msg['page.editreservation.calendar.language']}" tooltip="true"
+                                draggable="false" resizable="false" slotEventOverlap="false">
+                        <p:ajax event="dateSelect" listener="#{editReservationController.onDateSelect}"
+                                update="eventDetails" oncomplete="PF('eventDialog').show();"/>
+                    </p:schedule>
+                </h:panelGrid>
+
+                <p:dialog id="eventDialog" widgetVar="eventDialog" header="#{msg['page.editreservation.event.details']}" showEffect="clip"
+                          hideEffect="clip">
+
+                    <h:panelGrid id="eventDetails" columns="2" >
+                        <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}"/>
+
+                        <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true"
+                                      mindate="#{editReservationController.today.plusMinutes(1)}"
+                                      lang="#{msg['page.editreservation.calendar.language']}"
+                                      minValue="#{editReservationController.today.plusMinutes(1)}"
+                                      requiredMessage="#{msg['page.editreservation.startdate.required']}"
+                                      validatorMessage="#{msg['page.editreservation.startdate.validator']}"
+                                      locale="#{msg['page.editreservation.calendar.language']}" appendTo="@(body)"
+                                      pattern="yyyy-MM-dd HH:mm:ss"  valueChangeListener="#{editReservationController.changeStartDate}"/>
+
+
+                        <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}" />
+                        <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true"
+                                      mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
+                                      lang="#{msg['page.editreservation.calendar.language']}"
+                                      minValue="#{editReservationController.event.startDate}"
+                                      requiredMessage="#{msg['page.editreservation.enddate.required']}"
+                                      validatorMessage="#{msg['page.editreservation.enddate.validator']}"
+                                      locale="#{msg['page.editreservation.calendar.language']}"
+                                      pattern="yyyy-MM-dd HH:mm:ss" valueChangeListener="#{editReservationController.changeEndDate}"/>
+
+                        <p:commandButton id="addButton" value="#{msg['page.editreservation.button.save.date']}"
+                                         action="#{editReservationController.addEvent}" actionListener="#{editReservationController.addEvent}"
+                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+
+                    </h:panelGrid>
+
+                </p:dialog>
+
+        </h:form>
+            <div style="display:flex; flex-direction: column;">
+                <p:messages>
+                    <p:autoUpdate/>
+                </p:messages>
+            </div>
+            <div style="margin: 5px;display:flex;justify-content: center">
+                    <p:commandButton value="#{msg['page.client.reservations.details.back']}" immediate="true" action="#{editReservationController.goBack()}"/>
+                    <p:commandButton id="submit" validateClient="true" value="#{msg['page.client.editreservation.button.submit']}"
+                                     actionListener="#{editReservationController.editReservation()}"
+                                     action="#{editReservationController.goBack()}">
+                        <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+                    <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                    <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                </p:confirmDialog>
+
+            </div>
+
+        </h:form>
+    </ui:define>
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.client.reservations.breadcrumbs']}" outcome="/client/clientReservationsPage.xhtml"/>
+        <p:menuitem value="#{msg['page.client.reservations.details.breadcrumbs']}" outcome="/client/clientReservationDetails.xhtml" />
+        <p:menuitem value="#{msg['page.client.reservations.edit.breadcrumbs']}" outcome="/client/clientEditReservation.xhtml"/>
+    </ui:define>
+</ui:composition>
+</html>

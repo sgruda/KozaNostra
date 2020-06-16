@@ -44,6 +44,12 @@ public class EventTypesFacade extends AbstractFacade<EventType> {
         return super.find(id);
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich typów imprez z bazy danych
+     *
+     * @return Lista obiektów typu EventType
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("getAllEventTypes")
     public List<EventType> findAll() throws AppBaseException {

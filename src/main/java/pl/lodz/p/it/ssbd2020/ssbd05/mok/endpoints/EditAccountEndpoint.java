@@ -14,7 +14,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.HashGenerator;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
@@ -32,10 +31,10 @@ import java.io.Serializable;
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Interceptors(TrackerInterceptor.class)
 public class EditAccountEndpoint implements Serializable, EditAccountEndpointLocal {
+
     @Inject
     private AccountManager accountManager;
     private Account account;
-
 
     @Override
     @RolesAllowed("findByLogin")
@@ -63,10 +62,10 @@ public class EditAccountEndpoint implements Serializable, EditAccountEndpointLoc
     @Override
     @RolesAllowed({"changeOwnAccountPassword"})
     public void changePassword(AccountDTO accountDTO) throws AppBaseException {
-        for (PreviousPassword psw: account.getPreviousPasswordCollection()){
-            if(psw.getPassword().equals(HashGenerator.sha256(accountDTO.getPassword()))){
+        for (PreviousPassword psw : account.getPreviousPasswordCollection()) {
+            if (psw.getPassword().equals(HashGenerator.sha256(accountDTO.getPassword()))) {
                 throw new AccountPasswordAlreadyUsedException();
-        }
+            }
         }
         account.setPassword(HashGenerator.sha256(accountDTO.getPassword()));
         PreviousPassword previousPassword = new PreviousPassword();
