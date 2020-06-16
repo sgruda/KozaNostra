@@ -33,7 +33,10 @@ public class ListUsersReservationController implements Serializable {
     List<ReservationDTO> usersReservations;
 
     private ResourceBundles resourceBundles;
-
+    /**
+     * Metoda odpowiedzialna za wczytanie wszystkich rezerwacji zalogowanego użytkownika.
+     * Wykonywana po stworzeniu instancji klasy ListUsersReservationController.
+     */
     @PostConstruct
     private void init() {
         try {
@@ -46,11 +49,10 @@ public class ListUsersReservationController implements Serializable {
     }
 
     /**
-     * Metoda wykorzystywana do nawgiacji.
-     * Po jej wykonaniu użytkownik przekierowywany jest do strony szczegółów rezerwacji
+     * Metoda przenosząca użytkownika na stronę ze szczegółami rezeracji
      *
      * @param reservationNumber numer wybranej rezerwacji
-     * @return nazwa przypadku nawigacyjnego
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
      */
     public String goToDetails(String reservationNumber){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedReservationNumber", reservationNumber);

@@ -15,7 +15,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
-
+/**
+ * Kontroler odpowiedzialny za wyświetlanie listy rezerwacji wszystkich użytkowników
+ */
 @Log
 @Named
 @ViewScoped
@@ -31,6 +33,10 @@ public class ListReservationsController implements Serializable {
     @Setter
     private String reservationFilter;
 
+    /**
+     * Metoda odpowiedzialna za wczytanie wszystkich rezerwacji.
+     * Wykonywana po stworzeniu instancji klasy ListReservationsController.
+     */
     @PostConstruct
     public void init() {
         try {
@@ -50,7 +56,12 @@ public class ListReservationsController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
     }
-
+    /**
+     * Metoda przenosząca użytkownika na stronę ze szczegółami rezeracji
+     *
+     * @param reservationNumber numer wybranej rezerwacji
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goToDetails(String reservationNumber){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedReservationNumber", reservationNumber);
         return "reservationDetails";

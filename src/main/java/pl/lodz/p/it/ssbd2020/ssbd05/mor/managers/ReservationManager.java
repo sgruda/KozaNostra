@@ -63,7 +63,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     private ClientFacade clientFacade;
 
     /**
-     * Pobieranie listy wszystkich rezerwacji
+     * Metoda odpowiedzialna za pobranie listy wszystkich rezerwacji
      *
      * @return List<Reservation> lista rezerwacji
      * @throws AppBaseException podstawowy wyjatek aplikacyjny
