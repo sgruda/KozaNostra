@@ -34,9 +34,7 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
     @Override
     @RolesAllowed("removeHall")
     public void removeHall(HallDTO hallDTO) throws AppBaseException {
-        log.severe("hallDTO" +hallDTO.getName());
         Hall hall =HallMapper.INSTANCE.toHall(hallDTO);
-        log.severe("hall" +hall.getName());
         hallManager.removeHall(hall);
     }
 }

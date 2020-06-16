@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallHasReservationsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -64,13 +65,18 @@ public class HallDetailsController implements Serializable {
     public void removeHall(){
         try {
             if(!hall.isActive()) {
-                removeHallEndpoint.removeHall(hall);
-                ResourceBundles.emitMessageWithFlash(null, "page.hall.details.delete.success");
+                if(hall.getReservationCollection().isEmpty()) {
+                    removeHallEndpoint.removeHall(hall);
+                    ResourceBundles.emitMessageWithFlash(null, "page.hall.details.delete.success");
+                }else throw new HallHasReservationsException();
             }else{
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.hall.details.active");
             }
+        }catch (HallHasReservationsException ex){
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            log.severe( ex.getMessage() + ", " +LocalDateTime.now());
         } catch (AppBaseException appBaseException) {
-            log.severe(LocalDateTime.now() + " " + appBaseException.getMessage());
+            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
         }
     }
