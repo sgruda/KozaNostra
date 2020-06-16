@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="../templates/template.xhtml">
+    <ui:define name="head">
+        <title>#{msg['page.edit.extraservice']}</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="#{msg['page.edit.extraservice']}"
+                     style="font-size: 24px;">
+
+                <p:panelGrid columns="1" style="display:flex; flex-direction: column; text-align: center; margin: auto;">
+                    <h:outputLabel for="name" value="#{msg['page.edit.extraservice.name']} * ">
+                        <p:inputText id="name" required="true"
+                                     value="#{editExtraServiceController.extraServiceDTO.serviceName}"
+                                     requiredMessage="#{msg['page.addextraservice.name.required']}"
+                                     validatorMessage="#{msg['page.addextraservice.name.validator']}"
+                                     maxlength="32">
+                            <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                            <f:validateLength minimum="1" maximum="32"/>
+                        </p:inputText>
+                    </h:outputLabel>
+
+                    <h:outputLabel for="description" value="#{msg['page.edit.extraservice.description']} * ">
+                        <p:inputTextarea id="description" required="true"
+                                         value="#{editExtraServiceController.extraServiceDTO.description}"
+                                         requiredMessage="#{msg['page.addextraservice.description.required']}"
+                                         validatorMessage="#{msg['page.addextraservice.description.validator']}"
+                                         maxlength="255">
+                            <f:validateRegex pattern="[ 0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\-]+"/>
+                            <f:validateLength minimum="1" maximum="512"/>
+                        </p:inputTextarea>
+                    </h:outputLabel>
+
+                    <h:outputLabel for="price" value="#{msg['page.edit.extraservice.price']} * ">
+                        <p:inputNumber id="price" required="true"
+                                       value="#{editExtraServiceController.extraServiceDTO.price}"
+                                       requiredMessage="#{msg['page.addextraservice.price.required']}"
+                                       validatorMessage="#{msg['page.addextraservice.price.validator']}"
+                                       symbol=" PLN" symbolPosition="s" decimalPlaces="2" decimalSeparator=","
+                                       minValue="0.01" maxValue="9999999.99"/>
+                    </h:outputLabel>
+
+                    <p:selectBooleanCheckbox id="active" value="#{editExtraServiceController.extraServiceDTO.active}"
+                                             itemLabel="#{msg['page.edit.extraservice.active']}"
+                                             style="text-align: left;"/>
+
+                </p:panelGrid>
+
+
+                <div style="display:flex; flex-direction: column;">
+                    <p:messages>
+                        <p:autoUpdate/>
+                    </p:messages>
+                </div>
+
+                <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;background-color: transparent">
+                    <p:commandButton id="back" immediate="true" value="#{msg['page.template.menu.backbutton']}" style="margin-right:20px;" action="#{editExtraServiceController.goBack()}"/>
+
+                    <p:commandButton id="submit" validateClient="true" value="#{msg['page.edit.extraservice.button']}" icon="pi pi-check" style="float: center;"
+                                     actionListener="#{editExtraServiceController.editExtraService}" action="#{editExtraServiceController.goBack()}">
+                        <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
+                        <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                        <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+                    </p:confirmDialog>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="breadcrumb-menuitems">
+        <p:menuitem value="#{msg['page.listextraservices.breadcrumbs']}" outcome="/listExtraServices.xhtml" />
+<!--        <p:menuitem value="#{msg['page.extraservicesdetails.breadcrumbs']}" outcome="/manager/extraServiceDetails.xhtml" />-->
+        <p:menuitem value="#{msg['page.editextraservice.breadcrumbs']}" outcome="/manager/editExtraService.xhtml" />
+    </ui:define>
+</ui:composition>
+</html>

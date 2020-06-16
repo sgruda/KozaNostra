@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.reviews.title']}</title>
@@ -27,6 +27,9 @@
                         <f:selectItem itemLabel="5" itemValue="5"/>
                         <f:selectItem itemLabel="10" itemValue="10"/>
                     </p:selectOneMenu>
+                    <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
+                        <p:button outcome="/client/addReview.xhtml" value="#{msg['page.addreview.title']}"/>
+                    </c:if>
                 </h:form>
             </div>
         </div>
@@ -36,6 +39,10 @@
                     <div class="review-div">
                         <h:outputText value="#{review.content}" styleClass="review-content"/>
                         <h:outputText value="#{review.date}" styleClass="review-date"/>
+                            <p:commandButton styleClass="edit-remove-review-button" rendered="#{listReviewsController.isOwnerOfOpinion(review.clientLogin) ||
+                                                        roleController.selectedRole.equalsIgnoreCase(roleController.getRoleManager())}"
+                                             value="#{msg['page.reviews.editOrRemove']}"
+                                             action="#{listReviewsController.selectReview(review.reviewNumber)}"/>
                     </div>
                 </p:fieldset>
             </ui:repeat>
@@ -43,7 +50,7 @@
 
     </ui:define>
     <ui:define name="breadcrumb-menuitems">
-        <p:menuitem value="#{msg['page.reviews.breadcrumb']}" outcome="/listReviews.xhtml" />
+        <p:menuitem value="#{msg['page.reviews.breadcrumbs']}" outcome="/listReviews.xhtml" />
     </ui:define>
 </ui:composition>
 </html>

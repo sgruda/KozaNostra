@@ -28,6 +28,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Klasa fasady dla typu Hall
+ */
 @Log
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
@@ -47,6 +50,12 @@ public class HallFacade extends AbstractFacade<Hall> {
         super(Hall.class);
     }
 
+    /**
+     * Metoda odpowiedzialna za dodawanie encji reprezentującej salę do bazy danych
+     *
+     * @param entity Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("addHall")
     public void create(Hall entity) throws AppBaseException {
@@ -61,6 +70,13 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie sali o danej nazwie z bazy danych
+     *
+     * @param name Nazwa sali
+     * @return Obiekt typu Hall opakowany w obiekt Optional
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Optional<Hall> findByName(String name) throws AppBaseException {
         try {
@@ -73,6 +89,12 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za edcyję encji reprezentującej salę w bazie danych
+     *
+     * @param entity Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed({"editHall", "changeHallActivity"})
     public void edit(Hall entity) throws AppBaseException {
@@ -103,6 +125,12 @@ public class HallFacade extends AbstractFacade<Hall> {
         return super.find(id);
     }
 
+    /**
+     * Metoda odpowiedzialna za pobieranie wszystkich sal z bazy danych
+     *
+     * @return Lista obiektów typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @PermitAll
     public List<Hall> findAll() throws AppBaseException {
@@ -113,11 +141,18 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za filtrowanie listy sal zgodnie z podanym ciągiem znaków
+     *
+     * @param hallFilter Ciąg znaków do filtrowania
+     * @return Kolekcja obiektów typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @PermitAll
     public Collection<Hall> filter(String hallFilter) throws AppBaseException {
         try {
-            // TODO implementacja
-            return new ArrayList<>();
+            return em.createNamedQuery("Hall.filterByNameAndAddress", Hall.class)
+                    .setParameter("filter", hallFilter).getResultList();
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }

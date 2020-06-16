@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Fasda rezerwacji - typ Reservation
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -40,6 +43,9 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy
+     */
     public ReservationFacade() {
         super(Reservation.class);
     }
@@ -86,19 +92,32 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         }
     }
 
+    /**
+     * Pobierz rezerwacji według numeru rezerwacji
+     *
+     * @param number numer rezerwacji
+     * @return optional Reservation
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getReservationByNumber")
     public Optional<Reservation> findByNumber(String number) throws AppBaseException{
         try{
            return Optional.ofNullable(this.em.createNamedQuery("Reservation.findByReservationNumber", Reservation.class)
                    .setParameter("reservationNumber", number).getSingleResult());
-        }
-        catch (NoResultException noResultException) {
+        } catch (NoResultException noResultException) {
             throw new ReservationNotFoundException(noResultException);
-        }catch (DatabaseException | PersistenceException e) {
+        } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
     }
 
+    /**
+     * Filter reservations list.
+     *
+     * @param filter the filter
+     * @return the list
+     * @throws AppBaseException the app base exception
+     */
     @RolesAllowed("filterReservations")
     public List<Reservation> filterReservations(String filter) throws AppBaseException{
         try {
@@ -108,6 +127,14 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
             throw new DatabaseConnectionException(e);
         }
     }
+
+    /**
+     * Pobierz rezerwacje według nazwy użytkownika
+     *
+     * @param login nazwa użytkownika
+     * @return lista  rezerwacji danego użytkownika
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed({"getAllUsersReservations", "getUserReviewableReservations"})
     public List<Reservation> findByLogin(String login) throws AppBaseException {
         try {
@@ -121,6 +148,12 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         }
     }
 
+    /**
+     * Find by date list.
+     *
+     * @param localDateTime the local date time
+     * @return the list
+     */
     @RolesAllowed("getReservationsByDate")
     public List<Reservation> findByDate(LocalDateTime localDateTime){
         throw new UnsupportedOperationException();

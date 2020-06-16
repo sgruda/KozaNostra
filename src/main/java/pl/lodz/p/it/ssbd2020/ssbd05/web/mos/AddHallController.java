@@ -19,6 +19,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Kontroler odpowiedzialny za dodawanie sali przez użytkownika o poziomie dostępu menadżer
+ */
 @Log
 @Getter
 @Setter
@@ -35,6 +38,10 @@ public class AddHallController implements Serializable {
     private boolean newAddress;
     private AddressDTO address;
 
+    /**
+     * Metoda wywoływana przy wejściu na stronę z formularzem dodawania,
+     * wczytuje wszystkie dostępne typy imprez i adresy
+     */
     @PostConstruct
     public void init() {
         hall = new HallDTO();
@@ -50,6 +57,9 @@ public class AddHallController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za dodawanie sali
+     */
     public void addHall() {
         hall.setEvent_type(eventTypes);
         hall.setAddress(address);
@@ -68,10 +78,21 @@ public class AddHallController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za tłumaczenie nazw typów imprez
+     *
+     * @param eventTypeName Nazwa typu imprezy
+     * @return Zinternacjonalizowana nazwa typu imprezy
+     */
     public String translateEventType(String eventTypeName) {
         return ResourceBundles.getTranslatedText(eventTypeName);
     }
 
+    /**
+     * Metoda odpowiedzialna za konwersję wartości zmiennej typu boolean na słowo tak/nie
+     *
+     * @return Zinternacjonalizowany ciąg znaków
+     */
     public String translateBoolean() {
         if (newAddress) {
             return ResourceBundles.getTranslatedText("page.common.yes");
@@ -80,10 +101,18 @@ public class AddHallController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiadająca za przełączanie widoczności formularza, w którym użytkownik dodaje nowy adres
+     */
     public void toggleNewAddress() {
         newAddress = !newAddress;
     }
 
+    /**
+     * Metoda przenosząca użytkownika na stronę główną
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goBack() {
         return "home";
     }

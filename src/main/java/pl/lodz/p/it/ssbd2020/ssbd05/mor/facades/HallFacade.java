@@ -8,7 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
 
 import javax.annotation.security.DenyAll;
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -21,6 +21,9 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Fasada dla encji Hall
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -35,6 +38,9 @@ public class HallFacade extends AbstractFacade<Hall> {
         return em;
     }
 
+    /**
+     * Konstruktur bezprarametrowy fasady
+     */
     public HallFacade() {
         super(Hall.class);
     }
@@ -72,8 +78,14 @@ public class HallFacade extends AbstractFacade<Hall> {
     public void remove(Hall entity) throws AppBaseException {
         super.remove(entity);
     }
-
-    @PermitAll
+    /**
+     * Pobierz Hall według nazwy
+     *
+     * @param name nazwa sali do pobrania
+     * @return optional Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
+    @RolesAllowed("getHallByName")
     public Optional<Hall> findByName(String name) throws AppBaseException {
         try {
             return Optional.ofNullable(this.em.createNamedQuery("Hall.findByName", Hall.class)
@@ -90,4 +102,5 @@ public class HallFacade extends AbstractFacade<Hall> {
     public int count() {
         return super.count();
     }
+
 }

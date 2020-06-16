@@ -181,3 +181,25 @@ fieldset > legend{
 #reviews-form-perpage{
     margin-top: 0.3em
 }
+
+#add-review-div{
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-remove-review-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 20vw;
+    min-height: 20vh;
+}
+
+.edit-remove-review-button{
+    align-self: center;
+}
+
+.remove-review-buttons-div{
+    margin: auto;
+    display: flex;
+}

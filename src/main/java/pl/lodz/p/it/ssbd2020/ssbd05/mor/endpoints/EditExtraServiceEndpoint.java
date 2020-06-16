@@ -1,11 +1,13 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
 import lombok.extern.java.Log;
+import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mok.AccountMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ExtraServiceMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditExtraServiceEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ExtraServiceManager;
@@ -20,6 +22,9 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+/**
+ * Punkt dostępowy odpowiedzialny za edycję usługi dodatkowej, dostarcza implementację interfejsu EditExtraServiceEndpointLocal
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -55,7 +60,24 @@ public class EditExtraServiceEndpoint implements Serializable, EditExtraServiceE
     @Override
     @RolesAllowed("editExtraService")
     public void editExtraService(ExtraServiceDTO extraServiceDTO) throws AppBaseException {
-        //TODO Implementacja
-        throw new UnsupportedOperationException();
+
+        ExtraServiceMapper.INSTANCE.updateExtraServiceFromDTO(extraServiceDTO, extraService);
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                extraServiceManager.editExtraService(extraService);
+                rollback = extraServiceManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if(callCounter > 0)
+                log.info("Transaction with ID " + extraServiceManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
     }
 }

@@ -7,14 +7,10 @@ public class HallActiveException extends AppBaseException {
     public static final String KEY_HALL_ACTIVE_PROBLEM = "error.hall.active";
 
     public HallActiveException() {
-        super();
+        super(KEY_HALL_ACTIVE_PROBLEM);
     }
 
-    public HallActiveException(String message) {
-        super(message);
-    }
-
-    public HallActiveException(String message, Throwable cause) {
+    public HallActiveException(Throwable cause) {
         super(KEY_HALL_ACTIVE_PROBLEM, cause);
     }
 }
