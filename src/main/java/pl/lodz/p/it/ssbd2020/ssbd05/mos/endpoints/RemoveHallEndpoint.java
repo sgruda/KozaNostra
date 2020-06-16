@@ -5,12 +5,15 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallHasReservationsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.managers.HallManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -23,22 +26,36 @@ import java.io.Serializable;
 @TransactionAttribute(TransactionAttributeType.NEVER)
 @Interceptors(TrackerInterceptor.class)
 public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal {
+
     @Inject
     private HallManager hallManager;
 
-    @Override
-    @RolesAllowed("getHallByName")
-    public HallDTO getHallByName(String name) {
-        throw new UnsupportedOperationException();
-    }
+    private Hall hall;
+
 
     @Override
     @RolesAllowed("removeHall")
     public void removeHall(HallDTO hallDTO) throws AppBaseException {
-            Hall hall = HallMapper.INSTANCE.toHall(hallDTO);
-            hall = hallManager.getHallByName(hall.getName());
-        if(hall.getReservationCollection().isEmpty()) {
-            hallManager.removeHall(hall);
-        } else throw new HallHasReservationsException();
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                hall = HallMapper.INSTANCE.toHall(hallDTO);
+                hall = hallManager.getHallByName(hall.getName());
+                rollback = hallManager.isLastTransactionRollback();
+                if(hall.getReservationCollection().isEmpty()) {
+                    hallManager.removeHall(hall);
+                } else throw new HallHasReservationsException();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if(callCounter > 0)
+                log.info("Transaction with ID " + hallManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
     }
 }

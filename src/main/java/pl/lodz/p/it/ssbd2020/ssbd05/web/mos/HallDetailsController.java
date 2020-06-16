@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallHasReservationsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
@@ -92,7 +93,10 @@ public class HallDetailsController implements Serializable {
             }else{
                 ResourceBundles.emitErrorMessageWithFlash(null, "page.hall.details.active");
             }
-        }catch (HallHasReservationsException ex){
+        } catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        } catch (HallHasReservationsException ex){
             ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
             log.severe( ex.getMessage() + ", " +LocalDateTime.now());
         } catch (AppBaseException appBaseException) {
