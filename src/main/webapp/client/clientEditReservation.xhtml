@@ -12,8 +12,20 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
         <title>#{msg['page.client.editreservation.title']}</title>
         <style type="text/css">
         </style>
+        <script type="text/javascript">
+            PrimeFaces.locales['pl'] = {
+                monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+                monthNamesShort: ['Sty','Lut','Mar','Kwi','Maj','Cze', 'Lip','Sie','Wrz','Paź','Lis','Gru'],
+                dayNames: ['Niedziela', 'Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota',],
+                dayNamesShort: ['Ndz','Pn','Wt','Śr','Czw','Pt','Sb',],
+                dayNamesMin: ['Ndz','Pn','Wt','Śr','Czw','Pt','Sb',],
+                firstDay: 1,
+                ampm: false,
+            };
+        </script>
     </ui:define>
     <ui:define name="content">
+
         <h:form id="form1" style="margin-bottom: auto; margin-top: 75px">
 
 
