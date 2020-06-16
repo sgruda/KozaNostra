@@ -22,11 +22,11 @@ public interface ListUserReservationsEndpointLocal {
     List<ReservationDTO> getAllUsersReservations(String login) throws AppBaseException;
 
     /**
-     * Gets user reviewable reservations.
+     * Metoda zwracająca listę rezerwacji w postaci obiektów ReservationDTO, dla których możliwe jest dodanie opinii przez konto z podaną nazwą użytkownika.
      *
-     * @param login the login
-     * @return the user reviewable reservations
-     * @throws AppBaseException the app base exception
+     * @param login nazwa użykownika
+     * @return lista rezerwacji dla których możliwe jest wystawienie opinii
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     List<ReservationDTO> getUserReviewableReservations(String login) throws AppBaseException;
 

@@ -21,6 +21,10 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Punkt dostępowy implementujący interfejs AddReviewEndpointLocal, który pośredniczy
+ * przy dodawaniu nowej opinii.
+ */
 @Stateful
 @Log
 @TransactionAttribute(TransactionAttributeType.NEVER)

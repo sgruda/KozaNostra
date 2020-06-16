@@ -46,6 +46,7 @@ public class ReviewFacade extends AbstractFacade<Review> {
         super(Review.class);
     }
 
+
     @Override
     @RolesAllowed("addReview")
     public void create(Review entity) throws AppBaseException {
@@ -113,11 +114,11 @@ public class ReviewFacade extends AbstractFacade<Review> {
     }
 
     /**
-     * Find by login list.
+     * Metoda zwracająca listę opinii wystawionych przez konto o podanej nazwie użytkownika.
      *
-     * @param login the login
-     * @return the list
-     * @throws AppBaseException the app base exception
+     * @param login nazwa użytkownika
+     * @return lista opinii
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getUserReviewableReservations")
     public List<Review> findByLogin(String login) throws AppBaseException {
