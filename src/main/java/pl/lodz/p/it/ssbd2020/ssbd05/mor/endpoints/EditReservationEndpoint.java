@@ -40,6 +40,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Punkt dostępowy implementujący interfejs EditReservationEndpointLocal
+ * pośredniczący przy edycji rezerwacji
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -182,13 +186,17 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         return new ArrayList<>(dates);
     }
 
+    /**
+     * Metoda odpowiedzialna za wyliczenie ceny rezerwacji po jej edycji
+     *
+     * @return cena całkowita rezerwacji
+     */
     private double calculateTotalPrice() {
         Period period = DateFormatter.getPeriod(reservation.getStartDate(),reservation.getEndDate());
         int rentedTime = period.getDays();
         long[] time = DateFormatter.getTime(reservation.getStartDate(),reservation.getEndDate());
         if(time[2]>0)
             rentedTime+=1;
-//        double totalPrice = hall.getPrice() * reservation.getGuestsNumber();
         double totalPrice = hall.getPrice() * rentedTime;
         for (ExtraService ext : this.reservation.getExtra_service()) {
            totalPrice+=ext.getPrice();

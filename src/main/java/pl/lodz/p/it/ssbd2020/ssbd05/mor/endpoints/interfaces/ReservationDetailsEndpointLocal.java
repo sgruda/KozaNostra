@@ -5,7 +5,18 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
 
+/**
+ * Interfejs dla punktu dostępowego ReservationDetailsEndpoint pośredniczącemu
+ * przy wyświetlaniu szczegółów wybranej rezerwacji
+ */
 @Local
 public interface ReservationDetailsEndpointLocal {
-    public ReservationDTO getReservationByNumber(String nubmer) throws AppBaseException;
+    /**
+     * Metoda odpowiadająca za pobranie szczegółów wybranej sali
+     *
+     * @param number numer rezerwacji
+     * @return rezerwacja
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
+    ReservationDTO getReservationByNumber(String number) throws AppBaseException;
 }

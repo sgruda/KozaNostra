@@ -121,7 +121,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     /**
-     * Filter reservations list.
+     * Metoda odpowiadająca za filtrowanie rezerwacji
      *
      * @param filter filtr, rezerwacje filtorwane są po loginie, imieniu, nazwisku oraz numerze rezerwacji. Wielkość liter nie ma znaczenia.
      * @return przefiltrowana lista rezerwacji
@@ -155,17 +155,6 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
         }
-    }
-
-    /**
-     * Find by date list.
-     *
-     * @param localDateTime the local date time
-     * @return the list
-     */
-    @RolesAllowed("getReservationsByDate")
-    public List<Reservation> findByDate(LocalDateTime localDateTime){
-        throw new UnsupportedOperationException();
     }
 
     @Override
