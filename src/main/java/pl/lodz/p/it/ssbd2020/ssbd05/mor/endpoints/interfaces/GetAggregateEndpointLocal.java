@@ -7,7 +7,7 @@ import javax.ejb.Local;
 
 /**
  * Interfejs dla punktu dostępowego GetAggregateEndpoint, pośredniczącemu
- * przy pobieraniu z bazy obiektu encyjnego
+ * przy pobieraniu z bazy obiektu encyjnego agregatu
  */
 @Local
 public interface GetAggregateEndpointLocal {

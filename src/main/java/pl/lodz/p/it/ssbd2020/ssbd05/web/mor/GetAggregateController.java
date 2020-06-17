@@ -12,6 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.text.MessageFormat;
 
+/**
+ * Kontroler odpowiedzialny za pobieranie danych o agregacie
+ */
 @Log
 @Named
 @RequestScoped
@@ -22,6 +25,9 @@ public class GetAggregateController {
 
     private AverageGuestNumberDTO dto;
 
+    /**
+     * Metoda wykonywana po stworzeniu instancji klasy GetAggregateController. Pobiera obiekt agregatu z bazy
+     */
     @PostConstruct
     public void init(){
         try {
@@ -32,6 +38,11 @@ public class GetAggregateController {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za zwrócenie średniej liczby gości w systemie
+     *
+     * @return Ciąg znaków reprezentujący średnią liczbę gości
+     */
     public String getAverageGuestNumber(){
         if(dto != null){
             String s = ResourceBundles.getTranslatedText("guest.number.average");
@@ -40,6 +51,12 @@ public class GetAggregateController {
         }
         else return "";
     }
+
+    /**
+     * Metoda odpowiedzialna za zwrócenie ogólnej liczby gości w systemie
+     *
+     * @return Ciąg znaków reprezentujący liczbę gości
+     */
     public String getTotalGuestNumber(){
         if(dto != null) {
             String s = ResourceBundles.getTranslatedText("guest.number.total");
