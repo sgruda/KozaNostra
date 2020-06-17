@@ -57,7 +57,7 @@
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.halldetails.back']}" action="#{hallDetailsController.goBack()}"/>
-                    <p:commandButton value="#{msg['page.halldetails.remove.hall']}" actionListener="#{hallDetailsController.removeHall()}" action="#{hallDetailsController.goBack}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
+                    <p:commandButton value="#{msg['page.halldetails.remove.hall']}" actionListener="#{hallDetailsController.removeHall()}" action="#{hallDetailsController.goBack}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}" disabled="#{hallDetailsController.hall.active}">
                     <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">

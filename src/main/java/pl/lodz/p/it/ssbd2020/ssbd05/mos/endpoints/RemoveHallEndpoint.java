@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallActiveException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallHasReservationsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
@@ -43,10 +44,12 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
         boolean rollback;
         do {
             try {
-                if (hall.getReservationCollection().isEmpty()) {
-                    hallManager.removeHall(hall);
-                } else {
+                if (hall.isActive()) {
+                    throw new HallActiveException();
+                } else if (!hall.getReservationCollection().isEmpty()) {
                     throw new HallHasReservationsException();
+                } else {
+                    hallManager.removeHall(hall);
                 }
                 rollback = hallManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
