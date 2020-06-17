@@ -13,12 +13,19 @@ import javax.ejb.Local;
 public interface HallDetailsEndpointLocal {
 
     /**
-     * Meotda odpowiedzialna za pobieranie pojedynczej sali na podstawie jej nazwy
+     * Metoda odpowiedzialna za pobieranie pojedynczej sali na podstawie jej nazwy
      *
      * @param name Nazwa sali
      * @return Obiekt typu HallDTO reprezentujący salę
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     HallDTO getHallByName(String name) throws AppBaseException;
+
+    /**
+     * Metoda odpowiedzialna za zmianę aktywności sali
+     *
+     * @param hall obiekt transferowy typu HallDTO
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     void changeActivity(HallDTO hall) throws AppBaseException;
 }

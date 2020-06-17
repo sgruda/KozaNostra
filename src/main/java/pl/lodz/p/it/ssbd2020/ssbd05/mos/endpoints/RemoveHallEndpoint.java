@@ -23,6 +23,10 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+/**
+ * Punkt dostępowy implementujący interfejs RemoveHallEndpoint, który pośredniczy
+ * przy usuwaniu wybranej sali przez użytkownika o dostępie menadżer
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -64,6 +68,7 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
     }
 
     @Override
+    @RolesAllowed("getHallByName")
     public HallDTO getHallByName(String hallName) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;
