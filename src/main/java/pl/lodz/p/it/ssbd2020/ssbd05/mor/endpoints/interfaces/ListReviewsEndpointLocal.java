@@ -13,7 +13,7 @@ import java.util.List;
 @Local
 public interface ListReviewsEndpointLocal {
     /**
-     * Gets all reviews.
+     * Metoda pobierająca listę wszystkich opinii.
      *
      * @return lista wszystkich opinii w postacji obiektów typu ReviewDTO
      * @throws AppBaseException podstawowy wyjątek aplikacyjny

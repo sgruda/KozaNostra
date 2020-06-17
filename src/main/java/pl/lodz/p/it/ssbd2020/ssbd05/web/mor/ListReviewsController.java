@@ -76,7 +76,7 @@ public class ListReviewsController implements Serializable {
     }
 
     /**
-     * Metoda sprawdzaająca, czy powinien zostać wyświetlony przycisk przekierowujący do kolejnej strony listy.
+     * Metoda sprawdzająca, czy powinien zostać wyświetlony przycisk przekierowujący do kolejnej strony listy.
      *
      * @return boolean
      */
@@ -149,7 +149,7 @@ public class ListReviewsController implements Serializable {
      * Metoda przekierowująca do edycji opinii.
      *
      * @param reviewNumber numer opinii
-     * @return string
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
      */
     public String selectReview(String reviewNumber) {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedReview", reviewNumber);

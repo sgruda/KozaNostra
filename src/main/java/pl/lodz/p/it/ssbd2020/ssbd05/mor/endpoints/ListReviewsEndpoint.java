@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  * Punkt dostępowy implementujący interfejs ListReviewsEndpointLocal
- *  * pośredniczący w wyświetlaniu listy wszystkich opinii
+ *  Punkt dostępowy implementujący interfejs ListReviewsEndpointLocal
+ *  pośredniczący w wyświetlaniu listy wszystkich opinii
  */
 @Log
 @Stateful
