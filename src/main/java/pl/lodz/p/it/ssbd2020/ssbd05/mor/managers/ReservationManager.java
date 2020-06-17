@@ -231,9 +231,9 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         reservationFacade.edit(reservation);
         if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())) {
             aggregate = averageGuestNumberFacade.findAll().get(0);
-            aggregate.setEventSum(aggregate.getGuestSum() + 1);
-            aggregate.setGuestSum(reservation.getGuestsNumber());
-            aggregate.setAverage(aggregate.getGuestSum()/ aggregate.getEventSum());
+            aggregate.setEventSum(aggregate.getEventSum() + 1);
+            aggregate.setGuestSum(aggregate.getGuestSum() + reservation.getGuestsNumber());
+            aggregate.setAverage(aggregate.getGuestSum() / aggregate.getEventSum());
             averageGuestNumberFacade.edit(aggregate);
         }
     }
