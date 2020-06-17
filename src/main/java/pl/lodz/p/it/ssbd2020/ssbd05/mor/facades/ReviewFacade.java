@@ -46,7 +46,12 @@ public class ReviewFacade extends AbstractFacade<Review> {
         super(Review.class);
     }
 
-
+    /**
+     * Metoda odpowiedzialna za tworzenie obiektu encji reprezentującej opinię w bazie danych
+     *
+     * @param entity Obiekt typu Review
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("addReview")
     public void create(Review entity) throws AppBaseException {
