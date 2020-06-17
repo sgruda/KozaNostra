@@ -21,10 +21,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Kontroler odpowiedzialny za dodawanie nowej opinii
+ */
 @Log
 @ViewScoped
 @Named
 public class AddReviewController implements Serializable {
+
     @Inject
     ListUserReservationsEndpointLocal userReservationsEndpoint;
 
@@ -50,8 +54,10 @@ public class AddReviewController implements Serializable {
     private String login;
 
 
-
-
+    /**
+     * Metoda wykonywana po stworzeniu obiektu klasy AddReviewController.
+     * Pobiera listę rezerwacji, dla których możliwe jest wystawienie opinii.
+     */
     @PostConstruct
     public void init(){
         login = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
@@ -67,6 +73,12 @@ public class AddReviewController implements Serializable {
         }
     }
 
+    /**
+     * Metoda dodająca nową opinie.
+     * Po dodaniu nowej opinii następuje przekierowanie na stronę z listą wszystkich opinii.
+     *
+     * @return string
+     */
     public String addReview(){
         ReviewDTO review = new ReviewDTO();
         review.setClientLogin(login);
@@ -85,6 +97,12 @@ public class AddReviewController implements Serializable {
         return "addReview";
     }
 
+    /**
+     * Metoda zwracająca identyfikator rezerwacji do wyświetlenia w menu rozwijanym.
+     *
+     * @param reservationNumber numer rezerwacji
+     * @return string
+     */
     public String addReviewLabel(String reservationNumber){
         ReservationDTO reservationDTO = null;
         for (ReservationDTO reservation: reservations
@@ -103,6 +121,11 @@ public class AddReviewController implements Serializable {
         return sb.toString();
     }
 
+    /**
+     * Metoda weryfikująca, czy dostępna jest przynajmniej jedna rezerwacja dla której możnaby wystawić opinię.
+     *
+     * @return boolean
+     */
     public boolean isAvailableReservations(){
         return !reservations.isEmpty();
     }

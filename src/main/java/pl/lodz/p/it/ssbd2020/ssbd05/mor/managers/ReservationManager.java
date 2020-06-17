@@ -12,9 +12,9 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.StatusNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
@@ -24,8 +24,8 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -282,11 +282,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Gets user reviewable reservations.
+     * Metoda zwracająca listę rezerwacji dla których możliwe jest dodanie opinii przez konto z podaną nazwą użytkownika.
+     * Wystawienie opinii jest możliwe dla zakończonych rezerwacji, dla których nie została wystawiona opinia.
      *
-     * @param login the login
-     * @return the user reviewable reservations
-     * @throws AppBaseException the app base exception
+     * @param login nazwa użytkownika
+     * @return lista rezerwacji dla których możliwe jest wystawienie opinii
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getUserReviewableReservations")
     public List<Reservation> getUserReviewableReservations(String login) throws AppBaseException {
