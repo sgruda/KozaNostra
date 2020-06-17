@@ -87,9 +87,6 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     @RolesAllowed("editReservation")
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
         ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
-        log.severe(reservationDTO.getStartDate()+ " DTO " +reservationDTO.getEndDate());
-        log.severe("noDTO " + reservation.getStartDate() + " " + reservation.getEndDate());
-
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         List<ExtraService> extraServices = new ArrayList<>();
         for(String extraService: reservationDTO.getExtraServiceCollection()){
@@ -197,7 +194,7 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         long[] time = DateFormatter.getTime(reservation.getStartDate(),reservation.getEndDate());
         if(time[2]>0)
             rentedTime+=1;
-        double totalPrice = hall.getPrice() * rentedTime;
+        double totalPrice = hall.getPrice() * rentedTime * reservation.getGuestsNumber();
         for (ExtraService ext : this.reservation.getExtra_service()) {
            totalPrice+=ext.getPrice();
         }
