@@ -182,12 +182,7 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         }
         return new ArrayList<>(dates);
     }
-
-    /**
-     * Metoda odpowiedzialna za wyliczenie ceny rezerwacji po jej edycji
-     *
-     * @return cena całkowita rezerwacji
-     */
+    
     private double calculateTotalPrice() {
         Period period = DateFormatter.getPeriod(reservation.getStartDate(),reservation.getEndDate());
         int rentedTime = period.getDays();
