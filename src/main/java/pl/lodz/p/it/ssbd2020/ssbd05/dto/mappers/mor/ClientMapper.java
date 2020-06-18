@@ -1,6 +1,5 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor;
 
-
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ClientDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
 
