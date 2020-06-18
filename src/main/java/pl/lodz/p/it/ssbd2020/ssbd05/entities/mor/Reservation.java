@@ -8,7 +8,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -49,13 +48,11 @@ public class Reservation implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Future(message = "{validation.date.future}")
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
-    @Future(message = "{validation.date.future}")
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Column(name = "end_date", nullable = false)

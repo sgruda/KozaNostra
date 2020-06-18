@@ -40,6 +40,9 @@
                 <h:outputText value="#{msg['page.listreservations.reservation.details.till']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.endDate}"/>
 
+                <h:outputText value="#{msg['page.client.reservations.details.guestsNumber']}" />
+                <h:outputText value="#{reservationDetailsController.reservationDTO.guestsNumber}" />
+
                 <h:outputText value="#{msg['page.listreservations.reservation.details.price']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.totalPrice} PLN"/>
 
@@ -75,7 +78,6 @@
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.listreservations.reservation.details.back']}" action="#{reservationDetailsController.goBack}"/>
-                    <p:commandButton value="#{msg['page.listreservations.reservation.details.edit']}"/>
                 </h:form>
             </div>
         </div>
