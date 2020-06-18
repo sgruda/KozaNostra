@@ -29,6 +29,7 @@ import java.util.Collection;
         @NamedQuery(name = "Hall.filterByNameAndAddress", query = "SELECT h FROM Hall h WHERE LOWER(h.name) LIKE CONCAT('%', LOWER(:filter), '%')" +
                 "OR LOWER(h.address.street) LIKE CONCAT('%', LOWER(:filter), '%')" +
                 "OR LOWER(h.address.city) LIKE CONCAT('%', LOWER(:filter), '%')")
+
 })
 public class Hall implements Serializable {
 
@@ -85,13 +86,13 @@ public class Hall implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
-    @ManyToMany
-    @JoinTable(name = "event_types_mapping", schema = "ssbd05schema")
+    @ManyToMany(cascade = {CascadeType.DETACH})
+    @JoinTable( name = "event_types_mapping", schema = "ssbd05schema")
     private Collection<EventType> event_type = new ArrayList<>();
 
     @NotNull
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = {CascadeType.DETACH}, optional = false)
     private Address address;
 
     @OneToMany(mappedBy = "hall")

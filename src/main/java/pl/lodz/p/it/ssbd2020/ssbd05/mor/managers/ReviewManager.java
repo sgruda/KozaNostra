@@ -58,6 +58,14 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
         reviewFacade.remove(review);
     }
 
+    /**
+     * Metoda odpowiedzialna za dodanie opinii
+     *
+     * @param review            opinia
+     * @param clientLogin       nazwa użytkownika
+     * @param reservationNumber numer rezerwacji
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("addReview")
     public void addReview(Review review, String clientLogin, String reservationNumber) throws AppBaseException {
         try{

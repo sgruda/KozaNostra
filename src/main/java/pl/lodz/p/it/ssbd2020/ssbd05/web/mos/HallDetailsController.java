@@ -5,13 +5,22 @@ import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.EditHallEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallHasReservationsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.HallDetailsEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -25,6 +34,9 @@ public class HallDetailsController implements Serializable {
 
     @Inject
     private HallDetailsEndpointLocal hallDetailsEndpoint;
+
+    @Inject
+    private RemoveHallEndpointLocal removeHallEndpoint;
 
     @Getter
     private HallDTO hall;
@@ -43,6 +55,7 @@ public class HallDetailsController implements Serializable {
         String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
+            removeHallEndpoint.getHallByName(selectedHallName);
             if(!this.hall.isActive()){
                 isReservationButtonVisible = false;
             }else{
@@ -79,6 +92,26 @@ public class HallDetailsController implements Serializable {
         }
     }
 
+    public void removeHall(){
+        try {
+            if(!hall.isActive()) {
+                    removeHallEndpoint.removeHall(hall);
+                    ResourceBundles.emitMessageWithFlash(null, "page.hall.details.delete.success");
+            }else{
+                ResourceBundles.emitErrorMessageWithFlash(null, "page.hall.details.active");
+            }
+        } catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        } catch (HallHasReservationsException ex){
+            ResourceBundles.emitErrorMessageWithFlash(null, ex.getMessage());
+            log.severe( ex.getMessage() + ", " +LocalDateTime.now());
+        } catch (AppBaseException appBaseException) {
+            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
+        }
+    }
+
     /**
      * Metoda przenosząca użytkownika o poziomie dostępu menadżer na formularz edycji sali
      *
@@ -97,6 +130,35 @@ public class HallDetailsController implements Serializable {
         return "toReservationPage";
     }
 
+    public void changeHallActivity(){
+        hall.setActive(!hall.isActive());
+        try {
+            hallDetailsEndpoint.changeActivity(hall);
+            if(hall.isActive()){
+                ResourceBundles.emitMessageWithFlash(null,"page.halldetails.hall.activated");
+            }else ResourceBundles.emitMessageWithFlash(null,"page.halldetails.hall.deactivated");
+            refresh();
+        }catch (ExceededTransactionRetriesException e) {
+            ResourceBundles.emitErrorMessage(null, e.getMessage());
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        } catch (AppOptimisticLockException ex){
+            log.severe(ex.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null,"error.hall.optimisticlock");
+        } catch (AppBaseException appBaseException) {
+            log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
+            ResourceBundles.emitErrorMessage(null, appBaseException.getMessage());
+        }
+    }
+
+    public void refresh() {
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+        } catch ( IOException e) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "error.default");
+            log.severe(e.getMessage() + ", " + LocalDateTime.now());
+        }
+    }
     /**
      * Metoda przenosząca użytkownika na stronę z listą wszystkich sal
      *

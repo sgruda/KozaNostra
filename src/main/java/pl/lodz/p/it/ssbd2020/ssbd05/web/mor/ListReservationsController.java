@@ -48,6 +48,9 @@ public class ListReservationsController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za wczytanie przefiltrowanej listy rezerwacji.
+     */
     public void filterReservations(){
         try {
             reservations = listReservationEndpointLocal.filterReservations(reservationFilter);

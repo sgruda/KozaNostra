@@ -5,7 +5,6 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Account;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
@@ -124,9 +123,9 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     /**
      * Filter reservations list.
      *
-     * @param filter the filter
-     * @return the list
-     * @throws AppBaseException the app base exception
+     * @param filter filtr, rezerwacje filtorwane są po loginie, imieniu, nazwisku oraz numerze rezerwacji. Wielkość liter nie ma znaczenia.
+     * @return przefiltrowana lista rezerwacji
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("filterReservations")
     public List<Reservation> filterReservations(String filter) throws AppBaseException{

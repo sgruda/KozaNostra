@@ -1,5 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.EventTypeMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mos.HallMapper;
@@ -40,7 +42,13 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
 
     @Inject
     private HallManager hallManager;
+
+    @Getter
+    @Setter
     private Hall hall;
+
+    @Getter
+    @Setter
     private Collection<EventType> eventTypes;
 
     @Override
@@ -123,9 +131,7 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
         return list;
     }
 
-    @Override
-    @RolesAllowed("changeHallActivity")
-    public void changeActivity(HallDTO hallDTO) throws AppBaseException {
-        throw new UnsupportedOperationException();
-    }
+
+
+
 }
