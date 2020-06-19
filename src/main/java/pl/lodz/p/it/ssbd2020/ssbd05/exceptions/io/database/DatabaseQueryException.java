@@ -12,7 +12,7 @@ public class DatabaseQueryException extends AppBaseException {
     }
 
     public DatabaseQueryException(Throwable ex) {
-        super(ex);
+        super(KEY_DATABASE_QUERY_PROBLEM, ex);
     }
 
 

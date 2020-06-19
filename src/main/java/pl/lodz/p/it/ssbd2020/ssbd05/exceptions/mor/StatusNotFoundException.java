@@ -14,7 +14,7 @@ public class StatusNotFoundException extends AppBaseException {
         super(message);
     }
 
-    public StatusNotFoundException(String message, Throwable cause) {
-        super(cause);
+    public StatusNotFoundException(Throwable cause) {
+        super(STATUS_NOT_FOUND, cause);
     }
 }

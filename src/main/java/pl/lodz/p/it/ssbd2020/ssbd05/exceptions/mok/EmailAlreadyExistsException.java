@@ -15,6 +15,6 @@ public class EmailAlreadyExistsException  extends AppBaseException {
     }
 
     public EmailAlreadyExistsException(Throwable cause) {
-        super(cause);
+        super(KEY_ACCOUNT_EMAIL_PROBLEM, cause);
     }
 }

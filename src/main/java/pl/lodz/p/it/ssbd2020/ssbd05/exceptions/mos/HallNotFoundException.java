@@ -14,7 +14,7 @@ public class HallNotFoundException extends AppBaseException {
         super(message);
     }
 
-    public HallNotFoundException(String message, Throwable cause) {
-        super(cause);
+    public HallNotFoundException(Throwable cause) {
+        super(HALL_NOT_FOUND, cause);
     }
 }

@@ -15,6 +15,6 @@ public class AccountPasswordAlreadyUsedException extends AppBaseException {
     }
 
     public AccountPasswordAlreadyUsedException(Throwable cause) {
-        super(cause);
+        super(KEY_ACCOUNT_PASSWORD_PROBLEM, cause);
     }
 }

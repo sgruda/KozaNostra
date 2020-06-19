@@ -15,6 +15,6 @@ public class ExceededTransactionRetriesException extends AppBaseException {
     }
 
     public ExceededTransactionRetriesException(Throwable ex){
-        super(ex);
+        super(KEY_TRANSACTION_RETIRES_EXCEEDED, ex);
     }
 }

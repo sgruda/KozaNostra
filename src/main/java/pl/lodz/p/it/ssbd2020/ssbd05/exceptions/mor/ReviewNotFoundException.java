@@ -14,6 +14,6 @@ public class ReviewNotFoundException extends AppBaseException {
     }
 
     public ReviewNotFoundException(Throwable cause) {
-        super(cause);
+        super(REVIEW_NOT_FOUND, cause);
     }
 }

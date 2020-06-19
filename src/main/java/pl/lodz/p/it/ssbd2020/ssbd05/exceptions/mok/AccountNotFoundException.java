@@ -15,6 +15,6 @@ public class AccountNotFoundException extends AppBaseException {
     }
 
     public AccountNotFoundException(Throwable cause) {
-        super(cause);
+        super(KEY_ACCOUNT_NOT_FOUND, cause);
     }
 }

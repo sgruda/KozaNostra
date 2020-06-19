@@ -12,6 +12,6 @@ public class DatabaseConnectionException extends AppBaseException {
     }
 
     public DatabaseConnectionException(Throwable ex){
-        super(ex);
+        super(KEY_DATABASE_CONNECTION_PROBLEM, ex);
     }
 }

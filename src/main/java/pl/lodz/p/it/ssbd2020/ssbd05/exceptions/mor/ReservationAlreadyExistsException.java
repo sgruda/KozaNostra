@@ -15,6 +15,6 @@ public class ReservationAlreadyExistsException extends AppBaseException {
     }
 
     public ReservationAlreadyExistsException(Throwable cause) {
-        super(cause);
+        super(KEY_RESERVATION_EXISTS, cause);
     }
 }

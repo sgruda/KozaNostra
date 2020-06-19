@@ -12,6 +12,6 @@ public class ValidationException extends AppBaseException {
     }
 
     public ValidationException(Throwable cause) {
-        super(cause);
+        super(VALIDATION_ERROR, cause);
     }
 }

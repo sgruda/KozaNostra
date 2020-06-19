@@ -15,6 +15,6 @@ public class AccountNotHaveActiveAccessLevelsException extends AppBaseException 
     }
 
     public AccountNotHaveActiveAccessLevelsException(Throwable cause) {
-        super(cause);
+        super(KEY_ACCOUNT_NOT_HAVE_ACTIVE_ACCESS_LEVELS, cause);
     }
 }

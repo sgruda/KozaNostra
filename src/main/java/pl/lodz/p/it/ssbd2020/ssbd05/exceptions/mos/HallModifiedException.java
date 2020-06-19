@@ -13,7 +13,7 @@ public class HallModifiedException extends AppBaseException {
         super(message);
     }
 
-    public HallModifiedException(String message, Throwable cause) {
-        super(cause);
+    public HallModifiedException(Throwable cause) {
+        super(HALL_MODIFIED, cause);
     }
 }

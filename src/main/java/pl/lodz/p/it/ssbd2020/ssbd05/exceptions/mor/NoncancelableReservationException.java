@@ -15,7 +15,7 @@ public class NoncancelableReservationException extends AppBaseException {
     }
 
     public NoncancelableReservationException(Throwable cause) {
-        super(cause);
+        super(NONCANCELABLE_RESERVATION, cause);
     }
 
 }

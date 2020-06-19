@@ -15,6 +15,6 @@ public class ExtraServiceNotFoundException extends AppBaseException {
     }
 
     public ExtraServiceNotFoundException(Throwable cause) {
-        super(cause);
+        super(SERVICE_NOT_FOUND, cause);
     }
 }

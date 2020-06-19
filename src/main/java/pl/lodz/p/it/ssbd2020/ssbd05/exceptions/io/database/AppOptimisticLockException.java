@@ -12,6 +12,6 @@ public class AppOptimisticLockException extends AppBaseException {
     }
 
     public AppOptimisticLockException(Throwable ex){
-        super(ex);
+        super(KEY_DATABASE_OPTIMISTIC_LOCK, ex);
     }
 }

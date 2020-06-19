@@ -15,6 +15,6 @@ public class ExtraServiceAlreadyExistsException extends AppBaseException {
     }
 
     public ExtraServiceAlreadyExistsException(Throwable cause) {
-        super(cause);
+        super(KEY_EXTRA_SERVICE_EXISTS, cause);
     }
 }

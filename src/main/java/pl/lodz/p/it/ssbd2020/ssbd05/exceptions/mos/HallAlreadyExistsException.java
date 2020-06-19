@@ -15,7 +15,7 @@ public class HallAlreadyExistsException extends AppBaseException {
     }
 
     public HallAlreadyExistsException(Throwable cause) {
-        super(cause);
+        super(KEY_HALL_PROBLEM, cause);
     }
 
 }

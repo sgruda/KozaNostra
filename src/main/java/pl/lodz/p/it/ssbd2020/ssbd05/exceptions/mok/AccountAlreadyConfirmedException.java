@@ -13,6 +13,6 @@ public class AccountAlreadyConfirmedException extends AppBaseException {
     }
 
     public AccountAlreadyConfirmedException(String message, Throwable cause) {
-        super(cause);
+        super(KEY_CONFIRMED, cause);
     }
 }

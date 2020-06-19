@@ -12,6 +12,6 @@ public class PropertiesLoadingException extends AppBaseException {
     }
 
     public PropertiesLoadingException(Throwable ex){
-        super(ex);
+        super(KEY_PROPERTIES_LOADING, ex);
     }
 }
