@@ -1,12 +1,12 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
-import lombok.extern.java.Log;
+
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-@Log
+
 public class DateFormatter {
 
     public static final String WITH_SECONDS= "yyyy-MM-dd HH:mm:ss";
