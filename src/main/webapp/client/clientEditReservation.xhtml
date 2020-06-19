@@ -44,7 +44,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 </p:selectOneMenu>
                 </h:outputLabel>
 
-                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} *">
+                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} (MAX = #{editReservationController.hallDTO.capacity}) *">
                 <p:inputNumber style="margin-left: 20px" id="numberOfGuests" required="true"
                                value="#{editReservationController.reservationDTO.guestsNumber}"
                                decimalPlaces="0" validatorMessage="#{msg['page.createreservation.number.of.guests.validator']}"
