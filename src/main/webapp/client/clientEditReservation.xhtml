@@ -44,7 +44,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 </p:selectOneMenu>
                 </h:outputLabel>
 
-                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} (MAX = #{editReservationController.hallDTO.capacity}) *">
+                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} (#{msg['page.editreservation.maxguestsnumber']} = #{editReservationController.hallDTO.capacity}) *">
                 <p:inputNumber style="margin-left: 20px" id="numberOfGuests" required="true"
                                value="#{editReservationController.reservationDTO.guestsNumber}"
                                decimalPlaces="0" validatorMessage="#{msg['page.createreservation.number.of.guests.validator']}"
@@ -52,7 +52,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 </h:outputLabel>
 
                 <h:outputLabel for="extraServices" value="#{msg['page.editreservation.extraservices']}">
-                    <p:selectManyCheckbox id="extraServices" value="#{editReservationController.extraServicesNames}">
+                    <p:selectManyCheckbox id="extraServices" value="#{editReservationController.selectedExtraServices}">
                         <c:forEach items="#{editReservationController.extraServicesNames}" var="extraService">
                             <f:selectItem itemLabel="#{editReservationController.translateExtraService(extraService)}" itemValue="#{extraService}"/>
                         </c:forEach>
