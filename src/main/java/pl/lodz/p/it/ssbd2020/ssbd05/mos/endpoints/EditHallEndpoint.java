@@ -26,7 +26,6 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -82,9 +81,7 @@ public class EditHallEndpoint implements Serializable, EditHallEndpointLocal {
     public void editHall(HallDTO hallDTO) throws AppBaseException {
         Address temp = hall.getAddress();
         HallMapper.INSTANCE.updateHallFromDTO(hallDTO, hall);
-        log.info("ENDPOINT BEFORE: " + Arrays.asList(eventTypes.toArray()));
         eventTypes.removeIf(eventType -> !hallDTO.getEvent_type().contains(eventType.getTypeName()));
-        log.info("ENDPOINT AFTER: " + Arrays.asList(eventTypes.toArray()));
         hall.setEvent_type(eventTypes);
         hall.setAddress(temp);
         int callCounter = 0;
