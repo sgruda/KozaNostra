@@ -10,12 +10,4 @@ public class ReservationStatusFinishedException extends AppBaseException {
         super(RESERVATION_STATUS_FINISHED);
     }
 
-    public ReservationStatusFinishedException(String message) {
-        super(message);
-    }
-
-    public ReservationStatusFinishedException(Throwable cause) {
-        super(RESERVATION_STATUS_FINISHED, cause);
-    }
-
 }
