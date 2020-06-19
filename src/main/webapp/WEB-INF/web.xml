@@ -191,4 +191,7 @@
       <error-code>403</error-code>
       <location>/errors/error403.xhtml</location>
   </error-page>
+  <error-page>
+      <location>/errors/error.xhtml</location>
+  </error-page>
 </web-app>
