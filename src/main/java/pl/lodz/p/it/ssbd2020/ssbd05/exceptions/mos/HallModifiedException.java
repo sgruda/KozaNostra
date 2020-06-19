@@ -9,11 +9,4 @@ public class HallModifiedException extends AppBaseException {
         super(HALL_MODIFIED);
     }
 
-    public HallModifiedException(String message) {
-        super(message);
-    }
-
-    public HallModifiedException(Throwable cause) {
-        super(HALL_MODIFIED, cause);
-    }
 }

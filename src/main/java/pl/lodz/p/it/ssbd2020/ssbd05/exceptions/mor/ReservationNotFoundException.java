@@ -11,10 +11,6 @@ public class ReservationNotFoundException extends AppBaseException {
         super(RESERVATION_NOT_FOUND);
     }
 
-    public ReservationNotFoundException(String message) {
-        super(message);
-    }
-
     public ReservationNotFoundException(Throwable cause) {
         super(RESERVATION_NOT_FOUND, cause);
     }

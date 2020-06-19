@@ -10,12 +10,4 @@ public class NoncancelableReservationException extends AppBaseException {
         super(NONCANCELABLE_RESERVATION);
     }
 
-    public NoncancelableReservationException(String message) {
-        super(message);
-    }
-
-    public NoncancelableReservationException(Throwable cause) {
-        super(NONCANCELABLE_RESERVATION, cause);
-    }
-
 }

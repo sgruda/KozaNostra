@@ -6,14 +6,6 @@ public class HallAlreadyExistsException extends AppBaseException {
 
     public static final String KEY_HALL_PROBLEM = "error.hall.exists";
 
-    public HallAlreadyExistsException() {
-        super(KEY_HALL_PROBLEM);
-    }
-
-    public HallAlreadyExistsException(String message) {
-        super(message);
-    }
-
     public HallAlreadyExistsException(Throwable cause) {
         super(KEY_HALL_PROBLEM, cause);
     }
