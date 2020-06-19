@@ -31,6 +31,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -188,11 +190,10 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         long[] time = DateFormatter.getTime(reservation.getStartDate(),reservation.getEndDate());
         if(time[2]>0)
             rentedTime+=1;
-//        double totalPrice = hall.getPrice() * reservation.getGuestsNumber();
-        double totalPrice = hall.getPrice() * rentedTime;
+        double totalPrice = hall.getPrice() * rentedTime * reservation.getGuestsNumber();
         for (ExtraService ext : this.reservation.getExtra_service()) {
            totalPrice+=ext.getPrice();
         }
-        return totalPrice;
+        return new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }
