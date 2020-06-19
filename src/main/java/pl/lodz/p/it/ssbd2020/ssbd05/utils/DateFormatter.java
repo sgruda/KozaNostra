@@ -32,11 +32,11 @@ public class DateFormatter {
     public static int getHours(LocalDateTime start, LocalDateTime end) {
         Duration duration =Duration.between(start,end);
         long minutes = duration.toMinutes()%SECONDS_PER_MINUTE;
-        int returnedhours = (int) duration.toHours();
+        int numberOfHours = (int) duration.toHours();
         if(minutes>0)
-            returnedhours+=1;
+            numberOfHours+=1;
 
-        return returnedhours;
+        return numberOfHours;
     }
 
 }
