@@ -27,6 +27,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -64,7 +66,7 @@ public class CreateReservationController implements Serializable {
 
     private List<String> selectedExtraServices = new ArrayList<>();
     private String eventTypeName;
-    private Integer numberOfGuests;
+    private Integer numberOfGuests = 0;
     private ClientDTO clientDTO;
 
     private ScheduleModel scheduleModel;
@@ -92,15 +94,8 @@ public class CreateReservationController implements Serializable {
      * Metoda wykorzystywana do zapisania wybranego terminu
      */
     public void addEvent(){
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);
-
-        event = new DefaultScheduleEvent();
         startDate = event.getStartDate();
         endDate = event.getEndDate();
-
     }
 
     /**
@@ -109,21 +104,18 @@ public class CreateReservationController implements Serializable {
      * @return całkowita wartość rezerwacji
      */
     public double calculateTotalPrice() {
-        Period period = DateFormatter.getPeriod(startDate, endDate);
-        int rentedTime = period.getDays();
-        long[] time = DateFormatter.getTime(startDate, endDate);
-        if (time[2] > 0)
-            rentedTime += 1;
-        double totalPrice = hallDTO.getPrice() * rentedTime * numberOfGuests;
+        long rentedTime = DateFormatter.getHours(startDate,endDate );
+        Double price = 0.0;
+        price = hallDTO.getPrice() * rentedTime * numberOfGuests;
         for (ExtraServiceDTO ext : extraServices) {
             for (int i = 0; i < selectedExtraServices.size(); i++) {
                 if (ext.getServiceName().equals(selectedExtraServices.get(i)))
-                    totalPrice += ext.getPrice();
+                    price += ext.getPrice();
             }
-
         }
-        this.totalPrice = totalPrice;
-        return totalPrice;
+        price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.totalPrice = price;
+        return price;
     }
 
     /**

@@ -87,30 +87,6 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
     }
 
     @Override
-    @RolesAllowed("getAllEventTypes")
-    public List<String> getAllEventTypes() throws AppBaseException {
-        Collection<String> list = new ArrayList<>();
-        int callCounter = 0;
-        boolean rollback;
-        do {
-            try {
-                list = EventTypeMapper.toEventTypeStringCollection(reservationManager.getAllEventTypes());
-                rollback = reservationManager.isLastTransactionRollback();
-            } catch (EJBTransactionRolledbackException e) {
-                log.warning("EJBTransactionRolledBack");
-                rollback = true;
-            }
-            if (callCounter > 0)
-                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
-            callCounter++;
-        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
-        if (rollback) {
-            throw new ExceededTransactionRetriesException();
-        }
-        return new ArrayList<>(list);
-    }
-
-    @Override
     @RolesAllowed("getHallByName")
     public HallDTO getHallByName(String hallName) throws AppBaseException {
         HallDTO hallDTO = new HallDTO();
@@ -171,7 +147,7 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
     @RolesAllowed("createReservation")
     public void createReservation(ReservationDTO reservationDTO) throws AppBaseException {
         Reservation reservation = ReservationMapper.INSTANCE.createNewReservation(reservationDTO);
-        Hall retrievedHall = reservationManager.getHallByName(reservationDTO.getHallName());
+//        Hall retrievedHall = reservationManager.getHallByName(reservationDTO.getHallName());
         reservation.setClient(reservationManager.getClientByLogin(reservationDTO.getClientDTO().getLogin()));
         List<ExtraService> selectedExtraService = new ArrayList<>();
         for (String extraService : reservationDTO.getExtraServiceCollection()) {
@@ -185,9 +161,9 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
 
 
-        if (hasHallChanged(retrievedHall)) {
-            throw new HallModifiedException();
-        } else {
+//        if (hasHallChanged(retrievedHall)) {
+//            throw new HallModifiedException();
+//        } else {
             reservation.setHall(hall);
             reservation.setTotalPrice(reservationDTO.getTotalPrice());
             reservation.setReservationNumber(reservationDTO.getReservationNumber());
@@ -210,27 +186,27 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
             if (rollback) {
                 throw new ExceededTransactionRetriesException();
             }
-        }
+//        }
     }
 
-    private boolean hasHallChanged(Hall retrievedHall) {
-        boolean hasChanged = false;
-        if ((hall.getCapacity() != retrievedHall.getCapacity()) || (hall.getPrice() != retrievedHall.getPrice())
-                || (!retrievedHall.isActive())
-                || (retrievedHall.getArea() != hall.getArea())) {
-            hasChanged = true;
-        } else {
-            if (hall.getEvent_type().size() == retrievedHall.getEvent_type().size()) {
-                for (EventType ev : hall.getEvent_type()) {
-                    if (!retrievedHall.getEvent_type().contains(ev)) {
-                        hasChanged = true;
-                        break;
-                    }
-                }
-            } else {
-                hasChanged = true;
-            }
-        }
-        return hasChanged;
-    }
+//    private boolean hasHallChanged(Hall retrievedHall) {
+//        boolean hasChanged = false;
+//        if ((hall.getCapacity() != retrievedHall.getCapacity()) || (hall.getPrice() != retrievedHall.getPrice())
+//                || (!retrievedHall.isActive())
+//                || (retrievedHall.getArea() != hall.getArea())) {
+//            hasChanged = true;
+//        } else {
+//            if (hall.getEvent_type().size() == retrievedHall.getEvent_type().size()) {
+//                for (EventType ev : hall.getEvent_type()) {
+//                    if (!retrievedHall.getEvent_type().contains(ev)) {
+//                        hasChanged = true;
+//                        break;
+//                    }
+//                }
+//            } else {
+//                hasChanged = true;
+//            }
+//        }
+//        return hasChanged;
+//    }
 }

@@ -26,14 +26,6 @@ public interface CreateReservationEndpointLocal {
     List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException;
 
     /**
-     * Pobierz listę wszystkich rodzajów wydarzeń
-     *
-     * @return lista rodzajów wydarzeń
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
-    List<String> getAllEventTypes() throws AppBaseException;
-
-    /**
      * Utwórz nową rezerwację
      *
      * @param reservationDTO obiekt DTO rezerwacji

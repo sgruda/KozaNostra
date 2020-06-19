@@ -42,4 +42,25 @@ public class DateFormatter {
 
         return new long[]{hours, minutes, secs};
     }
+
+    public static int getHours(LocalDateTime start, LocalDateTime end) {
+
+        Period period = getPeriod(start,end);
+        int returnedhours = period.getDays()*24;
+        LocalDateTime today = LocalDateTime.of(end.getYear(),
+                end.getMonthValue(), end.getDayOfMonth(), start.getHour(), start.getMinute(), start.getSecond());
+        Duration duration = Duration.between(today, end);
+
+        long seconds = duration.getSeconds();
+
+        long hours = seconds / SECONDS_PER_HOUR;
+        long minutes = ((seconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
+        long secs = (seconds % SECONDS_PER_MINUTE);
+
+        returnedhours += hours;
+        if(minutes>0 || secs>0)
+            returnedhours+=1;
+
+        return returnedhours;
+    }
 }
