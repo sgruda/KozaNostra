@@ -10,8 +10,6 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <ui:composition template="../templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.client.editreservation.title']}</title>
-        <style type="text/css">
-        </style>
         <script type="text/javascript">
             PrimeFaces.locales['pl'] = {
                 monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
@@ -49,7 +47,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} *">
                 <p:inputNumber style="margin-left: 20px" id="numberOfGuests" required="true"
                                value="#{editReservationController.reservationDTO.guestsNumber}"
-                               decimalPlaces="0"
+                               decimalPlaces="0" validatorMessage="#{msg['page.createreservation.number.of.guests.validator']}"
                                minValue="1" maxValue="#{editReservationController.hallDTO.capacity}"/>
                 </h:outputLabel>
 
@@ -71,8 +69,6 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
             </p:panelGrid>
 
             <h:form id="panelGrid1">
-
-
 
                 <h:panelGrid columnClasses="value" >
                     <p:schedule id="schedule"
@@ -100,7 +96,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                       requiredMessage="#{msg['page.editreservation.startdate.required']}"
                                       validatorMessage="#{msg['page.editreservation.startdate.validator']}"
                                       locale="#{msg['page.editreservation.calendar.language']}" appendTo="@(body)"
-                                      pattern="yyyy-MM-dd HH:mm:ss"  valueChangeListener="#{editReservationController.changeStartDate}"/>
+                                      pattern="yyyy-MM-dd HH:mm:ss" />
 
 
                         <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}" />
@@ -111,7 +107,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                       requiredMessage="#{msg['page.editreservation.enddate.required']}"
                                       validatorMessage="#{msg['page.editreservation.enddate.validator']}"
                                       locale="#{msg['page.editreservation.calendar.language']}"
-                                      pattern="yyyy-MM-dd HH:mm:ss" valueChangeListener="#{editReservationController.changeEndDate}"/>
+                                      pattern="yyyy-MM-dd HH:mm:ss" />
 
                         <p:commandButton id="addButton" value="#{msg['page.editreservation.button.save.date']}"
                                          action="#{editReservationController.addEvent}" actionListener="#{editReservationController.addEvent}"
@@ -120,10 +116,12 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                     </h:panelGrid>
 
                 </p:dialog>
-
+                <p:messages>
+                    <p:autoUpdate/>
+                </p:messages>
         </h:form>
             <div style="display:flex; flex-direction: column;">
-                <p:messages>
+                <p:messages globalOnly="true" closable="true">
                     <p:autoUpdate/>
                 </p:messages>
             </div>
@@ -138,8 +136,9 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                     <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
                     <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
                 </p:confirmDialog>
-
             </div>
+
+
 
         </h:form>
     </ui:define>

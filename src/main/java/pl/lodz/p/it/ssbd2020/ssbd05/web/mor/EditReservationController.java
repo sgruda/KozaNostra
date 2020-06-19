@@ -106,12 +106,8 @@ public class EditReservationController implements Serializable {
         reservationDTO.setEventTypeName(eventTypeName);
         reservationDTO.setExtraServiceCollection(extraServicesNames);
         log.severe(startDate+ " herb1" + endDate  );
-        if(startDateChanged) {
-            reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
-        }
-        if(endDateChanged) {
-            reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
-        }
+        reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
+        reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
         boolean notGood = false;
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
             ResourceBundles.emitErrorMessage(null, "page.editreservation.dates.error");
