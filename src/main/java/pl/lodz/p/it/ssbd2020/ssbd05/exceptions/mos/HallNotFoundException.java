@@ -10,11 +10,4 @@ public class HallNotFoundException extends AppBaseException {
         super(HALL_NOT_FOUND);
     }
 
-    public HallNotFoundException(String message) {
-        super(message);
-    }
-
-    public HallNotFoundException(String message, Throwable cause) {
-        super(HALL_NOT_FOUND, cause);
-    }
 }
