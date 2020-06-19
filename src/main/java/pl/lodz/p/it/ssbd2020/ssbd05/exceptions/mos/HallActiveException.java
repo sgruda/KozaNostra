@@ -9,8 +9,4 @@ public class HallActiveException extends AppBaseException {
     public HallActiveException() {
         super(KEY_HALL_ACTIVE_PROBLEM);
     }
-
-    public HallActiveException(Throwable cause) {
-        super(KEY_HALL_ACTIVE_PROBLEM, cause);
-    }
 }

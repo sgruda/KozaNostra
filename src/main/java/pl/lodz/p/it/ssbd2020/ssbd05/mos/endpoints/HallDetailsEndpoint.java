@@ -70,7 +70,7 @@ public class HallDetailsEndpoint implements Serializable, HallDetailsEndpointLoc
         return HallMapper.INSTANCE.toHallDTO(hall);
     }
 
-   @Override
+    @Override
     @RolesAllowed("changeHallActivity")
     public void changeActivity(HallDTO hallDTO) throws AppBaseException {
         Address temp = hall.getAddress();

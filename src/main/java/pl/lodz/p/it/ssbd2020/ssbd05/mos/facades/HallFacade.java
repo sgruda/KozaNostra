@@ -108,12 +108,17 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za usunięcie encji reprezentującej salę w bazie danych
+     *
+     * @param entity Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @Override
     @RolesAllowed("removeHall")
     public void remove(Hall entity) throws AppBaseException {
         try {
-            Hall entity1 = this.em.find(Hall.class, entity.getId());
-            super.remove(entity1);
+            super.remove(entity);
         } catch (OptimisticLockException e) {
             throw new AppOptimisticLockException(e);
         } catch (DatabaseException | PersistenceException e) {

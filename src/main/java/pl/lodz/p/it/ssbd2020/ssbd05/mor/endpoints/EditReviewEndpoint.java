@@ -59,7 +59,7 @@ public class EditReviewEndpoint implements EditReviewEndpointLocal, Serializable
     @Override
     @RolesAllowed("editReview")
     public void editReview(ReviewDTO reviewDTO) throws AppBaseException{
-        ReviewMapper.INSTANCE.updateAndCheckReservationFromDTO(reviewDTO, review);
+        ReviewMapper.INSTANCE.updateAndCheckReviewFromDTO(reviewDTO, review);
         int callCounter = 0;
         boolean rollback;
         do {
@@ -81,7 +81,7 @@ public class EditReviewEndpoint implements EditReviewEndpointLocal, Serializable
     @Override
     @RolesAllowed("removeReview")
     public void removeReview(ReviewDTO reviewDTO) throws AppBaseException {
-        ReviewMapper.INSTANCE.updateAndCheckReservationFromDTO(reviewDTO, review);
+        ReviewMapper.INSTANCE.updateAndCheckReviewFromDTO(reviewDTO, review);
         int callCounter = 0;
         boolean rollback;
         do {

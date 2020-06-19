@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 /**
  * Kontroler odpowiedzialny za wyświetlanie szczegółów wybranej rezerwacji.
@@ -31,16 +30,20 @@ public class ReservationDetailsController implements Serializable {
 
     @Inject
     private ReservationDetailsEndpointLocal reservationDetailsEndpointLocal;
+
     @Getter
     private ReservationDTO reservationDTO;
+
     @Getter
     private ResourceBundles resourceBundles;
+
     @Getter
     @Setter
     private String extraServices;
 
     @Inject
     private CancelReservationController cancelReservationController;
+
     @Inject
     private ChangeReservationStatusController changeReservationStatusController;
 
@@ -50,7 +53,7 @@ public class ReservationDetailsController implements Serializable {
 
     /**
      * Metoda wykonywana przy otwarciu strony ze szczegółami rezerwacji i wczytująca dane wybranej rezerwacji
-     **/
+     */
     @PostConstruct
     public void init(){
         try {
@@ -114,11 +117,21 @@ public class ReservationDetailsController implements Serializable {
      * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "złożona"
      */
     public boolean isSubmitted() {
-        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString());
+        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.name());
+    }
+    /**
+     * Metoda sprawdzająca czy status wybranej rezerwacji to "zakończona"
+     *
+     * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "zakończona"
+     */
+    public boolean isFinished() {
+        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name());
     }
 
-
-
+    /**
+     * Metoda odpowiadająca za odświeżenie strony oraz pobranie obiektu ReservationDTO. Ustawia stan obiektów
+     * ReservationDTO dla cancelReservationController oraz changeReservationStatus
+     */
     private void refresh() {
         try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -132,6 +145,12 @@ public class ReservationDetailsController implements Serializable {
         }
     }
 
+
+    /**
+     * Metoda odpowiedzialna za przekierowanie użytkownika na stronę edycji rezerwacji
+     *
+     * @return ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goToEditPage(){
         return "edit";
     }

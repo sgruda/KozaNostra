@@ -38,7 +38,7 @@
                  <p:commandLink styleClass="menu-button" id="menu-button" oncomplete="PF('sb').show()" rendered="#{roleController.isSelectedRole(roleController.getRoleAdmin()) or roleController.isSelectedRole(roleController.getRoleManager())}">
                      <i id="menu-bars" class="pi pi-bars"/>
                  </p:commandLink>
-                 <h:link class="logo" outcome="/index.xhtml">LogoPlaceholder</h:link> 
+                 <h:link class="logo" outcome="/index.xhtml"/>
              </div>
             <div class = "header-right">
 
@@ -104,7 +104,13 @@
         </div>
 
         <div class = "footer">
+            <div class="footer-left">
+                <h:outputText styleClass="footer-aggregate" value="#{getAggregateController.totalGuestNumber}"/>
+            </div>
             <div class ="footer-text">2020 @SSBD05</div>
+            <div class ="footer-right">
+                <h:outputText styleClass="footer-aggregate" value="#{getAggregateController.averageGuestNumber}"/>
+            </div>
         </div>
     </div>
     <h:form>

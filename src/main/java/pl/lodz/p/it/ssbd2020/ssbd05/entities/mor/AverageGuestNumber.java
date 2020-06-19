@@ -25,22 +25,22 @@ public class AverageGuestNumber {
     @Id
     @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "AverageGuestNumberIdGen")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, insertable = false)
     private Long id;
 
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
-    @Column(name = "guest_sum", nullable = false)
+    @Column(name = "guest_sum", nullable = false, insertable = false)
     private Long guestSum;
 
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
-    @Column(name = "event_sum", nullable = false)
+    @Column(name = "event_sum", nullable = false, insertable = false)
     private Long eventSum;
 
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
-    @Column(name = "average", nullable = false)
+    @Column(name = "average", nullable = false, insertable = false)
     private Long average;
 
     @Getter(lombok.AccessLevel.NONE)
@@ -48,7 +48,7 @@ public class AverageGuestNumber {
     @Basic(optional = false)
     @Version
     @NotNull(message = "{validation.notnull}")
-    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
+    @Column(name = "version", nullable = false, columnDefinition = "bigint default 1", insertable = false)
     private long version;
 
     public AverageGuestNumber() {

@@ -3,10 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -19,6 +16,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -37,6 +35,7 @@ import java.util.stream.Collectors;
 @LocalBean
 @Interceptors(TrackerInterceptor.class)
 public class ReservationManager extends AbstractManager implements SessionSynchronization {
+
     @Inject
     private ReservationFacade reservationFacade;
 
@@ -53,19 +52,19 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     private HallFacade hallFacade;
 
     @Inject
-    private AccountFacade accountFacade;
-
-    @Inject
     private  ExtraServiceFacade extraServiceFacade;
 
     @Inject
     private ClientFacade clientFacade;
 
+    @Inject
+    private AverageGuestNumberFacade averageGuestNumberFacade;
+    private AverageGuestNumber aggregate;
 
     /**
      * Metoda odpowiedzialna za pobranie listy wszystkich rezerwacji
      *
-     * @return List<Reservation> lista rezerwacji
+     * @return List<Reservation>  lista rezerwacji
      * @throws AppBaseException podstawowy wyjatek aplikacyjny
      */
     @RolesAllowed("getAllReservations")
@@ -74,11 +73,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Gets client by login.
+     * Metoda odpowiedzialna za pobranie użytkownika o poziomie dostępu Klient
      *
-     * @param login the login
-     * @return the client by login
-     * @throws AppBaseException the app base exception
+     * @param login login użytkownika
+     * @return konto klienta
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("findByLogin")
     public Client getClientByLogin(String login) throws AppBaseException{
@@ -86,11 +85,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Gets extra service by name.
+     * Metoda odpowiedzialna za pobranie usługi dodatkowej po nazwie
      *
-     * @param name the name
-     * @return the extra service by name
-     * @throws AppBaseException the app base exception
+     * @param name nazwa usługi dodatkowej
+     * @return Obiekt typu ExtraService
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getExtraServiceByName")
     public ExtraService getExtraServiceByName(String name) throws AppBaseException{
@@ -100,11 +99,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Gets event type by name.
+     * Metoda odpowiedzialna za pobranie typu wydarzenia po nazwie
      *
-     * @param name the name
-     * @return the event type by name
-     * @throws AppBaseException the app base exception
+     * @param name nazwa typu wydarzenia
+     * @return Obiekt typu EventType
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getEventTypeByName")
     public EventType getEventTypeByName(String name) throws AppBaseException{
@@ -112,11 +111,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
             throw new ExtraServiceNotFoundException();
         }else return eventTypesFacade.findByName(name).get();
     }
+
     /**
-     * Gets all event types.
+     * Metoda odpowiedzialna za pobranie wszystkich typów wydarzenia
      *
-     * @return the all event types
-     * @throws AppBaseException the app base exception
+     * @return lista typów wydarzenia
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getAllEventTypes")
     public List<EventType> getAllEventTypes() throws AppBaseException {
@@ -124,11 +124,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Gets hall by name.
+     * Metoda odpowiedzialna za pobranie sali
      *
-     * @param name the name
-     * @return the hall by name
-     * @throws AppBaseException the app base exception
+     * @param name nazwa sali
+     * @return Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed({"getHallByName", "getHallForReservation"})
     public Hall getHallByName(String name) throws AppBaseException {
@@ -151,11 +151,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Gets all users reservations.
+     * Metoda odpowiedzialna za pobranie wszystkich rezerwacji użytkownika
      *
-     * @param login the login
-     * @return the all users reservations
-     * @throws AppBaseException the app base exception
+     * @param login login użytkownika
+     * @return lista rezerwacji użytkownika
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getAllUsersReservations")
     public List<Reservation> getAllUsersReservations(String login) throws AppBaseException {
@@ -231,8 +231,14 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(Reservation reservation) throws AppBaseException {
         reservationFacade.edit(reservation);
+        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())) {
+            aggregate = averageGuestNumberFacade.findAll().get(0);
+            aggregate.setEventSum(aggregate.getEventSum() + 1);
+            aggregate.setGuestSum(aggregate.getGuestSum() + reservation.getGuestsNumber());
+            aggregate.setAverage(aggregate.getGuestSum() / aggregate.getEventSum());
+            averageGuestNumberFacade.edit(aggregate);
+        }
     }
-
 
     /**
      * Metoda odpowiedzialna za anulowanie rezerwacji przez użytkownika o poziomie dostępu klient.
@@ -246,22 +252,10 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Gets reservations by date.
+     * Metoda odpowiedzialna za edycję rezerwacji
      *
-     * @param localDateTime the local date time
-     * @return the reservations by date
-     * @throws AppBaseException the app base exception
-     */
-    @RolesAllowed("getReservationsByDate")
-    public List<Reservation> getReservationsByDate(LocalDateTime localDateTime) throws AppBaseException  {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Edit reservation.
-     *
-     * @param reservation the reservation
-     * @throws AppBaseException the app base exception
+     * @param reservation rezerwacja
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
@@ -270,11 +264,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
 
     /**
-     * Filter reservations list.
+     * Metoda odpowiedzialna za filtrowanie listy z rezerwacjami
      *
-     * @pram filter the filter
-     * @return the list
-     * @throws AppBaseException the app base exception
+     * @param filter ciąg znaków, filtr
+     * @return lista rezerwacji zgodna z filtrem
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("filterReservations")
     public List<Reservation> filterReservations(String filter) throws AppBaseException {
@@ -314,14 +308,39 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
 
+    /**
+     * Metoda odpowiedzialna za pobranie wszystkich usług dodatkowych
+     *
+     * @return lista wszystkich usług dodatkowych
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
+    @RolesAllowed("getAllExtraServicesForReservation")
     public List<ExtraService> getAllExtraServices() throws AppBaseException{
        return extraServiceFacade.findAll();
     }
 
+    /**
+     * Metoda odpowiedzialna za pobranie usługi dodatkowej po nazwie
+     *
+     * @param name nazwa usługi dodatkowej
+     * @return Obiekt typu ExtraService
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("getExtraServiceByName")
     public ExtraService getExtraServicesByName(String name) throws AppBaseException{
         if(extraServiceFacade.findByName(name).isPresent())
-        return extraServiceFacade.findByName(name).get();
+            return extraServiceFacade.findByName(name).get();
         else throw new ExtraServiceNotFoundException();
+    }
+
+    /**
+     * Metoda odpowiedzialna za pobranie obiektu agregatu
+     *
+     * @return Obiekt typu AverageGuestNumber
+     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
+     */
+    @PermitAll
+    public AverageGuestNumber getAggregate() throws AppBaseException {
+        return averageGuestNumberFacade.findAll().get(0);
     }
 }

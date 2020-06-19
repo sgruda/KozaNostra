@@ -1,10 +1,8 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.dto.mor;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**

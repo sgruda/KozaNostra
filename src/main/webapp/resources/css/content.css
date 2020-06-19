@@ -18,13 +18,13 @@
     justify-content: space-between;
     z-index: 998;
     width: 100%;
-    min-height: 70px;
+    min-height: 90px;
 }
 
 .header-left{
     display:flex;
     align-items: center;
-    margin-left: 30px;
+    margin-left: 40px;
     flex-grow: 1;
 }
 
@@ -37,19 +37,18 @@
 }
 
 .logo {
-    margin-left:20px;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 30px;
     cursor: pointer;
-    color: #687864;
+    background-size: 85px 85px;
+    background-image: url("../../pictures/logo.png");
+    width: 85px;
+    height: 85px;
 }
 
 .link {
     font-weight: bold;
     text-decoration: none;
     margin: 0 20px;
-    font-size: 20px;
+    font-size: 25px;
     cursor: pointer;
     color: white;
 }
@@ -203,3 +202,20 @@ fieldset > legend{
     margin: auto;
     display: flex;
 }
+
+.footer-aggregate{
+    font-size: 15px;
+    margin: 0 1em;
+}
+
+.footer-right{
+    text-align: right;
+    padding-right: 20px;
+    flex: 1;
+}
+
+.footer-left{
+    text-align: left;
+    flex: 1;
+}
+

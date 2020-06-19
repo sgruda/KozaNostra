@@ -33,8 +33,10 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
 
     @Inject
     private HallFacade hallFacade;
+
     @Inject
     private AddressFacade addressFacade;
+
     @Inject
     private EventTypesFacade eventTypesFacade;
 
@@ -135,11 +137,23 @@ public class HallManager extends AbstractManager implements SessionSynchronizati
         return addressFacade.findAll();
     }
 
+    /**
+     * Metoda odpowiedzialna za usunięcie wybranej sali
+     *
+     * @param hall Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("removeHall")
     public void removeHall(Hall hall) throws AppBaseException{
         hallFacade.remove(hall);
     }
 
+    /**
+     * Metoda odpowiedzialna za zmianę aktywności sali
+     *
+     * @param hall Obiekt typu Hall
+     * @throws AppBaseException podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("changeHallActivity")
     public void changeActivity(Hall hall) throws AppBaseException{
         hallFacade.edit(hall);

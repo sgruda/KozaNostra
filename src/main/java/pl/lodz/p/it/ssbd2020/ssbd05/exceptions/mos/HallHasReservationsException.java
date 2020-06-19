@@ -9,11 +9,4 @@ public class HallHasReservationsException extends AppBaseException {
         super(KEY_HALL_PROBLEM);
     }
 
-    public HallHasReservationsException(String message) {
-        super(message);
-    }
-
-    public HallHasReservationsException(Throwable cause) {
-        super(KEY_HALL_PROBLEM, cause);
-    }
 }

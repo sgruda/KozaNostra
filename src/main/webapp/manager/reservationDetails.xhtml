@@ -40,6 +40,9 @@
                 <h:outputText value="#{msg['page.listreservations.reservation.details.till']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.endDate}"/>
 
+                <h:outputText value="#{msg['page.client.reservations.details.guestsNumber']}" />
+                <h:outputText value="#{reservationDetailsController.reservationDTO.guestsNumber}" />
+
                 <h:outputText value="#{msg['page.listreservations.reservation.details.price']}"/>
                 <h:outputText value="#{reservationDetailsController.reservationDTO.totalPrice} PLN"/>
 
@@ -55,7 +58,8 @@
                 <p:commandButton value="#{msg['page.listreservations.reservation.details.change']}"
                                  icon="pi pi-check" style="float: center;" validateClient="true"
                                  actionListener="#{reservationDetailsController.changeReservationStatus()}"
-                                 action="#{changeReservationStatusController.goBack()}">
+                                 action="#{changeReservationStatusController.goBack()}"
+                                 disabled="#{reservationDetailsController.isFinished()}">
                               <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
@@ -75,7 +79,6 @@
             <div style="margin: 5px;display:flex;justify-content: center">
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.listreservations.reservation.details.back']}" action="#{reservationDetailsController.goBack}"/>
-                    <p:commandButton value="#{msg['page.listreservations.reservation.details.edit']}"/>
                 </h:form>
             </div>
         </div>

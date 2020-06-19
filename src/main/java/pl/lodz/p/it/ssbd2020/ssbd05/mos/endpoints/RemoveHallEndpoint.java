@@ -8,6 +8,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallActiveException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallHasReservationsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointLocal;
@@ -23,6 +24,10 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+/**
+ * Punkt dostępowy implementujący interfejs RemoveHallEndpoint, który pośredniczy
+ * przy usuwaniu wybranej sali przez użytkownika o dostępie menadżer
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -36,7 +41,6 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
     @Setter
     private Hall hall;
 
-
     @Override
     @RolesAllowed("removeHall")
     public void removeHall(HallDTO hallDTO) throws AppBaseException {
@@ -44,12 +48,14 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
         boolean rollback;
         do {
             try {
-                HallMapper.INSTANCE.updateHallFromDTO(hallDTO,hall);
-                rollback = hallManager.isLastTransactionRollback();
-                log.severe("nr sali" + hall.getId());
-                if (hall.getReservationCollection().isEmpty()) {
+                if (hall.isActive()) {
+                    throw new HallActiveException();
+                } else if (!hall.getReservationCollection().isEmpty()) {
+                    throw new HallHasReservationsException();
+                } else {
                     hallManager.removeHall(hall);
-                } else throw new HallHasReservationsException();
+                }
+                rollback = hallManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
                 rollback = true;
@@ -64,13 +70,13 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
     }
 
     @Override
+    @RolesAllowed("getHallByNameForRemove")
     public HallDTO getHallByName(String hallName) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;
         do {
             try {
                 hall = hallManager.getHallByName(hallName);
-                log.severe("nr sali 2"+ hall.getId());
                 rollback = hallManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -85,6 +91,4 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
         }
         return HallMapper.INSTANCE.toHallDTO(hall);
     }
-
-
 }

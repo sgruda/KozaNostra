@@ -6,11 +6,7 @@ public class ReviewNotFoundException extends AppBaseException {
     public static final String REVIEW_NOT_FOUND = "error.review.not.found";
 
     public ReviewNotFoundException() {
-        super();
-    }
-
-    public ReviewNotFoundException(String message) {
-        super(message);
+        super(REVIEW_NOT_FOUND);
     }
 
     public ReviewNotFoundException(Throwable cause) {
