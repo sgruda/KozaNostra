@@ -36,6 +36,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Punkt dostępowy implementujący interfejs EditReservationEndpointLocal
+ * pośredniczący przy edycji rezerwacji
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -79,9 +83,6 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     @RolesAllowed("editReservation")
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
         ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
-        log.severe(reservationDTO.getStartDate()+ " DTO " +reservationDTO.getEndDate());
-        log.severe("noDTO " + reservation.getStartDate() + " " + reservation.getEndDate());
-
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         List<ExtraService> extraServices = new ArrayList<>();
         for(String extraService: reservationDTO.getExtraServiceCollection()){
@@ -177,15 +178,14 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         }
         return new ArrayList<>(dates);
     }
-
+    
     private double calculateTotalPrice() {
         Period period = DateFormatter.getPeriod(reservation.getStartDate(),reservation.getEndDate());
         int rentedTime = period.getDays();
         long[] time = DateFormatter.getTime(reservation.getStartDate(),reservation.getEndDate());
         if(time[2]>0)
             rentedTime+=1;
-//        double totalPrice = hall.getPrice() * reservation.getGuestsNumber();
-        double totalPrice = hall.getPrice() * rentedTime;
+        double totalPrice = hall.getPrice() * rentedTime * reservation.getGuestsNumber();
         for (ExtraService ext : this.reservation.getExtra_service()) {
            totalPrice+=ext.getPrice();
         }

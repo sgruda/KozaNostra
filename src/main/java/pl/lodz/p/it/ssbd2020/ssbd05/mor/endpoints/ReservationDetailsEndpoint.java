@@ -23,6 +23,10 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+/**
+ * Punkt dostępowy implementujący interfejs ReservationDetailsEndpointLocal
+ * pośredniczący przy wyświetlaniu szczegółów konta
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

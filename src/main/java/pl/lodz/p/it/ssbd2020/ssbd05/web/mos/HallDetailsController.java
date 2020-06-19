@@ -45,8 +45,7 @@ public class HallDetailsController implements Serializable {
     /**
      * Metoda wykonywana przy wejściu na stronę ze szczegółami sali i wczytująca dane wybranej sali
      *
-     * @return Ciąg znaków, który po pomyślnym wczytaniu danych sali powoduje pozostanie na stronie,
-     * natomiast w przeciwnym wypadku powraca do strony z listą wszystkich sal
+     * @return Ciąg znaków, który po pomyślnym wczytaniu danych sali powoduje pozostanie na stronie, natomiast w przeciwnym wypadku powraca do strony z listą wszystkich sal
      */
     public String onLoad() {
         String selectedHallName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedHallName");
@@ -85,6 +84,9 @@ public class HallDetailsController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za usunięcie wybranej sali przez użytkownika o dostępie menadżer
+     */
     public void removeHall() {
         try {
             removeHallEndpoint.removeHall(hall);
@@ -118,6 +120,9 @@ public class HallDetailsController implements Serializable {
         return "toReservationPage";
     }
 
+    /**
+     * Metoda odpowiedzialna za zmianę aktywności sali na przeciwną w stosunku do obecnego stanu
+     */
     public void changeHallActivity(){
         hall.setActive(!hall.isActive());
         try {
@@ -138,6 +143,9 @@ public class HallDetailsController implements Serializable {
         }
     }
 
+    /**
+     * Metoda odpowiedzialna za odświeżenie strony
+     */
     public void refresh() {
         try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -147,6 +155,7 @@ public class HallDetailsController implements Serializable {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
     }
+
     /**
      * Metoda przenosząca użytkownika na stronę z listą wszystkich sal
      *
