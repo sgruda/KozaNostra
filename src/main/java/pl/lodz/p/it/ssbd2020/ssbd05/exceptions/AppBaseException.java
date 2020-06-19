@@ -14,7 +14,7 @@ public class AppBaseException extends Exception {
         super(message);
     }
 
-    public AppBaseException(String message, Throwable cause) {
+    public AppBaseException(Throwable cause) {
         super(KEY_DEFAULT, cause);
     }
 

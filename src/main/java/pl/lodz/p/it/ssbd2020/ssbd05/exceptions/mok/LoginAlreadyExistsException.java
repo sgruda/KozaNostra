@@ -5,9 +5,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 public class LoginAlreadyExistsException extends AppBaseException {
     static final public String KEY_ACCOUNT_LOGIN_PROBLEM = "error.account.login.exists";
 
-
     public LoginAlreadyExistsException() {
-        super();
+        super(KEY_ACCOUNT_LOGIN_PROBLEM);
     }
 
     public LoginAlreadyExistsException(String message) {
@@ -15,7 +14,7 @@ public class LoginAlreadyExistsException extends AppBaseException {
     }
 
     public LoginAlreadyExistsException(Throwable cause) {
-        super(KEY_ACCOUNT_LOGIN_PROBLEM, cause);
+        super(cause);
     }
 
 }

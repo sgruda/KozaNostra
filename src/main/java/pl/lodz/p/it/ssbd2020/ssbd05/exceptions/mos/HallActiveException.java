@@ -11,6 +11,6 @@ public class HallActiveException extends AppBaseException {
     }
 
     public HallActiveException(Throwable cause) {
-        super(KEY_HALL_ACTIVE_PROBLEM, cause);
+        super(cause);
     }
 }

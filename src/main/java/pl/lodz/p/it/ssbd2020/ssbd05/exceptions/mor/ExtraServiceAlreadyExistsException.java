@@ -7,7 +7,7 @@ public class ExtraServiceAlreadyExistsException extends AppBaseException {
 
 
     public ExtraServiceAlreadyExistsException() {
-        super();
+        super(KEY_EXTRA_SERVICE_EXISTS);
     }
 
     public ExtraServiceAlreadyExistsException(String message) {
@@ -15,6 +15,6 @@ public class ExtraServiceAlreadyExistsException extends AppBaseException {
     }
 
     public ExtraServiceAlreadyExistsException(Throwable cause) {
-        super(KEY_EXTRA_SERVICE_EXISTS, cause);
+        super(cause);
     }
 }

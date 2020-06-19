@@ -14,6 +14,6 @@ public class HallHasReservationsException extends AppBaseException {
     }
 
     public HallHasReservationsException(Throwable cause) {
-        super(KEY_HALL_PROBLEM, cause);
+        super(cause);
     }
 }

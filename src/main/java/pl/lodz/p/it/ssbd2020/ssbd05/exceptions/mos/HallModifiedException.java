@@ -14,6 +14,6 @@ public class HallModifiedException extends AppBaseException {
     }
 
     public HallModifiedException(String message, Throwable cause) {
-        super(HALL_MODIFIED, cause);
+        super(cause);
     }
 }

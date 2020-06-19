@@ -7,7 +7,7 @@ public class EmailAlreadyExistsException  extends AppBaseException {
 
 
     public EmailAlreadyExistsException() {
-        super();
+        super(KEY_ACCOUNT_EMAIL_PROBLEM);
     }
 
     public EmailAlreadyExistsException(String message) {
@@ -15,6 +15,6 @@ public class EmailAlreadyExistsException  extends AppBaseException {
     }
 
     public EmailAlreadyExistsException(Throwable cause) {
-        super(KEY_ACCOUNT_EMAIL_PROBLEM, cause);
+        super(cause);
     }
 }

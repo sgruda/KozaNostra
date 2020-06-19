@@ -7,7 +7,7 @@ public class HallAlreadyExistsException extends AppBaseException {
     public static final String KEY_HALL_PROBLEM = "error.hall.exists";
 
     public HallAlreadyExistsException() {
-        super();
+        super(KEY_HALL_PROBLEM);
     }
 
     public HallAlreadyExistsException(String message) {
@@ -15,10 +15,7 @@ public class HallAlreadyExistsException extends AppBaseException {
     }
 
     public HallAlreadyExistsException(Throwable cause) {
-        super(KEY_HALL_PROBLEM, cause);
+        super(cause);
     }
 
-    public HallAlreadyExistsException(String message, Throwable cause) {
-        super(KEY_HALL_PROBLEM, cause);
-    }
 }
