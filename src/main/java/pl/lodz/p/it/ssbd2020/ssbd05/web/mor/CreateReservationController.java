@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallModifiedException;
@@ -109,12 +110,16 @@ public class CreateReservationController implements Serializable {
      * @return całkowita wartość rezerwacji
      */
     public double calculateTotalPrice() {
-        Period period = DateFormatter.getPeriod(startDate, endDate);
-        int rentedTime = period.getDays();
-        long[] time = DateFormatter.getTime(startDate, endDate);
-        if (time[2] > 0)
-            rentedTime += 1;
+        //TODO: wywolac metode z dateformattera do wyliczenia poprawnie ceny
+//        Period period = DateFormatter.getPeriod(startDate, endDate);
+//        int rentedTime = period.getDays();
+//        long[] time = DateFormatter.getTime(startDate, endDate);
+//        if (time[2] > 0)
+//            rentedTime += 1;
+//        double totalPrice = hallDTO.getPrice() * rentedTime * numberOfGuests;
+        long rentedTime = DateFormatter.getHours(startDate,endDate);
         double totalPrice = hallDTO.getPrice() * rentedTime * numberOfGuests;
+
         for (ExtraServiceDTO ext : extraServices) {
             for (int i = 0; i < selectedExtraServices.size(); i++) {
                 if (ext.getServiceName().equals(selectedExtraServices.get(i)))

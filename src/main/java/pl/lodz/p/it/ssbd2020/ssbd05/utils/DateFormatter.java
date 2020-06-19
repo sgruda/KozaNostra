@@ -29,10 +29,13 @@ public class DateFormatter {
         return Period.between(dob.toLocalDate(), now.toLocalDate());
     }
 
-    public static long[] getTime(LocalDateTime dob, LocalDateTime now) {
-        LocalDateTime today = LocalDateTime.of(now.getYear(),
-                now.getMonthValue(), now.getDayOfMonth(), dob.getHour(), dob.getMinute(), dob.getSecond());
-        Duration duration = Duration.between(today, now);
+    public static int getHours(LocalDateTime start, LocalDateTime end) {
+
+        Period period = getPeriod(start,end);
+        int returnedhours = period.getDays()*24;
+        LocalDateTime today = LocalDateTime.of(end.getYear(),
+                end.getMonthValue(), end.getDayOfMonth(), start.getHour(), start.getMinute(), start.getSecond());
+        Duration duration = Duration.between(today, end);
 
         long seconds = duration.getSeconds();
 
@@ -40,6 +43,11 @@ public class DateFormatter {
         long minutes = ((seconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
         long secs = (seconds % SECONDS_PER_MINUTE);
 
-        return new long[]{hours, minutes, secs};
+        returnedhours += hours;
+        if(minutes>0 || secs>0)
+            returnedhours+=1;
+
+        return returnedhours;
     }
+
 }
