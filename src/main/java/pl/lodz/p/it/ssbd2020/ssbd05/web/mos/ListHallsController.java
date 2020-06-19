@@ -69,4 +69,18 @@ public class ListHallsController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         }
     }
+
+    /**
+     * Metoda informująca użytkownika o aktywności sali
+     *
+     * @param hall Obiekt typu HallDTO
+     * @return Zinternacjonalizowany ciąg znaków
+     */
+    public String getActiveString(HallDTO hall) {
+        if (hall.isActive()) {
+            return ResourceBundles.getTranslatedText("page.hall.active");
+        } else {
+            return ResourceBundles.getTranslatedText("page.hall.inactive");
+        }
+    }
 }

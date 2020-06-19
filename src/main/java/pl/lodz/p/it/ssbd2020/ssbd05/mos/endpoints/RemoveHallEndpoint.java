@@ -15,6 +15,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.mos.endpoints.interfaces.RemoveHallEndpointL
 import pl.lodz.p.it.ssbd2020.ssbd05.mos.managers.HallManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
@@ -70,7 +71,7 @@ public class RemoveHallEndpoint implements Serializable, RemoveHallEndpointLocal
     }
 
     @Override
-    @RolesAllowed("getHallByNameForRemove")
+    @PermitAll
     public HallDTO getHallByName(String hallName) throws AppBaseException {
         int callCounter = 0;
         boolean rollback;

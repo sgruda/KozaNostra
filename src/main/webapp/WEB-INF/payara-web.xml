@@ -196,11 +196,6 @@
     </security-role-mapping>
 
     <security-role-mapping>
-        <role-name>getHallByNameForRemove</role-name>
-        <group-name>MANAGER</group-name>
-    </security-role-mapping>
-
-    <security-role-mapping>
         <role-name>removeHall</role-name>
         <group-name>MANAGER</group-name>
     </security-role-mapping>
