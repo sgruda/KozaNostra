@@ -16,6 +16,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
@@ -86,6 +87,7 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     @RolesAllowed("editReservation")
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
         ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
+        reservation.setStatus(reservationManager.getStatusByName(ReservationStatuses.submitted.name()));
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         List<ExtraService> extraServices = new ArrayList<>();
         for(String extraService: reservationDTO.getExtraServiceCollection()){
