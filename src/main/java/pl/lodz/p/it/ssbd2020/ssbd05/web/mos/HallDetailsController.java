@@ -38,10 +38,6 @@ public class HallDetailsController implements Serializable {
     @Getter
     private HallDTO hall;
 
-    @Getter
-    @Setter
-    private boolean isReservationButtonVisible;
-
     /**
      * Metoda wykonywana przy wejściu na stronę ze szczegółami sali i wczytująca dane wybranej sali
      *
@@ -52,7 +48,6 @@ public class HallDetailsController implements Serializable {
         try {
             this.hall = hallDetailsEndpoint.getHallByName(selectedHallName);
             removeHallEndpoint.getHallByName(selectedHallName);
-            isReservationButtonVisible = this.hall.isActive();
         } catch (AppBaseException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
