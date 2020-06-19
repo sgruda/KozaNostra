@@ -58,7 +58,8 @@
                 <p:commandButton value="#{msg['page.listreservations.reservation.details.change']}"
                                  icon="pi pi-check" style="float: center;" validateClient="true"
                                  actionListener="#{reservationDetailsController.changeReservationStatus()}"
-                                 action="#{changeReservationStatusController.goBack()}">
+                                 action="#{changeReservationStatusController.goBack()}"
+                                 disabled="#{reservationDetailsController.isFinished()}">
                               <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">

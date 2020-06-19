@@ -117,9 +117,16 @@ public class ReservationDetailsController implements Serializable {
      * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "złożona"
      */
     public boolean isSubmitted() {
-        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString());
+        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.name());
     }
-
+    /**
+     * Metoda sprawdzająca czy status wybranej rezerwacji to "zakończona"
+     *
+     * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "zakończona"
+     */
+    public boolean isFinished() {
+        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name());
+    }
 
     /**
      * Metoda odpowiadająca za odświeżenie strony oraz pobranie obiektu ReservationDTO. Ustawia stan obiektów
