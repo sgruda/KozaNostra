@@ -28,13 +28,13 @@ public abstract class ReviewMapper {
     public abstract ReviewDTO toReviewDTO(Review review);
 
     @Mapping(target = "date", dateFormat = WITH_SECONDS)
-    public abstract void updateReservationFromDTO(ReviewDTO reviewDTO, @MappingTarget Review review);
+    public abstract void updateReviewFromDTO(ReviewDTO reviewDTO, @MappingTarget Review review);
 
-    public void updateAndCheckReservationFromDTO(ReviewDTO reviewDTO, Review review) throws AppBaseException {
+    public void updateAndCheckReviewFromDTO(ReviewDTO reviewDTO, Review review) throws AppBaseException {
         if(review == null) {
             throw new ReviewNotFoundException();
         }
-        this.updateReservationFromDTO(reviewDTO, review);
+        this.updateReviewFromDTO(reviewDTO, review);
     }
 
     public abstract ArrayList<ReviewDTO> toReviewDTOArrayList(Collection<Review> reviewCollection);
