@@ -118,8 +118,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     @RolesAllowed("removeHall")
     public void remove(Hall entity) throws AppBaseException {
         try {
-            Hall entity1 = this.em.find(Hall.class, entity.getId());
-            super.remove(entity1);
+            super.remove(entity);
         } catch (OptimisticLockException e) {
             throw new AppOptimisticLockException(e);
         } catch (DatabaseException | PersistenceException e) {

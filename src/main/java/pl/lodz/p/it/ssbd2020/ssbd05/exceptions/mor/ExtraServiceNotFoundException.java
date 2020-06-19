@@ -7,7 +7,7 @@ public class ExtraServiceNotFoundException extends AppBaseException {
     public static final String SERVICE_NOT_FOUND = "error.extraservice.not.found";
 
     public ExtraServiceNotFoundException() {
-        super();
+        super(SERVICE_NOT_FOUND);
     }
 
     public ExtraServiceNotFoundException(String message) {

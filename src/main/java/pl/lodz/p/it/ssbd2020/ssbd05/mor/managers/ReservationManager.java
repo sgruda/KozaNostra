@@ -3,10 +3,7 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.managers;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mok.Client;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
+import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
@@ -19,6 +16,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.facades.*;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -59,6 +57,9 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @Inject
     private ClientFacade clientFacade;
 
+    @Inject
+    private AverageGuestNumberFacade averageGuestNumberFacade;
+    private AverageGuestNumber aggregate;
 
     /**
      * Metoda odpowiedzialna za pobranie listy wszystkich rezerwacji
@@ -230,8 +231,14 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(Reservation reservation) throws AppBaseException {
         reservationFacade.edit(reservation);
+        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())) {
+            aggregate = averageGuestNumberFacade.findAll().get(0);
+            aggregate.setEventSum(aggregate.getEventSum() + 1);
+            aggregate.setGuestSum(aggregate.getGuestSum() + reservation.getGuestsNumber());
+            aggregate.setAverage(aggregate.getGuestSum() / aggregate.getEventSum());
+            averageGuestNumberFacade.edit(aggregate);
+        }
     }
-
 
     /**
      * Metoda odpowiedzialna za anulowanie rezerwacji przez użytkownika o poziomie dostępu klient.
@@ -307,6 +314,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @return lista wszystkich usług dodatkowych
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
+    @RolesAllowed("getAllExtraServicesForReservation")
     public List<ExtraService> getAllExtraServices() throws AppBaseException{
        return extraServiceFacade.findAll();
     }
@@ -321,7 +329,18 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @RolesAllowed("getExtraServiceByName")
     public ExtraService getExtraServicesByName(String name) throws AppBaseException{
         if(extraServiceFacade.findByName(name).isPresent())
-        return extraServiceFacade.findByName(name).get();
+            return extraServiceFacade.findByName(name).get();
         else throw new ExtraServiceNotFoundException();
+    }
+
+    /**
+     * Metoda odpowiedzialna za pobranie obiektu agregatu
+     *
+     * @return Obiekt typu AverageGuestNumber
+     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
+     */
+    @PermitAll
+    public AverageGuestNumber getAggregate() throws AppBaseException {
+        return averageGuestNumberFacade.findAll().get(0);
     }
 }
