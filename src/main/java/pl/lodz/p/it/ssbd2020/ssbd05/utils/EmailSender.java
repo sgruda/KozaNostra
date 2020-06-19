@@ -151,7 +151,7 @@ public class EmailSender {
         body.append(ResourceBundles.getTranslatedText("mail.reservation.status.change.number"))
                 .append(" ")
                 .append(reservationNumber)
-                .append(", ")
+                .append(" ")
                 .append(ResourceBundles.getTranslatedText("mail.reservation.status.change.status"))
                 .append(" ")
                 .append(newStatus);
