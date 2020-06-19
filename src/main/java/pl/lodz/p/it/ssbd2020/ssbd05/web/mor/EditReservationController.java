@@ -49,6 +49,8 @@ public class EditReservationController implements Serializable {
 
     private List<String> extraServicesNames;
 
+    private List<String> selectedExtraServices;
+
     private HallDTO hallDTO;
 
     private String eventTypeName;
@@ -59,42 +61,56 @@ public class EditReservationController implements Serializable {
 
     private LocalDateTime endDate;
 
-    private boolean datesChanged=false;
 
-    private boolean startDateChanged=false;
-
-    private boolean endDateChanged=false;
 
     @PostConstruct
     public void init() {
         try {
             reservationDTO = editReservationEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
+            log.severe("herb1");
             hallDTO = editReservationEndpointLocal.getHallByName(reservationDTO.getHallName());
+            log.severe("herb2");
             extraServices = editReservationEndpointLocal.getAllExtraServices();
+            log.severe("herb3");
+            selectedExtraServices = new ArrayList<>(reservationDTO.getExtraServiceCollection());
+            log.severe("herb4");
             eventTypeName = reservationDTO.getEventTypeName();
+            log.severe("herb5");
             unavailableDates = editReservationEndpointLocal.getUnavailableDates(hallDTO.getName());
+            log.severe("herb6");
             extraServicesNames = new ArrayList<>();
+            log.severe("herb7");
             for (ExtraServiceDTO extraServiceDTO : extraServices) {
                 extraServicesNames.add(extraServiceDTO.getServiceName());
             }
+            log.severe("herb8");
             eventTypes = (List<String>) hallDTO.getEvent_type();
+            log.severe("herb9");
         } catch (AppBaseException appBaseException) {
             appBaseException.printStackTrace();
         }
         eventModel = new DefaultScheduleModel();
+        log.severe("herb10");
         today = LocalDateTime.now();
+        log.severe("herb11");
         startDate = DateFormatter.stringToLocalDateTime(reservationDTO.getStartDate());
+        log.severe("herb12");
         endDate = DateFormatter.stringToLocalDateTime(reservationDTO.getEndDate());
+        log.severe("herb13");
 
 
         for (UnavailableDate unavailableDate : unavailableDates) {
+            log.severe("herb14");
                 if(!reservationDTO.getStartDate().equals(DateFormatter.formatDate(unavailableDate.getStartDate()))) {
+                    log.severe("herb15");
                     DefaultScheduleEvent event = DefaultScheduleEvent.builder().editable(false)
                             .title(ResourceBundles.getTranslatedText("page.editreservation.title"))
                             .startDate(unavailableDate.getStartDate())
                             .endDate(unavailableDate.getEndDate()).overlapAllowed(false)
                             .build();
+                    log.severe("herb16");
                     eventModel.addEvent(event);
+                    log.severe("herb17");
                 }
         }
 
@@ -104,7 +120,7 @@ public class EditReservationController implements Serializable {
     public void editReservation() {
 
         reservationDTO.setEventTypeName(eventTypeName);
-        reservationDTO.setExtraServiceCollection(extraServicesNames);
+        reservationDTO.setExtraServiceCollection(selectedExtraServices);
         log.severe(startDate+ " herb1" + endDate  );
         reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
         reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
@@ -177,11 +193,5 @@ public class EditReservationController implements Serializable {
         return "goToDetails";
     }
 
-    public void changeStartDate(){
-        startDateChanged=true;
-    }
 
-    public void changeEndDate(){
-        endDateChanged=true;
-    }
 }

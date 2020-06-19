@@ -29,6 +29,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -189,6 +192,6 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         for (ExtraService ext : this.reservation.getExtra_service()) {
            totalPrice+=ext.getPrice();
         }
-        return totalPrice;
+        return new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }
