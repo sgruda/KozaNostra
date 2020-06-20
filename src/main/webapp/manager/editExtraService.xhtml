@@ -17,8 +17,8 @@
                      style="font-size: 24px;">
 
                 <p:panelGrid columns="1" style="display:flex; flex-direction: column; text-align: center; margin: auto;">
-                    <h:outputLabel for="name" value="#{msg['page.edit.extraservice.name']} * ">
-                        <p:inputText id="name" required="true"
+                    <h:outputLabel for="name" value="#{msg['page.edit.extraservice.name']}">
+                        <p:inputText id="name" required="true" disabled="true"
                                      value="#{editExtraServiceController.extraServiceDTO.serviceName}"
                                      requiredMessage="#{msg['page.addextraservice.name.required']}"
                                      validatorMessage="#{msg['page.addextraservice.name.validator']}"

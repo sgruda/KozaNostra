@@ -54,6 +54,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     public void create(Reservation entity) throws AppBaseException {
         try {
             super.create(entity);
+
         } catch (DatabaseException | PersistenceException e) {
             if(e.getMessage().contains("reservation_number_uindex"))
                 throw new ReservationAlreadyExistsException(e);

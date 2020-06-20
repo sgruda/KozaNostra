@@ -28,6 +28,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -65,7 +67,7 @@ public class CreateReservationController implements Serializable {
 
     private List<String> selectedExtraServices = new ArrayList<>();
     private String eventTypeName;
-    private Integer numberOfGuests;
+    private Integer numberOfGuests = 0;
     private ClientDTO clientDTO;
 
     private ScheduleModel scheduleModel;
@@ -75,8 +77,6 @@ public class CreateReservationController implements Serializable {
     private ScheduleEvent event = new DefaultScheduleEvent();
 
     private LocalDateTime today;
-
-    private double totalPrice = 0;
 
 
     /**
@@ -92,44 +92,11 @@ public class CreateReservationController implements Serializable {
     /**
      * Metoda wykorzystywana do zapisania wybranego terminu
      */
-    public void addEvent(){
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);
-
-        event = new DefaultScheduleEvent();
+    public void addEvent() {
         startDate = event.getStartDate();
         endDate = event.getEndDate();
-
     }
 
-    /**
-     * Metoda wykorzystywana do obliczenia całkowitej ceny rezerwacji
-     *
-     * @return całkowita wartość rezerwacji
-     */
-    public double calculateTotalPrice() {
-        //TODO: wywolac metode z dateformattera do wyliczenia poprawnie ceny
-//        Period period = DateFormatter.getPeriod(startDate, endDate);
-//        int rentedTime = period.getDays();
-//        long[] time = DateFormatter.getTime(startDate, endDate);
-//        if (time[2] > 0)
-//            rentedTime += 1;
-//        double totalPrice = hallDTO.getPrice() * rentedTime * numberOfGuests;
-        long rentedTime = DateFormatter.getHours(startDate,endDate);
-        double totalPrice = hallDTO.getPrice() * rentedTime * numberOfGuests;
-
-        for (ExtraServiceDTO ext : extraServices) {
-            for (int i = 0; i < selectedExtraServices.size(); i++) {
-                if (ext.getServiceName().equals(selectedExtraServices.get(i)))
-                    totalPrice += ext.getPrice();
-            }
-
-        }
-        this.totalPrice = totalPrice;
-        return totalPrice;
-    }
 
     /**
      * Metoda tworząca nową rezerwację
@@ -147,7 +114,6 @@ public class CreateReservationController implements Serializable {
         reservationDTO.setExtraServiceCollection(selectedExtraServices);
         reservationDTO.setHallName(hallDTO.getName());
         reservationDTO.setGuestsNumber(Long.valueOf(numberOfGuests));
-        reservationDTO.setTotalPrice(calculateTotalPrice());
         reservationDTO.setReservationNumber(UUID.randomUUID().toString().replace("-", ""));
         boolean areDatesInvalid = false;
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
@@ -156,19 +122,19 @@ public class CreateReservationController implements Serializable {
         } else {
             for (ScheduleEvent ev : eventModel.getEvents()) {
                 if (ev.getEndDate().isAfter(startDate) && ev.getStartDate().isBefore(endDate)) {
-                        ResourceBundles.emitErrorMessageWithFlash(null, "error.createreservation.dates.overlap");
-                        areDatesInvalid = true;
-                    }
+                    ResourceBundles.emitErrorMessageWithFlash(null, "error.createreservation.dates.overlap");
+                    areDatesInvalid = true;
                 }
             }
-        if(!areDatesInvalid){
+        }
+        if (!areDatesInvalid) {
             try {
                 createReservationEndpointLocal.createReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
             } catch (HallModifiedException e) {
                 ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            }  catch (ValidationException e) {
+            } catch (ValidationException e) {
                 ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (AppBaseException e) {
@@ -177,6 +143,23 @@ public class CreateReservationController implements Serializable {
             }
         }
 
+    }
+
+    /**
+     * Metoda wykorzystywana do wyświetlania całkowitej ceny rezerwacji użytkownikowi
+     *
+     * @return całkowita wartość rezerwacji
+     */
+    public double calculateTotalPrice() {
+        double price = 0;
+        for (ExtraServiceDTO ext : extraServices) {
+            for (int i = 0; i < selectedExtraServices.size(); i++) {
+                if (ext.getServiceName().equals(selectedExtraServices.get(i)))
+                    price += ext.getPrice();
+            }
+        }
+        price = this.createReservationEndpointLocal.calculateTotalPrice(startDate, endDate, hallDTO.getPrice(), Long.valueOf(numberOfGuests), price);
+        return price;
     }
 
 

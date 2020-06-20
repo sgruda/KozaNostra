@@ -27,6 +27,7 @@ public interface CreateReservationEndpointLocal {
     List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException;
 
     /**
+     *
      * Metoda odpowiedzialna za utworzenie nowej rezerwacji.
      *
      * @param reservationDTO obiekt DTO rezerwacji
