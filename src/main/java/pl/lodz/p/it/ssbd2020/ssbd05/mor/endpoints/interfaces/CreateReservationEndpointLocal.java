@@ -54,7 +54,11 @@ public interface CreateReservationEndpointLocal {
 
     /**
      * Metoda wykorzystywana do obliczenia całkowitej ceny rezerwacji
-     *
+     * @param startDate data rozpoczęcia imprezy
+     * @param endDate data zakończenia imprezy
+     * @param hallPrice cena sali
+     * @param numberOfGuests liczba gości biorących udział w imprezie
+     * @param extraServicesTotalPrice całkowita koszt usług dodatkowych
      * @return całkowita wartość rezerwacji
      */
     double calculateTotalPrice(LocalDateTime startDate, LocalDateTime endDate, double hallPrice,

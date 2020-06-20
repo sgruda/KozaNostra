@@ -203,5 +203,4 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
         return price;
     }
-
 }

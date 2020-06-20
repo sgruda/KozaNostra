@@ -77,24 +77,6 @@ public class CreateReservationController implements Serializable {
     private LocalDateTime today;
 
 
-    /**
-     * Metoda wykorzystywana przy wyborze terminu rezerwacji.
-     * Wywoływana jest po kliknięciu w dany termin w kalendarzu.
-     *
-     * @param selectEvent wybrana data
-     */
-    public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
-        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
-    }
-
-    /**
-     * Metoda wykorzystywana do zapisania wybranego terminu
-     */
-    public void addEvent() {
-        startDate = event.getStartDate();
-        endDate = event.getEndDate();
-    }
-
 
     /**
      * Metoda tworząca nową rezerwację
