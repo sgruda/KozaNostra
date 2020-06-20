@@ -13,7 +13,8 @@ import javax.ejb.Local;
 public interface AccountDetailsEndpointLocal {
 
     /**
-     * Metoda odpowiedzialna za wyszukiwanie konta użytkownika wybranego przez administratora po nazwie uzytkownika
+     * Metoda odpowiedzialna za wyszukiwanie konta użytkownika
+     * wybranego przez administratora o podanej nazwie uzytkownika
      *
      * @param login nazwa użytkownika
      * @return obiekt konta użytkownika
