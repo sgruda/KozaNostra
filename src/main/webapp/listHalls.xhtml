@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
 <ui:composition template = "/templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.listhalls.title']}</title>
@@ -35,6 +37,10 @@
 
                 <p:column headerText="#{msg['page.hall.capacity']}">
                     <h:outputText value="#{hall.capacity}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['page.listhalls.active']}">
+                    <h:outputText value="#{listHallsController.getActiveString(hall)}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['page.hall.details']}">

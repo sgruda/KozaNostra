@@ -20,6 +20,8 @@ public interface LastLoginEndpointLocal {
 
     /**
      * Metoda pobierająca obiekt DTO użytkownika na podstawie podanej nazwy użytkownika.
+     * Wykorzystywana jest w trakcie tworzenia sesji użytkownika do weryfikacji czy
+     * użytkownik wprowadził poprawne dane.
      *
      * @param username nazwa użytkownika dokonującego próby uwierzytelenienia
      * @return obiekt DTO użytkownika

@@ -262,6 +262,7 @@
         <navigation-case>
             <from-outcome>edit</from-outcome>
             <to-view-id>/client/clientEditReservation.xhtml</to-view-id>
+            <redirect/>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -278,6 +279,7 @@
         <navigation-case>
             <from-outcome>goToDetails</from-outcome>
             <to-view-id>/client/clientReservationDetails.xhtml</to-view-id>
+            <redirect/>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>

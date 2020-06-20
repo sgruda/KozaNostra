@@ -7,15 +7,7 @@ public class NoncancelableReservationException extends AppBaseException {
     public static final String NONCANCELABLE_RESERVATION = "error.reservation.noncancelable";
 
     public NoncancelableReservationException() {
-        super();
-    }
-
-    public NoncancelableReservationException(String message) {
-        super(message);
-    }
-
-    public NoncancelableReservationException(Throwable cause) {
-        super(NONCANCELABLE_RESERVATION, cause);
+        super(NONCANCELABLE_RESERVATION);
     }
 
 }

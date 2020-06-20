@@ -61,7 +61,9 @@ public class ReservationDetailsController implements Serializable {
             resourceBundles = new ResourceBundles();
             this.reservationDTO = reservationDetailsEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
             editable=true;
-            if(reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.toString()) || reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())) {
+            if(reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.toString())
+                    || reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())
+                    || reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.paid.toString())) {
                 editable = false;
             }
             cancelReservationController.setReservationDTO(this.reservationDTO);
@@ -117,9 +119,16 @@ public class ReservationDetailsController implements Serializable {
      * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "złożona"
      */
     public boolean isSubmitted() {
-        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString());
+        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.name());
     }
-
+    /**
+     * Metoda sprawdzająca czy status wybranej rezerwacji to "zakończona"
+     *
+     * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "zakończona"
+     */
+    public boolean isFinished() {
+        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name());
+    }
 
     /**
      * Metoda odpowiadająca za odświeżenie strony oraz pobranie obiektu ReservationDTO. Ustawia stan obiektów

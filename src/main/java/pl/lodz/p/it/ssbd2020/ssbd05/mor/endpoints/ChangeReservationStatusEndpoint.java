@@ -8,10 +8,12 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.NoncancelableReservationException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationStatusFinishedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ChangeReservationStatusEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.RolesAllowed;
@@ -74,6 +76,8 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     @Override
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(ReservationDTO reservationDTO) throws AppBaseException {
+        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name()))
+            throw new ReservationStatusFinishedException();
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
         int callCounter = 0;
         boolean rollback;
@@ -91,13 +95,16 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
         } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
+        } else {
+            EmailSender emailSender = new EmailSender();
+            emailSender.sendChangingReservationStatusEmail(reservation.getClient().getAccount().getEmail(), reservation.getReservationNumber(), ResourceBundles.getTranslatedText(reservation.getStatus().getStatusName()));
         }
     }
 
     @Override
     @RolesAllowed("cancelReservation")
     public void cancelReservation(ReservationDTO reservationDTO) throws AppBaseException {
-        if(!reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.toString()))
+        if(!reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.name()))
             throw new NoncancelableReservationException();
         reservation.setStatus(reservationManager.getStatusCancelled());
         int callCounter = 0;

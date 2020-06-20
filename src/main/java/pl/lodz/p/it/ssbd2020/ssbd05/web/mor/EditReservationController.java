@@ -49,6 +49,8 @@ public class EditReservationController implements Serializable {
 
     private List<String> extraServicesNames;
 
+    private List<String> selectedExtraServices;
+
     private HallDTO hallDTO;
 
     private String eventTypeName;
@@ -59,11 +61,7 @@ public class EditReservationController implements Serializable {
 
     private LocalDateTime endDate;
 
-    private boolean datesChanged=false;
 
-    private boolean startDateChanged=false;
-
-    private boolean endDateChanged=false;
 
     @PostConstruct
     public void init() {
@@ -71,6 +69,7 @@ public class EditReservationController implements Serializable {
             reservationDTO = editReservationEndpointLocal.getReservationByNumber(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedReservationNumber").toString());
             hallDTO = editReservationEndpointLocal.getHallByName(reservationDTO.getHallName());
             extraServices = editReservationEndpointLocal.getAllExtraServices();
+            selectedExtraServices = new ArrayList<>(reservationDTO.getExtraServiceCollection());
             eventTypeName = reservationDTO.getEventTypeName();
             unavailableDates = editReservationEndpointLocal.getUnavailableDates(hallDTO.getName());
             extraServicesNames = new ArrayList<>();
@@ -100,18 +99,12 @@ public class EditReservationController implements Serializable {
 
     }
 
-    @RolesAllowed("editReservationClient")
     public void editReservation() {
 
         reservationDTO.setEventTypeName(eventTypeName);
-        reservationDTO.setExtraServiceCollection(extraServicesNames);
-        log.severe(startDate+ " herb1" + endDate  );
-        if(startDateChanged) {
-            reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
-        }
-        if(endDateChanged) {
-            reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
-        }
+        reservationDTO.setExtraServiceCollection(selectedExtraServices);
+        reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
+        reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
         boolean notGood = false;
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
             ResourceBundles.emitErrorMessage(null, "page.editreservation.dates.error");
@@ -181,11 +174,5 @@ public class EditReservationController implements Serializable {
         return "goToDetails";
     }
 
-    public void changeStartDate(){
-        startDateChanged=true;
-    }
 
-    public void changeEndDate(){
-        endDateChanged=true;
-    }
 }

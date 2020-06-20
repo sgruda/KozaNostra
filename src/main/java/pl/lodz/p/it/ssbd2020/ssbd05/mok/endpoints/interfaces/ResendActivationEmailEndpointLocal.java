@@ -11,7 +11,7 @@ import javax.ejb.Local;
 @Local
 public interface ResendActivationEmailEndpointLocal {
     /**
-     * Metoda odpowiedzialna za powtóre wysłanie maila z linkiem aktywacyjnym
+     * Metoda odpowiedzialna za ponowne wysłanie maila z linkiem aktywacyjnym
      *
      * @param login Login konta użytkownika, do którego ma zostać powtórnie wysłany mail.
      * @throws AppBaseException Wyjątek aplikacyjny

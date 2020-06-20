@@ -16,6 +16,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
@@ -29,6 +30,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -83,6 +87,7 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     @RolesAllowed("editReservation")
     public void editReservation(ReservationDTO reservationDTO) throws AppBaseException{
         ReservationMapper.INSTANCE.updateReservationFromDTO(reservationDTO, reservation);
+        reservation.setStatus(reservationManager.getStatusByName(ReservationStatuses.submitted.name()));
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         List<ExtraService> extraServices = new ArrayList<>();
         for(String extraService: reservationDTO.getExtraServiceCollection()){
@@ -180,15 +185,12 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     }
     
     private double calculateTotalPrice() {
-        Period period = DateFormatter.getPeriod(reservation.getStartDate(),reservation.getEndDate());
-        int rentedTime = period.getDays();
-        long[] time = DateFormatter.getTime(reservation.getStartDate(),reservation.getEndDate());
-        if(time[2]>0)
-            rentedTime+=1;
+        long rentedTime = DateFormatter.getHours(reservation.getStartDate(),reservation.getEndDate());
         double totalPrice = hall.getPrice() * rentedTime * reservation.getGuestsNumber();
         for (ExtraService ext : this.reservation.getExtra_service()) {
            totalPrice+=ext.getPrice();
         }
+        totalPrice = new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
         return totalPrice;
     }
 }

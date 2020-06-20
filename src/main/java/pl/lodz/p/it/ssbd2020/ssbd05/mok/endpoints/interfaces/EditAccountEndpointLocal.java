@@ -27,14 +27,15 @@ public interface EditAccountEndpointLocal {
      */
     void changePassword(AccountDTO accountDTO) throws AppBaseException;
     /**
-     * Metoda odpowiedzialna za zmianę hasła innego konta
+     * Metoda odpowiedzialna za zmianę hasła wybranego konta
      *
      * @param accountDTO obiekt typu AccountDTO
      * @throws AppBaseException Wyjątek aplikacyjny
      */
     void changeOtherAccountPassword(AccountDTO accountDTO) throws AppBaseException;
     /**
-     * Metoda odpowiedzialna za edycję konta
+     * Metoda odpowiedzialna za edycję własnego konta
+     * oraz edycję wybranego przez Administratora konta.
      *
      * @param accountDTO obiekt typu AccountDTO
      * @throws AppBaseException Wyjątek aplikacyjny

@@ -7,7 +7,7 @@ public class AppBaseException extends Exception {
     static final public String KEY_DEFAULT = "error.default";
 
     public AppBaseException() {
-        super();
+        super(KEY_DEFAULT);
     }
 
     public AppBaseException(String message) {
@@ -15,7 +15,7 @@ public class AppBaseException extends Exception {
     }
 
     public AppBaseException(String message, Throwable cause) {
-        super(KEY_DEFAULT, cause);
+        super(message, cause);
     }
 
 }
