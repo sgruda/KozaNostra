@@ -8,6 +8,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseQueryException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.EmailAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.DateOverlapException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
@@ -22,6 +24,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 import javax.persistence.*;
+import java.sql.SQLNonTransientConnectionException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -56,12 +59,18 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     public void create(Reservation entity) throws AppBaseException {
         try {
             super.create(entity);
+        } catch (DatabaseException ex) {
+            if (ex.getCause() instanceof SQLNonTransientConnectionException) {
+                throw new DatabaseConnectionException(ex);
+            } else {
+                throw new DatabaseQueryException(ex);
+            }
         } catch (PersistenceException e) {
             if (e.getMessage().contains("reservation_overlap_dates_ck")) {
                 throw new DateOverlapException();
+            } else {
+                throw new DatabaseQueryException(e);
             }
-        } catch (DatabaseException e) {
-            throw new DatabaseConnectionException(e);
         }
     }
 
