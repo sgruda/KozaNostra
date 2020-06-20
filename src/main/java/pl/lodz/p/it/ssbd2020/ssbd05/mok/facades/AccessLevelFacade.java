@@ -22,6 +22,9 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Klasa fasady dla encji AccessLevel.
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -36,6 +39,9 @@ public class AccessLevelFacade extends AbstractFacade<AccessLevel> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy klasy AccessLevelFacade.
+     */
     public AccessLevelFacade() {
         super(AccessLevel.class);
     }

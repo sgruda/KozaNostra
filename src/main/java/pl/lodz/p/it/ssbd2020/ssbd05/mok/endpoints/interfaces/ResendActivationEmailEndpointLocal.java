@@ -4,7 +4,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
 /**
- * Interfejs dla punktu dostępowego ResendActivationEmailEndpointLocal pośredniczącemu
+ * Interfejs dla punktu dostępowego ResendActivationEmailEndpointLocal pośredniczącego
  * przy powtórnym wysyłaniu maila z linkiem aktywacyjnym
  *
  */

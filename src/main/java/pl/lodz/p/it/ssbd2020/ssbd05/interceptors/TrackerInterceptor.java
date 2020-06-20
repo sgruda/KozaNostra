@@ -8,14 +8,24 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 import java.time.LocalDateTime;
 
+/**
+ * Klasa, której instancje przechwytują wywołania metod biznesowych.
+ */
 @Log
 public class TrackerInterceptor {
 
     @Resource
     private SessionContext sessionContext;
 
+    /**
+     * Śledź wywołanie metody biznesowej.
+     *
+     * @param invocationContext Kontekst wywołania.
+     * @return Wynik wywołania metody.
+     * @throws Exception wyjątek napotkany przy wywołaniu danej metody.
+     */
     @AroundInvoke
-    public Object traceInvoke(InvocationContext invocationContext) throws Exception{
+    public Object traceInvoke(InvocationContext invocationContext) throws Exception {
         LocalDateTime interceptionTime = LocalDateTime.now();
         StringBuilder message = new StringBuilder("Intercepted method invocation: ");
         message.append(invocationContext.getMethod().toString());

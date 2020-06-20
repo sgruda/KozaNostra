@@ -5,7 +5,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
 /**
- * Interfejs dla punktu dostępowego ChangeAccessLevelEndpoint pośredniczącemu
+ * Interfejs dla punktu dostępowego ChangeAccessLevelEndpoint pośredniczącego
  * w zmianie (dodaniu albo odjęciu) poziomów dostępów udostępnionych użytkownikowi.
  *
  */

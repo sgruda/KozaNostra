@@ -21,6 +21,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Punkt dostępowy implementujący interfejs AccountDetailsEndpointLocal pośredniczący
+ * przy wyświetlaniu listy kont wszystkich użytkowników zarejestrowanych w systemie
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

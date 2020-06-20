@@ -6,7 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import javax.ejb.Local;
 
 /**
- * Interfejs dla punktu dostępowego LastLoginEndpoint pośredniczącemu w operacji uwierzytelniania
+ * Interfejs dla punktu dostępowego LastLoginEndpoint pośredniczącego w operacji uwierzytelniania
  */
 @Local
 public interface LastLoginEndpointLocal {
