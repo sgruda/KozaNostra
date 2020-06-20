@@ -13,6 +13,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ChangeReservationStatusEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
+import pl.lodz.p.it.ssbd2020.ssbd05.utils.EmailSender;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.security.RolesAllowed;
@@ -94,6 +95,9 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
         } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
+        } else {
+            EmailSender emailSender = new EmailSender();
+            emailSender.sendChangingReservationStatusEmail(reservation.getClient().getAccount().getEmail(), reservation.getReservationNumber(), ResourceBundles.getTranslatedText(reservation.getStatus().getStatusName()));
         }
     }
 
