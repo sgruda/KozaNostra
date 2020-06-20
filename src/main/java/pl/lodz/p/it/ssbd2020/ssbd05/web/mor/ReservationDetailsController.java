@@ -73,9 +73,9 @@ public class ReservationDetailsController implements Serializable {
             extraServices = "";
             for(int i=0; i< reservationDTO.getExtraServiceCollection().size(); i++){
                 if (i != reservationDTO.getExtraServiceCollection().size() - 1) {
-                    result.append(ResourceBundles.getTranslatedText(eventTypes[i])).append(", ");
+                    result.append(eventTypes[i]).append(", ");
                 } else {
-                    result.append(ResourceBundles.getTranslatedText(eventTypes[i]));
+                    result.append(eventTypes[i]);
                 }
             }
             extraServices = result.toString();

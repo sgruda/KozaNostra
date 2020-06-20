@@ -53,13 +53,13 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                minValue="1" maxValue="#{editReservationController.hallDTO.capacity}"/>
                 </h:outputLabel>
 
-                <h:outputLabel for="extraServices" value="#{msg['page.editreservation.extraservices']}">
-                    <p:selectManyCheckbox id="extraServices" value="#{editReservationController.selectedExtraServices}">
-                        <c:forEach items="#{editReservationController.extraServicesNames}" var="extraService">
-                            <f:selectItem itemLabel="#{editReservationController.translateExtraService(extraService)}" itemValue="#{extraService}"/>
-                        </c:forEach>
-                    </p:selectManyCheckbox>
-                </h:outputLabel>
+                <h:outputLabel for="multiple" value="#{msg['page.createreservation.choose.extra.service']}"/>
+                <p:selectCheckboxMenu id="multiple" value="#{editReservationController.selectedExtraServices}"
+                                      label="Usługi dodatkowe" multiple="true"
+                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                    <f:selectItems value="#{editReservationController.extraServicesNames}" var="extraService"
+                                   itemLabel="#{extraService}" itemValue="#{extraService}"/>
+                </p:selectCheckboxMenu>
 
 
                         <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}">
