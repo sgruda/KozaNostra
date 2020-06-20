@@ -20,6 +20,9 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Klasa fasady dla encji EventType
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "EventTypesFacadeMOS")
 @LocalBean
@@ -34,6 +37,9 @@ public class EventTypesFacade extends AbstractFacade<EventType> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy dla klasy EventTypesFacade
+     */
     public EventTypesFacade() {
         super(EventType.class);
     }
@@ -44,12 +50,6 @@ public class EventTypesFacade extends AbstractFacade<EventType> {
         return super.find(id);
     }
 
-    /**
-     * Metoda odpowiedzialna za pobieranie wszystkich typów imprez z bazy danych
-     *
-     * @return Lista obiektów typu EventType
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("getAllEventTypes")
     public List<EventType> findAll() throws AppBaseException {

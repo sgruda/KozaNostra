@@ -16,6 +16,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Kontroler odpowiedzialny za potwierdzanie kont użytkowników
+ */
 @Log
 @Named
 @RequestScoped
@@ -31,6 +34,11 @@ public class ConfirmAccountController implements Serializable {
     private String url = "";
     private String token = "";
 
+    /**
+     * Metoda potwierdzająca konto użytkownika na podstawie kodu weryfikacyjnego
+     *
+     * @return Ciąg znaków przenoszący na stronę domową
+     */
     public String confirmAccount() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().getFlash().setKeepMessages(true);

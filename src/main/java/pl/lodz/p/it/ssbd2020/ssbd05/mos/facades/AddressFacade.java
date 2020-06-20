@@ -21,6 +21,10 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Klasa fasady dla encji Address
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless
 @LocalBean
@@ -35,16 +39,13 @@ public class AddressFacade extends AbstractFacade<Address> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy dla klasy AddressFacade
+     */
     public AddressFacade() {
         super(Address.class);
     }
 
-    /**
-     * Metoda odpowiedzialna za dodawanie encji reprezentującej adres do bazy danych
-     *
-     * @param entity Obiekt typu Address
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("addHall")
     public void create(Address entity) throws AppBaseException {
@@ -86,12 +87,6 @@ public class AddressFacade extends AbstractFacade<Address> {
         }
     }
 
-    /**
-     * Metoda odpowiedzialna za pobieranie wszystkich adresów z bazy danych
-     *
-     * @return Lista obiektów typu Address
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("getAllAddresses")
     public List<Address> findAll() throws AppBaseException {

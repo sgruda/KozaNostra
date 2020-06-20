@@ -10,10 +10,20 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
+/**
+ * Walidator sprawdzający, czy hasła się zgadzają
+ */
 @Named
 @RequestScoped
 public class PasswordValidator {
 
+    /**
+     * Validate password match.
+     *
+     * @param context   Kontekst warstwy prezentacji
+     * @param component Komponent widoku
+     * @param value     Wartość hasła
+     */
     public void validatePasswordMatch(FacesContext context, UIComponent component,
                                       Object value) {
         String confirmPassword = (String) value;
