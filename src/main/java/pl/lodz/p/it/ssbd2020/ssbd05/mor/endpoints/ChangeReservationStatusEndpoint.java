@@ -104,7 +104,8 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     @Override
     @RolesAllowed("cancelReservation")
     public void cancelReservation(ReservationDTO reservationDTO) throws AppBaseException {
-        if(!reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.name()))
+        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name()) ||
+            reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name()))
             throw new NoncancelableReservationException();
         reservation.setStatus(reservationManager.getStatusCancelled());
         int callCounter = 0;
