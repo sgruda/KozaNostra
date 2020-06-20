@@ -13,11 +13,9 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ExtraServiceDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.DateOverlapException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallModifiedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
@@ -30,7 +28,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,10 +166,7 @@ public class CreateReservationController implements Serializable {
             }catch (DateOverlapException e) {
                 ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            } catch (HallModifiedException e) {
-                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
-                log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            }  catch (ValidationException e) {
+            } catch (ValidationException e) {
                 ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (AppBaseException e) {
