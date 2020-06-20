@@ -8,4 +8,8 @@ public class DateOverlapException extends AppBaseException {
     public DateOverlapException() {
         super(DATES_OVERLAP);
     }
+
+    public DateOverlapException(String message, Throwable cause) {
+        super(DATES_OVERLAP, cause);
+    }
 }

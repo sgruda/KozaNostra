@@ -87,8 +87,18 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
             super.edit(entity);
         } catch (OptimisticLockException e) {
             throw new AppOptimisticLockException(e);
-        } catch (DatabaseException | PersistenceException e) {
-            throw new DatabaseConnectionException(e);
+        } catch (DatabaseException ex) {
+            if (ex.getCause() instanceof SQLNonTransientConnectionException) {
+                throw new DatabaseConnectionException(ex);
+            } else {
+                throw new DatabaseQueryException(ex);
+            }
+        } catch (PersistenceException e) {
+            if (e.getMessage().contains("reservation_overlap_dates_ck")) {
+                throw new DateOverlapException();
+            } else {
+                throw new DatabaseQueryException(e);
+            }
         }
     }
 
