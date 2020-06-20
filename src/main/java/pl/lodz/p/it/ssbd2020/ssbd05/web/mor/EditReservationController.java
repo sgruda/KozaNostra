@@ -15,6 +15,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.DateOverlapException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -122,6 +123,9 @@ public class EditReservationController implements Serializable {
             try {
                 editReservationEndpointLocal.editReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.client.editreservation.success");
+            }catch (DateOverlapException e) {
+                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (AppOptimisticLockException ex) {
                 log.severe(ex.getMessage() + ", " + LocalDateTime.now());
                 ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
@@ -136,10 +140,7 @@ public class EditReservationController implements Serializable {
         }
     }
 
-
-
-    //Do kalendarza i wyświetlania okienek czasowych
-    //start
+    
     private ScheduleModel scheduleModel;
 
     private ScheduleModel eventModel;
