@@ -14,10 +14,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,7 +85,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     @RolesAllowed("getHallByName")
     public Optional<Hall> findByName(String name) throws AppBaseException {
         try {
-            return Optional.ofNullable(this.em.createNamedQuery("Hall.findByName", Hall.class)
+            return Optional.ofNullable(this.em.createNamedQuery("Hall.findByName", Hall.class).setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT)
                     .setParameter("name", name).getSingleResult());
         } catch (NoResultException noResultException) {
             return Optional.empty();

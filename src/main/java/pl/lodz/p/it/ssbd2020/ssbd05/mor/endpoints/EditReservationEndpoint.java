@@ -185,15 +185,12 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     }
     
     private double calculateTotalPrice() {
-        Period period = DateFormatter.getPeriod(reservation.getStartDate(),reservation.getEndDate());
-        int rentedTime = period.getDays();
-        long[] time = DateFormatter.getTime(reservation.getStartDate(),reservation.getEndDate());
-        if(time[2]>0)
-            rentedTime+=1;
+        long rentedTime = DateFormatter.getHours(reservation.getStartDate(),reservation.getEndDate());
         double totalPrice = hall.getPrice() * rentedTime * reservation.getGuestsNumber();
         for (ExtraService ext : this.reservation.getExtra_service()) {
            totalPrice+=ext.getPrice();
         }
-        return new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        totalPrice = new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return totalPrice;
     }
 }

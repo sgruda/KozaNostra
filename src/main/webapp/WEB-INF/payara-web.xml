@@ -248,11 +248,6 @@
     </security-role-mapping>
 
     <security-role-mapping>
-        <role-name>editReservationClient</role-name>
-        <group-name>CLIENT</group-name>
-    </security-role-mapping>
-
-    <security-role-mapping>
         <role-name>getHallForReservation</role-name>
         <group-name>CLIENT</group-name>
     </security-role-mapping>
