@@ -13,11 +13,9 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallModifiedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ExtraServiceManager;
@@ -192,7 +190,6 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
             throw new ExceededTransactionRetriesException();
         }
     }
-
 
 
     @Override

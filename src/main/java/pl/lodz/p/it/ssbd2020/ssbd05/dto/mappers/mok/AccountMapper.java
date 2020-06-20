@@ -15,26 +15,63 @@ import java.util.stream.Collectors;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.WITH_SECONDS;
 
+/**
+ * Interfejs konwertujący pomiędzy obiektami klas Account i AccountDTO,
+ * którego implementacja jest generowana poprzez bibliotekę MapStruct w trakcie kompilacji.
+ */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountMapper {
 
+    /**
+     * Instancja implementacji interfejsu pobierana poprzez klasę narzędziową Mappers.
+     */
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
+    /**
+     * Metoda odpowiedzialna za konwersję z obiektu klasy Account na AccountDTO.
+     *
+     * @param Account Obiekt klasy Account.
+     * @return Obiekt klasy AccountDTO.
+     */
     @Mapping(target = "lastSuccessfulAuth", dateFormat = WITH_SECONDS)
     @Mapping(target = "lastFailedAuth", dateFormat = WITH_SECONDS)
-    AccountDTO toAccountDTO(Account Account); //do wyswietlania
+    AccountDTO toAccountDTO(Account Account);
 
+    /**
+     * Metoda odpowiedzialna za konwersję z obiektu klasy AccountDTO na Account.
+     *
+     * @param accountDTO Obiekt klasy AccountDTO.
+     * @return Obiekt klasy Account.
+     */
     @Mapping(target = "lastSuccessfulAuth", dateFormat = WITH_SECONDS)
     @Mapping(target = "lastFailedAuth", dateFormat = WITH_SECONDS)
-    Account createNewAccount(AccountDTO accountDTO); //do tworzenia nowych
+    Account createNewAccount(AccountDTO accountDTO);
 
+    /**
+     * Metoda odpowiedzialna za edycję obiektu klasy Account na podstawie zmian w obiekcie AccountDTO.
+     *
+     * @param accountDTO Obiekt klasy AccountDTO.
+     * @param account    Obiekt klasy Account.
+     */
     @Mapping(target = "lastSuccessfulAuth", dateFormat = WITH_SECONDS)
     @Mapping(target = "lastFailedAuth", dateFormat = WITH_SECONDS)
-    void updateAccountFromDTO(AccountDTO accountDTO, @MappingTarget Account account); //do update'u, nie ustawia accessLevelCollection
+    void updateAccountFromDTO(AccountDTO accountDTO, @MappingTarget Account account);
 
-    Collection<AccountDTO> toAccountDTOCollection(Collection<Account> accountCollection); //do wyswietlania listy
+    /**
+     * Metoda odpowiedzialna za konwersję kolekcji obiektów klasy Account na kolekcję obiektów AccountDTO.
+     *
+     * @param accountCollection Kolekcja obiektów klasy Account.
+     * @return Kolekcja obiektów klasy AccountDTO.
+     */
+    Collection<AccountDTO> toAccountDTOCollection(Collection<Account> accountCollection);
 
-    //metoda uzywana w toAccountDTO
+    /**
+     * Metoda odpowiedzialna za konwersję kolekcji obiektów klasy AccessLevel na kolekcję ich nazw.
+     * Zdefiniowanie domyślnej implementacji jest konieczne w celu wykorzystania jej w metodzie toAccountDTO.
+     *
+     * @param accessLevelCollection Kolekcja obiektów klasy AccessLevel.
+     * @return Kolekcja nazw poziomów dostępu.
+     */
     default Collection<String> toAccessLevelStringCollection(Collection<AccessLevel> accessLevelCollection) {
         return accessLevelCollection.stream()
                 .filter(AccessLevel::getActive)
@@ -42,7 +79,14 @@ public interface AccountMapper {
                 .collect(Collectors.toList());
     }
 
-    //metoda uzywana w createNewAccount i updateAccountFromDTO
+    /**
+     * Metoda odpowiedzialna za konwersję kolekcji nazw poziomów dostępu na kolekcję obiektów klasy AccessLevel.
+     * Zdefiniowanie domyślnej implementacji jest konieczne w celu wykorzystania jej w metodach createNewAccount
+     * i updateAccountFromDTO, jednak po ich wywołaniu należy ręcznie ustawić kolekcję AccessLevel.
+     *
+     * @param accessLevelStringCollection Kolekcja nazw poziomów dostępu.
+     * @return Pusta kolekcja obiektów klasy AccessLevel.
+     */
     default Collection<AccessLevel> toAccessLevelCollection(Collection<String> accessLevelStringCollection) {
         return new ArrayList<>();
     }

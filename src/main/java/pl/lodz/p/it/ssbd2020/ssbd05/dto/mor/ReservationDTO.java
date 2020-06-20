@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Klasa DTO zawierająca informacje o rezerwacji złożonej na salę przez klienta.
+ * Jej instancje są wykorzystywane w warstwie prezentacji.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public @Data class ReservationDTO {
