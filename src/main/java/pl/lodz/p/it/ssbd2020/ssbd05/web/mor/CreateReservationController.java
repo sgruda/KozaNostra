@@ -77,8 +77,6 @@ public class CreateReservationController implements Serializable {
 
     private LocalDateTime today;
 
-    private double totalPrice = 0;
-
 
     /**
      * Metoda wykorzystywana przy wyborze terminu rezerwacji.
@@ -93,30 +91,11 @@ public class CreateReservationController implements Serializable {
     /**
      * Metoda wykorzystywana do zapisania wybranego terminu
      */
-    public void addEvent(){
+    public void addEvent() {
         startDate = event.getStartDate();
         endDate = event.getEndDate();
     }
 
-    /**
-     * Metoda wykorzystywana do obliczenia całkowitej ceny rezerwacji
-     *
-     * @return całkowita wartość rezerwacji
-     */
-    public double calculateTotalPrice() {
-        long rentedTime = DateFormatter.getHours(startDate,endDate );
-        Double price = 0.0;
-        price = hallDTO.getPrice() * rentedTime * numberOfGuests;
-        for (ExtraServiceDTO ext : extraServices) {
-            for (int i = 0; i < selectedExtraServices.size(); i++) {
-                if (ext.getServiceName().equals(selectedExtraServices.get(i)))
-                    price += ext.getPrice();
-            }
-        }
-        price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        this.totalPrice = price;
-        return price;
-    }
 
     /**
      * Metoda tworząca nową rezerwację
@@ -134,7 +113,6 @@ public class CreateReservationController implements Serializable {
         reservationDTO.setExtraServiceCollection(selectedExtraServices);
         reservationDTO.setHallName(hallDTO.getName());
         reservationDTO.setGuestsNumber(Long.valueOf(numberOfGuests));
-        reservationDTO.setTotalPrice(calculateTotalPrice());
         reservationDTO.setReservationNumber(UUID.randomUUID().toString().replace("-", ""));
         boolean areDatesInvalid = false;
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
@@ -143,19 +121,19 @@ public class CreateReservationController implements Serializable {
         } else {
             for (ScheduleEvent ev : eventModel.getEvents()) {
                 if (ev.getEndDate().isAfter(startDate) && ev.getStartDate().isBefore(endDate)) {
-                        ResourceBundles.emitErrorMessageWithFlash(null, "error.createreservation.dates.overlap");
-                        areDatesInvalid = true;
-                    }
+                    ResourceBundles.emitErrorMessageWithFlash(null, "error.createreservation.dates.overlap");
+                    areDatesInvalid = true;
                 }
             }
-        if(!areDatesInvalid){
+        }
+        if (!areDatesInvalid) {
             try {
                 createReservationEndpointLocal.createReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
             } catch (HallModifiedException e) {
                 ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            }  catch (ValidationException e) {
+            } catch (ValidationException e) {
                 ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (AppBaseException e) {
@@ -164,6 +142,23 @@ public class CreateReservationController implements Serializable {
             }
         }
 
+    }
+
+    /**
+     * Metoda wykorzystywana do wyświetlania całkowitej ceny rezerwacji użytkownikowi
+     *
+     * @return całkowita wartość rezerwacji
+     */
+    public double calculateTotalPrice() {
+        double price = 0;
+        for (ExtraServiceDTO ext : extraServices) {
+            for (int i = 0; i < selectedExtraServices.size(); i++) {
+                if (ext.getServiceName().equals(selectedExtraServices.get(i)))
+                    price += ext.getPrice();
+            }
+        }
+        price = this.createReservationEndpointLocal.calculateTotalPrice(startDate, endDate, hallDTO.getPrice(), Long.valueOf(numberOfGuests), price);
+        return price;
     }
 
 

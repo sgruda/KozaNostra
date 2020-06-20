@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -49,5 +50,13 @@ public interface CreateReservationEndpointLocal {
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     HallDTO getHallByName(String hallName) throws AppBaseException;
+
+    /**
+     * Metoda wykorzystywana do obliczenia całkowitej ceny rezerwacji
+     *
+     * @return całkowita wartość rezerwacji
+     */
+    double calculateTotalPrice(LocalDateTime startDate, LocalDateTime endDate, double hallPrice,
+                                      Long numberOfGuests, double extraServicesTotalPrice);
 
 }
