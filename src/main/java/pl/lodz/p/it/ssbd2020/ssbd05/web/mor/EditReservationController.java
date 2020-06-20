@@ -148,25 +148,6 @@ public class EditReservationController implements Serializable {
 
     private boolean datesRenderd = true;
 
-
-    public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
-        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
-        startDate=event.getStartDate();
-        endDate=event.getEndDate();
-    }
-
-    public void addEvent(){
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);
-
-        event = new DefaultScheduleEvent();
-        startDate = event.getStartDate();
-        endDate = event.getEndDate();
-
-    }
-
     public String translateExtraService(String eventTypeName) {
         return ResourceBundles.getTranslatedText(eventTypeName);
     }
