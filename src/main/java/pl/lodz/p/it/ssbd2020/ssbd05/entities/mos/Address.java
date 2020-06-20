@@ -5,11 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Klasa encyjna reprezentująca adres, do którego przypisana jest sala.
+ */
 @Getter
 @Setter
 @Entity
@@ -62,6 +64,9 @@ public class Address implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
+    /**
+     * Konstruktor bezparametrowy klasy Address.
+     */
     public Address() {
     }
 

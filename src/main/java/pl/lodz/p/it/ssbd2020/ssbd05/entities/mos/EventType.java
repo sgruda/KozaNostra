@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Klasa encyjna reprezentująca typ imprezy, jaki może się odbyć na sali.
+ */
 @Getter
 @Setter
 @Entity
@@ -45,6 +48,9 @@ public class EventType implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
+    /**
+     * Konstruktor bezparametrowy klasy EventType.
+     */
     public EventType() {
     }
 

@@ -6,6 +6,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import java.io.Serializable;
 
+/**
+ * Klasa encyjna reprezentująca poziom dostępu Menadżer.
+ */
 @Entity
 @DiscriminatorValue("MANAGER")
 @NamedQueries({
@@ -15,6 +18,9 @@ import java.io.Serializable;
 public class Manager extends AccessLevel implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Konstruktor bezparametrowy klasy Manager.
+     */
     public Manager() {
         super();
     }

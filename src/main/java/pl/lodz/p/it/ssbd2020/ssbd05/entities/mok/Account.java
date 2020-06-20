@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+/**
+ * Klasa encyjna reprezentująca konta użytkownika.
+ */
 @Getter
 @Setter
 @Entity
@@ -143,6 +146,9 @@ public class Account implements Serializable {
     @OneToOne(mappedBy = "account")
     private ForgotPasswordToken forgotPasswordToken;
 
+    /**
+     * Konstruktor bezparametrowy klasy Account.
+     */
     public Account() {
         this.active = true;
         this.forcePasswordChange = true;

@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Klasa encyjna reprezentująca poziom dostępu użytkownika.
+ */
 @Getter
 @Setter
 @Entity
@@ -57,6 +60,9 @@ public class AccessLevel implements Serializable {
     @ManyToOne(optional = false)
     private Account account;
 
+    /**
+     * Konstruktor bezparametrowy klasy AccessLevel.
+     */
     public AccessLevel() {
     }
 
