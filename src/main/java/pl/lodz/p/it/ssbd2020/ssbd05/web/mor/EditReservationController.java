@@ -100,7 +100,6 @@ public class EditReservationController implements Serializable {
 
     }
 
-    @RolesAllowed("editReservationClient")
     public void editReservation() {
 
         reservationDTO.setEventTypeName(eventTypeName);

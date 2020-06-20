@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
 public interface CreateReservationEndpointLocal {
 
     /**
-     * Pobierz wszystkie niedostępne terminy dla wybranej przez użytkownika sali
+     * Metoda odpowiedzialna za pobranie rezerwacji i utworzenie niedostępnych okienek czasowych dla wybranej przez użytkownika sali
      *
      * @param hallName nazwa sali, w której użytkownik chce dokonać rezerwacji
      * @return lista niedostępnych terminów
@@ -26,15 +27,8 @@ public interface CreateReservationEndpointLocal {
     List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException;
 
     /**
-     * Pobierz listę wszystkich rodzajów wydarzeń
      *
-     * @return lista rodzajów wydarzeń
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
-    List<String> getAllEventTypes() throws AppBaseException;
-
-    /**
-     * Utwórz nową rezerwację
+     * Metoda odpowiedzialna za utworzenie nowej rezerwacji.
      *
      * @param reservationDTO obiekt DTO rezerwacji
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
@@ -42,7 +36,7 @@ public interface CreateReservationEndpointLocal {
     void createReservation(ReservationDTO reservationDTO) throws AppBaseException;
 
     /**
-     * Pobierz listę wszystkich usług dodatkowych
+     * Metoda odpowiedzialna za pobranie listy wszystkich usług dodatkowych
      *
      * @return lista usług dodatkowych
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
@@ -50,12 +44,20 @@ public interface CreateReservationEndpointLocal {
     List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException;
 
     /**
-     * Pobierz salę według podanej nazwy
+     * Metoda odpowiedzialna za pobranie sali według podanej nazwy
      *
      * @param hallName nazwa sali do pobrania
      * @return obiekt sali pobrany według nazwy
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     HallDTO getHallByName(String hallName) throws AppBaseException;
+
+    /**
+     * Metoda wykorzystywana do obliczenia całkowitej ceny rezerwacji
+     *
+     * @return całkowita wartość rezerwacji
+     */
+    double calculateTotalPrice(LocalDateTime startDate, LocalDateTime endDate, double hallPrice,
+                                      Long numberOfGuests, double extraServicesTotalPrice);
 
 }

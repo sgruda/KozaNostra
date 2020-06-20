@@ -138,6 +138,29 @@ public class EmailSender {
             return;
         }).start();
     }
+    /**
+     * Metoda wysyłająca mail z wiadomością o zmianie statusu rezerwacji.
+     *
+     * @param mail  mail
+     * @param reservationNumber numer rezerwacji
+     * @param newStatus status rezerwacji
+     */
+    public void sendChangingReservationStatusEmail(String mail, String reservationNumber, String newStatus)  {
+        String subject = ResourceBundles.getTranslatedText("mail.reservation.status.change.subject");
+        StringBuilder body = new StringBuilder();
+        body.append(ResourceBundles.getTranslatedText("mail.reservation.status.change.number"))
+                .append(" ")
+                .append(reservationNumber)
+                .append(" ")
+                .append(ResourceBundles.getTranslatedText("mail.reservation.status.change.status"))
+                .append(" ")
+                .append(newStatus);
+
+        new Thread(() -> {
+            sendEmail(mail, subject, body.toString());
+            return;
+        }).start();
+    }
 
     /**
      * Metoda odpowiadająca bezpośrednio za wysłanie maila

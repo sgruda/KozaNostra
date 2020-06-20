@@ -30,7 +30,7 @@ public class DateFormatter {
     }
 
     public static int getHours(LocalDateTime start, LocalDateTime end) {
-        Duration duration =Duration.between(start,end);
+        Duration duration = Duration.between(start,end);
         long minutes = duration.toMinutes()%SECONDS_PER_MINUTE;
         int numberOfHours = (int) duration.toHours();
         if(minutes>0)
@@ -38,5 +38,4 @@ public class DateFormatter {
 
         return numberOfHours;
     }
-
 }
