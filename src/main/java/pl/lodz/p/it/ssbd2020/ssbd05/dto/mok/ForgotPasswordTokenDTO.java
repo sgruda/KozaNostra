@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Klasa DTO zawierająca informacje o kodzie wysyłanym na adres email użytkownika w przypadku,
+ * gdy zażąda on zresetowania hasła. Jej instancje są wykorzystywane w warstwie prezentacji.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

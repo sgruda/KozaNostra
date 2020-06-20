@@ -191,7 +191,10 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         }
     }
 
-    public double calculateTotalPrice(LocalDateTime startDate,LocalDateTime endDate, double hallPrice,
+
+    @Override
+    @RolesAllowed("createReservation")
+    public double calculateTotalPrice(LocalDateTime startDate,LocalDateTime endDate,double hallPrice,
                                       Long numberOfGuests, double extraServicesTotalPrice) {
         long rentedTime = DateFormatter.getHours(startDate,endDate);
         double price;
