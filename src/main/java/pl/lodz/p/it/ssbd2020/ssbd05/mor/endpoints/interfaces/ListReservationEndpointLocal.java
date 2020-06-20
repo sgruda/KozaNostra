@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego ListReservationEndpoint pośredniczącemu
+ * Interfejs dla punktu dostępowego ListReservationEndpoint pośredniczącego
  * przy wyświetlaniu listy rezerwacji wszystkich użytkowników
  */
 @Local

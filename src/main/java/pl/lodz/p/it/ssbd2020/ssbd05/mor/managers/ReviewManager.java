@@ -31,10 +31,10 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
     private ReviewFacade reviewFacade;
 
     @Inject
-    ClientFacade clientFacade;
+    private ClientFacade clientFacade;
 
     @Inject
-    ReservationFacade reservationFacade;
+    private ReservationFacade reservationFacade;
 
     /**
      * Metoda odpowiedzialna za pobieranie opinii na podstawie jej numeru.

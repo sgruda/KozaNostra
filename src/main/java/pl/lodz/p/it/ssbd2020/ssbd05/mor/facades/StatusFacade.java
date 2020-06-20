@@ -52,12 +52,6 @@ public class StatusFacade extends AbstractFacade<Status> {
         return super.find(id);
     }
 
-    /**
-     * Metoda odpowiedzialna za pobieranie z bazy danych listy wszystkich statusów rezerwacji.
-     *
-     * @return lista obiektów typu Status
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @PermitAll
     public List<Status> findAll() throws AppBaseException {

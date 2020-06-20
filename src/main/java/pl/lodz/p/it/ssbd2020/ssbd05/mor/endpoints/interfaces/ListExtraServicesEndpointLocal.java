@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego ListExtraServicesEndpoint, pośredniczącemu
+ * Interfejs dla punktu dostępowego ListExtraServicesEndpoint, pośredniczącego
  * przy wyświetlaniu wszystkich usług dodatkowych w systemie oraz zmianie ich aktywności
  */
 @Local

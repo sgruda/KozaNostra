@@ -20,6 +20,9 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Klasa fasady dla encji Account
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "AccountFacadeMOR")
 @LocalBean
@@ -34,6 +37,9 @@ public class AccountFacade extends AbstractFacade<Account> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy klasy AccountFacade
+     */
     public AccountFacade() {
         super(Account.class);
     }
@@ -54,6 +60,12 @@ public class AccountFacade extends AbstractFacade<Account> {
         }
     }
 
+    /**
+     * Znajdź po loginie
+     *
+     * @param username nazwa użytkownika
+     * @return optional Account
+     */
     @RolesAllowed("findByLogin")
     public Optional<Account> findByLogin(String username) {
         return Optional.ofNullable(this.em.createNamedQuery("Account.findByLogin", Account.class)

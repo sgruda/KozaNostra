@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego CreateReservationEndpoint pośredniczącemu
+ * Interfejs dla punktu dostępowego CreateReservationEndpoint pośredniczącego
  * przy tworzeniu nowej rezerwacji
  */
 @Local

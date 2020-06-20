@@ -21,6 +21,10 @@ import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Punkt dostępowy implementujący interfejs ListExtraServicesEndpointLocal, który pośredniczy
+ * przy wyświetlaniu wszystkich usług dodatkowych w systemie oraz zmianie ich aktywności
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

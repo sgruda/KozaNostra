@@ -20,6 +20,10 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+/**
+ * Punkt dostępowy implementujący interfejs AddExtraServiceEndpointLocal, który pośredniczy
+ * przy dodawaniu nowej usługi dodatkowej.
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

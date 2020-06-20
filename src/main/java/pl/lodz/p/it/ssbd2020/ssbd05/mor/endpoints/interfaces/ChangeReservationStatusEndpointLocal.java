@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego ChangeReservationStatusEndpoint, pośredniczącemu
+ * Interfejs dla punktu dostępowego ChangeReservationStatusEndpoint, pośredniczącego
  * przy zmianie statusu rezerwacji.
  */
 @Local

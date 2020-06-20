@@ -46,12 +46,6 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         super(ExtraService.class);
     }
 
-    /**
-     * Metoda odpowiedzialna za utrwalenie obiekty typu ExtraService w bazie
-     *
-     * @param entity obiekt encyjny typu ExtraService
-     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("addExtraService")
     public void create(ExtraService entity) throws AppBaseException {
@@ -64,12 +58,6 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         }
     }
 
-    /**
-     * Edytuj usługę dodatkową
-     *
-     * @param entity encja
-     * @throws AppBaseException Wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed({"editExtraService", "changeExtraServiceActivity"})
     public void edit(ExtraService entity) throws AppBaseException {
@@ -88,24 +76,12 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         }
     }
 
-    /**
-     * Metoda odpowiedzialna za pobranie z bazy usługi o podanym id
-     *
-     * @param id id usługi dodatkowej
-     * @return obiekt typu Optional<ExtraService>
-     */
     @Override
     @DenyAll
     public Optional<ExtraService> find(Object id) {
         return super.find(id);
     }
 
-    /**
-     * Pobierz listę wszystkich usług dodatkowych
-     *
-     * @return lista wszystkich usług dodatkowych
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed({"getAllExtraServices", "changeExtraServiceActivity"})
     public List<ExtraService> findAll() throws AppBaseException {
@@ -135,20 +111,12 @@ public class ExtraServiceFacade extends AbstractFacade<ExtraService> {
         }
     }
 
-    /**
-     * Metoda odpowiedzialna za usuwanie usługi z bazy
-     *
-     * @param entity obiekt typu ExtraService
-     */
     @Override
     @DenyAll
     public void remove(ExtraService entity) throws AppBaseException {
         super.remove(entity);
     }
 
-    /**
-     * Metoda odpowiedzialna za zliczenie obiektów typu ExtraService w bazie
-     */
     @Override
     @DenyAll
     public int count() {

@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego ListReviewsEndpoint pośredniczącemu
+ * Interfejs dla punktu dostępowego ListReviewsEndpoint pośredniczącego
  * przy wyświetlaniu listy wszystkich opinii
  */
 @Local

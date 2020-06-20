@@ -46,12 +46,6 @@ public class ReviewFacade extends AbstractFacade<Review> {
         super(Review.class);
     }
 
-    /**
-     * Metoda odpowiedzialna za tworzenie obiektu encji reprezentującej opinię w bazie danych
-     *
-     * @param entity Obiekt typu Review
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("addReview")
     public void create(Review entity) throws AppBaseException {
@@ -61,12 +55,7 @@ public class ReviewFacade extends AbstractFacade<Review> {
             throw new DatabaseConnectionException(e);
         }
     }
-    /**
-     * Metoda odpowiedzialna za edycję obiektu encji reprezentującej opinię w bazie danych
-     *
-     * @param entity Obiekt typu Review
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
+
     @Override
     @RolesAllowed("editReview")
     public void edit(Review entity) throws AppBaseException {
@@ -79,12 +68,6 @@ public class ReviewFacade extends AbstractFacade<Review> {
         }
     }
 
-    /**
-     * Metoda odpowiedzialna za usunięcie obiektu encji reprezentującej opinię w bazie danych
-     *
-     * @param entity Obiekt typu Review
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("removeReview")
     public void remove(Review entity) throws AppBaseException {
@@ -102,12 +85,7 @@ public class ReviewFacade extends AbstractFacade<Review> {
     public Optional<Review> find(Object id) {
         return super.find(id);
     }
-    /**
-     * Metoda odpowiedzialna za pobieranie wszystkich opinii z bazy danych
-     *
-     * @return Lista obiektów typu Review
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
+
     @Override
     @PermitAll
     public List<Review> findAll() throws AppBaseException {

@@ -70,12 +70,6 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         }
     }
 
-    /**
-     * Metoda odpowiedzialna za edycję obiektu encji reprezentującej rezerwację w bazie danych
-     *
-     * @param entity Obiekt typu Reservation
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed({"changeReservationStatus", "cancelReservation", "editReservation"})
     public void edit(Reservation entity) throws AppBaseException {
@@ -104,12 +98,6 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
         return super.find(id);
     }
 
-    /**
-     * Metoda odpowiedzialna za pobieranie wszystkich rezerwacji z bazy danych
-     *
-     * @return Lista obiektów typu Reservation
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed({"getAllReservations", "getAllEventTypes"})
     public List<Reservation> findAll() throws AppBaseException {
