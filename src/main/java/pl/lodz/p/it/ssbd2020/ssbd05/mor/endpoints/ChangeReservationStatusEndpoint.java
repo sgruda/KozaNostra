@@ -95,8 +95,7 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
         } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
         if (rollback) {
             throw new ExceededTransactionRetriesException();
-        }
-        if (!rollback) {
+        } else {
             EmailSender emailSender = new EmailSender();
             emailSender.sendChangingReservationStatusEmail(reservation.getClient().getAccount().getEmail(), reservation.getReservationNumber(), ResourceBundles.getTranslatedText(reservation.getStatus().getStatusName()));
         }
