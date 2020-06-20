@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Klasa DTO zawierająca informacje o koncie użytkownika.
+ * Jej instancje są wykorzystywane w warstwie prezentacji.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public @Data class AccountDTO {
@@ -24,18 +28,6 @@ public @Data class AccountDTO {
     private String lastAuthIp;
     private String veryficationToken;
     private int failedAuthCounter;
-
-    public AccountDTO(String login, String password, boolean active, boolean confirmed, String firstname, String lastname, String email, String veryficationToken, int failedAuthCounter) {
-        this.login = login;
-        this.password = password;
-        this.active = active;
-        this.confirmed = confirmed;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.veryficationToken = veryficationToken;
-        this.failedAuthCounter = failedAuthCounter;
-    }
 
     @Override
     public String toString(){
