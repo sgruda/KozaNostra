@@ -16,6 +16,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.DateOverlapException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallModifiedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
@@ -165,6 +166,9 @@ public class CreateReservationController implements Serializable {
             try {
                 createReservationEndpointLocal.createReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.createreservation.success");
+            }catch (DateOverlapException e) {
+                ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (HallModifiedException e) {
                 ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());

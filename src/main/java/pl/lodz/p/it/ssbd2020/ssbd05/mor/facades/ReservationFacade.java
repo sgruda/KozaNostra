@@ -8,6 +8,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mok.LoginAlreadyExistsException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.DateOverlapException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationAlreadyExistsException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
@@ -37,11 +39,6 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     @PersistenceContext(unitName = "ssbd05morPU")
     private EntityManager em;
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-
     /**
      * Konstruktor bezparametrowy
      */
@@ -50,13 +47,20 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    @Override
     @RolesAllowed("createReservation")
     public void create(Reservation entity) throws AppBaseException {
         try {
             super.create(entity);
-        } catch (DatabaseException | PersistenceException e) {
-            if(e.getMessage().contains("reservation_number_uindex"))
-                throw new ReservationAlreadyExistsException(e);
+        } catch (PersistenceException e) {
+            if (e.getMessage().contains("reservation_overlap_dates_ck")) {
+                throw new DateOverlapException();
+            }
+        } catch (DatabaseException e) {
             throw new DatabaseConnectionException(e);
         }
     }
@@ -109,10 +113,10 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getReservationByNumber")
-    public Optional<Reservation> findByNumber(String number) throws AppBaseException{
-        try{
-           return Optional.ofNullable(this.em.createNamedQuery("Reservation.findByReservationNumber", Reservation.class)
-                   .setParameter("reservationNumber", number).getSingleResult());
+    public Optional<Reservation> findByNumber(String number) throws AppBaseException {
+        try {
+            return Optional.ofNullable(this.em.createNamedQuery("Reservation.findByReservationNumber", Reservation.class)
+                    .setParameter("reservationNumber", number).getSingleResult());
         } catch (NoResultException noResultException) {
             throw new ReservationNotFoundException(noResultException);
         } catch (DatabaseException | PersistenceException e) {
@@ -128,7 +132,7 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("filterReservations")
-    public List<Reservation> filterReservations(String filter) throws AppBaseException{
+    public List<Reservation> filterReservations(String filter) throws AppBaseException {
         try {
             return em.createNamedQuery("Reservation.filterByLoginAndNames", Reservation.class)
                     .setParameter("filter", filter).getResultList();
@@ -147,10 +151,10 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     @RolesAllowed({"getAllUsersReservations", "getUserReviewableReservations"})
     public List<Reservation> findByLogin(String login) throws AppBaseException {
         try {
-          Account account = this.em.createNamedQuery("Account.findByLogin", Account.class)
+            Account account = this.em.createNamedQuery("Account.findByLogin", Account.class)
                     .setParameter("login", login).getSingleResult();
-                return this.em.createNamedQuery("Reservation.findByClientId", Reservation.class).setParameter("id", account.getId()).getResultList();
-        }catch (NoResultException noResultException) {
+            return this.em.createNamedQuery("Reservation.findByClientId", Reservation.class).setParameter("id", account.getId()).getResultList();
+        } catch (NoResultException noResultException) {
             throw new ReservationNotFoundException(noResultException);
         } catch (DatabaseException | PersistenceException e) {
             throw new DatabaseConnectionException(e);
