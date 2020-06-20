@@ -14,4 +14,9 @@ import java.time.LocalDateTime;
 public class UnavailableDate {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+
+    @Override
+    public String toString() {
+        return "pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.UnavailableDate";
+    }
 }
