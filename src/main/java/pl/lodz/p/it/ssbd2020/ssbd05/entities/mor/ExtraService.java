@@ -10,6 +10,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Klasa encyjna reprezentująca usługę dodatkową możliwą do wybrania przy rezerwacji sali.
+ */
 @Getter
 @Setter
 @Entity
@@ -68,6 +71,9 @@ public class ExtraService implements Serializable {
     @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
     private boolean active;
 
+    /**
+     * Konstruktor bezparametrowy klasy ExtraService.
+     */
     public ExtraService() {
     }
 

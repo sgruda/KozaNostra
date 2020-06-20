@@ -8,6 +8,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Klasa encyjna, która przechowuje skrót poprzedniego hasła użytkownika
+ * w celu uniemożliwienia mu zmiany hasła na któreś z poprzednich.
+ */
 @Getter
 @Setter
 @Entity
@@ -50,6 +54,9 @@ public class PreviousPassword implements Serializable {
     @ManyToOne(optional = false)
     private Account account;
 
+    /**
+     * Konstruktor bezparametrowy klasy PreviousPassword.
+     */
     public PreviousPassword() {
     }
 

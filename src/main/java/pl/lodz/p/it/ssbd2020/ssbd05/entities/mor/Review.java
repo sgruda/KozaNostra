@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Klasa encyjna reprezentująca recenzję wystawioną przez klienta.
+ */
 @Getter
 @Setter
 @Entity
@@ -71,6 +74,9 @@ public class Review implements Serializable {
     @Column(name = "review_number", nullable = false, length = 32)
     private String reviewNumber;
 
+    /**
+     * Konstruktor bezparametrowy klasy Review.
+     */
     public Review() {
         this.reviewNumber = UUID.randomUUID().toString().replace("-", "");
     }

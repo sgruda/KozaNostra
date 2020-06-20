@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+/**
+ * Klasa encyjna reprezentująca rezerwację złożoną na salę przez klienta
+ */
 @Getter
 @Setter
 @Entity
@@ -112,8 +115,11 @@ public class Reservation implements Serializable {
     private Long guestsNumber;
 
     @OneToOne(mappedBy = "reservation")
-    Review review;
+    private Review review;
 
+    /**
+     * Konstruktor bezparametrowy klasy Reservation.
+     */
     public Reservation() {
         this.reservationNumber = UUID.randomUUID().toString().replace("-", "");
     }

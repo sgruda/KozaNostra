@@ -6,6 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Klasa encyjna reprezentująca agregat. Jest ona wykorzystywana do przechowywyania łącznej liczby gości
+ * na wszystkich imprezach oraz średniej liczby gości na każdej z imprez.
+ */
 @Getter
 @Setter
 @Entity
@@ -51,6 +55,9 @@ public class AverageGuestNumber {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1", insertable = false)
     private long version;
 
+    /**
+     * Konstruktor bezparametrowy klasy AverageGuestNumber.
+     */
     public AverageGuestNumber() {
 
     }

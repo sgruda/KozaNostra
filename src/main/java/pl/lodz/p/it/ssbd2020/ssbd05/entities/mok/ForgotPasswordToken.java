@@ -10,6 +10,10 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Klasa encyjna zawierająca informacje o jednorazowym kodzie wysyłanym
+ * na adres email użytkownika w przypadku, gdy zażąda on zresetowania hasła
+ */
 @Entity
 @Getter
 @Setter
@@ -56,6 +60,9 @@ public class ForgotPasswordToken implements Serializable {
     private long version;
 
 
+    /**
+     * Konstruktor bezparametrowy klasy ForgotPasswordToken.
+     */
     public ForgotPasswordToken() {
     }
 
