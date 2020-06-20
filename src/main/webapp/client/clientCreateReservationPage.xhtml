@@ -34,7 +34,7 @@
 
                 <h:outputLabel for="multiple" value="#{msg['page.createreservation.choose.extra.service']}"/>
                 <p:selectCheckboxMenu id="multiple" value="#{createReservationController.selectedExtraServices}"
-                                      label="Usługi dodatkowe" multiple="true"
+                                      label="#{msg['page.editreservation.choose']}" multiple="true"
                                       filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
                     <f:selectItems value="#{createReservationController.extraServices}" var="extraService"
                                    itemLabel="#{extraService.serviceName}" itemValue="#{extraService.serviceName}"/>
