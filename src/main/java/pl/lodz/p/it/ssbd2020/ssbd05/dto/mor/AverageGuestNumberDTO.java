@@ -15,4 +15,9 @@ public class AverageGuestNumberDTO {
     private Long guestSum;
     private Long eventSum;
     private Long average;
+
+    @Override
+    public String toString() {
+        return "pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.AverageGuestNumberDTO";
+    }
 }

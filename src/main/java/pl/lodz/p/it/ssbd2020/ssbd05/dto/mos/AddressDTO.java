@@ -24,4 +24,9 @@ public @Data class AddressDTO {
     public String show() {
         return street + " " + streetNo + ", " + city;
     }
+
+    @Override
+    public String toString() {
+        return "pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.AddressDTO";
+    }
 }
