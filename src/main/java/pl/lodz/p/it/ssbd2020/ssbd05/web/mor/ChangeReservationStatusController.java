@@ -76,7 +76,7 @@ public class ChangeReservationStatusController implements Serializable {
             ResourceBundles.emitErrorMessageWithFlash(null, "error.reservation.optimisticlock");
         } catch(ReservationStatusFinishedException e) {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
-            ResourceBundles.emitErrorMessageWithFlash(null, "error.reservation.status.finished");
+            ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
         } catch(AppBaseException appBaseException) {
             log.severe(appBaseException.getMessage() + ", " + LocalDateTime.now());
             ResourceBundles.emitErrorMessageWithFlash(null, appBaseException.getMessage());

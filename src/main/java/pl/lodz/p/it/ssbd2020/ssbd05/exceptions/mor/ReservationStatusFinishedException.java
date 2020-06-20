@@ -9,5 +9,7 @@ public class ReservationStatusFinishedException extends AppBaseException {
     public ReservationStatusFinishedException() {
         super(RESERVATION_STATUS_FINISHED);
     }
-
+    public ReservationStatusFinishedException(String messege) {
+        super(messege);
+    }
 }
