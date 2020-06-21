@@ -57,6 +57,10 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
     @Setter
     private Hall hall;
 
+    @Getter
+    @Setter
+    private List<ExtraService> extraServiceList;
+
     @Override
     @RolesAllowed("getUnavailableDates")
     public List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException {
@@ -126,7 +130,8 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         boolean rollback;
         do {
             try {
-                list = ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(extraServiceManager.getAllExtraServices());
+                this.extraServiceList = extraServiceManager.getAllExtraServices();
+                list = ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(this.extraServiceList);
                 rollback = reservationManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -158,13 +163,17 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
         double extraServicesTotalPrice = 0;
         for (String extraService : reservationDTO.getExtraServiceCollection()) {
-            ExtraService extra = reservationManager.getExtraServiceByName(extraService);
-            extraServicesTotalPrice += extra.getPrice();
-            selectedExtraService.add(extra);
+            for(ExtraService extra : this.extraServiceList){
+                if(extra.getServiceName().equalsIgnoreCase(extraService)){
+                    extraServicesTotalPrice += extra.getPrice();
+                    selectedExtraService.add(extra);
+                }
+            }
         }
         if (selectedExtraService.size() > 0) {
             reservation.setExtra_service(selectedExtraService);
         }
+
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         reservation.setGuestsNumber(reservationDTO.getGuestsNumber());
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));

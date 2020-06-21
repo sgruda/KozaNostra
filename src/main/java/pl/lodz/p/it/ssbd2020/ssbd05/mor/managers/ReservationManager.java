@@ -19,6 +19,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
+import javax.persistence.LockModeType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -135,6 +136,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("createReservation")
     public void createReservation(Reservation reservation) throws AppBaseException {
+        checkIfExtraServiceHasChanged(reservation);
         checkIfHallChanged(reservation);
         checkIfDatesOverlap(reservation);
         reservationSerializableFacade.create(reservation);
@@ -149,6 +151,26 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
                 if (reservation.getStartDate().isBefore(r.getEndDate())
                         && reservation.getEndDate().isAfter(r.getStartDate())) {
                     throw new DateOverlapException();
+                }
+            }
+        }
+    }
+
+    private void checkIfExtraServiceHasChanged(Reservation reservation) throws  AppBaseException{
+        List<ExtraService> extraServices = new ArrayList<>();
+        ExtraService extraService;
+        for(ExtraService e : reservation.getExtra_service()) {
+            extraService = extraServiceFacade.findByName(e.getServiceName()).get();
+            extraServices.add(extraService);
+        }
+        if(reservation.getExtra_service().size() != extraServices.size())
+            throw new AppOptimisticLockException();
+        for(ExtraService serviceFromReservation : reservation.getExtra_service()) {
+            for(ExtraService serviceFromHall : extraServices) {
+                if (serviceFromHall.getServiceName().equals(serviceFromReservation.getServiceName())) {
+                    if (serviceFromHall.compareTo(serviceFromReservation) != 0) {
+                        throw new AppOptimisticLockException();
+                    }
                 }
             }
         }
