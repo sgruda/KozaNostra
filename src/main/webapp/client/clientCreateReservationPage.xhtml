@@ -75,8 +75,10 @@
                               locale="#{msg['page.createreservation.calendar.language']}" converterMessage="#{msg['page.createreservation.enddate.converter']}"
                               pattern="yyyy-MM-dd HH:mm:ss">
                 </p:datePicker>
-                <p:outputLabel for="calculatePrice" id="totalPrice"  value="#{msg['page.createreservation.totalprice.value']} : #{createReservationController.calculateTotalPrice()}" />
-                    <p:commandButton id="calculatePrice" value="#{msg['page.createreservation.button.calculateprice']}" action="#{createReservationController.calculateTotalPrice()}" />
+                <h:outputText id="totalPrice"  value="#{msg['page.createreservation.totalprice.value']} : #{createReservationController.price} PLN" />
+                    <p:commandButton id="calculatePrice" value="#{msg['page.createreservation.button.calculateprice']}" action="#{createReservationController.calculateTotalPrice()}" >
+                        <p:ajax update="totalPrice"/>
+                    </p:commandButton>
             </p:panelGrid>
             <h:panelGrid columnClasses="value">
                 <p:schedule id="schedule"
@@ -97,7 +99,7 @@
 
                 <p:commandButton id="submit" validateClient="true"
                                  value="#{msg['page.createreservation.button.createreservation']}" icon="pi pi-check"
-                                 style="float: center;" onclick="#{createReservationController.calculateTotalPrice()}"
+                                 style="float: center;"
                                  actionListener="#{createReservationController.createReservation()}"
                                  action="#{createReservationController.goBack()}">
                     <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}"
