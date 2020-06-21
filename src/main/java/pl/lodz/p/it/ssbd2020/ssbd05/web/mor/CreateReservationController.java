@@ -76,6 +76,8 @@ public class CreateReservationController implements Serializable {
 
     private LocalDateTime today;
 
+    private double price = 0;
+
 
 
     /**
@@ -139,6 +141,7 @@ public class CreateReservationController implements Serializable {
             }
         }
         price = this.createReservationEndpointLocal.calculateTotalPrice(startDate, endDate, hallDTO.getPrice(), Long.valueOf(numberOfGuests), price);
+        this.price = price;
         return price;
     }
 
