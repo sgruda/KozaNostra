@@ -25,7 +25,9 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="content">
 
         <h:form id="form1" style="margin-bottom: auto; margin-top: 75px">
-
+            <p:messages>
+                <p:autoUpdate/>
+            </p:messages>
 
             <p:panelGrid id="panelGrid" columns="1" style="width: 600px">
 
@@ -51,75 +53,51 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                minValue="1" maxValue="#{editReservationController.hallDTO.capacity}"/>
                 </h:outputLabel>
 
-                <h:outputLabel for="extraServices" value="#{msg['page.editreservation.extraservices']}">
-                    <p:selectManyCheckbox id="extraServices" value="#{editReservationController.selectedExtraServices}">
-                        <c:forEach items="#{editReservationController.extraServicesNames}" var="extraService">
-                            <f:selectItem itemLabel="#{editReservationController.translateExtraService(extraService)}" itemValue="#{extraService}"/>
-                        </c:forEach>
-                    </p:selectManyCheckbox>
-                </h:outputLabel>
+                <h:outputLabel for="multiple" value="#{msg['page.createreservation.choose.extra.service']}"/>
+                <p:selectCheckboxMenu id="multiple" value="#{editReservationController.selectedExtraServices}"
+                                      label="#{msg['page.editreservation.choose']}" multiple="true"
+                                      filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                    <f:selectItems value="#{editReservationController.extraServicesNames}" var="extraService"
+                                   itemLabel="#{extraService}" itemValue="#{extraService}"/>
+                </p:selectCheckboxMenu>
 
-                <h:outputLabel value="#{msg['page.client.reservations.details.from']}">
-                     <p:inputText value="#{editReservationController.reservationDTO.startDate}" disabled="true" style="width: 250px; margin-left: 20px"/>
-                </h:outputLabel>
 
-                <h:outputLabel value="#{msg['page.client.reservations.details.till']}">
-                     <p:inputText value="#{editReservationController.reservationDTO.endDate}" disabled="true" style="width: 250px; margin-left: 20px"/>
-                </h:outputLabel>
-            </p:panelGrid>
-
-            <h:form id="panelGrid1">
-
-                <h:panelGrid columnClasses="value" >
-                    <p:schedule id="schedule"
-                                styleClass=" fc-draggable#disabled"
-                                value="#{editReservationController.eventModel}" widgetVar="myschedule"
-                                view="agendaWeek" rightHeaderTemplate="" timeZone=""
-                                style=" width: 600px;" allDaySlot="false" clientTimeZone="local"
-                                locale="#{msg['page.editreservation.calendar.language']}" tooltip="true"
-                                draggable="false" resizable="false" slotEventOverlap="false">
-                        <p:ajax event="dateSelect" listener="#{editReservationController.onDateSelect}"
-                                update="eventDetails" oncomplete="PF('eventDialog').show();"/>
-                    </p:schedule>
-                </h:panelGrid>
-
-                <p:dialog id="eventDialog" widgetVar="eventDialog" header="#{msg['page.editreservation.event.details']}" showEffect="clip"
-                          hideEffect="clip">
-
-                    <h:panelGrid id="eventDetails" columns="2" >
-                        <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}"/>
+                        <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}">
 
                         <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true"
                                       mindate="#{editReservationController.today.plusMinutes(1)}"
                                       lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.today.plusMinutes(1)}"
                                       requiredMessage="#{msg['page.editreservation.startdate.required']}"
-                                      validatorMessage="#{msg['page.editreservation.startdate.validator']}"
+                                      validatorMessage="#{msg['page.editreservation.startdate.validator']}" converterMessage="#{msg['page.editreservation.startdate.converter']}"
                                       locale="#{msg['page.editreservation.calendar.language']}" appendTo="@(body)"
                                       pattern="yyyy-MM-dd HH:mm:ss" />
+                        </p:outputLabel>
 
-
-                        <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}" />
+                        <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}" >
                         <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true"
                                       mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
                                       lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.event.startDate}"
                                       requiredMessage="#{msg['page.editreservation.enddate.required']}"
                                       validatorMessage="#{msg['page.editreservation.enddate.validator']}"
-                                      locale="#{msg['page.editreservation.calendar.language']}"
+                                      locale="#{msg['page.editreservation.calendar.language']}" converterMessage="#{msg['page.editreservation.enddate.converter']}"
                                       pattern="yyyy-MM-dd HH:mm:ss" />
+                        </p:outputLabel>
 
-                        <p:commandButton id="addButton" value="#{msg['page.editreservation.button.save.date']}"
-                                         action="#{editReservationController.addEvent}"
-                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+            </p:panelGrid>
+            <h:panelGrid columnClasses="value">
+                <p:schedule id="schedule"
+                            styleClass="fc-dayGridMonth-button#disabled; fc-draggable#disabled"
+                            value="#{editReservationController.eventModel}" widgetVar="myschedule"
+                            view="agendaWeek" rightHeaderTemplate="" timeZone=""
+                            style=" width: 600px;" allDaySlot="false" clientTimeZone="local"
+                            locale="#{msg['page.editreservation.calendar.language']}" tooltip="true"
+                            draggable="false" resizable="false" slotEventOverlap="false">
+                </p:schedule>
+            </h:panelGrid>
 
-                    </h:panelGrid>
 
-                </p:dialog>
-                <p:messages>
-                    <p:autoUpdate/>
-                </p:messages>
-        </h:form>
             <div style="display:flex; flex-direction: column;">
                 <p:messages globalOnly="true" closable="true">
                     <p:autoUpdate/>
