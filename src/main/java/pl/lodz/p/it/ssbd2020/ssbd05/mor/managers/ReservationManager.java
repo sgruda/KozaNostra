@@ -186,17 +186,6 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Metoda odpowiedzialna za pobieranie listy wszystkich statusów rezerwacji.
-     *
-     * @return lista obiektów typu Status
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
-    @RolesAllowed("getAllStatuses")
-    public List<Status> getAllStatuses() throws AppBaseException {
-        return statusFacade.findAll();
-    }
-
-    /**
      * Metoda odpowiedzialna za pobieranie rezerwacji na podstawie jej numeru.
      *
      * @param reservationNumber Numer rezerwacji
