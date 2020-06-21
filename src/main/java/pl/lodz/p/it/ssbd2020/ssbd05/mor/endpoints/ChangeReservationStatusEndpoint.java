@@ -24,6 +24,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,8 +77,14 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     @Override
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(ReservationDTO reservationDTO) throws AppBaseException {
-        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name()))
+        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name())) {
             throw new ReservationStatusFinishedException();
+        }
+        if(reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name())) {
+            if(reservation.getEndDate().isAfter(LocalDateTime.now())) {
+                throw new ReservationStatusFinishedException("error.reservation.status.finished.dates");
+            }
+        }
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
         int callCounter = 0;
         boolean rollback;
