@@ -18,7 +18,7 @@ import javax.inject.Named;
 public class PasswordValidator {
 
     /**
-     * Validate password match.
+     * Metoda sprawdzająca, czy hasło i jego potwierdzenie wpisane przez użytkownika są takie same
      *
      * @param context   Kontekst warstwy prezentacji
      * @param component Komponent widoku

@@ -139,7 +139,7 @@ public class RoleController implements Serializable {
     }
 
     /**
-     * Pobiera motyw dla wybranej roli
+     * Pobiera motyw dla wybranej roli, metoda jest używana w deskryptorze web.xml
      *
      * @return Nazwa motywu
      */
