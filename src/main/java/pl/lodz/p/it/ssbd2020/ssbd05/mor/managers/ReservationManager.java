@@ -271,6 +271,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
+        checkIfDatesOverlap(reservation);
         reservationSerializableFacade.edit(reservation);
     }
 
