@@ -14,6 +14,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.UnavailableDate;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.DateOverlapException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
@@ -114,6 +115,9 @@ public class CreateReservationController implements Serializable {
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (ValidationException e) {
                 ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
+                log.severe(e.getMessage() + ", " + LocalDateTime.now());
+            } catch (AppOptimisticLockException e) {
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.reservation.create.optimisticlock");
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (AppBaseException e) {
                 ResourceBundles.emitErrorMessageWithFlash(null, e.getMessage());
