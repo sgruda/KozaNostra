@@ -156,39 +156,13 @@ public class EditReservationController implements Serializable {
 
     private boolean datesRenderd = true;
 
-
-    /**
-     * Metoda wywoływana przy kliknięciu na komponent p:schedule w warstwie prezentacji
-     *
-     * @param selectEvent Wybrany obiekt typu SelectEvent
-     */
-    public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
-        event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
-        startDate=event.getStartDate();
-        endDate=event.getEndDate();
-    }
-
-    /**
-     * Dodaj zdarzenie
-     */
-    public void addEvent(){
-        if(event.getId() == null)
-            eventModel.addEvent(event);
-        else
-            eventModel.updateEvent(event);
-
-        event = new DefaultScheduleEvent();
-        startDate = event.getStartDate();
-        endDate = event.getEndDate();
-
-    }
-
     /**
      * Wyświetl nazwę typu imprezy
      *
      * @param eventTypeName Nazwa typu imprezy
      * @return Zinternacjonalizowany ciąg znaków
      */
+
     public String translateExtraService(String eventTypeName) {
         return ResourceBundles.getTranslatedText(eventTypeName);
     }

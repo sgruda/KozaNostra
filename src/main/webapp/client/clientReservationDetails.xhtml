@@ -50,7 +50,7 @@
                 <h:form id="commandButtons">
                     <p:commandButton value="#{msg['page.client.reservations.details.back']}" action="#{reservationDetailsController.goBack}"/>
                     <p:commandButton  rendered="#{reservationDetailsController.editable}" value="#{msg['page.client.reservations.details.edit']}" action="#{reservationDetailsController.goToEditPage()}"/>
-                    <p:commandButton rendered="#{reservationDetailsController.isSubmitted()}"
+                    <p:commandButton rendered="#{reservationDetailsController.isCancelable()}"
                                      value="#{msg['page.client.reservations.details.cancel']}"
                                      action="#{reservationDetailsController.cancelReservation}">
                             <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle" />

@@ -73,9 +73,9 @@ public class ReservationDetailsController implements Serializable {
             extraServices = "";
             for(int i=0; i< reservationDTO.getExtraServiceCollection().size(); i++){
                 if (i != reservationDTO.getExtraServiceCollection().size() - 1) {
-                    result.append(ResourceBundles.getTranslatedText(eventTypes[i])).append(", ");
+                    result.append(eventTypes[i]).append(", ");
                 } else {
-                    result.append(ResourceBundles.getTranslatedText(eventTypes[i]));
+                    result.append(eventTypes[i]);
                 }
             }
             extraServices = result.toString();
@@ -114,12 +114,16 @@ public class ReservationDetailsController implements Serializable {
     }
 
     /**
-     * Metoda sprawdzająca czy status wybranej rezerwacji to "złożona"
+     * Metoda sprawdzająca czy status wybranej rezerwacji umożliwia jej anulowanie.
      *
-     * @return boolean wartość logiczna informująca o tym czy status rezerwacji to "złożona"
+     * @return boolean wartość logiczna informująca o tym czy rezerwację można anulować
      */
-    public boolean isSubmitted() {
-        return reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.submitted.name());
+    public boolean isCancelable() {
+        if(reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name()) ||
+            reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name()))
+            return false;
+        else
+            return true;
     }
     /**
      * Metoda sprawdzająca czy status wybranej rezerwacji to "zakończona"
