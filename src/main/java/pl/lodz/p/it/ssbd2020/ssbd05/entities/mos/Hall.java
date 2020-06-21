@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Klasa encyjna reprezentująca salę.
+ */
 @Getter
 @Setter
 @Entity
@@ -98,6 +101,9 @@ public class Hall implements Serializable {
     @OneToMany(mappedBy = "hall")
     private Collection<Reservation> reservationCollection = new ArrayList<>();
 
+    /**
+     * Konstruktor bezparametrowy klasy Hall.
+     */
     public Hall() {
     }
 

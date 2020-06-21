@@ -5,6 +5,10 @@ import org.eclipse.persistence.platform.database.PostgreSQLPlatform;
 
 import java.sql.Types;
 
+/**
+ * Klasa, która pozwala na zapisywanie obiektów klasy LocalDateTime mających wartość null w relacyjnej bazie danych.
+ * Została ona zarejestrowana w deskryptorze persistence.xml
+ */
 public class PatchedPostgreSQLPlatform extends PostgreSQLPlatform {
 
     @Override

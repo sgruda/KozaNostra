@@ -13,7 +13,7 @@ import java.util.List;
 @Local
 public interface ListUserReservationsEndpointLocal {
     /**
-     * Pobierz wszystkie rezerwacje użytkownika o podanej nazwie użytkownika
+     * Metoda odpowiedzialna za pobranie wszystkich rezerwacji użytkownika o podanej nazwie użytkownika
      *
      * @param login nazwa użytkownika
      * @return lista wszystkich rezerwacji użytkownika

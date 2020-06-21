@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Klasa DTO zawierająca informacje o sali istniejącej w systemie.
+ * Jej instancje są wykorzystywane w warstwie prezentacji.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public @Data class HallDTO {
@@ -19,4 +23,9 @@ public @Data class HallDTO {
     private double price;
     private Collection<String> event_type = new ArrayList<>();
     private AddressDTO address;
+
+    @Override
+    public String toString() {
+        return "pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO[name= " + name + "]";
+    }
 }

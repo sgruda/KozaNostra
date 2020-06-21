@@ -81,7 +81,7 @@ public class ListReviewsController implements Serializable {
      * @return boolean
      */
     public boolean displayNextPage(){
-        if(currentPage == pages){
+        if(currentPage == pages || pages == 0){
             return false;
         }
         return true;
@@ -103,7 +103,7 @@ public class ListReviewsController implements Serializable {
      * @return the boolean
      */
     public boolean displayPreviousPage(){
-        if(currentPage == 1){
+        if(currentPage <= 1){
             return false;
         }
         return true;

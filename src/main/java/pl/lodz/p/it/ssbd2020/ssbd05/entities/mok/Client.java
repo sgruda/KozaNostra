@@ -3,12 +3,14 @@ package pl.lodz.p.it.ssbd2020.ssbd05.entities.mok;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Review;
 
-import javax.inject.Named;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Klasa encyjna reprezentująca poziom dostępu Klient.
+ */
 @Entity
 @DiscriminatorValue("CLIENT")
 @NamedQueries({
@@ -25,6 +27,9 @@ public class Client extends AccessLevel implements Serializable {
     @OneToMany(mappedBy = "client")
     private Collection<Reservation> reservationCollection = new ArrayList<>();
 
+    /**
+     * Konstruktor bezparametrowy klasy Client.
+     */
     public Client() {
         super();
     }

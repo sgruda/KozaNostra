@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * Klasa encyjna reprezentująca status rezerwacji.
+ */
 @Getter
 @Setter
 @Entity
@@ -45,6 +48,9 @@ public class Status implements Serializable {
     @Column(name = "version", nullable = false, columnDefinition = "bigint default 1")
     private long version;
 
+    /**
+     * Konstruktor bezparametrowy klasy Status.
+     */
     public Status() {
     }
 

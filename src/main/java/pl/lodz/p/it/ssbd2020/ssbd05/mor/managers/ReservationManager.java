@@ -113,17 +113,6 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     /**
-     * Metoda odpowiedzialna za pobranie wszystkich typów wydarzenia
-     *
-     * @return lista typów wydarzenia
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
-    @RolesAllowed("getAllEventTypes")
-    public List<EventType> getAllEventTypes() throws AppBaseException {
-        return eventTypesFacade.findAll();
-    }
-
-    /**
      * Metoda odpowiedzialna za pobranie sali
      *
      * @param name nazwa sali
