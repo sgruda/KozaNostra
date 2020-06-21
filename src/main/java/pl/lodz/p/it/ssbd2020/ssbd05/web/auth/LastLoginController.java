@@ -2,8 +2,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.auth;
 
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mok.AccountDTO;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.mok.endpoints.interfaces.EditAccountEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.enterprise.context.Conversation;
@@ -12,7 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.formatDate;
