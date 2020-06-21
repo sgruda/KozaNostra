@@ -77,11 +77,13 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     @Override
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(ReservationDTO reservationDTO) throws AppBaseException {
-        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name()))
+        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name())) {
             throw new ReservationStatusFinishedException();
+        }
         if(reservationDTO.getStatusName().equalsIgnoreCase(ReservationStatuses.finished.name())) {
-            if(reservation.getEndDate().isBefore(LocalDateTime.now()))
+            if(reservation.getEndDate().isAfter(LocalDateTime.now())) {
                 throw new ReservationStatusFinishedException("error.reservation.status.finished.dates");
+            }
         }
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
         int callCounter = 0;

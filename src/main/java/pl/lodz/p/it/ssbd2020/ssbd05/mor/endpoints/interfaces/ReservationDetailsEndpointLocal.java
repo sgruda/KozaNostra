@@ -12,7 +12,7 @@ import javax.ejb.Local;
 @Local
 public interface ReservationDetailsEndpointLocal {
     /**
-     * Metoda odpowiadająca za pobranie szczegółów wybranej sali
+     * Metoda odpowiadająca za pobranie szczegółów wybranej rezerwacji
      *
      * @param number numer rezerwacji
      * @return rezerwacja
