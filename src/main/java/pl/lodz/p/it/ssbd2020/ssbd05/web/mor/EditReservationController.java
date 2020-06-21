@@ -114,7 +114,6 @@ public class EditReservationController implements Serializable {
         reservationDTO.setExtraServiceCollection(selectedExtraServices);
         reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
         reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
-        log.severe(endDate + "sss " + startDate);
         boolean areDatesValid = false;
         if (startDate.isAfter(endDate)) {
             ResourceBundles.emitErrorMessageWithFlash(null, "page.editreservation.dates.error");
