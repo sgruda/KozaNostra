@@ -127,7 +127,7 @@ public class AccountFacade extends AbstractFacade<Account> {
      * Filtruj kolekcję kont
      *
      * @param accountFilter filtr
-     * @return Collection<Account>
+     * @return kolekcja obiektów typu Account
      * @throws AppBaseException Wyjątek aplikacyjny
      */
     @RolesAllowed("filterAccounts")

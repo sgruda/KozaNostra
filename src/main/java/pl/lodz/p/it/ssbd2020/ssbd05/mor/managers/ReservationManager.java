@@ -66,7 +66,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     /**
      * Metoda odpowiedzialna za pobranie listy wszystkich rezerwacji
      *
-     * @return List<Reservation>  lista rezerwacji
+     * @return lista obiektów typu Reservation
      * @throws AppBaseException podstawowy wyjatek aplikacyjny
      */
     @RolesAllowed("getAllReservations")

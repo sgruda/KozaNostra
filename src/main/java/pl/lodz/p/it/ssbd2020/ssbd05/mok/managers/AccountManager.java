@@ -123,7 +123,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     /**
      * Pobierz wszystkie konta
      *
-     * @return kolekcja kont Collection<Account>
+     * @return kolekcja obiektów typu Account
      * @throws AppBaseException Wyjątek aplikacyjny
      */
     @RolesAllowed("listAccounts")
@@ -135,7 +135,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
      * Filtruj po kontach
      *
      * @param accountFilter filtr
-     * @return kolekcja kont Collection<Account>
+     * @return kolekcja obiektów typu Account
      * @throws AppBaseException Wyjątek aplikacyjny
      */
     @RolesAllowed("filterAccounts")
@@ -209,7 +209,7 @@ public class AccountManager extends AbstractManager implements SessionSynchroniz
     /**
      * Pobierz wszystkie tokeny
      *
-     * @return Collection<ForgotPasswordToken>
+     * @return kolekcja obiektów typu ForgotPasswordToken
      * @throws AppBaseException the app base exception
      */
     @PermitAll

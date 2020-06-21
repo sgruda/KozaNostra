@@ -89,7 +89,7 @@ public class ReviewManager extends AbstractManager implements SessionSynchroniza
     /**
      * Metoda odpowiedzialna za pobranie listy wszystkich opinii
      *
-     * @return List<Review> lista opinii
+     * @return lista obiektów typu Review
      * @throws AppBaseException podstawowy wyjatek aplikacyjny
      */
     @PermitAll
