@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <ui:composition template="../templates/template.xhtml">
     <ui:define name="head">
         <title>#{msg['page.client.editreservation.title']}</title>
@@ -29,32 +29,32 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:panelGrid id="panelGrid" columns="1" style="width: 600px">
+            <p:panelGrid id="panelGrid" columns="2" style="width: 600px">
 
 
-                <h:outputLabel value="#{msg['page.client.reservations.details.reservationNumber']}">
+                <h:outputLabel value="#{msg['page.client.reservations.details.reservationNumber']}"/>
                 <p:inputText value="#{editReservationController.reservationDTO.reservationNumber}" disabled="true" style="width: 250px; margin-left: 20px"/>
-                </h:outputLabel>
 
-                <h:outputLabel value="#{msg['page.client.editreservation.hallName']}">
+
+                <h:outputLabel value="#{msg['page.client.editreservation.hallName']}"/>
                 <p:inputText  value="#{editReservationController.reservationDTO.hallName}" disabled="true" style="width: 250px; margin-left: 20px"/>
-                </h:outputLabel>
 
-                <h:outputLabel  for="eventType" value="#{msg['page.editreservation.choose.event.type']} *" >
+
+                <h:outputLabel  for="eventType" value="#{msg['page.editreservation.choose.event.type']} *" />
                 <p:selectOneMenu style="margin-left: 20px" id="eventType" value="#{editReservationController.eventTypeName}" panelStyle="width:250px" required="true">
                     <f:selectItems value="#{editReservationController.eventTypes}" var="eventType" itemLabel="#{editReservationController.translateExtraService(eventType)}" itemValue="#{eventType}"/>
                 </p:selectOneMenu>
-                </h:outputLabel>
 
-                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} (#{msg['page.editreservation.maxguestsnumber']} = #{editReservationController.hallDTO.capacity}) *">
+
+                <h:outputLabel for="numberOfGuests" value="#{msg['page.editreservation.number.of.guests']} #{msg['page.editreservation.minguestsnumber']} #{msg['page.editreservation.maxguestsnumber']} = #{editReservationController.hallDTO.capacity}) *"/>
                 <p:inputNumber style="margin-left: 20px" id="numberOfGuests" required="true"
                                value="#{editReservationController.reservationDTO.guestsNumber}"
                                decimalPlaces="0" validatorMessage="#{msg['page.createreservation.number.of.guests.validator']}"
                                minValue="1" maxValue="#{editReservationController.hallDTO.capacity}"/>
-                </h:outputLabel>
+
 
                 <h:outputLabel for="multiple" value="#{msg['page.createreservation.choose.extra.service']}"/>
-                <p:selectCheckboxMenu id="multiple" value="#{editReservationController.selectedExtraServices}"
+                <p:selectCheckboxMenu style="width: 250px; margin-left: 20px" id="multiple" value="#{editReservationController.selectedExtraServices}"
                                       label="#{msg['page.editreservation.choose']}" multiple="true"
                                       filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
                     <f:selectItems value="#{editReservationController.extraServicesNames}" var="extraService"
@@ -62,28 +62,29 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 </p:selectCheckboxMenu>
 
 
-                        <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}">
 
-                        <p:datePicker id="since" value="#{editReservationController.startDate}" showTime="true"
-                                      mindate="#{editReservationController.today.plusMinutes(1)}"
-                                      lang="#{msg['page.editreservation.calendar.language']}"
-                                      minValue="#{editReservationController.today.plusMinutes(1)}"
-                                      requiredMessage="#{msg['page.editreservation.startdate.required']}"
-                                      validatorMessage="#{msg['page.editreservation.startdate.validator']}" converterMessage="#{msg['page.editreservation.startdate.converter']}"
-                                      locale="#{msg['page.editreservation.calendar.language']}" appendTo="@(body)"
-                                      pattern="yyyy-MM-dd HH:mm:ss" />
-                        </p:outputLabel>
+                <p:outputLabel for="since" value="#{msg['page.editreservation.start.date']}"/>
 
-                        <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}" >
-                        <p:datePicker id="until" value="#{editReservationController.endDate}" showTime="true"
-                                      mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
-                                      lang="#{msg['page.editreservation.calendar.language']}"
-                                      minValue="#{editReservationController.event.startDate}"
-                                      requiredMessage="#{msg['page.editreservation.enddate.required']}"
-                                      validatorMessage="#{msg['page.editreservation.enddate.validator']}"
-                                      locale="#{msg['page.editreservation.calendar.language']}" converterMessage="#{msg['page.editreservation.enddate.converter']}"
-                                      pattern="yyyy-MM-dd HH:mm:ss" />
-                        </p:outputLabel>
+                <p:datePicker style="width: 250px; margin-left: 20px" id="since" value="#{editReservationController.startDate}" showTime="true"
+                              mindate="#{editReservationController.today.plusMinutes(1)}"
+                              lang="#{msg['page.editreservation.calendar.language']}"
+                              minValue="#{editReservationController.today.plusMinutes(1)}"
+                              requiredMessage="#{msg['page.editreservation.startdate.required']}"
+                              validatorMessage="#{msg['page.editreservation.startdate.validator']}" converterMessage="#{msg['page.editreservation.startdate.converter']}"
+                              locale="#{msg['page.editreservation.calendar.language']}" appendTo="@(body)"
+                              pattern="yyyy-MM-dd HH:mm:ss" />
+
+
+                <p:outputLabel for="until" value="#{msg['page.editreservation.end.date']}" />
+                <p:datePicker style="width: 250px; margin-left: 20px" id="until" value="#{editReservationController.endDate}" showTime="true"
+                              mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
+                              lang="#{msg['page.editreservation.calendar.language']}"
+                              minValue="#{editReservationController.event.startDate}"
+                              requiredMessage="#{msg['page.editreservation.enddate.required']}"
+                              validatorMessage="#{msg['page.editreservation.enddate.validator']}"
+                              locale="#{msg['page.editreservation.calendar.language']}" converterMessage="#{msg['page.editreservation.enddate.converter']}"
+                              pattern="yyyy-MM-dd HH:mm:ss" />
+
 
             </p:panelGrid>
             <h:panelGrid columnClasses="value">
@@ -104,12 +105,12 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                 </p:messages>
             </div>
             <div style="margin: 5px;display:flex;justify-content: center">
-                    <p:commandButton value="#{msg['page.client.reservations.details.back']}" immediate="true" action="#{editReservationController.goBack()}"/>
-                    <p:commandButton id="submit" validateClient="true" value="#{msg['page.client.editreservation.button.submit']}"
-                                     actionListener="#{editReservationController.editReservation()}"
-                                     action="#{editReservationController.goBack()}">
-                        <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
-                    </p:commandButton>
+                <p:commandButton value="#{msg['page.client.reservations.details.back']}" immediate="true" action="#{editReservationController.goBack()}"/>
+                <p:commandButton id="submit" validateClient="true" value="#{msg['page.client.editreservation.button.submit']}"
+                                 actionListener="#{editReservationController.editReservation()}"
+                                 action="#{editReservationController.goBack()}">
+                    <p:confirm header="#{msg['confirmdialog.header']}" message="#{msg['confirmdialog.areyousure']}" icon="pi pi-exclamation-triangle"/>
+                </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" severity="warn">
                     <p:commandButton value="#{msg['confirmdialog.confirm']}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
                     <p:commandButton value="#{msg['confirmdialog.decline']}" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
