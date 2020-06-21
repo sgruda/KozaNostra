@@ -90,11 +90,16 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         reservation.setStatus(reservationManager.getStatusByName(ReservationStatuses.submitted.name()));
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         List<ExtraService> extraServices = new ArrayList<>();
-        for(String extraService: reservationDTO.getExtraServiceCollection()){
-            extraServices.add(reservationManager.getExtraServicesByName(extraService));
-        }
+
         reservation.setExtra_service(extraServices);
-        reservation.setTotalPrice(calculateTotalPrice());
+
+        double extraServicesTotalPrice = 0;
+        for (String extraService : reservationDTO.getExtraServiceCollection()) {
+            ExtraService extra =  reservationManager.getExtraServiceByName(extraService);
+            extraServicesTotalPrice += extra.getPrice();
+            extraServices.add(extra);
+        }
+        reservation.setTotalPrice(calculateTotalPrice(reservation.getStartDate(),reservation.getEndDate(),hall.getPrice(),reservation.getGuestsNumber(),extraServicesTotalPrice));
         reservationManager.editReservation(reservation);
     }
 
@@ -183,14 +188,14 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
         }
         return new ArrayList<>(dates);
     }
-    
-    private double calculateTotalPrice() {
-        long rentedTime = DateFormatter.getHours(reservation.getStartDate(),reservation.getEndDate());
-        double totalPrice = hall.getPrice() * rentedTime * reservation.getGuestsNumber();
-        for (ExtraService ext : this.reservation.getExtra_service()) {
-           totalPrice+=ext.getPrice();
-        }
-        totalPrice = new BigDecimal(totalPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        return totalPrice;
+
+    public double calculateTotalPrice(LocalDateTime startDate,LocalDateTime endDate,double hallPrice,
+                                      Long numberOfGuests, double extraServicesTotalPrice) {
+        long rentedTime = DateFormatter.getHours(startDate,endDate);
+        double price;
+        price = hallPrice * rentedTime * numberOfGuests;
+        price += extraServicesTotalPrice;
+        price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return price;
     }
 }

@@ -83,7 +83,10 @@
                               validatorMessage="#{msg['page.editreservation.enddate.validator']}"
                               locale="#{msg['page.editreservation.calendar.language']}" converterMessage="#{msg['page.editreservation.enddate.converter']}"
                               pattern="yyyy-MM-dd HH:mm:ss" />
-
+                <h:outputText id="totalPrice"  value="#{msg['page.createreservation.totalprice.value']} : #{editReservationController.reservationDTO.totalPrice} PLN" />
+                <p:commandButton id="calculatePrice" value="#{msg['page.createreservation.button.calculateprice']}" action="#{editReservationController.calculateTotalPrice()}" onclick="document.getElementById('calculatePrice').dblclick(); ">
+                    <p:ajax update="totalPrice"/>
+                </p:commandButton>
 
             </p:panelGrid>
             <h:panelGrid columnClasses="value">

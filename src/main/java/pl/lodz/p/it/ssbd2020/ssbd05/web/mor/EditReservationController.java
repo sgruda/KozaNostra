@@ -177,5 +177,23 @@ public class EditReservationController implements Serializable {
         return "goToDetails";
     }
 
-
+    public double calculateTotalPrice() {
+        double price = 0;
+        for (ExtraServiceDTO ext : extraServices) {
+            for (int i = 0; i < selectedExtraServices.size(); i++) {
+                if (ext.getServiceName().equals(selectedExtraServices.get(i)))
+                    price += ext.getPrice();
+            }
+        }
+        if(startDate.isAfter(endDate)){
+            price = 0;
+            reservationDTO.setTotalPrice(price);
+            ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
+        }else{
+            Long numberOfGuests = reservationDTO.getGuestsNumber();
+            price = this.editReservationEndpointLocal.calculateTotalPrice(startDate, endDate, hallDTO.getPrice(), Long.valueOf(numberOfGuests), price);
+            reservationDTO.setTotalPrice(price);
+        }
+        return price;
+    }
 }
