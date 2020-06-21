@@ -61,8 +61,9 @@
                               lang="#{msg['page.createreservation.calendar.language']}"
                               minValue="#{createReservationController.today.plusMinutes(1)}"
                               requiredMessage="#{msg['page.createreservation.startdate.required']}"
+                              validatorMessage="#{msg['page.createreservation.startdate.validator']}"
                               locale="#{msg['page.createreservation.calendar.language']}"
-                              pattern="yyyy-MM-dd HH:mm:ss">
+                              pattern="yyyy-MM-dd HH:mm:ss" converterMessage="#{msg['page.createreservation.startdate.converter']}">
                 </p:datePicker>
                 <p:outputLabel for="until" value="#{msg['page.createreservation.end.date']}"/>
                 <p:datePicker id="until" value="#{createReservationController.endDate}" showTime="true" required="true"
@@ -71,7 +72,7 @@
                               minValue="#{createReservationController.event.startDate}"
                               requiredMessage="#{msg['page.createreservation.enddate.required']}"
                               validatorMessage="#{msg['page.createreservation.enddate.validator']}"
-                              locale="#{msg['page.createreservation.calendar.language']}"
+                              locale="#{msg['page.createreservation.calendar.language']}" converterMessage="#{msg['page.createreservation.enddate.converter']}"
                               pattern="yyyy-MM-dd HH:mm:ss">
                 </p:datePicker>
                 <p:outputLabel for="calculatePrice" id="totalPrice"  value="#{msg['page.createreservation.totalprice.value']} : #{createReservationController.calculateTotalPrice()}" />
