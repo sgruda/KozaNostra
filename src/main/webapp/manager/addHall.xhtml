@@ -23,65 +23,58 @@
     <ui:define name = "content">
         <h:form id="addHallForm">
             <p:panel id="addHallPanel" header="#{msg['page.template.manager.addhall']}" style="font-size: 24px;">
-                <p:panelGrid id="addHallPanelGrid" columns="1" style="max-width: 60vw">
-                    <h:outputLabel for="name" value="#{msg['page.addhall.name']} * ">
-                        <p:inputText id="name" required="true"
-                                     value="#{addHallController.hall.name}"
-                                     requiredMessage="#{msg['page.addhall.name.required']}"
-                                     validatorMessage="#{msg['page.addhall.name.validator']}">
-                            <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
-                            <f:validateLength minimum="1" maximum="32"/>
-                        </p:inputText>
-                    </h:outputLabel>
+                <p:panelGrid id="addHallPanelGrid" columns="2" style="max-width: 60vw">
+                    <h:outputLabel for="name" value="#{msg['page.addhall.name']} *"/>
+                    <p:inputText id="name" required="true"
+                                 value="#{addHallController.hall.name}"
+                                 requiredMessage="#{msg['page.addhall.name.required']}"
+                                 validatorMessage="#{msg['page.addhall.name.validator']}">
+                        <f:validateRegex pattern="[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]+"/>
+                        <f:validateLength minimum="1" maximum="32"/>
+                    </p:inputText>
 
-                    <h:outputLabel for="description" value="#{msg['page.addhall.description']} * ">
-                        <p:inputTextarea id="description" required="true"
-                                     value="#{addHallController.hall.description}"
-                                     requiredMessage="#{msg['page.addhall.description.required']}"
-                                     validatorMessage="#{msg['page.addhall.description.validator']}" rows="1" cols="40" maxlength="512">
-                            <f:validateRegex pattern="[ 0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\-]+"/>
-                            <f:validateLength minimum="1" maximum="512"/>
-                        </p:inputTextarea>
-                    </h:outputLabel>
+                    <h:outputLabel for="description" value="#{msg['page.addhall.description']} *"/>
+                    <p:inputTextarea id="description" required="true"
+                                 value="#{addHallController.hall.description}"
+                                 requiredMessage="#{msg['page.addhall.description.required']}"
+                                 validatorMessage="#{msg['page.addhall.description.validator']}" rows="1" cols="40" maxlength="512">
+                        <f:validateRegex pattern="[ 0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\-]+"/>
+                        <f:validateLength minimum="1" maximum="512"/>
+                    </p:inputTextarea>
 
-                    <h:outputLabel for="capacity" value="#{msg['page.addhall.capacity']} * ">
-                        <p:inputNumber id="capacity" required="true"
-                                       value="#{addHallController.hall.capacity}"
-                                       requiredMessage="#{msg['page.addhall.capacity.required']}"
-                                       minValue="1" maxValue="9999999">
-                        </p:inputNumber>
-                    </h:outputLabel>
+                    <h:outputLabel for="capacity" value="#{msg['page.addhall.capacity']} *"/>
+                    <p:inputNumber id="capacity" required="true"
+                                   value="#{addHallController.hall.capacity}"
+                                   requiredMessage="#{msg['page.addhall.capacity.required']}"
+                                   minValue="1" maxValue="9999999">
+                    </p:inputNumber>
 
-                    <h:outputLabel for="area" value="#{msg['page.addhall.area']} * ">
-                        <p:inputNumber id="area" required="true"
-                                       value="#{addHallController.hall.area}"
-                                       requiredMessage="#{msg['page.addhall.area.required']}"
-                                       validatorMessage="#{msg['page.addhall.area.validator']}"
-                                       symbol=" m&#178;" symbolPosition="s" decimalPlaces="2" decimalSeparator=","
-                                       minValue="0.01" maxValue="9999999.99">
-                        </p:inputNumber>
-                    </h:outputLabel>
+                    <h:outputLabel for="area" value="#{msg['page.addhall.area']} *"/>
+                    <p:inputNumber id="area" required="true"
+                                   value="#{addHallController.hall.area}"
+                                   requiredMessage="#{msg['page.addhall.area.required']}"
+                                   validatorMessage="#{msg['page.addhall.area.validator']}"
+                                   symbol=" m&#178;" symbolPosition="s" decimalPlaces="2" decimalSeparator=","
+                                   minValue="0.01" maxValue="9999999.99">
+                    </p:inputNumber>
 
-                    <h:outputLabel for="price" value="#{msg['page.addhall.price']} * ">
-                        <p:inputNumber id="price" required="true"
-                                       value="#{addHallController.hall.price}"
-                                       requiredMessage="#{msg['page.addhall.price.required']}"
-                                       validatorMessage="#{msg['page.addhall.price.validator']}"
-                                       symbol=" PLN" symbolPosition="s" decimalPlaces="2" decimalSeparator=","
-                                       minValue="0.01" maxValue="9999999.99">
-                        </p:inputNumber>
-                    </h:outputLabel>
+                    <h:outputLabel for="price" value="#{msg['page.addhall.price']} *"/>
+                    <p:inputNumber id="price" required="true"
+                                   value="#{addHallController.hall.price}"
+                                   requiredMessage="#{msg['page.addhall.price.required']}"
+                                   validatorMessage="#{msg['page.addhall.price.validator']}"
+                                   symbol=" PLN" symbolPosition="s" decimalPlaces="2" decimalSeparator=","
+                                   minValue="0.01" maxValue="9999999.99">
+                    </p:inputNumber>
 
-                    <h:outputLabel for="active" value="#{msg['page.addhall.activelabel']} ">
-                        <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}"/>
-                    </h:outputLabel>
+                    <h:outputLabel for="active" value="#{msg['page.addhall.activelabel']}"/>
+                    <p:selectBooleanCheckbox id="active" value="#{addHallController.hall.active}"/>
 
                     <h:form id="newAddressForm">
-                        <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']} ">
-                            <p:commandButton id="newAddress" action="#{addHallController.toggleNewAddress}" value="#{addHallController.translateBoolean()}" immediate="true" style="background-color: #585858; border-color: #585858;">
-                                <f:ajax render=":newAddressGroup"/>
-                            </p:commandButton>
-                        </h:outputLabel>
+                        <h:outputLabel for="newAddress" value="#{msg['page.addhall.newaddresslabel']} "/>
+                        <p:commandButton id="newAddress" action="#{addHallController.toggleNewAddress}" value="#{addHallController.translateBoolean()}" immediate="true" style="background-color: #585858; border-color: #585858;">
+                            <f:ajax render=":newAddressGroup"/>
+                        </p:commandButton>
                     </h:form>
 
                     <h:panelGroup id="newAddressGroup">
@@ -94,16 +87,18 @@
                                 <f:validateLength minimum="1" maximum="32"/>
                             </p:inputText>
                         </h:outputLabel>
-
-                        <h:outputLabel for="streetNo" value="&#8195;#{msg['page.addhall.streetNo']} * " rendered="#{addHallController.newAddress}">
+                        <h:outputText value="&lt;br/&gt;" escape="false" rendered="#{addHallController.newAddress}"/>
+                        <h:outputText value="&lt;br/&gt;" escape="false" rendered="#{addHallController.newAddress}"/>
+                        <h:outputLabel for="streetNo" value="#{msg['page.addhall.streetNo']} * " rendered="#{addHallController.newAddress}">
                             <p:inputNumber id="streetNo" required="true"
                                            value="#{addHallController.address.streetNo}"
                                            requiredMessage="#{msg['page.addhall.streetNo.required']}"
                                            minValue="1" maxValue="9999999">
                             </p:inputNumber>
                         </h:outputLabel>
-
-                        <h:outputLabel for="city" value="&#8195;#{msg['page.addhall.city']} * " rendered="#{addHallController.newAddress}">
+                        <h:outputText value="&lt;br/&gt;" escape="false" rendered="#{addHallController.newAddress}"/>
+                        <h:outputText value="&lt;br/&gt;" escape="false" rendered="#{addHallController.newAddress}"/>
+                        <h:outputLabel for="city" value="#{msg['page.addhall.city']} * " rendered="#{addHallController.newAddress}">
                             <p:inputText id="city" required="true"
                                          value="#{addHallController.address.city}"
                                          requiredMessage="#{msg['page.addhall.city.required']}"
@@ -120,13 +115,12 @@
                         </h:outputLabel>
                     </h:panelGroup>
 
-                    <h:outputLabel for="eventTypes" value="#{msg['page.hall.eventtypes']} * ">
-                        <p:selectManyCheckbox id="eventTypes" required="true" requiredMessage="#{msg['page.addhall.eventtypes.required']}" value="#{addHallController.eventTypes}">
-                            <c:forEach items="#{addHallController.eventTypes}" var="eventType">
-                                <f:selectItem itemLabel="#{addHallController.translateEventType(eventType)}" itemValue="#{eventType}"/>
-                            </c:forEach>
-                        </p:selectManyCheckbox>
-                    </h:outputLabel>
+                    <h:outputLabel for="eventTypes" value="#{msg['page.hall.eventtypes']} *"/>
+                    <p:selectManyCheckbox id="eventTypes" required="true" requiredMessage="#{msg['page.addhall.eventtypes.required']}" value="#{addHallController.eventTypes}">
+                        <c:forEach items="#{addHallController.eventTypes}" var="eventType">
+                            <f:selectItem itemLabel="#{addHallController.translateEventType(eventType)}" itemValue="#{eventType}"/>
+                        </c:forEach>
+                    </p:selectManyCheckbox>
                 </p:panelGrid>
 
                 <div style="display:flex; flex-direction: column;">
