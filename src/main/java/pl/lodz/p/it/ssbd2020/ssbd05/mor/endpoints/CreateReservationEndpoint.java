@@ -85,7 +85,7 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
         List<UnavailableDate> dates = new ArrayList<>();
         for (ReservationDTO res : list) {
-            if (res.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name())) {
+            if (!res.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name())) {
                 if (res.getHallName().equalsIgnoreCase(hallName)) {
                     dates.add(new UnavailableDate(LocalDateTime.parse(res.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                             LocalDateTime.parse(res.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
