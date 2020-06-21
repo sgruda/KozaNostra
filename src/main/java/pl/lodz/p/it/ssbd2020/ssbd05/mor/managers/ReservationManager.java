@@ -7,10 +7,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.StatusNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
@@ -21,9 +19,9 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +36,8 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private ReservationFacade reservationFacade;
-
+    @Inject
+    private ReservationSerializableFacade reservationSerializableFacade;
     @Inject
     private EventTypesFacade eventTypesFacade;
 
@@ -135,10 +134,34 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("createReservation")
-    public void createReservation(Reservation reservation) throws AppBaseException{
-        reservationFacade.create(reservation);
+    public void createReservation(Reservation reservation) throws AppBaseException {
+        checkIfHallChanged(reservation);
+        checkIfDatesOverlap(reservation);
+        reservationSerializableFacade.create(reservation);
     }
 
+    private void checkIfDatesOverlap(Reservation reservation) throws AppBaseException {
+        List<Reservation> reservationsOnHall = reservationFacade.findAll().stream()
+                .filter(r -> r.getHall().getName().equals(reservation.getHall().getName()))
+                .collect(Collectors.toList());
+        for (Reservation r : reservationsOnHall) {
+            if (reservation.getStartDate().isBefore(r.getEndDate())
+                    && reservation.getEndDate().isAfter(r.getStartDate())) {
+                throw new DateOverlapException();
+            }
+        }
+    }
+
+    private void checkIfHallChanged(Reservation reservation) throws AppBaseException {
+        Optional<Hall> hallOptional = hallFacade.findByName(reservation.getHall().getName());
+        if(hallOptional.isEmpty()){
+            throw new HallNotFoundException();
+        }else {
+            if(reservation.getHall().compareTo(hallOptional.get()) != 0){
+                throw new AppOptimisticLockException();
+            }
+        }
+    }
     /**
      * Metoda odpowiedzialna za pobranie wszystkich rezerwacji użytkownika
      *
@@ -248,7 +271,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
-        reservationFacade.edit(reservation);
+        reservationSerializableFacade.edit(reservation);
     }
 
 

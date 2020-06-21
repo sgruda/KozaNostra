@@ -5,7 +5,9 @@ import lombok.Setter;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +36,7 @@ import java.util.Collection;
                 "OR LOWER(h.address.city) LIKE CONCAT('%', LOWER(:filter), '%')")
 
 })
-public class Hall implements Serializable {
+public class Hall implements Serializable, Comparable<Hall> {
 
     private static final long serialVersionUID = 1L;
 
@@ -132,4 +134,23 @@ public class Hall implements Serializable {
         return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall[ id=" + id + " version=" + version + " ]";
     }
 
+    @Override
+    public int compareTo(Hall o) {
+        if(this.capacity != o.getCapacity() ||
+            this.price != o.getPrice() ||
+            this.active != (o.isActive() ||
+            this.area != o.getArea()) ||
+            !this.name.equals(o.getName()) ||
+            !this.description.equals(o.getDescription())) {
+            return 1;
+        } else {
+            if (this.event_type.size() == o.getEvent_type().size()) {
+                for (EventType eventType : this.event_type) {
+                    if(!o.getEvent_type().contains(eventType))
+                        return 1;
+                }
+            } else return 1;
+        }
+        return 0;
+    }
 }

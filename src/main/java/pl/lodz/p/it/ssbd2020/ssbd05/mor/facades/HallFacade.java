@@ -3,9 +3,9 @@ package pl.lodz.p.it.ssbd2020.ssbd05.mor.facades;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.abstraction.AbstractFacade;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
-import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.DatabaseConnectionException;
+import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
@@ -14,7 +14,10 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,7 +88,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     @RolesAllowed("getHallByName")
     public Optional<Hall> findByName(String name) throws AppBaseException {
         try {
-            return Optional.ofNullable(this.em.createNamedQuery("Hall.findByName", Hall.class).setLockMode(LockModeType.PESSIMISTIC_FORCE_INCREMENT)
+            return Optional.ofNullable(this.em.createNamedQuery("Hall.findByName", Hall.class)
                     .setParameter("name", name).getSingleResult());
         } catch (NoResultException noResultException) {
             return Optional.empty();

@@ -51,23 +51,9 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     }
 
     @Override
-    @RolesAllowed("createReservation")
+    @DenyAll
     public void create(Reservation entity) throws AppBaseException {
-        try {
             super.create(entity);
-        } catch (DatabaseException ex) {
-            if (ex.getCause() instanceof SQLNonTransientConnectionException) {
-                throw new DatabaseConnectionException(ex);
-            } else {
-                throw new DatabaseQueryException(ex);
-            }
-        } catch (PersistenceException e) {
-            if (e.getMessage().contains("reservation_overlap_dates_ck")) {
-                throw new DateOverlapException();
-            } else {
-                throw new DatabaseQueryException(e);
-            }
-        }
     }
 
     @Override
