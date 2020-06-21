@@ -33,7 +33,7 @@
                                      action="#{listExtraServicesController.changeActivity(extraService)}" />
                 </p:column>
                 <p:column headerText="#{msg['page.listextraservices.edit']}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}">
-                <p:commandButton id="goEditPage" value="#{msg['page.listextraservices.goToEditPage']}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}" disabled="#{!extraService.active}"
+                <p:commandButton id="goEditPage" value="#{msg['page.listextraservices.goToEditPage']}" rendered="#{roleController.isSelectedRole(roleController.getRoleManager())}" disabled="#{extraService.active}"
                                  action="#{listExtraServicesController.goToEditPage(extraService.getServiceName())}"/>
                 </p:column>
 
