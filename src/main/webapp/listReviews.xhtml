@@ -12,24 +12,26 @@
     <ui:define name = "content">
         <div id="pagination">
             <h:form id="reviews-form-nav">
-                <p:commandButton styleClass="reviews-nav-button" type="submit" ajax="false" id="prevpage" action="#{listReviewsController.previousPage}" disabled="#{!listReviewsController.displayPreviousPage()}" value="&#60;"/>
+                <p:commandButton styleClass="reviews-nav-button-prev" type="submit" ajax="false" id="prevpage" action="#{listReviewsController.previousPage}" disabled="#{!listReviewsController.displayPreviousPage()}" value="&#60;"/>
                 <h:outputText styleClass="reviews-nav-text" value="#{msg['page.reviews.page']}"/>
                 <p:inputNumber styleClass="reviews-nav" id="review-page-number" value="#{listReviewsController.currentPage}" size="#{listReviewsController.pagesDigits + 1}" onchange="this.form.submit();" immediate="true"/>
                 <h:outputText styleClass="reviews-nav-text" value="#{msg['page.reviews.pageof']}"/>
-                <h:outputText styleClass="reviews-nav-text" value="#{listReviewsController.pages}"/>
-                <p:commandButton styleClass="reviews-nav-button"  type="submit" ajax="false" id="nextpage" action="#{listReviewsController.nextPage}" disabled="#{!listReviewsController.displayNextPage()}" value="&#62;"/>
+                <h:outputText styleClass="reviews-nav-text-number" value="#{listReviewsController.pages}"/>
+                <p:commandButton styleClass="reviews-nav-button-next"  type="submit" ajax="false" id="nextpage" action="#{listReviewsController.nextPage}" disabled="#{!listReviewsController.displayNextPage()}" value="&#62;"/>
             </h:form>
             <div id="reviews-div-perpage">
-                <h:outputText styleClass="reviews-nav" value="#{msg['page.reviews.perpage']}"/>
                 <h:form id="reviews-form-perpage">
-                    <p:selectOneMenu id="reviewPerPage" value="#{listReviewsController.reviewsPerPage}" valueChangeListener="#{listReviewsController.updatePageReviews}" onchange="this.form.submit();" immediate="true">
-                        <f:selectItem itemLabel="2" itemValue="2"/>
-                        <f:selectItem itemLabel="5" itemValue="5"/>
-                        <f:selectItem itemLabel="10" itemValue="10"/>
-                    </p:selectOneMenu>
-                    <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
-                        <p:button outcome="/client/addReview.xhtml" value="#{msg['page.addreview.title']}"/>
-                    </c:if>
+                    <div id ="reviews-form-inside">
+                        <h:outputText styleClass="reviews-nav" value="#{msg['page.reviews.perpage']}"/>
+                        <p:selectOneMenu id="reviewPerPage" value="#{listReviewsController.reviewsPerPage}" valueChangeListener="#{listReviewsController.updatePageReviews}" onchange="this.form.submit();" immediate="true">
+                            <f:selectItem itemLabel="2" itemValue="2"/>
+                            <f:selectItem itemLabel="5" itemValue="5"/>
+                            <f:selectItem itemLabel="10" itemValue="10"/>
+                        </p:selectOneMenu>
+                        <c:if test="#{roleController.selectedRole.equalsIgnoreCase(roleController.getRoleClient())}">
+                            <p:button styleClass="add-review-button" outcome="/client/addReview.xhtml" value="#{msg['page.addreview.title']}"/>
+                        </c:if>
+                    </div>
                 </h:form>
             </div>
         </div>

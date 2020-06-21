@@ -166,8 +166,20 @@ fieldset > legend{
     margin-bottom: auto;
 }
 
-.reviews-nav-text{
-    margin: 0 0.5em;
+.reviews-nav-text-number{
+    margin-left: 0.25em;
+}
+
+.reviews-nav{
+    margin: 0 0.25em;
+}
+
+.reviews-nav-button-prev{
+    margin-right: 0.5em !important;
+}
+
+.reviews-nav-button-next{
+    margin-left: 0.5em !important;
 }
 
 #reviews-div-perpage{
@@ -177,8 +189,23 @@ fieldset > legend{
     margin-left: 1em;
 }
 
-#reviews-form-perpage{
-    margin-top: 0.3em
+#reviews-form-nav{
+    margin-top: 0.32em;
+}
+#reviews-form-nav:prevpage{
+    margin-right: 0.5em;
+}
+#reviews-form-nav:nextpage{
+    margin: 0 0.5em;
+}
+#reviews-form-inside{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.add-review-button{
+    margin-left: 0.5em !important;
 }
 
 #add-review-div{
