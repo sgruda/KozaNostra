@@ -17,6 +17,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.CreateReservationEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ExtraServiceManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
@@ -56,6 +57,10 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
     @Setter
     private Hall hall;
 
+    @Getter
+    @Setter
+    private List<ExtraService> extraServiceList;
+
     @Override
     @RolesAllowed("getUnavailableDates")
     public List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException {
@@ -80,9 +85,11 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
         List<UnavailableDate> dates = new ArrayList<>();
         for (ReservationDTO res : list) {
-            if (res.getHallName().equalsIgnoreCase(hallName)) {
-                dates.add(new UnavailableDate(LocalDateTime.parse(res.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                        LocalDateTime.parse(res.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+            if (!res.getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name())) {
+                if (res.getHallName().equalsIgnoreCase(hallName)) {
+                    dates.add(new UnavailableDate(LocalDateTime.parse(res.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                            LocalDateTime.parse(res.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                }
             }
         }
         return new ArrayList<>(dates);
@@ -123,7 +130,8 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
         boolean rollback;
         do {
             try {
-                list = ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(extraServiceManager.getAllExtraServices());
+                this.extraServiceList = extraServiceManager.getAllExtraServices();
+                list = ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(this.extraServiceList);
                 rollback = reservationManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
                 log.warning("EJBTransactionRolledBack");
@@ -155,20 +163,24 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
         double extraServicesTotalPrice = 0;
         for (String extraService : reservationDTO.getExtraServiceCollection()) {
-            ExtraService extra =  reservationManager.getExtraServiceByName(extraService);
-            extraServicesTotalPrice += extra.getPrice();
-            selectedExtraService.add(extra);
+            for(ExtraService extra : this.extraServiceList){
+                if(extra.getServiceName().equalsIgnoreCase(extraService)){
+                    extraServicesTotalPrice += extra.getPrice();
+                    selectedExtraService.add(extra);
+                }
+            }
         }
         if (selectedExtraService.size() > 0) {
             reservation.setExtra_service(selectedExtraService);
         }
+
         reservation.setEventType(reservationManager.getEventTypeByName(reservationDTO.getEventTypeName()));
         reservation.setGuestsNumber(reservationDTO.getGuestsNumber());
         reservation.setStatus(reservationManager.getStatusByName(reservationDTO.getStatusName()));
 
 
         reservation.setHall(hall);
-        reservation.setTotalPrice(calculateTotalPrice(reservation.getStartDate(),reservation.getEndDate(),hall.getPrice(), reservation.getGuestsNumber(), extraServicesTotalPrice));
+        reservation.setTotalPrice(calculateTotalPrice(reservation.getStartDate(), reservation.getEndDate(), hall.getPrice(), reservation.getGuestsNumber(), extraServicesTotalPrice));
         reservation.setReservationNumber(reservationDTO.getReservationNumber());
 
 
@@ -194,9 +206,9 @@ public class CreateReservationEndpoint implements Serializable, CreateReservatio
 
     @Override
     @RolesAllowed("createReservation")
-    public double calculateTotalPrice(LocalDateTime startDate,LocalDateTime endDate,double hallPrice,
+    public double calculateTotalPrice(LocalDateTime startDate, LocalDateTime endDate, double hallPrice,
                                       Long numberOfGuests, double extraServicesTotalPrice) {
-        long rentedTime = DateFormatter.getHours(startDate,endDate);
+        long rentedTime = DateFormatter.getHours(startDate, endDate);
         double price;
         price = hallPrice * rentedTime * numberOfGuests;
         price += extraServicesTotalPrice;
