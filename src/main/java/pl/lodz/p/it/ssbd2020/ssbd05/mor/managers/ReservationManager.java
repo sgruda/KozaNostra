@@ -138,27 +138,6 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("createReservation")
     public void createReservation(Reservation reservation) throws AppBaseException {
-        checkIfExtraServiceHasChanged(reservation);
-        checkIfHallChanged(reservation);
-        checkIfDatesOverlap(reservation);
-        reservationSerializableFacade.create(reservation);
-    }
-
-    private void checkIfDatesOverlap(Reservation reservation) throws AppBaseException {
-        List<Reservation> reservationsOnHall = reservationSerializableFacade.findAll().stream()
-                .filter(r -> r.getHall().getName().equals(reservation.getHall().getName()))
-                .collect(Collectors.toList());
-        for (Reservation r : reservationsOnHall) {
-            if (!r.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name()) && !r.getId().equals(reservation.getId())) {
-                if (reservation.getStartDate().isBefore(r.getEndDate())
-                        && reservation.getEndDate().isAfter(r.getStartDate())) {
-                    throw new DateOverlapException();
-                }
-            }
-        }
-    }
-
-    private void checkIfExtraServiceHasChanged(Reservation reservation) throws  AppBaseException{
         List<ExtraService> extraServices = new ArrayList<>();
         ExtraService extraService;
         for(ExtraService e : reservation.getExtra_service()) {
@@ -176,9 +155,6 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
                 }
             }
         }
-    }
-
-    private void checkIfHallChanged(Reservation reservation) throws AppBaseException {
         Optional<Hall> hallOptional = hallFacadeSerializable.findByName(reservation.getHall().getName());
         if (hallOptional.isEmpty()) {
             throw new HallNotFoundException();
@@ -187,8 +163,20 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
                 throw new AppOptimisticLockException();
             }
         }
+        List<Reservation> reservationsOnHall = reservationSerializableFacade.findAll().stream()
+                .filter(r -> r.getHall().getName().equals(reservation.getHall().getName()))
+                .collect(Collectors.toList());
+        for (Reservation r : reservationsOnHall) {
+            if (!r.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name()) && !r.getId().equals(reservation.getId())) {
+                if (reservation.getStartDate().isBefore(r.getEndDate())
+                        && reservation.getEndDate().isAfter(r.getStartDate())) {
+                    throw new DateOverlapException();
+                }
+            }
+        }
+        reservationSerializableFacade.create(reservation);
     }
-
+    
     /**
      * Metoda odpowiedzialna za pobranie wszystkich rezerwacji użytkownika
      *
@@ -298,9 +286,42 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
-        checkIfHallChanged(reservation);
-        checkIfExtraServiceHasChanged(reservation);
-        checkIfDatesOverlap(reservation);
+        Optional<Hall> hallOptional = hallFacadeSerializable.findByName(reservation.getHall().getName());
+        if (hallOptional.isEmpty()) {
+            throw new HallNotFoundException();
+        } else {
+            if (reservation.getHall().compareTo(hallOptional.get()) != 0) {
+                throw new AppOptimisticLockException();
+            }
+        }
+        List<ExtraService> extraServices = new ArrayList<>();
+        ExtraService extraService;
+        for(ExtraService e : reservation.getExtra_service()) {
+            extraService = extraServiceFacadeSerializable.findByName(e.getServiceName()).get();
+            extraServices.add(extraService);
+        }
+        if(reservation.getExtra_service().size() != extraServices.size())
+            throw new AppOptimisticLockException();
+        for(ExtraService serviceFromReservation : reservation.getExtra_service()) {
+            for(ExtraService serviceFromHall : extraServices) {
+                if (serviceFromHall.getServiceName().equals(serviceFromReservation.getServiceName())) {
+                    if (serviceFromHall.compareTo(serviceFromReservation) != 0) {
+                        throw new AppOptimisticLockException();
+                    }
+                }
+            }
+        }
+        List<Reservation> reservationsOnHall = reservationSerializableFacade.findAll().stream()
+                .filter(r -> r.getHall().getName().equals(reservation.getHall().getName()))
+                .collect(Collectors.toList());
+        for (Reservation r : reservationsOnHall) {
+            if (!r.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name()) && !r.getId().equals(reservation.getId())) {
+                if (reservation.getStartDate().isBefore(r.getEndDate())
+                        && reservation.getEndDate().isAfter(r.getStartDate())) {
+                    throw new DateOverlapException();
+                }
+            }
+        }
         reservationSerializableFacade.edit(reservation);
     }
 
