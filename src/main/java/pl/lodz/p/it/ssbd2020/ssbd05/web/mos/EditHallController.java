@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Kontroler odpowiedzialny za edycję danych sali przez użytkownika o poziomie dostępu menadżer
+ * Kontroler odpowiedzialny za edycję danych sali przez użytkownika o poziomie dostępu Menadżer
  */
 @Log
 @Getter

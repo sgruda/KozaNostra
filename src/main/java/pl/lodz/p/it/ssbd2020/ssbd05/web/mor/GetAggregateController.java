@@ -21,7 +21,7 @@ import java.text.MessageFormat;
 public class GetAggregateController {
 
     @Inject
-    GetAggregateEndpointLocal aggregateEndpoint;
+    private GetAggregateEndpointLocal aggregateEndpoint;
 
     private AverageGuestNumberDTO dto;
 

@@ -31,6 +31,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Kontroler odpowiedzialny za edycję złożonej rezerwacji przez użytkownika z poziomem dostępu Klient
+ */
 @Log
 @Named
 @ViewScoped
@@ -63,7 +66,9 @@ public class EditReservationController implements Serializable {
     private LocalDateTime endDate;
 
 
-
+    /**
+     * Wczytanie danych dotyczących wybranej rezerwacji
+     */
     @PostConstruct
     public void init() {
         try {
@@ -100,6 +105,9 @@ public class EditReservationController implements Serializable {
 
     }
 
+    /**
+     * Edycja rezerwacji
+     */
     public void editReservation() {
 
         reservationDTO.setEventTypeName(eventTypeName);
@@ -149,12 +157,20 @@ public class EditReservationController implements Serializable {
     private boolean datesRenderd = true;
 
 
+    /**
+     * Metoda wywoływana przy kliknięciu na komponent p:schedule w warstwie prezentacji
+     *
+     * @param selectEvent Wybrany obiekt typu SelectEvent
+     */
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
         event = DefaultScheduleEvent.builder().startDate(selectEvent.getObject()).endDate(selectEvent.getObject()).overlapAllowed(false).editable(false).build();
         startDate=event.getStartDate();
         endDate=event.getEndDate();
     }
 
+    /**
+     * Dodaj zdarzenie
+     */
     public void addEvent(){
         if(event.getId() == null)
             eventModel.addEvent(event);
@@ -167,10 +183,21 @@ public class EditReservationController implements Serializable {
 
     }
 
+    /**
+     * Wyświetl nazwę typu imprezy
+     *
+     * @param eventTypeName Nazwa typu imprezy
+     * @return Zinternacjonalizowany ciąg znaków
+     */
     public String translateExtraService(String eventTypeName) {
         return ResourceBundles.getTranslatedText(eventTypeName);
     }
 
+    /**
+     * Wróć na poprzednią stronę
+     *
+     * @return Ciąg znaków przenoszący na stronę ze szczegółami wybranej rezerwacji
+     */
     public String goBack(){
         return "goToDetails";
     }

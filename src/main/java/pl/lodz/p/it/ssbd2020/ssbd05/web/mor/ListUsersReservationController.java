@@ -28,9 +28,9 @@ public class ListUsersReservationController implements Serializable {
 
 
     @Inject
-    ListUserReservationsEndpointLocal userReservationsEndpointLocal;
+    private ListUserReservationsEndpointLocal userReservationsEndpointLocal;
 
-    List<ReservationDTO> usersReservations;
+    private List<ReservationDTO> usersReservations;
 
     private ResourceBundles resourceBundles;
     /**
