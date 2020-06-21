@@ -30,10 +30,10 @@ import java.util.stream.Collectors;
 public class AddReviewController implements Serializable {
 
     @Inject
-    ListUserReservationsEndpointLocal userReservationsEndpoint;
+    private ListUserReservationsEndpointLocal userReservationsEndpoint;
 
     @Inject
-    AddReviewEndpointLocal addReviewEndpoint;
+    private AddReviewEndpointLocal addReviewEndpoint;
 
     @Getter
     @Setter

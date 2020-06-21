@@ -23,7 +23,6 @@ import static pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter.formatDate;
 @Log
 @Named
 @ConversationScoped
-
 public class LastLoginController implements Serializable {
     @Inject
     private Conversation conversation;

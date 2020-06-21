@@ -6,7 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import javax.ejb.Local;
 
 /**
- * Interfejs dla punktu dostępowego ReservationDetailsEndpoint pośredniczącemu
+ * Interfejs dla punktu dostępowego ReservationDetailsEndpoint pośredniczącego
  * przy wyświetlaniu szczegółów wybranej rezerwacji
  */
 @Local

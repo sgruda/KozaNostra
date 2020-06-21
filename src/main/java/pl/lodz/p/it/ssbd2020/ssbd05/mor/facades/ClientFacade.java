@@ -23,6 +23,9 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Klasa fasady dla encji Client
+ */
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
 @Stateless(name = "ClientFacadeMOR")
 @LocalBean
@@ -37,10 +40,20 @@ public class ClientFacade extends AbstractFacade<Client> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy klasy ClientFacade
+     */
     public ClientFacade() {
         super(Client.class);
     }
 
+    /**
+     * Znajdź po loginie
+     *
+     * @param login Login użytkownika o poziomie dostępu Klient
+     * @return Obiekt klasy Client
+     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
+     */
     @RolesAllowed("findByLogin")
     public Client findByLogin(String login) throws AppBaseException{
         try {

@@ -8,7 +8,7 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego AddHallEndpoint, pośredniczącemu
+ * Interfejs dla punktu dostępowego AddHallEndpoint, pośredniczącego
  * przy dodawaniu sali przez użytkownika o poziomie dostępu menadżer
  */
 @Local

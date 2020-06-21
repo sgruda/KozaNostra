@@ -6,8 +6,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import javax.ejb.Local;
 
 /**
- * Interfejs dla punktu dostępowego GetAggregateEndpoint, pośredniczącemu
- * przy pobieraniu z bazy obiektu encyjnego agregatu
+ * Interfejs dla punktu dostępowego GetAggregateEndpoint, pośredniczącego
+ * przy pobieraniu z bazy danych obiektu encyjnego agregatu
  */
 @Local
 public interface GetAggregateEndpointLocal {

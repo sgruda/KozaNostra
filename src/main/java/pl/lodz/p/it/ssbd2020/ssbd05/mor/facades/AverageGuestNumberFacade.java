@@ -46,12 +46,6 @@ public class AverageGuestNumberFacade extends AbstractFacade<AverageGuestNumber>
         super(AverageGuestNumber.class);
     }
 
-    /**
-     * Edytuj agregat
-     *
-     * @param entity obiekty encyjny typu AverageGuestNumber
-     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("changeReservationStatus")
     public void edit(AverageGuestNumber entity) throws AppBaseException {
@@ -70,13 +64,6 @@ public class AverageGuestNumberFacade extends AbstractFacade<AverageGuestNumber>
         return super.find(id);
     }
 
-
-    /**
-     * Metoda odpowiedzialna za pobranie wszystkich agregatów
-     *
-     * @return Lista obiektów typu AverageGuestNumber
-     * @throws AppBaseException Podstawowy wyjątek aplikacyjny
-     */
     @Override
     @PermitAll
     public List<AverageGuestNumber> findAll() throws AppBaseException {

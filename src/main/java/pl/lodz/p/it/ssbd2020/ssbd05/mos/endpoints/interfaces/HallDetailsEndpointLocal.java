@@ -6,7 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import javax.ejb.Local;
 
 /**
- * Interfejs dla punktu dostępowego HallDetailsEndpoint, pośredniczącemu
+ * Interfejs dla punktu dostępowego HallDetailsEndpoint, pośredniczącego
  * przy wyświetlaniu szczegółów wybranej sali
  */
 @Local

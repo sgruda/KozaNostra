@@ -18,6 +18,11 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 
+
+/**
+ * Punkt dostępowy odpowiedzialny za potwierdzanie konta użytkownika,
+ * dostarcza implementację interfejsu ConfirmAccountEndpointLocal
+ */
 @Log
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NEVER)

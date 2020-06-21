@@ -6,7 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import javax.ejb.Local;
 
 /**
- * Interfejs dla punktu dostępowego AccountDetailsEndpoint pośredniczącemu
+ * Interfejs dla punktu dostępowego AccountDetailsEndpoint pośredniczącego
  * przy wyświetlaniu szczegółów własnego konta oraz konta użytkownika wybranego przez administratora
  */
 @Local

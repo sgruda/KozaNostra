@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego ListHallsEndpoint, pośredniczącemu
+ * Interfejs dla punktu dostępowego ListHallsEndpoint, pośredniczącego
  * przy wyświetlaniu wszystkich sal w systemie oraz filtrowaniu ich
  */
 @Local

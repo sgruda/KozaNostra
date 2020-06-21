@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+/**
+ * Kontroler odpowiedzialny za zarządzanie rolami posiadanymi przez użytkownika w warstwie prezentacji
+ */
 @Named
 @Log
 @SessionScoped
@@ -32,10 +35,21 @@ public class RoleController implements Serializable {
     @Getter @Setter
     private Collection<String> roleList = new ArrayList<>();
 
+    /**
+     * Czy użytkownik posiada daną rolę
+     *
+     * @param role Nazwa roli
+     * @return Wartość logiczna
+     */
     public boolean isSelectedRole(String role) {
         return selectedRole.equalsIgnoreCase(role);
     }
 
+    /**
+     * Ustawia obecną rolę w warstwie prezentacji
+     *
+     * @param role Nazwa roli
+     */
     public void setCurrentRole(String role) {
         this.setSelectedRole(role);
         logRoleChange(role);
@@ -67,6 +81,11 @@ public class RoleController implements Serializable {
         log.info(sb.toString());
     }
 
+    /**
+     * Pobiera tablicę z nazwami wszystkich posiadanych przez użytkownika ról
+     *
+     * @return Tablica z nazwami ról
+     */
     public String[] getAllUserRoles() {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         List<String> roles = new ArrayList<>();
@@ -83,22 +102,47 @@ public class RoleController implements Serializable {
         return roles.toArray(new String[0]);
     }
 
+    /**
+     * Czy użytkownik posiada rolę Klient
+     *
+     * @return Wartość logiczna
+     */
     public boolean isInClientRole(){
         return roleList.contains(userRolesProperties.getProperty("roleClient"));
     }
 
+    /**
+     * Czy użytkownik posiada rolę Menadżer
+     *
+     * @return Wartość logiczna
+     */
     public boolean isInManagerRole(){
         return roleList.contains(userRolesProperties.getProperty("roleManager"));
     }
 
+    /**
+     * Czy użytkownik posiada rolę Administrator
+     *
+     * @return Wartość logiczna
+     */
     public boolean isInAdminRole(){
         return roleList.contains(userRolesProperties.getProperty("roleAdmin"));
     }
 
+    /**
+     * Pobiera ilość ról posiadanych przez użytkownika
+     *
+     * @return Ilość ról
+     */
     public int getAllUserRolesLength() {
         return getAllUserRoles().length;
     }
 
+    /**
+     * Pobiera motyw dla wybranej roli, metoda jest używana w deskryptorze web.xml
+     *
+     * @return Nazwa motywu
+     */
     public String getThemeForRole() {
         if(this.selectedRole.equalsIgnoreCase(userRolesProperties.getProperty("roleAdmin")))
             return userRolesProperties.getProperty("roleAdminThema");
@@ -108,7 +152,12 @@ public class RoleController implements Serializable {
             return userRolesProperties.getProperty("roleClientThema");
         else return userRolesProperties.getProperty("defaultThema");
     }
-    
+
+    /**
+     * Pobiera kolor nagłówka dla wybranej roli
+     *
+     * @return Nazwa koloru nagłówka
+     */
     public String getHeaderColorForRole() {
         if(this.selectedRole.equalsIgnoreCase(userRolesProperties.getProperty("roleAdmin")))
             return userRolesProperties.getProperty("roleAdminColor");
@@ -118,12 +167,30 @@ public class RoleController implements Serializable {
             return userRolesProperties.getProperty("roleClientColor");
         else return userRolesProperties.getProperty("defaultColor");
     }
+
+    /**
+     * Pobiera wewnętrzną nazwę roli Administrator
+     *
+     * @return Nazwa roli
+     */
     public String getRoleAdmin() {
         return userRolesProperties.getProperty("roleAdmin");
     }
+
+    /**
+     * Pobiera wewnętrzną nazwę roli Menadżer
+     *
+     * @return Nazwa roli
+     */
     public String getRoleManager() {
         return userRolesProperties.getProperty("roleManager");
     }
+
+    /**
+     * Pobiera wewnętrzną nazwę roli Klient
+     *
+     * @return Nazwa roli
+     */
     public String getRoleClient() {
         return userRolesProperties.getProperty("roleClient");
     }

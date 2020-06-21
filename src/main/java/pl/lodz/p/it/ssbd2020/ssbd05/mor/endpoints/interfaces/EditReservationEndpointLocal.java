@@ -10,7 +10,7 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego EditReservationEndpoint pośredniczącemu
+ * Interfejs dla punktu dostępowego EditReservationEndpoint pośredniczącego
  * przy edycji rezerwacji
  */
 @Local

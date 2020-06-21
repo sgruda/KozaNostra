@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import java.util.List;
 
 /**
- * Interfejs dla punktu dostępowego EditHallEndpoint, pośredniczącemu
+ * Interfejs dla punktu dostępowego EditHallEndpoint, pośredniczącego
  * przy edycji sali przez użytkownika o poziomie dostępu menadżer
  */
 @Local

@@ -7,6 +7,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+/**
+ * Klasa konwertująca pomiędy obiektem klasy AddressDTO, a jego reprezentacją jako ciąg znaków
+ */
 @FacesConverter("addressConverter")
 public class AddressConverter implements Converter<AddressDTO> {
 

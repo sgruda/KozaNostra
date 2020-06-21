@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Kontroler odpowiedzialny za dodawanie sali przez użytkownika o poziomie dostępu menadżer
+ * Kontroler odpowiedzialny za dodawanie sali przez użytkownika o poziomie dostępu Menadżer
  */
 @Log
 @Getter

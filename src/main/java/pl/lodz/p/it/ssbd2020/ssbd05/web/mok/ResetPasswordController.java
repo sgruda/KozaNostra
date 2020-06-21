@@ -16,6 +16,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDateTime;
 
+/**
+ * Kontroler odpowiedzialny za resetowanie hasła
+ */
 @Log
 @Named
 @RequestScoped
@@ -39,14 +42,29 @@ public class ResetPasswordController {
     private ForgotPasswordTokenDTO forgotPasswordTokenDTO;
     private AccountDTO accountDTO;
 
+    /**
+     * Wróć na poprzednią stronę
+     *
+     * @return Ciąg znaków przenoszący na stronę logowania
+     */
     public String goBack() {
         return "/login/login.xhtml?faces-redirect=true";
     }
 
+    /**
+     * Przejdź na stronę do resetowania hasła
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String moveToResetPassword() {
         return "resetPassword";
     }
 
+    /**
+     * Metoda wyszukująca konto użytkownika na podstawie jego adresu email
+     *
+     * @return Ciąg znaków przenoszący na stronę główną
+     */
     public String resetPassword() {
         try {
             resetPasswordEndpoint.findByMail(mail);
@@ -62,6 +80,9 @@ public class ResetPasswordController {
         return "home";
     }
 
+    /**
+     * Metoda ustawiająca nowe hasło dla konta użytkownika
+     */
     public void changePassword() {
         if(url.contains("token="))
             token = url.substring(url.indexOf("token=") + 6);
@@ -81,6 +102,12 @@ public class ResetPasswordController {
             log.severe(e.getMessage() + ", " + LocalDateTime.now());
         }
     }
+
+    /**
+     * Wróć na stronę główną
+     *
+     * @return Ciąg znaków przenoszący na stronę główną
+     */
     public String goHome() {
         return "home";
     }

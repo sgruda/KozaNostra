@@ -47,16 +47,13 @@ public class HallFacade extends AbstractFacade<Hall> {
         return em;
     }
 
+    /**
+     * Konstruktor bezparametrowy dla klasy HallFacade
+     */
     public HallFacade() {
         super(Hall.class);
     }
 
-    /**
-     * Metoda odpowiedzialna za dodawanie encji reprezentującej salę do bazy danych
-     *
-     * @param entity Obiekt typu Hall
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("addHall")
     public void create(Hall entity) throws AppBaseException {
@@ -90,12 +87,6 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
-    /**
-     * Metoda odpowiedzialna za edycję encji reprezentującej salę w bazie danych
-     *
-     * @param entity Obiekt typu Hall
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed({"editHall", "changeHallActivity"})
     public void edit(Hall entity) throws AppBaseException {
@@ -108,12 +99,6 @@ public class HallFacade extends AbstractFacade<Hall> {
         }
     }
 
-    /**
-     * Metoda odpowiedzialna za usunięcie encji reprezentującej salę w bazie danych
-     *
-     * @param entity Obiekt typu Hall
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @RolesAllowed("removeHall")
     public void remove(Hall entity) throws AppBaseException {
@@ -132,12 +117,6 @@ public class HallFacade extends AbstractFacade<Hall> {
         return super.find(id);
     }
 
-    /**
-     * Metoda odpowiedzialna za pobieranie wszystkich sal z bazy danych
-     *
-     * @return Lista obiektów typu Hall
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
     @Override
     @PermitAll
     public List<Hall> findAll() throws AppBaseException {

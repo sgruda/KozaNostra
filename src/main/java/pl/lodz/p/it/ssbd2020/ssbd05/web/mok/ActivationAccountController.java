@@ -55,9 +55,8 @@ public class ActivationAccountController implements Serializable {
     /**
      * Metoda odpowiedzialna za odblokowanie konta
      *
-     * @throws AppBaseException Wyjątek aplikacyjny
+     * @throws AppBaseException Wyjątek aplikacyjny, którego obsługa znajduje się w AccountDetailsController
      */
-    //throws, bo wywołujemy w innym kontrolerze i obsługa jest tam
     public void unlockAccount() throws AppBaseException {
         editAccountEndpointLocal.unlockAccount(account);
         ResourceBundles.emitMessageWithFlash(null,"page.accountdetails.unlock");
@@ -66,7 +65,7 @@ public class ActivationAccountController implements Serializable {
     /**
      * Metoda odpowiedzialna za blokowanie konta
      *
-     * @throws AppBaseException Wyjątek aplikacyjny
+     * @throws AppBaseException Wyjątek aplikacyjny, którego obsługa znajduje się w AccountDetailsController
      */
     public void blockAccount() throws AppBaseException {
         editAccountEndpointLocal.blockAccount(account);

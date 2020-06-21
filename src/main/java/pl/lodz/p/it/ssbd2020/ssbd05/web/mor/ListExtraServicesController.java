@@ -29,7 +29,7 @@ import java.util.List;
 public class ListExtraServicesController implements Serializable {
 
     @Inject
-    ListExtraServicesEndpointLocal listExtraServicesEndpoint;
+    private ListExtraServicesEndpointLocal listExtraServicesEndpoint;
 
     @Getter
     private List<ExtraServiceDTO> extraServices;
@@ -76,6 +76,13 @@ public class ListExtraServicesController implements Serializable {
         }
     }
 
+
+    /**
+     * Przejdź na stronę edycji usługi dodatkowej
+     *
+     * @param extraServiceName Nazwa usługi dodatkowej
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goToEditPage(String extraServiceName){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedExtraService", extraServiceName);
         return "editExtraServicePage";

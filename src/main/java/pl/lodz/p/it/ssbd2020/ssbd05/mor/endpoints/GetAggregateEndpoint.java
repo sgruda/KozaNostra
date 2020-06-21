@@ -18,6 +18,10 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
+/**
+ * Punkt dostępowy implementujący interfejs GetAggregateEndpointLocal, który pośredniczy
+ * przy pobieraniu z bazy danych obiektu encyjnego agregatu
+ */
 @Log
 @Stateful
 @Interceptors(TrackerInterceptor.class)

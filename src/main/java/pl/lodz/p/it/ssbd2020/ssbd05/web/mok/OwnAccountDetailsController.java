@@ -14,6 +14,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.logging.Level;
 
+/**
+ * Kontroler odpowiadający za wyświetlanie szczegółów własnego konta
+ */
 @Log
 @Named
 @ViewScoped
@@ -24,14 +27,27 @@ public class OwnAccountDetailsController implements Serializable {
     @Getter
     private AccountDTO account;
 
+    /**
+     * Przejdź na stronę ze szczegółami własnego konta
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String selectOwnAccount() {
         return "ownAccountDetails";
     }
 
+    /**
+     * Wróć na poprzednią stronę
+     *
+     * @return Ciąg znaków, dla którego została zdefiniowana zasada nawigacji w deskryptorze faces-config.xml
+     */
     public String goBack() {
         return "goBack";
     }
 
+    /**
+     * Metoda wczytująca dane własnego konta
+     */
     @PostConstruct
     void init(){
         try {

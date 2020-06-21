@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import java.util.Collection;
 
 /**
- * Interfejs dla punktu dostępowego ListAccountsEndpoint pośredniczącemu
+ * Interfejs dla punktu dostępowego ListAccountsEndpoint pośredniczącego
  * przy wyświetlaniu wszystkich kont w systemie oraz filtrowaniu ich
  *
  */

@@ -6,7 +6,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import javax.ejb.Local;
 
 /**
- * Interfejs dla punktu dostępowego EditReviewEndpoint, pośredniczącemu
+ * Interfejs dla punktu dostępowego EditReviewEndpoint, pośredniczącego
  * przy edycji opinii.
  */
 @Local
