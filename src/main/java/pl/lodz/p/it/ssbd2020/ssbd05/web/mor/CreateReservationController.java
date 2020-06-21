@@ -140,8 +140,14 @@ public class CreateReservationController implements Serializable {
                     price += ext.getPrice();
             }
         }
-        price = this.createReservationEndpointLocal.calculateTotalPrice(startDate, endDate, hallDTO.getPrice(), Long.valueOf(numberOfGuests), price);
-        this.price = price;
+        if(startDate.isAfter(endDate)){
+            price = 0;
+            this.price = price;
+            ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
+        }else{
+            price = this.createReservationEndpointLocal.calculateTotalPrice(startDate, endDate, hallDTO.getPrice(), Long.valueOf(numberOfGuests), price);
+            this.price = price;
+        }
         return price;
     }
 

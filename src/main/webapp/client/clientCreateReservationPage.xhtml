@@ -75,7 +75,7 @@
                               locale="#{msg['page.createreservation.calendar.language']}" converterMessage="#{msg['page.createreservation.enddate.converter']}"
                               pattern="yyyy-MM-dd HH:mm:ss">
                 </p:datePicker>
-                <h:outputText id="totalPrice"  value="#{msg['page.createreservation.totalprice.value']} : #{createReservationController.price}" />
+                <h:outputText id="totalPrice"  value="#{msg['page.createreservation.totalprice.value']} : #{createReservationController.price} PLN" />
                     <p:commandButton id="calculatePrice" value="#{msg['page.createreservation.button.calculateprice']}" action="#{createReservationController.calculateTotalPrice()}" >
                         <p:ajax update="totalPrice"/>
                     </p:commandButton>
