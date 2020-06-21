@@ -5,6 +5,10 @@ import javax.persistence.Converter;
 import java.time.LocalDateTime;
 import java.sql.Timestamp;
 
+/**
+ * Klasa implementująca interfejs AttributeConverter, która pozwala na mapowanie obiektów klasy LocalDateTime
+ * na typ timestamp with time zone w relacyjnej bazie danych.
+ */
 @Converter(autoApply = true)
 public class LocalDateTimeAttributeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
 

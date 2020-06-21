@@ -24,4 +24,9 @@ public @Data class ClientDTO {
     public String getPersonalDetails() {
         return firstname + " " + lastname;
     }
+
+    @Override
+    public String toString() {
+        return "pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ClientDTO[login= " + login + "]";
+    }
 }

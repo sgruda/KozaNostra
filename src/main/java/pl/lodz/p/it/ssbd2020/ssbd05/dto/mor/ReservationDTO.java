@@ -26,4 +26,9 @@ public @Data class ReservationDTO {
     private String reservationNumber;
     private String eventTypeName;
     private Long guestsNumber;
+
+    @Override
+    public String toString() {
+        return "pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO[reservation number= " + reservationNumber + "]";
+    }
 }

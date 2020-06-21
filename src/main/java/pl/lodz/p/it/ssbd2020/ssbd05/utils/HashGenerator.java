@@ -7,8 +7,18 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 
+/**
+ * Klasa narzędziowa generująca skróty haseł.
+ */
 @Log
 public class HashGenerator {
+
+    /**
+     * Metoda odpowiedzialna za generowanie skrótów haseł z użyciem algorymtu SHA-256.
+     *
+     * @param password Ciąg znaków będący hasłem.
+     * @return Skrót hasła.
+     */
     public static String sha256(String password) {
         MessageDigest digest = null;
         try {
