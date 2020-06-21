@@ -7,10 +7,8 @@ import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.EventType;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mos.Hall;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ExtraServiceNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReviewNotFoundException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.StatusNotFoundException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
+import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.*;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mos.HallNotFoundException;
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
@@ -23,6 +21,7 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +36,8 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private ReservationFacade reservationFacade;
-
+    @Inject
+    private ReservationSerializableFacade reservationSerializableFacade;
     @Inject
     private EventTypesFacade eventTypesFacade;
 
@@ -49,9 +49,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private HallFacade hallFacade;
+    @Inject
+    private HallFacadeSerializable hallFacadeSerializable;
 
     @Inject
-    private  ExtraServiceFacade extraServiceFacade;
+    private ExtraServiceFacade extraServiceFacade;
+    @Inject ExtraServiceFacadeSerializable extraServiceFacadeSerializable;
 
     @Inject
     private ClientFacade clientFacade;
@@ -79,7 +82,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("findByLogin")
-    public Client getClientByLogin(String login) throws AppBaseException{
+    public Client getClientByLogin(String login) throws AppBaseException {
         return clientFacade.findByLogin(login);
     }
 
@@ -91,10 +94,10 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getExtraServiceByName")
-    public ExtraService getExtraServiceByName(String name) throws AppBaseException{
-        if(extraServiceFacade.findByName(name).isEmpty()){
+    public ExtraService getExtraServiceByName(String name) throws AppBaseException {
+        if (extraServiceFacade.findByName(name).isEmpty()) {
             throw new ExtraServiceNotFoundException();
-        }else return extraServiceFacade.findByName(name).get();
+        } else return extraServiceFacade.findByName(name).get();
     }
 
     /**
@@ -105,10 +108,10 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getEventTypeByName")
-    public EventType getEventTypeByName(String name) throws AppBaseException{
-        if(eventTypesFacade.findByName(name).isEmpty()){
+    public EventType getEventTypeByName(String name) throws AppBaseException {
+        if (eventTypesFacade.findByName(name).isEmpty()) {
             throw new ExtraServiceNotFoundException();
-        }else return eventTypesFacade.findByName(name).get();
+        } else return eventTypesFacade.findByName(name).get();
     }
 
     /**
@@ -134,10 +137,46 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("createReservation")
-    public void createReservation(Reservation reservation) throws AppBaseException{
-        reservationFacade.create(reservation);
+    public void createReservation(Reservation reservation) throws AppBaseException {
+        List<ExtraService> extraServices = new ArrayList<>();
+        ExtraService extraService;
+        for(ExtraService e : reservation.getExtra_service()) {
+            extraService = extraServiceFacadeSerializable.findByName(e.getServiceName()).get();
+            extraServices.add(extraService);
+        }
+        if(reservation.getExtra_service().size() != extraServices.size())
+            throw new AppOptimisticLockException();
+        for(ExtraService serviceFromReservation : reservation.getExtra_service()) {
+            for(ExtraService serviceFromHall : extraServices) {
+                if (serviceFromHall.getServiceName().equals(serviceFromReservation.getServiceName())) {
+                    if (serviceFromHall.compareTo(serviceFromReservation) != 0) {
+                        throw new AppOptimisticLockException();
+                    }
+                }
+            }
+        }
+        Optional<Hall> hallOptional = hallFacadeSerializable.findByName(reservation.getHall().getName());
+        if (hallOptional.isEmpty()) {
+            throw new HallNotFoundException();
+        } else {
+            if (reservation.getHall().compareTo(hallOptional.get()) != 0) {
+                throw new AppOptimisticLockException();
+            }
+        }
+        List<Reservation> reservationsOnHall = reservationSerializableFacade.findAll().stream()
+                .filter(r -> r.getHall().getName().equals(reservation.getHall().getName()))
+                .collect(Collectors.toList());
+        for (Reservation r : reservationsOnHall) {
+            if (!r.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name()) && !r.getId().equals(reservation.getId())) {
+                if (reservation.getStartDate().isBefore(r.getEndDate())
+                        && reservation.getEndDate().isAfter(r.getStartDate())) {
+                    throw new DateOverlapException();
+                }
+            }
+        }
+        reservationSerializableFacade.create(reservation);
     }
-
+    
     /**
      * Metoda odpowiedzialna za pobranie wszystkich rezerwacji użytkownika
      *
@@ -162,8 +201,8 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getStatusByName")
-    public Status getStatusByName(String statusName) throws AppBaseException  {
-        if(statusFacade.findByStatusName(statusName).isPresent()) {
+    public Status getStatusByName(String statusName) throws AppBaseException {
+        if (statusFacade.findByStatusName(statusName).isPresent()) {
             return statusFacade.findByStatusName(statusName).get();
         } else {
             throw new StatusNotFoundException();
@@ -178,7 +217,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed({"getStatusCancelled", "cancelReservation"})
     public Status getStatusCancelled() throws AppBaseException {
-        if(statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).isPresent()) {
+        if (statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).isPresent()) {
             return statusFacade.findByStatusName(ReservationStatuses.cancelled.toString()).get();
         } else {
             throw new StatusNotFoundException();
@@ -194,7 +233,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("getReservationByNumber")
     public Reservation getReservationByNumber(String reservationNumber) throws AppBaseException {
-        if(reservationFacade.findByNumber(reservationNumber).isPresent()) {
+        if (reservationFacade.findByNumber(reservationNumber).isPresent()) {
             return this.reservationFacade.findByNumber(reservationNumber).get();
         } else throw new ReservationNotFoundException();
     }
@@ -208,7 +247,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     @RolesAllowed("changeReservationStatus")
     public void changeReservationStatus(Reservation reservation) throws AppBaseException {
         reservationFacade.edit(reservation);
-        if(reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())) {
+        if (reservation.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.finished.toString())) {
             aggregate = averageGuestNumberFacade.findAll().get(0);
             aggregate.setEventSum(aggregate.getEventSum() + 1);
             aggregate.setGuestSum(aggregate.getGuestSum() + reservation.getGuestsNumber());
@@ -236,7 +275,43 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
-        reservationFacade.edit(reservation);
+        Optional<Hall> hallOptional = hallFacadeSerializable.findByName(reservation.getHall().getName());
+        if (hallOptional.isEmpty()) {
+            throw new HallNotFoundException();
+        } else {
+            if (reservation.getHall().compareTo(hallOptional.get()) != 0) {
+                throw new AppOptimisticLockException();
+            }
+        }
+        List<ExtraService> extraServices = new ArrayList<>();
+        ExtraService extraService;
+        for(ExtraService e : reservation.getExtra_service()) {
+            extraService = extraServiceFacadeSerializable.findByName(e.getServiceName()).get();
+            extraServices.add(extraService);
+        }
+        if(reservation.getExtra_service().size() != extraServices.size())
+            throw new AppOptimisticLockException();
+        for(ExtraService serviceFromReservation : reservation.getExtra_service()) {
+            for(ExtraService serviceFromHall : extraServices) {
+                if (serviceFromHall.getServiceName().equals(serviceFromReservation.getServiceName())) {
+                    if (serviceFromHall.compareTo(serviceFromReservation) != 0) {
+                        throw new AppOptimisticLockException();
+                    }
+                }
+            }
+        }
+        List<Reservation> reservationsOnHall = reservationSerializableFacade.findAll().stream()
+                .filter(r -> r.getHall().getName().equals(reservation.getHall().getName()))
+                .collect(Collectors.toList());
+        for (Reservation r : reservationsOnHall) {
+            if (!r.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name()) && !r.getId().equals(reservation.getId())) {
+                if (reservation.getStartDate().isBefore(r.getEndDate())
+                        && reservation.getEndDate().isAfter(r.getStartDate())) {
+                    throw new DateOverlapException();
+                }
+            }
+        }
+        reservationSerializableFacade.edit(reservation);
     }
 
 
@@ -278,7 +353,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
             result.removeAll(reviewedReservations);
         } catch (ReservationNotFoundException e) {
             throw new ReservationNotFoundException(e);
-        } catch (ReviewNotFoundException e){
+        } catch (ReviewNotFoundException e) {
             throw new ReviewNotFoundException(e);
         }
         return result;
@@ -292,8 +367,8 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getAllExtraServicesForReservation")
-    public List<ExtraService> getAllExtraServices() throws AppBaseException{
-       return extraServiceFacade.findAll();
+    public List<ExtraService> getAllExtraServices() throws AppBaseException {
+        return extraServiceFacade.findAll();
     }
 
     /**
@@ -304,8 +379,8 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     @RolesAllowed("getExtraServiceByName")
-    public ExtraService getExtraServicesByName(String name) throws AppBaseException{
-        if(extraServiceFacade.findByName(name).isPresent())
+    public ExtraService getExtraServicesByName(String name) throws AppBaseException {
+        if (extraServiceFacade.findByName(name).isPresent())
             return extraServiceFacade.findByName(name).get();
         else throw new ExtraServiceNotFoundException();
     }

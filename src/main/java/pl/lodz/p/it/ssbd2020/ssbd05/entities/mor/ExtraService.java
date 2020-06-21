@@ -27,7 +27,7 @@ import java.io.Serializable;
         @NamedQuery(name = "ExtraService.findByPrice", query = "SELECT e FROM ExtraService e WHERE e.price = :price"),
         @NamedQuery(name = "ExtraService.findByServiceName", query = "SELECT e FROM ExtraService e WHERE e.serviceName = :serviceName"),
         @NamedQuery(name = "ExtraService.findByActive", query = "SELECT e FROM ExtraService e WHERE e.active = :active")})
-public class ExtraService implements Serializable {
+public class ExtraService implements Serializable, Comparable<ExtraService> {
 
     private static final long serialVersionUID = 1L;
 
@@ -99,6 +99,18 @@ public class ExtraService implements Serializable {
     @Override
     public String toString() {
         return "pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.ExtraService[ id=" + id + " version=" + version + " ]";
+    }
+
+    @Override
+    public int compareTo(ExtraService o) {
+        if(!this.serviceName.equals(o.getServiceName()) ||
+            !this.description.equals(o.getDescription()) ||
+            this.active != o.isActive() ||
+            this.price != o.getPrice()) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
 }

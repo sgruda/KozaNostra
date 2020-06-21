@@ -28,9 +28,9 @@ import java.util.Optional;
 @Stateless
 @LocalBean
 @Interceptors(TrackerInterceptor.class)
-public class HallFacade extends AbstractFacade<Hall> {
+public class HallFacadeSerializable extends AbstractFacade<Hall> {
 
-    @PersistenceContext(unitName = "ssbd05morPU")
+    @PersistenceContext(unitName = "ssbd05morPUSerializable")
     private EntityManager em;
 
     @Override
@@ -41,7 +41,7 @@ public class HallFacade extends AbstractFacade<Hall> {
     /**
      * Konstruktur bezprarametrowy fasady
      */
-    public HallFacade() {
+    public HallFacadeSerializable() {
         super(Hall.class);
     }
 
