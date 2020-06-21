@@ -80,7 +80,6 @@
                               mindate="#{editReservationController.today.plusMinutes(1)}" appendTo="@(body)"
                               lang="#{msg['page.editreservation.calendar.language']}"
                               minValue="#{editReservationController.event.startDate}"
-                              requiredMessage="#{msg['page.editreservation.enddate.required']}"
                               validatorMessage="#{msg['page.editreservation.enddate.validator']}"
                               locale="#{msg['page.editreservation.calendar.language']}" converterMessage="#{msg['page.editreservation.enddate.converter']}"
                               pattern="yyyy-MM-dd HH:mm:ss" />
