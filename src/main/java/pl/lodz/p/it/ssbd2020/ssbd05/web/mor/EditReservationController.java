@@ -133,7 +133,7 @@ public class EditReservationController implements Serializable {
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
             } catch (AppOptimisticLockException ex) {
                 log.severe(ex.getMessage() + ", " + LocalDateTime.now());
-                ResourceBundles.emitErrorMessageWithFlash(null, "error.client.editreservation.optimisticlock");
+                ResourceBundles.emitErrorMessageWithFlash(null, "error.reservation.edit.optimisticlock");
             } catch (ValidationException e) {
                 ResourceBundles.emitErrorMessageByPlainText(null, e.getMessage());
                 log.severe(e.getMessage() + ", " + LocalDateTime.now());
