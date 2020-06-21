@@ -49,8 +49,9 @@ abstract public class AbstractManager  {
     /**
      * Metoda wywoływana po zakończeniu transakcji.
      *
-     * @throws EJBException    Wyjątek systemowy
-     * @throws RemoteException Wyjątek systemowy
+     * @param committed czy transakcja została zakończona pomyślnie
+     * @throws EJBException    wyjątek systemowy
+     * @throws RemoteException wyjątek systemowy
      */
     public void afterCompletion(boolean committed) throws EJBException, RemoteException {
         String login = sessionContext.getCallerPrincipal().getName();
