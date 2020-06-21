@@ -1,7 +1,6 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.web.mos;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
