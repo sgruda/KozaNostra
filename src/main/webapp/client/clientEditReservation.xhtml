@@ -69,7 +69,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                       lang="#{msg['page.editreservation.calendar.language']}"
                                       minValue="#{editReservationController.today.plusMinutes(1)}"
                                       requiredMessage="#{msg['page.editreservation.startdate.required']}"
-                                      validatorMessage="#{msg['page.editreservation.startdate.validator']}"
+                                      validatorMessage="#{msg['page.editreservation.startdate.validator']}" converterMessage="#{msg['page.editreservation.startdate.converter']}"
                                       locale="#{msg['page.editreservation.calendar.language']}" appendTo="@(body)"
                                       pattern="yyyy-MM-dd HH:mm:ss" />
                         </p:outputLabel>
@@ -81,7 +81,7 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
                                       minValue="#{editReservationController.event.startDate}"
                                       requiredMessage="#{msg['page.editreservation.enddate.required']}"
                                       validatorMessage="#{msg['page.editreservation.enddate.validator']}"
-                                      locale="#{msg['page.editreservation.calendar.language']}"
+                                      locale="#{msg['page.editreservation.calendar.language']}" converterMessage="#{msg['page.editreservation.enddate.converter']}"
                                       pattern="yyyy-MM-dd HH:mm:ss" />
                         </p:outputLabel>
 
