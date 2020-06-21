@@ -7,6 +7,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mos.HallDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -58,4 +59,17 @@ public interface EditReservationEndpointLocal {
      * @throws AppBaseException podstawowy wyjątek aplikacyjny
      */
     List<UnavailableDate> getUnavailableDates(String hallName) throws AppBaseException;
+
+    /**
+     * Metoda wykorzystywana do obliczenia całkowitej ceny rezerwacji
+     * @param startDate data rozpoczęcia imprezy
+     * @param endDate data zakończenia imprezy
+     * @param hallPrice cena sali
+     * @param numberOfGuests liczba gości biorących udział w imprezie
+     * @param extraServicesTotalPrice całkowita koszt usług dodatkowych
+     * @return całkowita wartość rezerwacji
+     */
+    double calculateTotalPrice(LocalDateTime startDate, LocalDateTime endDate, double hallPrice,
+                               Long numberOfGuests, double extraServicesTotalPrice);
+
 }

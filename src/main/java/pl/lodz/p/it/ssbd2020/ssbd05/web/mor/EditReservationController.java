@@ -114,19 +114,19 @@ public class EditReservationController implements Serializable {
         reservationDTO.setExtraServiceCollection(selectedExtraServices);
         reservationDTO.setStartDate(DateFormatter.formatDate(startDate));
         reservationDTO.setEndDate(DateFormatter.formatDate(endDate));
-        boolean notGood = false;
-        if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
-            ResourceBundles.emitErrorMessage(null, "page.editreservation.dates.error");
-            notGood = true;
+        boolean areDatesValid = false;
+        if (startDate.isAfter(endDate)) {
+            ResourceBundles.emitErrorMessageWithFlash(null, "page.editreservation.dates.error");
+            areDatesValid = true;
         } else {
             for (ScheduleEvent ev : eventModel.getEvents()) {
                 if (ev.getEndDate().isAfter(startDate) && ev.getStartDate().isBefore(endDate)) {
                     ResourceBundles.emitErrorMessageWithFlash(null, "error.editreservation.dates.overlap");
-                    notGood = true;
+                    areDatesValid = true;
                 }
             }
         }
-        if (!notGood) {
+        if (!areDatesValid) {
             try {
                 editReservationEndpointLocal.editReservation(reservationDTO);
                 ResourceBundles.emitMessageWithFlash(null, "page.client.editreservation.success");
@@ -176,5 +176,23 @@ public class EditReservationController implements Serializable {
         return "goToDetails";
     }
 
-
+    public double calculateTotalPrice() {
+        double price = 0;
+        for (ExtraServiceDTO ext : extraServices) {
+            for (int i = 0; i < selectedExtraServices.size(); i++) {
+                if (ext.getServiceName().equals(selectedExtraServices.get(i)))
+                    price += ext.getPrice();
+            }
+        }
+        if(startDate.isAfter(endDate)){
+            price = 0;
+            reservationDTO.setTotalPrice(price);
+            ResourceBundles.emitErrorMessage(null, "page.createreservation.dates.error");
+        }else{
+            Long numberOfGuests = reservationDTO.getGuestsNumber();
+            price = this.editReservationEndpointLocal.calculateTotalPrice(startDate, endDate, hallDTO.getPrice(), Long.valueOf(numberOfGuests), price);
+            reservationDTO.setTotalPrice(price);
+        }
+        return price;
+    }
 }
