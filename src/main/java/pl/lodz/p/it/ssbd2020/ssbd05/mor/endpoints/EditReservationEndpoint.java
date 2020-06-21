@@ -1,6 +1,7 @@
 package pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ExtraServiceMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReservationMapper;
@@ -18,6 +19,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRe
 import pl.lodz.p.it.ssbd2020.ssbd05.interceptors.TrackerInterceptor;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.EditReservationEndpointLocal;
+import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ExtraServiceManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.managers.ReservationManager;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
@@ -54,8 +56,15 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     @Getter
     private Collection<String> eventTypes;
 
+    @Inject
+    private ExtraServiceManager extraServiceManager;
+
     @Getter
     private Hall hall;
+
+    @Getter
+    @Setter
+    private List<ExtraService> extraServiceList;
 
     @Override
     @RolesAllowed("getReservationByNumber")
@@ -93,12 +102,32 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
 
         double extraServicesTotalPrice = 0;
         for (String extraService : reservationDTO.getExtraServiceCollection()) {
-            ExtraService extra =  reservationManager.getExtraServiceByName(extraService);
-            extraServicesTotalPrice += extra.getPrice();
-            extraServices.add(extra);
+            for(ExtraService extra : this.extraServiceList){
+                if(extra.getServiceName().equalsIgnoreCase(extraService)){
+                    extraServicesTotalPrice += extra.getPrice();
+                    extraServices.add(extra);
+                }
+            }
         }
         reservation.setTotalPrice(calculateTotalPrice(reservation.getStartDate(),reservation.getEndDate(),hall.getPrice(),reservation.getGuestsNumber(),extraServicesTotalPrice));
-        reservationManager.editReservation(reservation);
+
+        int callCounter = 0;
+        boolean rollback;
+        do {
+            try {
+                reservationManager.editReservation(reservation);
+                rollback = reservationManager.isLastTransactionRollback();
+            } catch (EJBTransactionRolledbackException e) {
+                log.warning("EJBTransactionRolledBack");
+                rollback = true;
+            }
+            if (callCounter > 0)
+                log.info("Transaction with ID " + reservationManager.getTransactionId() + " is being repeated for " + callCounter + " time");
+            callCounter++;
+        } while (rollback && callCounter <= ResourceBundles.getTransactionRepeatLimit());
+        if (rollback) {
+            throw new ExceededTransactionRetriesException();
+        }
     }
 
     @Override
@@ -128,11 +157,13 @@ public class EditReservationEndpoint implements Serializable, EditReservationEnd
     @Override
     @RolesAllowed("getAllExtraServicesForReservation")
     public List<ExtraServiceDTO> getAllExtraServices() throws AppBaseException{
+
         List<ExtraServiceDTO> extraServices = new ArrayList<>();
         int callCounter = 0;
         boolean rollback;
         do {
             try {
+                this.extraServiceList = extraServiceManager.getAllExtraServices();
                 extraServices = ExtraServiceMapper.INSTANCE.toExtraServiceDTOList(reservationManager.getAllExtraServices());
                 rollback = reservationManager.isLastTransactionRollback();
             } catch (EJBTransactionRolledbackException e) {
