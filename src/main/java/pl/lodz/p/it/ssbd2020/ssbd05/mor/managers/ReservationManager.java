@@ -19,7 +19,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import javax.persistence.LockModeType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,9 +49,12 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
 
     @Inject
     private HallFacade hallFacade;
+    @Inject
+    private HallFacadeSerializable hallFacadeSerializable;
 
     @Inject
     private ExtraServiceFacade extraServiceFacade;
+    @Inject ExtraServiceFacadeSerializable extraServiceFacadeSerializable;
 
     @Inject
     private ClientFacade clientFacade;
@@ -143,11 +145,11 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     private void checkIfDatesOverlap(Reservation reservation) throws AppBaseException {
-        List<Reservation> reservationsOnHall = reservationFacade.findAll().stream()
+        List<Reservation> reservationsOnHall = reservationSerializableFacade.findAll().stream()
                 .filter(r -> r.getHall().getName().equals(reservation.getHall().getName()))
                 .collect(Collectors.toList());
         for (Reservation r : reservationsOnHall) {
-            if (!r.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name())) {
+            if (!r.getStatus().getStatusName().equalsIgnoreCase(ReservationStatuses.cancelled.name()) && !r.getId().equals(reservation.getId())) {
                 if (reservation.getStartDate().isBefore(r.getEndDate())
                         && reservation.getEndDate().isAfter(r.getStartDate())) {
                     throw new DateOverlapException();
@@ -160,7 +162,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         List<ExtraService> extraServices = new ArrayList<>();
         ExtraService extraService;
         for(ExtraService e : reservation.getExtra_service()) {
-            extraService = extraServiceFacade.findByName(e.getServiceName()).get();
+            extraService = extraServiceFacadeSerializable.findByName(e.getServiceName()).get();
             extraServices.add(extraService);
         }
         if(reservation.getExtra_service().size() != extraServices.size())
@@ -177,7 +179,7 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
     }
 
     private void checkIfHallChanged(Reservation reservation) throws AppBaseException {
-        Optional<Hall> hallOptional = hallFacade.findByName(reservation.getHall().getName());
+        Optional<Hall> hallOptional = hallFacadeSerializable.findByName(reservation.getHall().getName());
         if (hallOptional.isEmpty()) {
             throw new HallNotFoundException();
         } else {
@@ -296,6 +298,8 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
      */
     @RolesAllowed("editReservation")
     public void editReservation(Reservation reservation) throws AppBaseException {
+        checkIfHallChanged(reservation);
+        checkIfExtraServiceHasChanged(reservation);
         checkIfDatesOverlap(reservation);
         reservationSerializableFacade.edit(reservation);
     }
