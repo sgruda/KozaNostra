@@ -38,7 +38,7 @@ public class ExtraService implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Pattern(regexp = "[ a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\-]+", message = "{validation.pattern}")
+    @Pattern(regexp = "[ 0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ`!@#$%*(),.?\\\\-]+", message = "{validation.pattern}")
     @Basic(optional = false)
     @NotNull(message = "{validation.notnull}")
     @Size(min = 1, max = 512, message = "{validation.size}")
