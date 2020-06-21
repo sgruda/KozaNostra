@@ -76,7 +76,7 @@
                               pattern="yyyy-MM-dd HH:mm:ss">
                 </p:datePicker>
                 <h:outputText id="totalPrice"  value="#{msg['page.createreservation.totalprice.value']} : #{createReservationController.price} PLN" />
-                    <p:commandButton id="calculatePrice" value="#{msg['page.createreservation.button.calculateprice']}" action="#{createReservationController.calculateTotalPrice()}" >
+                    <p:commandButton id="calculatePrice" value="#{msg['page.createreservation.button.calculateprice']}" action="#{createReservationController.calculateTotalPrice()}" onclick="document.getElementById('calculatePrice').dblclick(); ">
                         <p:ajax update="totalPrice"/>
                     </p:commandButton>
             </p:panelGrid>
