@@ -3,15 +3,15 @@ package pl.lodz.p.it.ssbd2020.ssbd05.abstraction;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.ValidationException;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Klasa abstrakcyjnej fasady

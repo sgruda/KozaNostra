@@ -4,7 +4,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 
 import javax.ejb.Local;
-import java.util.List;
 
 /**
  * Interfejs dla punktu dostępowego ChangeReservationStatusEndpoint, pośredniczącego
@@ -12,14 +11,6 @@ import java.util.List;
  */
 @Local
 public interface ChangeReservationStatusEndpointLocal {
-
-    /**
-     * Metoda pobierająca listę wszystkich statusów rezerwacji.
-     *
-     * @return Lista obiektów z nazwami statusów
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
-    List<String> getAllStatuses() throws AppBaseException;
 
     /**
      * Metoda odpowiedzialna za pobieranie rezerwacji na podstawie jej numeru.

@@ -7,7 +7,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.AppOptimisticLockException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
-import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.NoncancelableReservationException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.ReservationStatusFinishedException;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ChangeReservationStatusEndpointLocal;

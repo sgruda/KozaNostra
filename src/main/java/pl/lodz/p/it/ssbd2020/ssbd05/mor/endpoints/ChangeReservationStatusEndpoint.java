@@ -4,7 +4,6 @@ import lombok.extern.java.Log;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mappers.mor.ReservationMapper;
 import pl.lodz.p.it.ssbd2020.ssbd05.dto.mor.ReservationDTO;
 import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Reservation;
-import pl.lodz.p.it.ssbd2020.ssbd05.entities.mor.Status;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.AppBaseException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.io.database.ExceededTransactionRetriesException;
 import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.NoncancelableReservationException;
@@ -25,8 +24,6 @@ import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *  Punkt dostępowy implementujący interfejs ChangeReservationStatusEndpointLocal, który pośredniczy
@@ -41,15 +38,6 @@ public class ChangeReservationStatusEndpoint implements Serializable, ChangeRese
     private ReservationManager reservationManager;
     private Reservation reservation;
 
-
-    @Override
-    @RolesAllowed("getAllStatuses")
-    public List<String> getAllStatuses() throws AppBaseException {
-        return reservationManager.getAllStatuses()
-                .stream()
-                .map(Status::getStatusName)
-                .collect(Collectors.toList());
-    }
 
     @Override
     @RolesAllowed("getReservationByNumber")

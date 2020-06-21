@@ -10,6 +10,7 @@ import pl.lodz.p.it.ssbd2020.ssbd05.exceptions.mor.NoncancelableReservationExcep
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.ReservationStatuses;
 import pl.lodz.p.it.ssbd2020.ssbd05.mor.endpoints.interfaces.ChangeReservationStatusEndpointLocal;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
+
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

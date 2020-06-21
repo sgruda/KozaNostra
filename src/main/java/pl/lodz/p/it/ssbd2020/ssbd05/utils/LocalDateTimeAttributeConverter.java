@@ -2,8 +2,8 @@ package pl.lodz.p.it.ssbd2020.ssbd05.utils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.time.LocalDateTime;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Klasa implementująca interfejs AttributeConverter, która pozwala na mapowanie obiektów klasy LocalDateTime

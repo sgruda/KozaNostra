@@ -21,7 +21,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.*;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -184,17 +183,6 @@ public class ReservationManager extends AbstractManager implements SessionSynchr
         } else {
             throw new StatusNotFoundException();
         }
-    }
-
-    /**
-     * Metoda odpowiedzialna za pobieranie listy wszystkich statusów rezerwacji.
-     *
-     * @return lista obiektów typu Status
-     * @throws AppBaseException podstawowy wyjątek aplikacyjny
-     */
-    @RolesAllowed("getAllStatuses")
-    public List<Status> getAllStatuses() throws AppBaseException {
-        return statusFacade.findAll();
     }
 
     /**

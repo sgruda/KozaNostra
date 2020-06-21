@@ -3,7 +3,6 @@ package pl.lodz.p.it.ssbd2020.ssbd05.web.mor;
 
 import lombok.Data;
 import lombok.extern.java.Log;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
@@ -21,7 +20,6 @@ import pl.lodz.p.it.ssbd2020.ssbd05.utils.DateFormatter;
 import pl.lodz.p.it.ssbd2020.ssbd05.utils.ResourceBundles;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
