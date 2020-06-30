@@ -22,9 +22,9 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://studdev.it.p.lodz.pl:5432/ssbd05"/>
-      <property name="javax.persistence.jdbc.user" value="ssbd05mok"/>
+      <property name="javax.persistence.jdbc.user" value="DATABASE_USER"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="mok123"/>
+      <property name="javax.persistence.jdbc.password" value="PASSWORD"/>
       <property name="eclipselink.target-database" value="pl.lodz.p.it.ssbd2020.ssbd05.utils.PatchedPostgreSQLPlatform"/>
     </properties>
   </persistence-unit>
@@ -51,9 +51,9 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://studdev.it.p.lodz.pl:5432/ssbd05"/>
-      <property name="javax.persistence.jdbc.user" value="ssbd05mos"/>
+      <property name="javax.persistence.jdbc.user" value="DATABASE_USER"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="mos123"/>
+      <property name="javax.persistence.jdbc.password" value="PASSWORD"/>
       <property name="eclipselink.target-database" value="pl.lodz.p.it.ssbd2020.ssbd05.utils.PatchedPostgreSQLPlatform"/>
     </properties>
   </persistence-unit>
@@ -80,9 +80,9 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://studdev.it.p.lodz.pl:5432/ssbd05"/>
-      <property name="javax.persistence.jdbc.user" value="ssbd05mor"/>
+      <property name="javax.persistence.jdbc.user" value="DATABASE_USER"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="mor123"/>
+      <property name="javax.persistence.jdbc.password" value="PASSWORD"/>
       <property name="eclipselink.target-database" value="pl.lodz.p.it.ssbd2020.ssbd05.utils.PatchedPostgreSQLPlatform"/>
     </properties>
   </persistence-unit>
@@ -109,9 +109,9 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://studdev.it.p.lodz.pl:5432/ssbd05"/>
-      <property name="javax.persistence.jdbc.user" value="ssbd05mor"/>
+      <property name="javax.persistence.jdbc.user" value="DATABASE_USER"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="mor123"/>
+      <property name="javax.persistence.jdbc.password" value="PASSWORD"/>
       <property name="eclipselink.target-database" value="pl.lodz.p.it.ssbd2020.ssbd05.utils.PatchedPostgreSQLPlatform"/>
     </properties>
   </persistence-unit>

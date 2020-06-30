@@ -48,7 +48,6 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-<!-- TODO Zmienić później z listy na stronę szczegółów extra Service -->
     <navigation-rule>
         <from-view-id>/listExtraServices.xhtml</from-view-id>
         <navigation-case>
@@ -57,7 +56,6 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    <!-- TODO Zmienić później z listy na stronę szczegółów extra Service -->
     <navigation-rule>
         <from-view-id>/manager/editExtraService.xhtml</from-view-id>
         <navigation-case>

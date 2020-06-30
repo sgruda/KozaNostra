@@ -9,27 +9,27 @@
 
     <developers>
         <developer>
-            <name>Dev One</name>
+            <name>Szymon Gruda</name>
             <id>itdev1</id>
         </developer>
         <developer>
-            <name>Dev Two</name>
+            <name>Jakub Bogdan</name>
             <id>itdev2</id>
         </developer>
         <developer>
-            <name>Dev Three</name>
+            <name>Przemyslaw Komuda</name>
             <id>itdev3</id>
         </developer>
         <developer>
-            <name>Dev Four</name>
+            <name>Krystian Kowalski</name>
             <id>itdev4</id>
         </developer>
         <developer>
-            <name>Dev Five</name>
+            <name>Gabriel Nowak</name>
             <id>itdev5</id>
         </developer>
         <developer>
-            <name>Dev Six</name>
+            <name>Szymon Rutkowski</name>
             <id>itdev6</id>
         </developer>
     </developers>
@@ -175,10 +175,10 @@
                     <configuration>
                         <type>runtime</type>
                         <properties>
-                            <cargo.glassfish.admin.port>4805</cargo.glassfish.admin.port>
-                            <cargo.hostname>studapp.it.p.lodz.pl</cargo.hostname>
-                            <cargo.remote.password>tauWrefet8</cargo.remote.password>
-                            <cargo.remote.username>admin</cargo.remote.username>
+                            <cargo.glassfish.admin.port>PORT</cargo.glassfish.admin.port>
+                            <cargo.hostname>HOSTNAME</cargo.hostname>
+                            <cargo.remote.password>PASSWORD</cargo.remote.password>
+                            <cargo.remote.username>USERNAME</cargo.remote.username>
                         </properties>
                     </configuration>
                 </configuration>
